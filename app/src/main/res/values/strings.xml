@@ -1,0 +1,63 @@
+<resources>
+    <string name="app_name">ISIDA-9</string>
+    <string name="CellNum">КАМЕРА № %1$d</string>
+    <string name="btnStart">Старт</string>
+    <string name="btnProp">Уст.</string>
+    <string name="btnInfo">Инфо</string>
+    <string name="btnReport">Отчет</string>
+    <string name="num1">1</string>
+    <string name="sensor0">Сухой</string>
+    <string name="sensor1">Контроль</string>
+    <string name="sensor2">Влажный</string>
+    <string name="sensor3">Скорлупа</string>
+    <string name="timer">Таймер</string>
+    <string name="counter">Счетчик</string>
+    <string name="flap">Заслонка</string>
+    <string name="cotwo">CO2</string>
+    <string name="load">Загрузка</string>
+    <string name="datetime">05.12.21</string>
+    <string name="incubation">Инкубация</string>
+    <string name="time">05ч.12мин.</string>
+    <string name="programm">Программа</string>
+    <string name="prognum">НЕТ</string>
+    <string name="fraction">**.*</string>
+    <string name="fractionU">[**.*]</string>
+    <string name="integer">***</string>
+    <string name="integerU">[***]</string>
+    <string name="percent">***%</string>
+    <string name="percentU">[**%]</string>
+    <string name="cotwoVal">****</string>
+    <string name="enter">Введите команду</string>
+    <string name="myText">просто текст</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_listener" translatable="false">ListenerActivity</string>
+    <string name="title_activity_auto_connect" translatable="false">AutoConnectActivity</string>
+    <string name="title_activity_device_list" translatable="false">DeviceListActivity</string>
+    <string name="title_activity_terminal" translatable="false">TerminalActivity</string>
+
+    <string name="label_connect">Connect</string>
+    <string name="label_send">Send</string>
+    <string name="label_scan">SCAN</string>
+    <string name="status_not_connect">Status : Not connect.</string>
+    <string name="status_connection_failed">Status : Connection failed</string>
+    <string name="status_connected_to">Status : Connected to %1$s</string>
+    <string name="connect_with_android_device">Connect with android device</string>
+    <string name="bluetooth_terminal">Bluetooth Terminal</string>
+    <string name="connect_with_ISIDA">Connect with ISIDA</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="bluetooth_is_not_available">Bluetooth is not available</string>
+    <string name="connected_to">Connected to</string>
+    <string name="connection_lost">Connection lost</string>
+    <string name="bluetooth_was_not_enabled">Bluetooth was not enabled.</string>
+
+    <string name="txtChip1">Мониторинг тихоход. вентилятора</string>
+    <string name="txtChip2">Мониторинг поворота лотков</string>
+    <string name="txtChip3">Горизонтальное положение лотков</string>
+    <string name="txtChip4">Режим подгототка к ОХЛАЖДЕНИЮ</string>
+    <string name="radioButOFF">ОТКЛЮЧИТЬ камеру</string>
+    <string name="radioButON">ВКЛЮЧИТЬ камеру</string>
+    <string name="radioButTURN">только ПОВОРОТ</string>
+    <string name="save_data">ЗАПИСАТЬ</string>
+    <string name="prop_U1">U1</string>
+</resources>
