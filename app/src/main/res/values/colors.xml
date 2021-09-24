@@ -8,16 +8,16 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="main_background">#518BC34A</color>
-    <color name="start_background">#31CDDC39</color>
-    <color name="prop_background">#2B03A9F4</color>
-    <color name="info_background">#1E9C27B0</color>
+    <color name="main_background">#8BC34A</color>
+    <color name="start_background">#CDDC39</color>
+    <color name="prop_background">#03A9F4</color>
+    <color name="info_background">#9C27B0</color>
     <color name="dry0">#F4511E</color>
     <color name="dry1">#802104</color>
     <color name="hum">#0091EA</color>
     <color name="radioButOFF">#F44336</color>
     <color name="radioButON">#4CAF50</color>
     <color name="btn_save_data">#FF5722</color>
-    <color name="BarButtonBackground">#272196F3</color>
+    <color name="BarButtonBackground">#2196F3</color>
     <color name="BarButtonTextColor">#1B5E20</color>
 </resources>

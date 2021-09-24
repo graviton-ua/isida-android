@@ -1,39 +1,37 @@
-package com.example.evgenij.isida_9
+package ua.graviton.isida
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import by.kirich1409.viewbindingdelegate.viewBinding
+import timber.log.Timber
+import ua.graviton.isida.databinding.ActivityDeviceListBinding
 
-class DeviceListActivity : AppCompatActivity() {
-    var bt: BluetoothSPP? = null
+class DeviceListActivity : AppCompatActivity(R.layout.activity_device_list) {
+    private val binding by viewBinding(ActivityDeviceListBinding::bind)
+
+    private val bt by lazy { BluetoothSPP(this) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_device_list)
 
-        bt = BluetoothSPP(this)
-
-        if (!bt.isBluetoothAvailable()) {
-            Toast.makeText(
-                applicationContext,
-                R.string.bluetooth_is_not_available,
-                Toast.LENGTH_LONG
-            ).show()
+        if (!bt.isBluetoothAvailable) {
+            Toast.makeText(this, R.string.bluetooth_is_not_available, Toast.LENGTH_LONG).show()
             finish()
         }
 
-        bt.setOnDataReceivedListener(object : OnDataReceivedListener() {
-            fun onDataReceived(data: ByteArray, message: String) {
-                Log.i("Check", "Length : " + data.size)
-                Log.i("Check", "Message : $message")
+        bt.setOnDataReceivedListener(object : BluetoothSPP.OnDataReceivedListener {
+            override fun onDataReceived(data: ByteArray, message: String) {
+                Timber.i("Length : " + data.size)
+                Timber.i("Message : $message")
             }
         })
 
         val btnConnect = findViewById<Button>(R.id.btnConnect)
         btnConnect.setOnClickListener {
-            if (bt.getServiceState() === BluetoothState.STATE_CONNECTED) {
+            if (bt.serviceState == BluetoothState.STATE_CONNECTED) {
                 bt.disconnect()
             } else {
                 val intent = Intent(this@DeviceListActivity, DeviceList::class.java)

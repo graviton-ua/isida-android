@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/main_background"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -292,52 +290,52 @@
         android:id="@+id/barButton"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:gravity="bottom|center_horizontal"
         android:layout_weight="1"
+        android:gravity="bottom|center_horizontal"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnStart"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/BarButtonBackground"
             android:text="@string/btnStart"
             android:textColor="@color/BarButtonTextColor"
-            android:textSize="16sp"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btnProp"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:backgroundTint="@color/BarButtonBackground"
             android:text="@string/btnProp"
             android:textColor="@color/BarButtonTextColor"
-            android:textSize="16sp"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btnInfo"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:backgroundTint="@color/BarButtonBackground"
             android:text="@string/btnInfo"
             android:textColor="@color/BarButtonTextColor"
-            android:textSize="16sp"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btnReport"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:backgroundTint="@color/BarButtonBackground"
             android:text="@string/btnReport"
             android:textColor="@color/BarButtonTextColor"
-            android:textSize="16sp"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <TextView

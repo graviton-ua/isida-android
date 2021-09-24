@@ -1,4 +1,4 @@
-package com.example.evgenij.isida_9
+package ua.graviton.isida
 
 class BluetoothState {
     // Constants that indicate the current connection state

@@ -1,4 +1,4 @@
-package com.example.evgenij.isida_9
+package ua.graviton.isida
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
@@ -6,9 +6,9 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
 import android.content.Context
-import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import androidx.core.os.bundleOf
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
@@ -17,7 +17,7 @@ import java.util.*
 @SuppressLint("NewApi")
 class BluetoothService(context: Context?, handler: Handler) {
     // Member fields
-    private val mAdapter: BluetoothAdapter
+    private val mAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
     private val mHandler: Handler
     private var mSecureAcceptThread: AcceptThread? = null
     private var mConnectThread: ConnectThread? = null
@@ -68,7 +68,7 @@ class BluetoothService(context: Context?, handler: Handler) {
     // device : The BluetoothDevice to connect
     // secure : Socket Security type - Secure (true) , Insecure (false)
     @Synchronized
-    fun connect(device: BluetoothDevice?) {
+    fun connect(device: BluetoothDevice) {
         // Cancel any thread attempting to make a connection
         if (mState == BluetoothState.STATE_CONNECTING) {
             if (mConnectThread != null) {
@@ -95,7 +95,7 @@ class BluetoothService(context: Context?, handler: Handler) {
      * @param device  The BluetoothDevice that has been connected
      */
     @Synchronized
-    fun connected(socket: BluetoothSocket?, device: BluetoothDevice, socketType: String?) {
+    fun connected(socket: BluetoothSocket, device: BluetoothDevice, socketType: String?) {
         // Cancel the thread that completed the connection
         if (mConnectThread != null) {
             mConnectThread!!.cancel()
@@ -115,15 +115,14 @@ class BluetoothService(context: Context?, handler: Handler) {
         }
 
         // Start the thread to manage the connection and perform transmissions
-        mConnectedThread = ConnectedThread(socket, socketType)
-        mConnectedThread!!.start()
+        mConnectedThread = ConnectedThread(socket, socketType).apply { start() }
 
         // Send the name of the connected device back to the UI Activity
         val msg = mHandler.obtainMessage(BluetoothState.MESSAGE_DEVICE_NAME)
-        val bundle = Bundle()
-        bundle.putString(BluetoothState.DEVICE_NAME, device.name)
-        bundle.putString(BluetoothState.DEVICE_ADDRESS, device.address)
-        msg.data = bundle
+        msg.data = bundleOf(
+            BluetoothState.DEVICE_NAME to device.name,
+            BluetoothState.DEVICE_ADDRESS to device.address,
+        )
         mHandler.sendMessage(msg)
         state = BluetoothState.STATE_CONNECTED
     }
@@ -304,8 +303,7 @@ class BluetoothService(context: Context?, handler: Handler) {
     private inner class ConnectedThread(
         private val mmSocket: BluetoothSocket,
         socketType: String?
-    ) :
-        Thread() {
+    ) : Thread() {
         private val mmInStream: InputStream?
         private val mmOutStream: OutputStream?
         override fun run() {
@@ -395,7 +393,6 @@ class BluetoothService(context: Context?, handler: Handler) {
     // context : The UI Activity Context
     // handler : A Handler to send messages back to the UI Activity
     init {
-        mAdapter = BluetoothAdapter.getDefaultAdapter()
         mState = BluetoothState.STATE_NONE
         mHandler = handler
     }

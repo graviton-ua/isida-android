@@ -1,16 +1,16 @@
-package com.example.evgenij.isida_9
+@file:Suppress("unused")
+
+package ua.graviton.isida
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Message
 import android.util.Log
 import android.widget.Toast
-import java.lang.NullPointerException
-import java.util.ArrayList
+import java.util.*
 
 @SuppressLint("NewApi")
 // Context from activity which call this class
@@ -48,7 +48,7 @@ class BluetoothSPP(private val mContext: Context) {
     }
 
     interface OnDataReceivedListener {
-        fun onDataReceived(data: ByteArray?, message: String?)
+        fun onDataReceived(data: ByteArray, message: String)
     }
 
     interface BluetoothConnectionListener {
@@ -63,42 +63,32 @@ class BluetoothSPP(private val mContext: Context) {
     }
 
     val isBluetoothAvailable: Boolean
-        get() {
-            try {
-                if (bluetoothAdapter == null || bluetoothAdapter.address == null) return false
-            } catch (e: NullPointerException) {
-                return false
-            }
-            return true
-        }
+        @SuppressLint("HardwareIds")
+        get() = bluetoothAdapter?.let { it.address != null } ?: false
     val isBluetoothEnabled: Boolean
-        get() = bluetoothAdapter!!.isEnabled
+        get() = bluetoothAdapter?.isEnabled ?: false
     val isServiceAvailable: Boolean
         get() = mChatService != null
 
-    fun startDiscovery(): Boolean {
-        return bluetoothAdapter!!.startDiscovery()
-    }
+    fun startDiscovery(): Boolean = bluetoothAdapter?.startDiscovery() ?: false
 
     val isDiscovery: Boolean
-        get() = bluetoothAdapter!!.isDiscovering
+        get() = bluetoothAdapter?.isDiscovering ?: false
 
-    fun cancelDiscovery(): Boolean {
-        return bluetoothAdapter!!.cancelDiscovery()
-    }
+    fun cancelDiscovery(): Boolean = bluetoothAdapter?.cancelDiscovery() ?: false
 
     fun setupService() {
         mChatService = BluetoothService(mContext, mHandler)
     }
 
     val serviceState: Int
-        get() = if (mChatService != null) mChatService.getState() else -1
+        get() = mChatService?.state ?: -1
 
     fun startService(isAndroid: Boolean) {
-        if (mChatService != null) {
-            if (mChatService.getState() === BluetoothState.STATE_NONE) {
+        mChatService?.run {
+            if (state == BluetoothState.STATE_NONE) {
                 isServiceRunning = true
-                mChatService!!.start(isAndroid)
+                start(isAndroid)
                 this@BluetoothSPP.isAndroid = isAndroid
             }
         }
@@ -184,24 +174,24 @@ class BluetoothSPP(private val mContext: Context) {
         isAutoConnectionEnabled = false
     }
 
-    fun connect(data: Intent) {
-        val address = data.extras!!.getString(BluetoothState.EXTRA_DEVICE_ADDRESS)
-        val device = bluetoothAdapter!!.getRemoteDevice(address)
-        mChatService!!.connect(device)
+    fun connect(data: Intent?) {
+        val address = data?.extras?.getString(BluetoothState.EXTRA_DEVICE_ADDRESS) ?: return
+        val device = bluetoothAdapter?.getRemoteDevice(address) ?: return
+        mChatService?.connect(device)
     }
 
     fun connect(address: String?) {
-        val device = bluetoothAdapter!!.getRemoteDevice(address)
-        mChatService!!.connect(device)
+        val device = bluetoothAdapter?.getRemoteDevice(address) ?: return
+        mChatService?.connect(device)
     }
 
     fun disconnect() {
-        if (mChatService != null) {
+        mChatService?.run {
             isServiceRunning = false
-            mChatService!!.stop()
-            if (mChatService.getState() === BluetoothState.STATE_NONE) {
+            stop()
+            if (state == BluetoothState.STATE_NONE) {
                 isServiceRunning = true
-                mChatService!!.start(isAndroid)
+                start(isAndroid)
             }
         }
     }
@@ -227,24 +217,28 @@ class BluetoothSPP(private val mContext: Context) {
     }
 
     fun send(data: ByteArray, CRLF: Boolean) {
-        if (mChatService.getState() === BluetoothState.STATE_CONNECTED) {
-            if (CRLF) {
-                val data2 = ByteArray(data.size + 2)
-                for (i in data.indices) data2[i] = data[i]
-                data2[data2.size - 2] = 0x0A
-                data2[data2.size - 1] = 0x0D
-                mChatService!!.write(data2)
-            } else {
-                mChatService!!.write(data)
+        mChatService?.run {
+            if (state == BluetoothState.STATE_CONNECTED) {
+                if (CRLF) {
+                    val data2 = ByteArray(data.size + 2)
+                    for (i in data.indices) data2[i] = data[i]
+                    data2[data2.size - 2] = 0x0A
+                    data2[data2.size - 1] = 0x0D
+                    write(data2)
+                } else {
+                    write(data)
+                }
             }
         }
     }
 
     fun send(data: String, CRLF: Boolean) {
         var data = data
-        if (mChatService.getState() === BluetoothState.STATE_CONNECTED) {
-            if (CRLF) data += "\r\n"
-            mChatService!!.write(data.toByteArray())
+        mChatService?.run {
+            if (state == BluetoothState.STATE_CONNECTED) {
+                if (CRLF) data += "\r\n"
+                write(data.toByteArray())
+            }
         }
     }
 

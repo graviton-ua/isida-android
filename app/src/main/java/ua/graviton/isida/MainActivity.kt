@@ -1,31 +1,28 @@
-package com.example.evgenij.isida_9
+package ua.graviton.isida
 
-import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import java.util.*
+import by.kirich1409.viewbindingdelegate.viewBinding
+import ua.graviton.isida.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
+    private val binding by viewBinding(ActivityMainBinding::bind)
 
-    private val EXTRA_MESSAGE = "com.example.evgenij.isida_9.MESSAGE"
     private var bt: BluetoothSPP? = null
-    private val TAG = "myLogs"
     var menu: Menu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setSupportActionBar(binding.toolbar)
 
-        Log.d(TAG, "MainActivity.onCreate()")
         val longDataRX = ShortArray(8)
-        val tvCell = findViewById<TextView>(R.id.tvCellMain)
         val tvTemp0 = findViewById<TextView>(R.id.tvTemp0)
         val tvTempU0 = findViewById<TextView>(R.id.tvTempU0)
         val tvTempName1 = findViewById<TextView>(R.id.tvTempName1)
@@ -41,30 +38,25 @@ class MainActivity : AppCompatActivity() {
         val tvCoTwo = findViewById<TextView>(R.id.tvCoTwo)
         val tvStatus = findViewById<TextView>(R.id.tvStatus)
 
-        val tblMain = findViewById<TableLayout>(R.id.tblMain)
-        val barButton = findViewById<LinearLayout>(R.id.barButton)
-        tvCell.visibility = View.INVISIBLE
-        tblMain.visibility = View.INVISIBLE
-        barButton.visibility = View.INVISIBLE
+        binding.tvCellMain.visibility = View.INVISIBLE
+        binding.tblMain.visibility = View.INVISIBLE
+        binding.barButton.visibility = View.INVISIBLE
 
 
         bt = BluetoothSPP(this)
 
         if (!bt!!.isBluetoothAvailable) {
             tvStatus.setText(R.string.bluetooth_is_not_available)
-            Toast.makeText(applicationContext, "Bluetooth is not available", Toast.LENGTH_LONG)
-                .show()
+            Toast.makeText(applicationContext, "Bluetooth is not available", Toast.LENGTH_LONG).show()
 //            finish();
         }
 
-        bt!!.setOnDataReceivedListener(object : OnDataReceivedListener() {
-            @SuppressLint("SetTextI18n")
-            fun onDataReceived(data: ByteArray, message: String?) {
+        bt!!.setOnDataReceivedListener(object : BluetoothSPP.OnDataReceivedListener {
+            override fun onDataReceived(data: ByteArray, message: String) {
                 var i: Int = 0
                 var indrx: Int
                 val dataRX = ShortArray(data.size)
 
-                Log.d(TAG, "(MainActivity) data.size = $data.size")
                 if (data.size > 10) {
                     i = 0
                     // убираем отрицательные значения ------------------------------------------------
@@ -91,7 +83,7 @@ class MainActivity : AppCompatActivity() {
                     DataHolder.setCount(dataRX[19])
                     DataHolder.setFlap(dataRX[20])
                     // -----------ID камеры -----------------------------------------
-                    tvCell.text = getString(R.string.CellNum, dataRX[0])
+                    binding.tvCellMain.text = getString(R.string.CellNum, dataRX[0])
                     // ---------- pvT[0] СУХОЙ --------------------------------------
                     tvTemp0.setText(((longDataRX[0]).toFloat() / 10).toString());
                     //-- u0 --
@@ -139,54 +131,35 @@ class MainActivity : AppCompatActivity() {
                     //tvFlapU.setText ??
                 }
             }
-        }
-        )
+        })
 
         val my_dev: BluetoothSPP.BluetoothConnectionListener = object : BluetoothSPP.BluetoothConnectionListener {
-                override fun onDeviceDisconnected() {
-                    tvStatus.setText(R.string.status_not_connect)
-                    menu!!.clear()
-                    menuInflater.inflate(R.menu.menu_connection, menu)
-                }
-
-                override fun onDeviceConnectionFailed() {
-                    tvStatus.setText(R.string.status_connection_failed)
-                }
-
-                override fun onDeviceConnected(name: String?, address: String?) {
-                    tvStatus.text = getString(R.string.status_connected_to, name)
-                    tvCell.visibility = View.VISIBLE
-                    tblMain.visibility = View.VISIBLE
-                    barButton.visibility = View.VISIBLE
-                    menu!!.clear()
-                    menuInflater.inflate(R.menu.menu_disconnection, menu)
-                }
+            override fun onDeviceDisconnected() {
+                tvStatus.setText(R.string.status_not_connect)
+                menu!!.clear()
+                menuInflater.inflate(R.menu.menu_connection, menu)
             }
-        Log.d(TAG, "MainActivity.BluetoothSPP.BluetoothConnectionListener() = $my_dev")
+
+            override fun onDeviceConnectionFailed() {
+                tvStatus.setText(R.string.status_connection_failed)
+            }
+
+            override fun onDeviceConnected(name: String?, address: String?) {
+                tvStatus.text = getString(R.string.status_connected_to, name)
+                binding.tvCellMain.visibility = View.VISIBLE
+                binding.tblMain.visibility = View.VISIBLE
+                binding.barButton.visibility = View.VISIBLE
+                menu!!.clear()
+                menuInflater.inflate(R.menu.menu_disconnection, menu)
+            }
+        }
         bt!!.setBluetoothConnectionListener(my_dev)
 
         //-------------------------------------------------
         //-------------------------------------------------
-        val btnStart = findViewById<Button>(R.id.btnStart)
-        btnStart.setOnClickListener { view: View? ->
-            val ranintent = Intent(this, RunActivity::class.java)
-            ranintent.putExtra(EXTRA_MESSAGE, longDataRX)
-            startActivity(ranintent)
-        }
-
-        val btnProp = findViewById<Button>(R.id.btnProp)
-        btnProp.setOnClickListener { view: View? ->
-            startActivity(
-                Intent(this, PropActivity::class.java)
-            )
-        }
-
-        val btnInfo = findViewById<Button>(R.id.btnInfo)
-        btnInfo.setOnClickListener { view: View? ->
-            startActivity(
-                Intent(this, InfoActivity::class.java)
-            )
-        }
+        binding.btnStart.setOnClickListener { startActivity(intentRun(longDataRX)) }
+        binding.btnProp.setOnClickListener { startActivity(Intent(this, PropActivity::class.java)) }
+        binding.btnInfo.setOnClickListener { startActivity(Intent(this, InfoActivity::class.java)) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -204,28 +177,24 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(applicationContext, DeviceList::class.java)
             startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE)
         } else {
-            if (bt?.serviceState === BluetoothState.STATE_CONNECTED) bt?.disconnect()
+            if (bt?.serviceState == BluetoothState.STATE_CONNECTED) bt?.disconnect()
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "MainActivity.onDestroy()")
         bt?.stopService()
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "MainActivity.onStart()")
         if (!bt!!.isBluetoothEnabled) {
-            Log.d(TAG, "intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)")
             val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(intent, BluetoothState.REQUEST_ENABLE_BT)
         } else {
             if (!bt!!.isServiceAvailable) {
                 bt?.setupService()
-                Log.d(TAG, "bt.startService(BluetoothState.DEVICE_ANDROID)")
                 bt?.startService(BluetoothState.DEVICE_ANDROID)
                 //                setup();
             }
@@ -234,10 +203,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.d(
-            TAG,
-            "MainActivity.onActivityResult() requestCode = $requestCode, resultCode = $resultCode"
-        )
         if (requestCode == BluetoothState.REQUEST_CONNECT_DEVICE) {
             if (resultCode == RESULT_OK) bt?.connect(data)
         } else if (requestCode == BluetoothState.REQUEST_ENABLE_BT) {

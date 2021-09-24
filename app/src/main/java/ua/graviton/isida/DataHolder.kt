@@ -1,4 +1,4 @@
-package com.example.evgenij.isida_9
+package ua.graviton.isida
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
