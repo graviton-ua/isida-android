@@ -1,4 +1,4 @@
-package ua.graviton.isida
+package ua.graviton.isida.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -20,7 +20,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
 import timber.log.Timber
+import ua.graviton.isida.R
 import ua.graviton.isida.databinding.DeviceLayoutListBinding
+import ua.graviton.isida.domain.BluetoothState
 
 @SuppressLint("NewApi")
 class DeviceList : AppCompatActivity(R.layout.device_layout_list) {

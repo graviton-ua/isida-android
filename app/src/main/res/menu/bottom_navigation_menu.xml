@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/action_bottom_stats"
+          android:enabled="true"
+          android:icon="@drawable/ic_bottom_bar_stats"
+          android:title="Stats" />
+
+    <item android:id="@+id/action_bottom_info"
+          android:enabled="true"
+          android:icon="@drawable/ic_bottom_bar_info"
+          android:title="@string/btnInfo" />
+
+    <item android:id="@+id/action_bottom_prop"
+          android:enabled="true"
+          android:icon="@drawable/ic_bottom_bar_prop"
+          android:title="@string/btnProp" />
+
+    <item android:id="@+id/action_bottom_report"
+          android:enabled="true"
+          android:icon="@drawable/ic_bottom_bar_report"
+          android:title="@string/btnReport" />
+</menu>

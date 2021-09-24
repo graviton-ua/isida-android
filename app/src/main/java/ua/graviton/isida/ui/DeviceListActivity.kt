@@ -1,4 +1,4 @@
-package ua.graviton.isida
+package ua.graviton.isida.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +7,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import by.kirich1409.viewbindingdelegate.viewBinding
 import timber.log.Timber
+import ua.graviton.isida.R
 import ua.graviton.isida.databinding.ActivityDeviceListBinding
+import ua.graviton.isida.domain.BluetoothSPP
+import ua.graviton.isida.domain.BluetoothState
 
 class DeviceListActivity : AppCompatActivity(R.layout.activity_device_list) {
     private val binding by viewBinding(ActivityDeviceListBinding::bind)

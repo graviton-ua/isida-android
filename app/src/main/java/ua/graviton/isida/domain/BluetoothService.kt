@@ -1,4 +1,4 @@
-package ua.graviton.isida
+package ua.graviton.isida.domain
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter

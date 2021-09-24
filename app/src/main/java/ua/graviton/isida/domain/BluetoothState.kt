@@ -1,4 +1,4 @@
-package ua.graviton.isida
+package ua.graviton.isida.domain
 
 class BluetoothState {
     // Constants that indicate the current connection state

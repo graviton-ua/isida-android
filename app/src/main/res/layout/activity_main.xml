@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context=".MainActivity">
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -16,334 +17,30 @@
             android:layout_height="wrap_content" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
-        android:id="@+id/tvCellMain"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/CellNum"
-        android:textSize="34sp"
-        android:textStyle="bold" />
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <TableLayout
-        android:id="@+id/tblMain"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TableRow
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/sensor0"
-                android:textColor="#E64A19"
-                android:textSize="28sp"
-                android:textStyle="bold" />
+        <TextView android:id="@+id/tvStatus"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:gravity="center"
+                  android:text="@string/status_not_connect"
+                  android:textColor="#616161"
+                  android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/tvTemp0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/fraction"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvTempU0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/fractionU"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-        </TableRow>
-
-        <TableRow
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tvTempName1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/sensor2"
-                android:textColor="#0288D1"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvTemp1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/fraction"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvTempU1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/fractionU"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/sensor1"
-                android:textColor="@color/dry1"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvTemp2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/fraction"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/sensor3"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvTemp3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/fraction"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/timer"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvTimer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/integer"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvTimerU"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/integerU"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/counter"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/integer"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/flap"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvFlap"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/percent"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvFlapU"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/percentU"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/cotwo"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvCoTwo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/cotwoVal"
-                android:textColor="@color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-        </TableRow>
-    </TableLayout>
-
-    <!-- Bottom Buttons -->
-    <LinearLayout
-        android:id="@+id/barButton"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="bottom|center_horizontal"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnStart"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/BarButtonBackground"
-            android:text="@string/btnStart"
-            android:textColor="@color/BarButtonTextColor"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/btnProp"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:backgroundTint="@color/BarButtonBackground"
-            android:text="@string/btnProp"
-            android:textColor="@color/BarButtonTextColor"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/btnInfo"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:backgroundTint="@color/BarButtonBackground"
-            android:text="@string/btnInfo"
-            android:textColor="@color/BarButtonTextColor"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/btnReport"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:backgroundTint="@color/BarButtonBackground"
-            android:text="@string/btnReport"
-            android:textColor="@color/BarButtonTextColor"
-            android:textSize="16sp" />
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_navigation_menu" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvStatus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/status_not_connect"
-        android:textColor="#616161"
-        android:textSize="12sp" />
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

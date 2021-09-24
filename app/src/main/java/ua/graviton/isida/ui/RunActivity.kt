@@ -1,10 +1,11 @@
-package ua.graviton.isida
+package ua.graviton.isida.ui
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import by.kirich1409.viewbindingdelegate.viewBinding
+import ua.graviton.isida.R
 import ua.graviton.isida.databinding.ActivityRunBinding
 
 private const val KEY_DATA = "data"
