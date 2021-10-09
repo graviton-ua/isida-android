@@ -2,15 +2,15 @@ package ua.graviton.isida.domain
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import ua.graviton.isida.domain.model.DataPackage
+import ua.graviton.isida.data.bl.model.DataPackageDto
 
 @Suppress("ObjectPropertyName")
 object DataHolder {
     //**----------------------------------------------------------------------------**/
-    private val _latestData = MutableStateFlow<DataPackage?>(null)
-    val latestData: StateFlow<DataPackage?> = _latestData
-    fun parseData(data: ByteArray) {
-        _latestData.value = DataPackage.parseFromData(data)
+    private val _latestData = MutableStateFlow<DataPackageDto?>(null)
+    val latestData: StateFlow<DataPackageDto?> = _latestData
+    fun putData(data: DataPackageDto) {
+        _latestData.value = data
     }
 
     //**----------------------------------------------------------------------------**/

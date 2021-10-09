@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -16,7 +17,6 @@ import ua.graviton.isida.R
 import ua.graviton.isida.databinding.ActivityMainBinding
 import ua.graviton.isida.domain.BluetoothSPP
 import ua.graviton.isida.domain.BluetoothState
-import ua.graviton.isida.domain.DataHolder
 import ua.graviton.isida.ui.info.InfoFragment
 import ua.graviton.isida.ui.prop.PropFragment
 import ua.graviton.isida.ui.report.ReportFragment
@@ -26,6 +26,7 @@ import kotlin.reflect.KClass
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val binding by viewBinding(ActivityMainBinding::bind)
+    private val viewModel: MainViewModel by viewModels()
 
     private val bt by lazy { BluetoothSPP(this) }
     var menu: Menu? = null
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
 
         bt.setOnDataReceivedListener(object : BluetoothSPP.OnDataReceivedListener {
-            override fun onDataReceived(data: ByteArray, message: String) = DataHolder.parseData(data)
+            override fun onDataReceived(data: ByteArray, message: String) = viewModel.submitData(data)
         })
 
         bt.setBluetoothConnectionListener(object : BluetoothSPP.BluetoothConnectionListener {

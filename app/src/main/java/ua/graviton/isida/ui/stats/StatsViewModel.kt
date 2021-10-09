@@ -13,23 +13,22 @@ import javax.inject.Inject
 @HiltViewModel
 class StatsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
-
 ) : ViewModel() {
 
     val state = DataHolder.latestData
         .map { data ->
             data?.let {
                 StatsViewState(
-                    cellNumber = it.cellNumber,
-                    temp0 = it.temp0,
-                    temp1 = it.temp1,
-                    temp2 = it.temp2,
-                    temp3 = it.temp3,
-                    rh = it.rh,
-                    coTwo = it.coTwo,
-                    timer = it.timer,
-                    count = it.count,
-                    flap = it.flap,
+                    cellNumber = it.cellId,
+                    temp0 = it.pvT0,
+                    temp1 = it.pvT1,
+                    temp2 = it.pvT2,
+                    temp3 = it.pvT3,
+                    rh = it.pvRh,
+                    coTwo = it.pvCO2_1,
+                    timer = it.pvTimer,
+                    count = it.pvTmrCount,
+                    flap = it.pvFlap,
                 )
             } ?: StatsViewState.Empty
         }

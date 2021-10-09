@@ -7,10 +7,10 @@ data class StatsViewState(
     val temp2: Float = 0f,
     val temp3: Float = 0f,
     val rh: Float = 0f,
-    val coTwo: Short = 0,
-    val timer: Short = 0,
-    val count: Short = 0,
-    val flap: Short = 0,
+    val coTwo: Int = 0,
+    val timer: Int = 0,
+    val count: Int = 0,
+    val flap: Int = 0,
 ) {
     companion object {
         val Empty = StatsViewState()

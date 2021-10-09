@@ -53,16 +53,19 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinx.coroutines}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinx.coroutines}"
 
-    def lifecycle = '2.3.1'
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${androidx.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${androidx.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:${androidx.lifecycle}"
+
+    implementation "androidx.room:room-runtime:${androidx.room}"
+    kapt "androidx.room:room-compiler:${androidx.room}"
+    implementation "androidx.room:room-ktx:${androidx.room}"
 
     implementation "androidx.core:core-ktx:${androidx.core}"
     implementation "androidx.activity:activity-ktx:${androidx.activity}"
     implementation "androidx.fragment:fragment-ktx:${androidx.fragment}"
     implementation "androidx.appcompat:appcompat:${androidx.appcompat}"
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation "androidx.preference:preference-ktx:${androidx.preference}"
     implementation "com.google.android.material:material:${google.material}"
