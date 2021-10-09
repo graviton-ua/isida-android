@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import ua.graviton.isida.R
 import ua.graviton.isida.databinding.FragmentStatsBinding
@@ -21,19 +22,16 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentStatsBinding.bind(view)
 
-        viewModel.state.observe(viewLifecycleOwner) { handle(binding, it) }
+        val adapter = StatsItemAdapter()
+        binding.list.setHasFixedSize(true)
+        binding.list.layoutManager = LinearLayoutManager(context)
+        binding.list.adapter = adapter
+
+        viewModel.state.observe(viewLifecycleOwner) { handle(binding, adapter, it) }
     }
 
-    private fun handle(binding: FragmentStatsBinding, state: StatsViewState) {
-        binding.tvCellMain.text = getString(R.string.CellNum, state.cellNumber)
-        binding.tvTemp0.text = state.temp0.toString()
-        binding.tvTemp1.text = state.temp1.toString()
-        binding.tvTemp2.text = state.temp2.toString()
-        binding.tvTemp3.text = state.temp3.toString()
-        //binding.tvTemp3.text = state.temp3.toString()
-        binding.tvCoTwo.text = state.coTwo.toString()
-        binding.tvTimer.text = state.timer.toString()
-        binding.tvCount.text = state.count.toString()
-        binding.tvFlap.text = state.flap.toString()
+    private fun handle(binding: FragmentStatsBinding, adapter: StatsItemAdapter, state: StatsViewState) {
+        binding.tvCellMain.text = getString(R.string.CellNum, state.deviceId?.toString() ?: "--")
+        adapter.submitList(state.items)
     }
 }
