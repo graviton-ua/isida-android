@@ -9,13 +9,15 @@ object DataHolder {
     //**----------------------------------------------------------------------------**/
     private val _latestData = MutableStateFlow<DataPackageDto?>(null)
     val latestData: StateFlow<DataPackageDto?> = _latestData
-    fun putData(data: DataPackageDto) {
-        _latestData.value = data
+
+    fun putData(it: DataPackageDto) {
+        _latestData.value = it
     }
 
     //**----------------------------------------------------------------------------**/
     private val _permit = MutableStateFlow<Byte>(0)
     val permit: StateFlow<Byte> = _permit
+
     fun setPermit(value: Byte) {
         _permit.value = value
     }

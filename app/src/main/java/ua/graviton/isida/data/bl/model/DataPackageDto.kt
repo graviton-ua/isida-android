@@ -51,49 +51,9 @@ data class DataPackageDto(
     companion object {
         fun parseData(bytes: ByteArray): DataPackageDto {
             Timber.d("package size: ${bytes.size}")
-            require(bytes.size == 78) { "Input bytes are incorrect" }
+            require(bytes.size == 28) { "Input bytes are incorrect" }
             val ubytes = bytes.toUByteArray()
-            Timber.d("package raw and ubytes:\n$bytes\n$ubytes")
-
-            // ---------- pvT[1] ВЛАЖНЫЙ ------------------------------------
-            //if (longDataRX[1] == 0.toShort()) {
-            //binding.tvTemp1.text = (longDataRX[1].toFloat() / 10).toString()
-            //temp1 = longDataRX[1].toFloat() / 10
-
-            // ---------- pvT[2] КОНТРОЛЬНЫЙ --------------------------------
-            //if (longDataRX[2] > 800) binding.tvTemp2.visibility = View.INVISIBLE
-            //else binding.tvTemp2.text = (longDataRX[2].toFloat() / 10).toString()
-            //temp2 = longDataRX[2].toFloat() / 10
-            //} else {
-            // ------------ pvRH датчик относительной влажности ----------------
-            //binding.tvTemp1.text = (longDataRX[4].toFloat() / 10).toString()
-            //binding.tvTempName1.text = "Отн.Влаж."
-            //rh = longDataRX[4].toFloat() / 10
-
-            // ---------- pvT[2] КОНТРОЛЬНЫЙ --------------------------------
-            //if (longDataRX[1] > 800 && longDataRX[2] > 800) binding.tvTemp2.visibility = View.INVISIBLE
-            //else if (longDataRX[2] > 800) {
-            //    binding.tvTemp2.text = (longDataRX[1].toFloat() / 10).toString()
-            //} else if (longDataRX[1] > 800) {
-            //    binding.tvTemp2.text = (longDataRX[2].toFloat() / 10).toString()
-            //} else {
-            //    binding.tvTemp2.text = (((longDataRX[1] + longDataRX[2]) / 2).toFloat() / 10).toString()
-            //}
-            //}
-
-            // ---------- pvT[3] СКОРЛУПА --------------------------------------
-            //if (longDataRX[3] > 800) binding.tvTemp3.visibility = View.INVISIBLE
-            //else binding.tvTemp3.text = (longDataRX[3].toFloat() / 10).toString()
-            //val temp3 = longDataRX[3].toFloat() / 10
-
-            // ---------- CO2 углекислый газ ------------------------------------
-            //if (longDataRX[5] > 0) binding.tvCoTwo.text = longDataRX[2].toString()
-            //else binding.tvCoTwo.visibility = View.INVISIBLE
-            //val coTwo = longDataRX[5]
-
-            //val timer = dataRX[18]   // pvTimer значение таймера
-            //val count = dataRX[19]   // pvCount значение счетчика проходов поворота
-            //val flap = dataRX[20]    // pvFlap положение заслонки
+            //Timber.d("package raw and ubytes:\n${bytes.asList()}\n$ubytes")
             return DataPackageDto(
                 cellId = ubytes[0].toInt(),
                 pvT0 = ubytes.read2BytesAsInt(1).toFloat() / 10,
@@ -112,13 +72,52 @@ data class DataPackageDto(
                 cost0 = ubytes[24].toInt(), cost1 = ubytes[25].toInt(),
                 date = ubytes[26].toInt(), hours = ubytes[27].toInt(),
 
-                spT0 = ubytes.read2BytesAsInt(28), spT1 = ubytes.read2BytesAsInt(30),
-                spRh0 = ubytes.read2BytesAsInt(32), spRh1 = ubytes.read2BytesAsInt(34),
-                K0 = ubytes.read2BytesAsInt(36), K1 = ubytes.read2BytesAsInt(38),
                 // More data if needed should be placed here
+                //spT0 = ubytes.read2BytesAsInt(28), spT1 = ubytes.read2BytesAsInt(30),
+                //spRh0 = ubytes.read2BytesAsInt(32), spRh1 = ubytes.read2BytesAsInt(34),
+                //K0 = ubytes.read2BytesAsInt(36), K1 = ubytes.read2BytesAsInt(38),
             )
         }
     }
 }
 
-private fun UByteArray.read2BytesAsInt(index: Int): Int = this[index].toInt() + this[index + 1].toInt() * 256
+private fun UByteArray.read2BytesAsInt(index: Int): Int = this[index].toInt() * 256 + this[index + 1].toInt()
+// ---------- pvT[1] ВЛАЖНЫЙ ------------------------------------
+//if (longDataRX[1] == 0.toShort()) {
+//binding.tvTemp1.text = (longDataRX[1].toFloat() / 10).toString()
+//temp1 = longDataRX[1].toFloat() / 10
+
+// ---------- pvT[2] КОНТРОЛЬНЫЙ --------------------------------
+//if (longDataRX[2] > 800) binding.tvTemp2.visibility = View.INVISIBLE
+//else binding.tvTemp2.text = (longDataRX[2].toFloat() / 10).toString()
+//temp2 = longDataRX[2].toFloat() / 10
+//} else {
+// ------------ pvRH датчик относительной влажности ----------------
+//binding.tvTemp1.text = (longDataRX[4].toFloat() / 10).toString()
+//binding.tvTempName1.text = "Отн.Влаж."
+//rh = longDataRX[4].toFloat() / 10
+
+// ---------- pvT[2] КОНТРОЛЬНЫЙ --------------------------------
+//if (longDataRX[1] > 800 && longDataRX[2] > 800) binding.tvTemp2.visibility = View.INVISIBLE
+//else if (longDataRX[2] > 800) {
+//    binding.tvTemp2.text = (longDataRX[1].toFloat() / 10).toString()
+//} else if (longDataRX[1] > 800) {
+//    binding.tvTemp2.text = (longDataRX[2].toFloat() / 10).toString()
+//} else {
+//    binding.tvTemp2.text = (((longDataRX[1] + longDataRX[2]) / 2).toFloat() / 10).toString()
+//}
+//}
+
+// ---------- pvT[3] СКОРЛУПА --------------------------------------
+//if (longDataRX[3] > 800) binding.tvTemp3.visibility = View.INVISIBLE
+//else binding.tvTemp3.text = (longDataRX[3].toFloat() / 10).toString()
+//val temp3 = longDataRX[3].toFloat() / 10
+
+// ---------- CO2 углекислый газ ------------------------------------
+//if (longDataRX[5] > 0) binding.tvCoTwo.text = longDataRX[2].toString()
+//else binding.tvCoTwo.visibility = View.INVISIBLE
+//val coTwo = longDataRX[5]
+
+//val timer = dataRX[18]   // pvTimer значение таймера
+//val count = dataRX[19]   // pvCount значение счетчика проходов поворота
+//val flap = dataRX[20]    // pvFlap положение заслонки

@@ -12,9 +12,9 @@ class SaveDataPackage @Inject constructor(
     private val holder: DataHolder = DataHolder
 
     override suspend fun doWork(params: Params) {
-        val data = DataPackageDto.parseData(params.bytes)
-        holder.putData(data)
-        repo.saveDataPackage(data).getOrThrow()  // Ignore result
+        val dto = DataPackageDto.parseData(params.bytes)
+        holder.putData(dto)
+        repo.saveDataPackage(dto).getOrThrow()  // Ignore result
     }
 
     @Suppress("ArrayInDataClass")

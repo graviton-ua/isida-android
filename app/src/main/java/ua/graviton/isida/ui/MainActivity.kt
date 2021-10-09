@@ -37,12 +37,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         if (!bt.isBluetoothAvailable) {
             binding.tvStatus.setText(R.string.bluetooth_is_not_available)
-            Toast.makeText(applicationContext, "Bluetooth is not available", Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext, "Bluetooth is not available", Toast.LENGTH_LONG)
+                .show()
 //            finish();
         }
 
         bt.setOnDataReceivedListener(object : BluetoothSPP.OnDataReceivedListener {
-            override fun onDataReceived(data: ByteArray, message: String) = viewModel.submitData(data)
+            override fun onDataReceived(data: ByteArray, message: String) =
+                viewModel.submitData(data)
         })
 
         bt.setBluetoothConnectionListener(object : BluetoothSPP.BluetoothConnectionListener {
@@ -65,11 +67,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         binding.bottomBar.setOnItemSelectedListener {
             when (it.itemId) {
-                //binding.btnStart.setOnClickListener { startActivity(intentRun(longDataRX)) }
                 R.id.action_bottom_stats -> open(Screen.Stats)
-                //binding.btnInfo.setOnClickListener { startActivity(Intent(this, InfoActivity::class.java)) }
                 R.id.action_bottom_info -> open(Screen.Info)
-                //binding.btnProp.setOnClickListener { startActivity(Intent(this, PropActivity::class.java)) }
                 R.id.action_bottom_prop -> open(Screen.Prop)
                 R.id.action_bottom_report -> open(Screen.Report)
                 else -> false
@@ -80,6 +79,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        this.menu = menu
         menuInflater.inflate(R.menu.menu_connection, menu)
         return super.onCreateOptionsMenu(menu)
     }
@@ -138,7 +138,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private fun goToStats() = with(binding.bottomBar) { selectedItemId = R.id.action_bottom_stats }
     private fun goToInfo() = with(binding.bottomBar) { selectedItemId = R.id.action_bottom_info }
     private fun goToProp() = with(binding.bottomBar) { selectedItemId = R.id.action_bottom_prop }
-    private fun goToReport() = with(binding.bottomBar) { selectedItemId = R.id.action_bottom_report }
+    private fun goToReport() =
+        with(binding.bottomBar) { selectedItemId = R.id.action_bottom_report }
 
     private fun open(screen: Screen): Boolean {
         supportFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)

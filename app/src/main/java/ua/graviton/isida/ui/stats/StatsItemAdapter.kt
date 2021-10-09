@@ -1,5 +1,6 @@
 package ua.graviton.isida.ui.stats
 
+import android.content.res.ColorStateList
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -20,6 +21,7 @@ class StatsItemAdapter : ListAdapter<StatsItem, StatsItemAdapter.Holder>(DIFF_CA
 
         fun bind(item: StatsItem) = with(binding) {
             tvTitle.setText(item.titleResId)
+            tvTitle.setTextColor(item.titleColor)
             tvValue.text = item.value?.toString() ?: "--"
         }
     }
