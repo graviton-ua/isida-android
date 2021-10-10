@@ -6,15 +6,16 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onStart
 import ua.graviton.isida.R
 import ua.graviton.isida.data.bl.model.DataPackageDto
-import ua.graviton.isida.domain.DataHolder
+import ua.graviton.isida.domain.observers.ObserveDeviceData
 import javax.inject.Inject
 
 @HiltViewModel
 class StatsViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    observeDeviceData: ObserveDeviceData,
 ) : ViewModel() {
 
-    val state: LiveData<StatsViewState> = DataHolder.latestData
+    val state: LiveData<StatsViewState> = observeDeviceData.flow
         .mapNotNull { data ->
             data?.let {
                 val deviceBgColor = when {

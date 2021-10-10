@@ -1,6 +1,8 @@
 package ua.graviton.isida.data.repos
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
 import ua.graviton.isida.data.bl.model.DataPackageDto
 import ua.graviton.isida.data.db.AppDatabase
@@ -12,14 +14,19 @@ import javax.inject.Singleton
 class DeviceDataRepository @Inject constructor(
     private val db: AppDatabase
 ) {
-    companion object {
-        private val dispatcher = Dispatchers.IO
-    }
+    private val _latestData = MutableStateFlow<DataPackageDto?>(null)
+
+    fun listenLatestRAMData() = _latestData.asStateFlow()
 
     suspend fun saveDataPackage(data: DataPackageDto) = withContext(dispatcher) {
+        _latestData.value = data
         Result.runCatching {
             val entity = data.toEntity()
             db.deviceDataDao().insert(entity)
         }
+    }
+
+    companion object {
+        private val dispatcher = Dispatchers.IO
     }
 }
