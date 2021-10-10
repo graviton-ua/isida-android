@@ -1,7 +1,9 @@
 package ua.graviton.isida.ui.stats
 
 data class StatsViewState(
-    val deviceId: Int? = null,
+    val titleDeviceId: Int? = null,
+    val titleDeviceBackgroundColor: Int? = null,
+
     val items: List<StatsItem> = emptyList(),
 ) {
     companion object {

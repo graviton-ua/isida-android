@@ -27,11 +27,18 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
         binding.list.layoutManager = LinearLayoutManager(context)
         binding.list.adapter = adapter
 
-        viewModel.state.observe(viewLifecycleOwner) { handle(binding, adapter, it) }
+        viewModel.state.observe(viewLifecycleOwner) {
+            handle(binding, adapter, it)
+        }
     }
 
-    private fun handle(binding: FragmentStatsBinding, adapter: StatsItemAdapter, state: StatsViewState) {
-        binding.tvCellMain.text = getString(R.string.CellNum, state.deviceId?.toString() ?: "--")
+    private fun handle(
+        binding: FragmentStatsBinding,
+        adapter: StatsItemAdapter,
+        state: StatsViewState
+    ) {
+        binding.tvCellMain.text = getString(R.string.CellNum, state.titleDeviceId?.toString() ?: "--")
+        binding.tvCellMain.setBackgroundResource(state.titleDeviceBackgroundColor ?: android.R.color.transparent)
         adapter.submitList(state.items)
     }
 }

@@ -45,7 +45,6 @@
                 android:autofillHints="name"
                 android:ems="10"
                 android:inputType="numberSigned"
-                android:text="@string/fraction"
                 android:textColor="@color/black"
                 android:textSize="34sp"
                 android:textStyle="bold" />
@@ -75,7 +74,6 @@
                 android:autofillHints="name"
                 android:ems="10"
                 android:inputType="numberSigned"
-                android:text="@string/fraction"
                 android:textColor="@color/black"
                 android:textSize="34sp"
                 android:textStyle="bold" />
@@ -105,7 +103,6 @@
                 android:autofillHints="name"
                 android:ems="10"
                 android:inputType="numberSigned"
-                android:text="@string/fraction"
                 android:textColor="@color/black"
                 android:textSize="34sp"
                 android:textStyle="bold" />

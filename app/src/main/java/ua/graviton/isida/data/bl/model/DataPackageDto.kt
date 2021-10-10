@@ -51,9 +51,9 @@ data class DataPackageDto(
     companion object {
         fun parseData(bytes: ByteArray): DataPackageDto {
             Timber.d("package size: ${bytes.size}")
-            require(bytes.size == 28) { "Input bytes are incorrect" }
+            require(bytes.size == 78) { "Input bytes are incorrect" }
             val ubytes = bytes.toUByteArray()
-            //Timber.d("package raw and ubytes:\n${bytes.asList()}\n$ubytes")
+            Timber.d("package raw and ubytes:\n${bytes.asList()}\n$ubytes")
             return DataPackageDto(
                 cellId = ubytes[0].toInt(),
                 pvT0 = ubytes.read2BytesAsInt(1).toFloat() / 10,

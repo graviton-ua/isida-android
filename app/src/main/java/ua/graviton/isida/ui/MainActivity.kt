@@ -17,7 +17,6 @@ import ua.graviton.isida.R
 import ua.graviton.isida.databinding.ActivityMainBinding
 import ua.graviton.isida.domain.BluetoothSPP
 import ua.graviton.isida.domain.BluetoothState
-import ua.graviton.isida.ui.info.InfoFragment
 import ua.graviton.isida.ui.prop.PropFragment
 import ua.graviton.isida.ui.report.ReportFragment
 import ua.graviton.isida.ui.stats.StatsFragment
@@ -68,7 +67,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         binding.bottomBar.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.action_bottom_stats -> open(Screen.Stats)
-                R.id.action_bottom_info -> open(Screen.Info)
                 R.id.action_bottom_prop -> open(Screen.Prop)
                 R.id.action_bottom_report -> open(Screen.Report)
                 else -> false
@@ -136,7 +134,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
 
     private fun goToStats() = with(binding.bottomBar) { selectedItemId = R.id.action_bottom_stats }
-    private fun goToInfo() = with(binding.bottomBar) { selectedItemId = R.id.action_bottom_info }
     private fun goToProp() = with(binding.bottomBar) { selectedItemId = R.id.action_bottom_prop }
     private fun goToReport() =
         with(binding.bottomBar) { selectedItemId = R.id.action_bottom_report }
@@ -172,12 +169,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             override val tag: String get() = "stats"
             override fun clazz(): KClass<out Fragment> = StatsFragment::class
             override fun createFragment(): Fragment = StatsFragment.newInstance()
-        }
-
-        object Info : Screen {
-            override val tag: String get() = "info"
-            override fun clazz(): KClass<out Fragment> = InfoFragment::class
-            override fun createFragment(): Fragment = InfoFragment.newInstance()
         }
 
         object Prop : Screen {

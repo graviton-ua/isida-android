@@ -10,9 +10,10 @@
     <color name="start_background">#CDDC39</color>
     <color name="prop_background">#03A9F4</color>
     <color name="info_background">#9C27B0</color>
-    <color name="dry0">#F4511E</color>
-    <color name="dry1">#802104</color>
-    <color name="hum">#0091EA</color>
+    <color name="sensor0">#F4511E</color>
+    <color name="sensor1">#802104</color>
+    <color name="sensor2">#0091EA</color>
+    <color name="power">#E91E63</color>
     <color name="radioButOFF">#F44336</color>
     <color name="radioButON">#4CAF50</color>
     <color name="btn_save_data">#FF5722</color>

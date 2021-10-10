@@ -6,11 +6,6 @@
           android:icon="@drawable/ic_bottom_bar_stats"
           android:title="Stats" />
 
-    <item android:id="@+id/action_bottom_info"
-          android:enabled="true"
-          android:icon="@drawable/ic_bottom_bar_info"
-          android:title="@string/btnInfo" />
-
     <item android:id="@+id/action_bottom_prop"
           android:enabled="true"
           android:icon="@drawable/ic_bottom_bar_prop"
