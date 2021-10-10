@@ -1,28 +1,29 @@
 @file:Suppress("unused")
 
-package ua.graviton.isida.domain
+package ua.graviton.isida.domain.bl
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Message
-import android.util.Log
 import android.widget.Toast
+import timber.log.Timber
 import java.util.*
 
 @SuppressLint("NewApi")
 // Context from activity which call this class
-class BluetoothSPP(private val mContext: Context) {
+class BluetoothSPP(mContext: Context) {
+    private val bluetoothManager: BluetoothManager = mContext.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+    private val bluetoothAdapter: BluetoothAdapter = bluetoothManager.adapter
+
     // Listener for Bluetooth Status & Connection
     private var mBluetoothStateListener: BluetoothStateListener? = null
     private var mDataReceivedListener: OnDataReceivedListener? = null
     private var mBluetoothConnectionListener: BluetoothConnectionListener? = null
     private var mAutoConnectionListener: AutoConnectionListener? = null
-
-    // Local Bluetooth adapter
-    var bluetoothAdapter: BluetoothAdapter? = null
 
     // Member object for the chat services
     private var mChatService: BluetoothService? = null
@@ -43,42 +44,22 @@ class BluetoothSPP(private val mContext: Context) {
     private var bcl: BluetoothConnectionListener? = null
     private var c = 0
 
-    interface BluetoothStateListener {
-        fun onServiceStateChanged(state: Int)
-    }
-
-    interface OnDataReceivedListener {
-        fun onDataReceived(data: ByteArray, message: String)
-    }
-
-    interface BluetoothConnectionListener {
-        fun onDeviceConnected(name: String?, address: String?)
-        fun onDeviceDisconnected()
-        fun onDeviceConnectionFailed()
-    }
-
-    interface AutoConnectionListener {
-        fun onAutoConnectionStarted()
-        fun onNewConnection(name: String?, address: String?)
-    }
 
     val isBluetoothAvailable: Boolean
-        @SuppressLint("HardwareIds")
-        get() = bluetoothAdapter?.let { it.address != null } ?: false
-    val isBluetoothEnabled: Boolean
-        get() = bluetoothAdapter?.isEnabled ?: false
-    val isServiceAvailable: Boolean
-        get() = mChatService != null
+        @SuppressLint("HardwareIds", "MissingPermission")
+        get() = bluetoothAdapter.address != null
 
-    fun startDiscovery(): Boolean = bluetoothAdapter?.startDiscovery() ?: false
+    val isBluetoothEnabled: Boolean get() = bluetoothAdapter.isEnabled
+    val isServiceAvailable: Boolean get() = mChatService != null
 
-    val isDiscovery: Boolean
-        get() = bluetoothAdapter?.isDiscovering ?: false
+    fun startDiscovery(): Boolean = bluetoothAdapter.startDiscovery()
 
-    fun cancelDiscovery(): Boolean = bluetoothAdapter?.cancelDiscovery() ?: false
+    val isDiscovery: Boolean get() = bluetoothAdapter.isDiscovering
+
+    fun cancelDiscovery(): Boolean = bluetoothAdapter.cancelDiscovery()
 
     fun setupService() {
-        mChatService = BluetoothService(mContext, mHandler)
+        mChatService = BluetoothService(bluetoothAdapter, mHandler)
     }
 
     val serviceState: Int
@@ -117,38 +98,23 @@ class BluetoothSPP(private val mContext: Context) {
     private val mHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
-                BluetoothState.MESSAGE_WRITE -> {
-                }
+                BluetoothState.MESSAGE_WRITE -> Unit
                 BluetoothState.MESSAGE_READ -> {
                     val readBuf = msg.obj as ByteArray
                     val readMessage = String(readBuf)
-                    if (readBuf != null && readBuf.size > 0) {
-                        if (mDataReceivedListener != null) mDataReceivedListener!!.onDataReceived(
-                            readBuf,
-                            readMessage
-                        )
-                    }
+                    if (readBuf.isNotEmpty()) mDataReceivedListener?.onDataReceived(readBuf, readMessage)
                 }
                 BluetoothState.MESSAGE_DEVICE_NAME -> {
                     connectedDeviceName = msg.data.getString(BluetoothState.DEVICE_NAME)
                     connectedDeviceAddress = msg.data.getString(BluetoothState.DEVICE_ADDRESS)
-                    if (mBluetoothConnectionListener != null) mBluetoothConnectionListener!!.onDeviceConnected(
-                        connectedDeviceName,
-                        connectedDeviceAddress
-                    )
+                    mBluetoothConnectionListener?.onDeviceConnected(connectedDeviceName, connectedDeviceAddress)
                     isConnected = true
                 }
-                BluetoothState.MESSAGE_TOAST -> Toast.makeText(
-                    mContext,
-                    msg.data.getString(BluetoothState.TOAST),
-                    Toast.LENGTH_LONG
-                ).show()
+                BluetoothState.MESSAGE_TOAST -> Toast.makeText(mContext, msg.data.getString(BluetoothState.TOAST), Toast.LENGTH_LONG).show()
                 BluetoothState.MESSAGE_STATE_CHANGE -> {
-                    if (mBluetoothStateListener != null) mBluetoothStateListener!!.onServiceStateChanged(
-                        msg.arg1
-                    )
+                    mBluetoothStateListener?.onServiceStateChanged(msg.arg1)
                     if (isConnected && msg.arg1 != BluetoothState.STATE_CONNECTED) {
-                        if (mBluetoothConnectionListener != null) mBluetoothConnectionListener!!.onDeviceDisconnected()
+                        mBluetoothConnectionListener?.onDeviceDisconnected()
                         if (isAutoConnectionEnabled) {
                             isAutoConnectionEnabled = false
                             autoConnect(keyword)
@@ -161,7 +127,7 @@ class BluetoothSPP(private val mContext: Context) {
                         isConnecting = true
                     } else if (isConnecting) {
                         if (msg.arg1 != BluetoothState.STATE_CONNECTED) {
-                            if (mBluetoothConnectionListener != null) mBluetoothConnectionListener!!.onDeviceConnectionFailed()
+                            mBluetoothConnectionListener?.onDeviceConnectionFailed()
                         }
                         isConnecting = false
                     }
@@ -176,12 +142,12 @@ class BluetoothSPP(private val mContext: Context) {
 
     fun connect(data: Intent?) {
         val address = data?.extras?.getString(BluetoothState.EXTRA_DEVICE_ADDRESS) ?: return
-        val device = bluetoothAdapter?.getRemoteDevice(address) ?: return
+        val device = bluetoothAdapter.getRemoteDevice(address) ?: return
         mChatService?.connect(device)
     }
 
     fun connect(address: String?) {
-        val device = bluetoothAdapter?.getRemoteDevice(address) ?: return
+        val device = bluetoothAdapter.getRemoteDevice(address) ?: return
         mChatService?.connect(device)
     }
 
@@ -212,9 +178,7 @@ class BluetoothSPP(private val mContext: Context) {
         mAutoConnectionListener = listener
     }
 
-    fun enable() {
-        bluetoothAdapter!!.enable()
-    }
+    fun enable() = bluetoothAdapter.enable()
 
     fun send(data: ByteArray, CRLF: Boolean) {
         mChatService?.run {
@@ -242,28 +206,8 @@ class BluetoothSPP(private val mContext: Context) {
         }
     }
 
-    val pairedDeviceName: Array<String?>
-        get() {
-            var c = 0
-            val devices = bluetoothAdapter!!.bondedDevices
-            val name_list = arrayOfNulls<String>(devices.size)
-            for (device in devices) {
-                name_list[c] = device.name
-                c++
-            }
-            return name_list
-        }
-    val pairedDeviceAddress: Array<String?>
-        get() {
-            var c = 0
-            val devices = bluetoothAdapter!!.bondedDevices
-            val address_list = arrayOfNulls<String>(devices.size)
-            for (device in devices) {
-                address_list[c] = device.address
-                c++
-            }
-            return address_list
-        }
+    val pairedDeviceName: List<String> get() = bluetoothAdapter.bondedDevices.map { it.name }
+    val pairedDeviceAddress: List<String> get() = bluetoothAdapter.bondedDevices.map { it.address }
 
     fun autoConnect(keywordName: String) {
         if (!isAutoConnectionEnabled) {
@@ -289,13 +233,13 @@ class BluetoothSPP(private val mContext: Context) {
 
                 override fun onDeviceDisconnected() {}
                 override fun onDeviceConnectionFailed() {
-                    Log.e("CHeck", "Failed")
+                    Timber.e("Failed")
                     if (isServiceRunning) {
                         if (isAutoConnectionEnabled) {
                             c++
                             if (c >= arr_filter_address.size) c = 0
                             connect(arr_filter_address[c])
-                            Log.e("CHeck", "Connect")
+                            Timber.e("Connect")
                             if (mAutoConnectionListener != null) mAutoConnectionListener!!.onNewConnection(
                                 arr_filter_name[c], arr_filter_address[c]
                             )
@@ -312,20 +256,28 @@ class BluetoothSPP(private val mContext: Context) {
                 arr_name[c],
                 arr_address[c]
             )
-            if (arr_filter_address.size > 0) connect(arr_filter_address[c]) else Toast.makeText(
-                mContext,
-                "Device name mismatch",
-                Toast.LENGTH_SHORT
-            ).show()
+            if (arr_filter_address.size > 0) connect(arr_filter_address[c]) else Timber.e("Device name mismatch")
+            //Toast.makeText(mContext, "Device name mismatch", Toast.LENGTH_SHORT).show()
         }
     }
 
-    companion object {
-        private const val TAG = "myLogs"
+
+    interface BluetoothStateListener {
+        fun onServiceStateChanged(state: Int)
     }
 
-    init {
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        Log.d(TAG, "(BluetoothSPP) mBluetoothAdapter = " + bluetoothAdapter)
+    interface OnDataReceivedListener {
+        fun onDataReceived(data: ByteArray, message: String)
+    }
+
+    interface BluetoothConnectionListener {
+        fun onDeviceConnected(name: String?, address: String?)
+        fun onDeviceDisconnected()
+        fun onDeviceConnectionFailed()
+    }
+
+    interface AutoConnectionListener {
+        fun onAutoConnectionStarted()
+        fun onNewConnection(name: String?, address: String?)
     }
 }

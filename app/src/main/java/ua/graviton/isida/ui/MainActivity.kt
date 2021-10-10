@@ -15,8 +15,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import ua.graviton.isida.R
 import ua.graviton.isida.databinding.ActivityMainBinding
-import ua.graviton.isida.domain.BluetoothSPP
-import ua.graviton.isida.domain.BluetoothState
+import ua.graviton.isida.domain.bl.BluetoothSPP
+import ua.graviton.isida.domain.bl.BluetoothState
 import ua.graviton.isida.ui.prop.PropFragment
 import ua.graviton.isida.ui.report.ReportFragment
 import ua.graviton.isida.ui.stats.StatsFragment

@@ -22,7 +22,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import timber.log.Timber
 import ua.graviton.isida.R
 import ua.graviton.isida.databinding.DeviceLayoutListBinding
-import ua.graviton.isida.domain.BluetoothState
+import ua.graviton.isida.domain.bl.BluetoothState
 
 @SuppressLint("NewApi")
 class DeviceList : AppCompatActivity(R.layout.device_layout_list) {

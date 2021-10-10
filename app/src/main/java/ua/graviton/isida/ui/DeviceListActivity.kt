@@ -9,8 +9,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import timber.log.Timber
 import ua.graviton.isida.R
 import ua.graviton.isida.databinding.ActivityDeviceListBinding
-import ua.graviton.isida.domain.BluetoothSPP
-import ua.graviton.isida.domain.BluetoothState
+import ua.graviton.isida.domain.bl.BluetoothSPP
+import ua.graviton.isida.domain.bl.BluetoothState
 
 class DeviceListActivity : AppCompatActivity(R.layout.activity_device_list) {
     private val binding by viewBinding(ActivityDeviceListBinding::bind)
