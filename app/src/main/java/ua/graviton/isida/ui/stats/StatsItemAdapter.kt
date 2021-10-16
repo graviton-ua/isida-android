@@ -22,10 +22,19 @@ class StatsItemAdapter : ListAdapter<StatsItem, StatsItemAdapter.Holder>(DIFF_CA
             tvTitle.setText(item.titleResId)
             val valueColor = resources.getColorStateList(item.valueColor ?: R.color.black, itemView.context.theme)
             tvTitle.setTextColor(valueColor)
-            val value = if (item.targetValue != null) {
-                item.value?.toString()?.let { it + "  [${item.targetValue}]" } ?: "--"
-            } else {
-                item.value?.toString() ?: "--"
+            val value = when (val v = item.value) {
+                is StatsItem.Value.Float -> {
+                    val value = v.value?.let { String.format("%.1f", it) }
+                    if (v.target == null) value ?: "--" else value?.let { it + "  [${v.target}]" } ?: "--"
+                }
+                is StatsItem.Value.Int -> {
+                    val value = v.value?.toString()
+                    if (v.target == null) value ?: "--" else value?.let { it + "  [${v.target}]" } ?: "--"
+                }
+                is StatsItem.Value.Text -> {
+                    if (v.target == null) v.value ?: "--" else v.value?.let { it + "  [${v.target}]" } ?: "--"
+                }
+                null -> "--"
             }
             tvValue.text = value
             itemView.setBackgroundResource(item.backgroundColor ?: android.R.color.transparent)

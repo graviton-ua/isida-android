@@ -37,8 +37,13 @@ class StatsViewModel @Inject constructor(
 private fun DataPackageDto?.toItems(): List<StatsItem> {
     return listOf(
         StatsItem(
-            titleResId = R.string.pv_t0_label, value = this?.pvT0?.let { if (it > 80) null else it },
-            targetValue = this?.spT0,
+            titleResId = R.string.pv_t0_label,
+            value = this?.let {
+                StatsItem.Value.Float(
+                    value = if (pvT0 > 80) null else pvT0,
+                    target = spT0
+                )
+            },
             valueColor = when {
                 this != null && pvT0 > spT0 -> R.color.red_900
                 this != null && pvT0 < spT0 -> R.color.indigo_800
@@ -49,36 +54,73 @@ private fun DataPackageDto?.toItems(): List<StatsItem> {
             titleResId = when {
                 this?.pvRh != 0f -> R.string.pv_rh_label
                 else -> R.string.pv_t1_label
-            }, value = this?.pvT1?.let { if (it > 80) null else it },
-            targetValue = this?.spT1,
+            },
+            value = this?.let {
+                StatsItem.Value.Float(
+                    value = if (pvT1 > 80) null else pvT1,
+                    target = spT1
+                )
+            },
             valueColor = when {
                 this != null && pvT1 > spT1 -> R.color.red_900
                 this != null && pvT1 < spT1 -> R.color.indigo_800
                 else -> null
             }
         ),
-        StatsItem(titleResId = R.string.sensor2, value = this?.pvT2?.let { if (it > 80) null else it }),
-        StatsItem(titleResId = R.string.sensor3, value = this?.pvT3?.let { if (it > 80) null else it }),
-        StatsItem(titleResId = R.string.cotwo, value = this?.pvCO2_1?.let { if (it < 400) null else it }),
-        StatsItem(
-            titleResId = R.string.timer, value = this?.pvTimer,
-            targetValue = this?.timer0,
-        ),
-        StatsItem(titleResId = R.string.counter, value = this?.pvTmrCount),
-        StatsItem(titleResId = R.string.power, value = this?.power, valueColor = R.color.power),
-        StatsItem(titleResId = R.string.flap, value = this?.pvFlap),
-        StatsItem(titleResId = R.string.fuses, value = this?.fuses?.let { if (it == 255) "НЕТ" else it }),
-        StatsItem(titleResId = R.string.errors, value = this?.errors?.let { if (it == 0) "НЕТ" else it }),
-        StatsItem(titleResId = R.string.warnings, value = this?.warning?.let { if (it == 0) null else it }),
+        StatsItem(titleResId = R.string.sensor2, value = this?.pvT2?.let { StatsItem.Value.Float(value = if (it > 80) null else it) }),
+        StatsItem(titleResId = R.string.sensor3, value = this?.pvT3?.let { StatsItem.Value.Float(value = if (it > 80) null else it) }),
+        StatsItem(titleResId = R.string.cotwo, value = this?.pvCO2_1?.let { StatsItem.Value.Int(value = if (it < 400) null else it) }),
+        StatsItem(titleResId = R.string.timer, value = this?.let { StatsItem.Value.Int(value = it.pvTimer, target = timer0) }),
+        StatsItem(titleResId = R.string.counter, value = this?.pvTmrCount?.let { StatsItem.Value.Int(value = it) }),
+        StatsItem(titleResId = R.string.power, value = this?.power?.let { StatsItem.Value.Int(value = it) }, valueColor = R.color.power),
+        StatsItem(titleResId = R.string.flap, value = this?.pvFlap?.let { StatsItem.Value.Int(value = it) }),
+        StatsItem(titleResId = R.string.fuses, value = this?.fuses?.let {
+            StatsItem.Value.Text(
+                value = when (it) {
+                    //255 -> "НЕТ"
+                    211 -> "Andrew"
+                    221 -> "Andrew"
+                    231 -> "Andrew"
+                    241 -> "Andrew"
+                    else -> "NET"
+                }
+            )
+        }),
+        StatsItem(titleResId = R.string.errors, value = this?.errors?.let {
+            StatsItem.Value.Text(
+                value = when (it) {
+                    //255 -> "НЕТ"
+                    211 -> "Andrew"
+                    221 -> "Andrew"
+                    231 -> "Andrew"
+                    241 -> "Andrew"
+                    else -> "NET"
+                }
+            )
+        }),
+        StatsItem(titleResId = R.string.warnings, value = this?.warning?.let {
+            StatsItem.Value.Text(
+                value = when (it) {
+                    //255 -> "НЕТ"
+                    211 -> "Andrew"
+                    221 -> "Andrew"
+                    231 -> "Andrew"
+                    241 -> "Andrew"
+                    else -> "NET"
+                }
+            )
+        }),
         StatsItem(
             titleResId = R.string.state,
             value = this?.state?.let {
-                when (it) {
-                    0 -> "ОТКЛЮЧЕНА"
-                    1 -> "ВКЛЮЧЕНА"
-                    2 -> "ПОВОРОТ"
-                    else -> null
-                }
+                StatsItem.Value.Text(
+                    value = when (it) {
+                        0 -> "ОТКЛЮЧЕНА"
+                        1 -> "ВКЛЮЧЕНА"
+                        2 -> "ПОВОРОТ"
+                        else -> null
+                    }
+                )
             },
             backgroundColor = this?.let {
                 when {
@@ -90,18 +132,29 @@ private fun DataPackageDto?.toItems(): List<StatsItem> {
         ),
         //  расширенный режим работы  0-СИРЕНА; 1-ВЕНТ. 2-Форс НАГР. 3-Форс ОХЛЖД. 4-Форс ОСУШ. 5-Дубляж увлажнения
         StatsItem(titleResId = R.string.extendMode, value = this?.extendMode?.let {
-            when (it) {
-                0 -> "СИРЕНА"
-                1 -> "ВЕНТИЛЯЦИЯ"
-                2 -> "Форс.НАГРЕВ"
-                3 -> "Форс.ОХЛАЖД."
-                4 -> "Форс.ОСУШЕН."
-                4 -> "УВЛАЖНЕНИЕ"
-                else -> null
-            }
+            StatsItem.Value.Text(
+                value = when (it) {
+                    0 -> "СИРЕНА"
+                    1 -> "ВЕНТИЛЯЦИЯ"
+                    2 -> "Форс.НАГРЕВ"
+                    3 -> "Форс.ОХЛАЖД."
+                    4 -> "Форс.ОСУШЕН."
+                    4 -> "УВЛАЖНЕНИЕ"
+                    else -> null
+                }
+            )
         }),
-        StatsItem(titleResId = R.string.programm, value = this?.programm?.let { if (it == 0) "НЕТ" else it }),
-        StatsItem(titleResId = R.string.incubation, value = this?.hours),
-        StatsItem(titleResId = R.string.energyMeter, value = this?.energyMeter),
+        StatsItem(titleResId = R.string.programm, value = this?.programm?.let {
+            StatsItem.Value.Text(
+                value = when (it) {
+                    0 -> "ОТКЛЮЧЕНА"
+                    1 -> "ВКЛЮЧЕНА"
+                    2 -> "ПОВОРОТ"
+                    else -> null
+                }
+            )
+        }),
+        StatsItem(titleResId = R.string.incubation, value = this?.hours?.let { StatsItem.Value.Int(value = it) }),
+        StatsItem(titleResId = R.string.energyMeter, value = this?.energyMeter?.let { StatsItem.Value.Int(value = it) }),
     )
 }
