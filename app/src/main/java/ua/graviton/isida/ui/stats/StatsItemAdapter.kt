@@ -20,10 +20,10 @@ class StatsItemAdapter : ListAdapter<StatsItem, StatsItemAdapter.Holder>(DIFF_CA
 
         fun bind(item: StatsItem) = with(binding) {
             tvTitle.setText(item.titleResId)
-            val valueColor = resources.getColorStateList(item.valueColor, itemView.context.theme)
+            val valueColor = resources.getColorStateList(item.valueColor ?: R.color.black, itemView.context.theme)
             tvTitle.setTextColor(valueColor)
             val value = if (item.targetValue != null) {
-                item.value?.toString()?.let { it + "[${item.targetValue}]" } ?: "--"
+                item.value?.toString()?.let { it + "  [${item.targetValue}]" } ?: "--"
             } else {
                 item.value?.toString() ?: "--"
             }

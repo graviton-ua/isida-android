@@ -26,6 +26,10 @@ class DeviceDataRepository @Inject constructor(
         }
     }
 
+    fun saveDataEnd() {
+        _latestData.value = null
+    }
+
     companion object {
         private val dispatcher = Dispatchers.IO
     }

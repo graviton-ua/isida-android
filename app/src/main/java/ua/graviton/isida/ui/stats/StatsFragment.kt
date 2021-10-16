@@ -22,13 +22,13 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentStatsBinding.bind(view)
 
-        val adapter = StatsItemAdapter()
+        val stadapter = StatsItemAdapter()
         binding.list.setHasFixedSize(true)
         binding.list.layoutManager = LinearLayoutManager(context)
-        binding.list.adapter = adapter
+        binding.list.adapter = stadapter
 
         viewModel.state.observe(viewLifecycleOwner) {
-            handle(binding, adapter, it)
+            handle(binding, stadapter, it)
         }
     }
 

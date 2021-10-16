@@ -6,9 +6,10 @@
     <string name="btnInfo">Инфо</string>
     <string name="btnReport">Отчет</string>
     <string name="num1">1</string>
-    <string name="sensor0">Сухой</string>
-    <string name="sensor1">Контроль</string>
-    <string name="sensor2">Влажный</string>
+    <string name="pv_t0_label">Сухой</string>
+    <string name="pv_t1_label">Влажный</string>
+    <string name="pv_rh_label">Влажность</string>
+    <string name="sensor2">Контроль</string>
     <string name="sensor3">Скорлупа</string>
     <string name="timer">Таймер</string>
     <string name="cotwo">CO2</string>

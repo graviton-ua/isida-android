@@ -10,10 +10,20 @@ class SaveDataPackage @Inject constructor(
 ) : Interactor<SaveDataPackage.Params>() {
 
     override suspend fun doWork(params: Params) {
-        val dto = DataPackageDto.parseData(params.bytes)
+        if (params.bytes == null) {
+            repo.saveDataEnd()
+            return
+        }
+        val dto = try {
+            DataPackageDto.parseData(params.bytes)
+        } catch (t: Throwable) {
+            null
+        }
+        if (dto == null) return
+
         repo.saveDataPackage(dto).getOrThrow()  // Ignore result
     }
 
     @Suppress("ArrayInDataClass")
-    data class Params(val bytes: ByteArray)
+    data class Params(val bytes: ByteArray?)
 }

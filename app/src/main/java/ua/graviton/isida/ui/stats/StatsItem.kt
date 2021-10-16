@@ -8,6 +8,6 @@ data class StatsItem(
     @StringRes val titleResId: Int,
     val value: Any? = null,
     val targetValue: Any? = null,
-    @ColorRes val valueColor: Int = R.color.black,
+    @ColorRes val valueColor: Int? = null,
     @ColorRes val backgroundColor: Int? = null,
 )

@@ -42,8 +42,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
 
         bt.setOnDataReceivedListener(object : BluetoothSPP.OnDataReceivedListener {
-            override fun onDataReceived(data: ByteArray, message: String) =
-                viewModel.submitData(data)
+            override fun onDataReceived(data: ByteArray, message: String) = viewModel.submitData(data)
         })
 
         bt.setBluetoothConnectionListener(object : BluetoothSPP.BluetoothConnectionListener {
@@ -51,6 +50,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 binding.tvStatus.setText(R.string.status_not_connect)
                 menu?.clear()
                 menuInflater.inflate(R.menu.menu_connection, menu)
+                viewModel.submitStreamEnd()
             }
 
             override fun onDeviceConnectionFailed() {

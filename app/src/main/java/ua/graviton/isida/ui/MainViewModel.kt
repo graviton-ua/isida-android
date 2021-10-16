@@ -18,7 +18,11 @@ class MainViewModel @Inject constructor(
         viewModelScope.parseAndSave(bytes)
     }
 
-    private fun CoroutineScope.parseAndSave(bytes: ByteArray) = launch {
+    fun submitStreamEnd() {
+        viewModelScope.parseAndSave(null)
+    }
+
+    private fun CoroutineScope.parseAndSave(bytes: ByteArray?) = launch {
         try {
             saveDataPackage.executeSync(SaveDataPackage.Params(bytes))
         } catch (t: Throwable) {
