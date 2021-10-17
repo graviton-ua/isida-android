@@ -11,8 +11,9 @@ data class StatsItem(
 ) {
 
     sealed class Value {
-        data class Int(val value: kotlin.Int?, val target: kotlin.Int? = null) : Value()
-        data class Float(val value: kotlin.Float?, val target: kotlin.Float? = null) : Value()
-        data class Text(val value: String?, val target: String? = null) : Value()
+        data class IntVal(val value: Int?, val target: Int? = null) : Value()
+        data class FloatVal(val value: Float?, val target: Float? = null) : Value()
+        data class TextRaw(val value: String?, val target: String? = null) : Value()
+        data class TextResId(@StringRes val value: Int?, val target: Int? = null) : Value()
     }
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="state_Off">ВКЛЮЧЕНА</string>
+    <string name="state_On">ОТКЛЮЧЕНА</string>
+    <string name="state_1">Подгототка к ОХЛАЖДЕНИЮ</string>
+    <string name="state_2">Подгототка к ВКЛЮЧЕНИЮ</string>
+    <string name="state_3">Переход в ГОРИЗОНТ</string>
+    <string name="state_4">ГОРИЗОНТ УСТАНОВЛЕН</string>
+    <string name="state_5">ВКЛЮЧЕН мониторинг поворота лотков</string>
+    <string name="state_6">ВКЛЮЧЕН мониторинг тихоходного вентилятора</string>
+    <string name="state_7">Только поворот лотков</string>
+
+    <string name="fuses_0">ОСТАНОВ вентилятора</string>
+    <string name="fuses_1">НЕТ ПОВОРОТА лотков</string>
+    <string name="fuses_2">короткое нагреватель</string>
+    <string name="fuses_3">короткое увлажнитель</string>
+    <string name="fuses_4">короткое канал III</string>
+    <string name="fuses_5">короткое канал IV</string>
+    <string name="fuses_6">короткое поворот</string>
+    <string name="fuses_7">Состояние дверей</string>
+
+    <string name="error_01">ОШИБКА ДАТЧИКА температуры</string>
+    <string name="error_02">ОШИБКА ДАТЧИКА влажности</string>
+    <string name="error_04">ПРОБОЙ СИМИСТОРА!</string>
+    <string name="error_08">Обрыв цепи НАГРЕВАТЕЛЯ</string>
+    <string name="error_10">!!</string>
+    <string name="error_20">ОШИБКА модуля СО2</string>
+    <string name="error_40">ОШИБКА дополнительного модуля</string>
+    <string name="error_80">ПЕРЕГРЕВ СИМИСТОРА!</string>
+
+    <string name="warning_01">ОТКЛОНЕНИЕ по температуре</string>
+    <string name="warning_02">ОТКЛОНЕНИЕ по влажности</string>
+    <string name="warning_04">Подмена датчика</string>
+    <string name="warning_08">Большой перепад температур</string>
+    <string name="warning_10">!</string>
+    <string name="warning_20">Превышено время охлаждения</string>
+    <string name="warning_40">!!!</string>
+    <string name="warning_80">Нет обдува симистора!</string>
+</resources>
