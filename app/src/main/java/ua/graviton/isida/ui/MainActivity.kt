@@ -13,7 +13,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commitNow
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import ua.graviton.isida.R
+import ua.graviton.isida.data.bl.model.IsidaCommands
+import ua.graviton.isida.data.bl.model.IsidaCommands.DeviceMode
+import ua.graviton.isida.data.bl.model.IsidaCommands.DeviceModeExtra
 import ua.graviton.isida.databinding.ActivityMainBinding
 import ua.graviton.isida.domain.bl.BluetoothSPP
 import ua.graviton.isida.domain.bl.BluetoothState
@@ -82,19 +86,34 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        if (id == R.id.menu_device_connect) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.menu_device_connect -> {
             bt.setDeviceTarget(BluetoothState.DEVICE_OTHER)
             /*
-			if(bt.getServiceState() == BluetoothState.STATE_CONNECTED)
-    			bt.disconnect();*/
+            if(bt.getServiceState() == BluetoothState.STATE_CONNECTED)
+                bt.disconnect();*/
             val intent = Intent(applicationContext, DeviceList::class.java)
             startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE)
-        } else {
-            if (bt.serviceState == BluetoothState.STATE_CONNECTED) bt.disconnect()
+            true
         }
-        return super.onOptionsItemSelected(item)
+        R.id.menu_device_disconnect -> {
+            if (bt.serviceState == BluetoothState.STATE_CONNECTED) bt.disconnect()
+            true
+        }
+        R.id.menu_start -> {
+            val commnad = IsidaCommands.deviceMode(
+                1,
+                DeviceMode.ENABLE,
+                DeviceModeExtra.EXTRA_1,
+                DeviceModeExtra.EXTRA_2,
+                DeviceModeExtra.EXTRA_3,
+                DeviceModeExtra.EXTRA_4
+            )
+            Timber.d("Start device command\n$commnad\nOutput: ${commnad.asByteArray().contentToString()}")
+            bt.send(commnad.asByteArray(), false)
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {
