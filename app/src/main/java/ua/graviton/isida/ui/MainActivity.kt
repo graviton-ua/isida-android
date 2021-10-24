@@ -13,14 +13,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commitNow
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import ua.graviton.isida.R
-import ua.graviton.isida.data.bl.model.IsidaCommands
-import ua.graviton.isida.data.bl.model.IsidaCommands.DeviceMode
-import ua.graviton.isida.data.bl.model.IsidaCommands.DeviceModeExtra
+import ua.graviton.isida.data.bl.model.SendPackageDto
 import ua.graviton.isida.databinding.ActivityMainBinding
 import ua.graviton.isida.domain.bl.BluetoothSPP
 import ua.graviton.isida.domain.bl.BluetoothState
+import ua.graviton.isida.ui.devicemode.DeviceModeDialogFragment
 import ua.graviton.isida.ui.prop.PropFragment
 import ua.graviton.isida.ui.report.ReportFragment
 import ua.graviton.isida.ui.stats.StatsFragment
@@ -101,16 +99,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             true
         }
         R.id.menu_start -> {
-            val commnad = IsidaCommands.deviceMode(
-                1,
-                DeviceMode.ENABLE,
-                DeviceModeExtra.EXTRA_1,
-                DeviceModeExtra.EXTRA_2,
-                DeviceModeExtra.EXTRA_3,
-                DeviceModeExtra.EXTRA_4
-            )
-            Timber.d("Start device command\n$commnad\nOutput: ${commnad.asByteArray().contentToString()}")
-            bt.send(commnad.asByteArray(), false)
+            DeviceModeDialogFragment().show(supportFragmentManager, "device_mode")
             true
         }
         else -> super.onOptionsItemSelected(item)
@@ -150,6 +139,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             }
         }
     }
+
+
+    //TODO: Should be re-worked!!!
+    fun sendCommand(command: SendPackageDto) = bt.send(command.asByteArray(), false)
 
 
     private fun goToStats() = with(binding.bottomBar) { selectedItemId = R.id.action_bottom_stats }
