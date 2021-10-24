@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package ua.graviton.isida.domain.bl
 
 import android.annotation.SuppressLint
@@ -13,10 +11,9 @@ import android.widget.Toast
 import timber.log.Timber
 import java.util.*
 
-@SuppressLint("NewApi")
 // Context from activity which call this class
-class BluetoothSPP(mContext: Context) {
-    private val bluetoothManager: BluetoothManager = mContext.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+class BluetoothSPP(ctx: Context) {
+    private val bluetoothManager: BluetoothManager = ctx.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
     private val bluetoothAdapter: BluetoothAdapter = bluetoothManager.adapter
 
     // Listener for Bluetooth Status & Connection
@@ -52,11 +49,9 @@ class BluetoothSPP(mContext: Context) {
     val isBluetoothEnabled: Boolean get() = bluetoothAdapter.isEnabled
     val isServiceAvailable: Boolean get() = mChatService != null
 
-    fun startDiscovery(): Boolean = bluetoothAdapter.startDiscovery()
-
-    val isDiscovery: Boolean get() = bluetoothAdapter.isDiscovering
-
-    fun cancelDiscovery(): Boolean = bluetoothAdapter.cancelDiscovery()
+    //fun startDiscovery(): Boolean = bluetoothAdapter.startDiscovery()
+    //val isDiscovery: Boolean get() = bluetoothAdapter.isDiscovering
+    //fun cancelDiscovery(): Boolean = bluetoothAdapter.cancelDiscovery()
 
     fun setupService() {
         mChatService = BluetoothService(bluetoothAdapter, mHandler)
@@ -94,6 +89,7 @@ class BluetoothSPP(mContext: Context) {
         this@BluetoothSPP.isAndroid = isAndroid
     }
 
+    //TODO: Rewrite it !!!!!!!!!!!
     @SuppressLint("HandlerLeak")
     private val mHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -110,7 +106,7 @@ class BluetoothSPP(mContext: Context) {
                     mBluetoothConnectionListener?.onDeviceConnected(connectedDeviceName, connectedDeviceAddress)
                     isConnected = true
                 }
-                BluetoothState.MESSAGE_TOAST -> Toast.makeText(mContext, msg.data.getString(BluetoothState.TOAST), Toast.LENGTH_LONG).show()
+                BluetoothState.MESSAGE_TOAST -> Toast.makeText(ctx, msg.data.getString(BluetoothState.TOAST), Toast.LENGTH_LONG).show()
                 BluetoothState.MESSAGE_STATE_CHANGE -> {
                     mBluetoothStateListener?.onServiceStateChanged(msg.arg1)
                     if (isConnected && msg.arg1 != BluetoothState.STATE_CONNECTED) {

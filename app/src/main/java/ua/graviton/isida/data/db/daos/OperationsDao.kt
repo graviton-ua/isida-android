@@ -14,6 +14,9 @@ abstract class OperationsDao : EntityDao<OperationEntity>() {
     @Query("SELECT * FROM operations WHERE role_id = :roleId")
     abstract suspend fun operations(roleId: Long): List<OperationEntity>
 
+    @Query("SELECT * FROM operations WHERE role_id = :roleId AND name = :operation")
+    abstract suspend fun isAllowed(roleId: Long, operation: String): OperationEntity?
+
 
     @Query("SELECT * FROM operations")
     abstract fun listenOperations(): Flow<List<OperationEntity>>

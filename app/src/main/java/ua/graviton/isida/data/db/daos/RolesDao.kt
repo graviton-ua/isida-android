@@ -17,6 +17,10 @@ abstract class RolesDao : EntityDao<RoleEntity>() {
     abstract suspend fun role(id: Long): RoleEntity?
 
     @Transaction
+    @Query("SELECT * FROM roles WHERE name = :name AND pass_hash = :pass")
+    abstract suspend fun roleWithOperations(name: String, pass: String): RoleWithOperations?
+
+    @Transaction
     @Query("SELECT * FROM roles")
     abstract suspend fun rolesWithOperations(): List<RoleWithOperations>
 

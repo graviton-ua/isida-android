@@ -22,6 +22,9 @@ class RolesRepository @Inject constructor(
     fun listenRolesWithOperations() = db.rolesDao().listenRolesWithOperations()
 
 
+    suspend fun authRole(name: String, pass: String) = withContext(dispatcher) { db.rolesDao().roleWithOperations(name, pass) }
+
+
     suspend fun enableOperationForRole(roleId: Long, operation: String) = withContext(dispatcher) {
         val newRoleOperation = OperationEntity(name = operation, roleId = roleId)
         db.operationsDao().insert(newRoleOperation)
