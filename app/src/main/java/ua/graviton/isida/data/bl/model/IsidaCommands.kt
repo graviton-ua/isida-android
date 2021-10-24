@@ -30,17 +30,11 @@ object IsidaCommands {
         return SendPackageDto(
             deviceType = deviceType,
             deviceNumber = deviceNumber,
-            data = when (mode) {
-                DeviceMode.ENABLE -> ByteArray(4).apply {
-                    this[0] = (commandId % 256).toByte()
-                    this[1] = (commandId / 256).toByte()
-                    this[2] = (commandValue % 256).toByte()
-                    this[3] = (commandValue / 256).toByte()
-                }
-                else -> ByteArray(2).apply {
-                    this[0] = (commandId % 256).toByte()
-                    this[1] = (commandId / 256).toByte()
-                }
+            data = ByteArray(4).apply {
+                this[0] = (commandId % 256).toByte()
+                this[1] = (commandId / 256).toByte()
+                this[2] = (commandValue % 256).toByte()
+                this[3] = (commandValue / 256).toByte()
             }
         )
     }
