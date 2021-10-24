@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menu_disconnect"
+    <item android:id="@+id/menu_device_disconnect"
           android:icon="@android:drawable/ic_menu_close_clear_cancel"
           android:orderInCategory="100"
           android:title="@string/disconnect"
@@ -12,5 +12,4 @@
           android:orderInCategory="99"
           android:title="START"
           app:showAsAction="ifRoom" />
-
 </menu>

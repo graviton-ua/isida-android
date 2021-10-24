@@ -8,7 +8,7 @@ import java.time.OffsetDateTime
 
 @Entity(tableName = "data")
 data class DeviceDataEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
     @ColumnInfo(name = "created_at") val createdAt: OffsetDateTime = OffsetDateTime.now(),
 
     @ColumnInfo(name = "device_id") val deviceId: Int,
@@ -31,7 +31,7 @@ data class DeviceDataEntity(
     @ColumnInfo(name = "cost1") val cost1: Int,
     @ColumnInfo(name = "date") val date: Int,
     @ColumnInfo(name = "hours") val hours: Int,
-)
+) : IEntity
 
 fun DataPackageDto.toEntity(): DeviceDataEntity {
     return DeviceDataEntity(

@@ -1,28 +1,25 @@
-package ua.graviton.isida.domain
+package ua.graviton.isida.domain.bl
 
 import android.annotation.SuppressLint
-import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothServerSocket
-import android.bluetooth.BluetoothSocket
-import android.content.Context
+import android.bluetooth.*
 import android.os.Handler
-import android.util.Log
 import androidx.core.os.bundleOf
+import timber.log.Timber
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.*
 
 @SuppressLint("NewApi")
-class BluetoothService(context: Context?, handler: Handler) {
+class BluetoothService(
+    private val mAdapter: BluetoothAdapter,
+    private val mHandler: Handler,
+) {
     // Member fields
-    private val mAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-    private val mHandler: Handler
     private var mSecureAcceptThread: AcceptThread? = null
     private var mConnectThread: ConnectThread? = null
     private var mConnectedThread: ConnectedThread? = null
-    private var mState: Int
+    private var mState: Int = BluetoothState.STATE_NONE
     private var isAndroid: Boolean = BluetoothState.DEVICE_ANDROID// Give the new state to the Handler so the UI Activity can update
 
     // Set the current state of the chat connection
@@ -33,7 +30,7 @@ class BluetoothService(context: Context?, handler: Handler) {
     var state: Int
         get() = mState
         private set(state) {
-            Log.d(TAG, "setState() $mState -> $state")
+            Timber.d("setState() $mState -> $state")
             mState = state
 
             // Give the new state to the Handler so the UI Activity can update
@@ -378,22 +375,11 @@ class BluetoothService(context: Context?, handler: Handler) {
     }
 
     companion object {
-        // Debugging
-        private const val TAG = "Bluetooth Service"
-
         // Name for the SDP record when creating server socket
         private const val NAME_SECURE = "Bluetooth Secure"
 
         // Unique UUID for this application
         private val UUID_ANDROID_DEVICE = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66")
         private val UUID_OTHER_DEVICE = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
-    }
-
-    // Constructor. Prepares a new BluetoothChat session
-    // context : The UI Activity Context
-    // handler : A Handler to send messages back to the UI Activity
-    init {
-        mState = BluetoothState.STATE_NONE
-        mHandler = handler
     }
 }
