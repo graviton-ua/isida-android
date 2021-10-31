@@ -3,10 +3,9 @@ package ua.graviton.isida.ui.stats
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import by.kirich1409.viewbindingdelegate.viewBinding
 import ua.graviton.isida.R
 import ua.graviton.isida.databinding.ItemStatsItemBinding
-import ua.graviton.isida.utils.WhViewHolder
+import ua.graviton.isida.ui.utils.WhViewHolder
 
 class StatsItemAdapter : ListAdapter<StatsItem, StatsItemAdapter.Holder>(DIFF_CALLBACK) {
 
@@ -16,7 +15,7 @@ class StatsItemAdapter : ListAdapter<StatsItem, StatsItemAdapter.Holder>(DIFF_CA
 
 
     class Holder(parent: ViewGroup) : WhViewHolder(parent, R.layout.item_stats_item) {
-        private val binding by viewBinding(ItemStatsItemBinding::bind)
+        private val binding = ItemStatsItemBinding.bind(itemView)
 
         fun bind(item: StatsItem) = with(binding) {
             tvTitle.setText(item.titleResId)

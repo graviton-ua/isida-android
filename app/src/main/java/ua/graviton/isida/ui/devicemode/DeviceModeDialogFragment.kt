@@ -32,7 +32,10 @@ class DeviceModeDialogFragment : DialogFragment(R.layout.dialog_device_mode) {
 
         binding.btnSaveStart.setOnClickListener { viewModel.submitAction(DeviceModeAction.ApplyMode) }
 
-        viewModel.state.observe(viewLifecycleOwner) { handle(it, binding) }
+        // Handle states
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.state.flowWithLifecycle(viewLifecycleOwner.lifecycle).collect { handle(it, binding) }
+        }
         // Handle events
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.events.flowWithLifecycle(viewLifecycleOwner.lifecycle).collect { handle(it) }

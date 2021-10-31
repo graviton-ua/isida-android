@@ -27,9 +27,9 @@ class StatsFragment : Fragment(R.layout.fragment_stats) {
         binding.list.layoutManager = LinearLayoutManager(context)
         binding.list.adapter = stadapter
 
-        viewModel.state.observe(viewLifecycleOwner) {
-            handle(binding, stadapter, it)
-        }
+//        viewModel.state.observe(viewLifecycleOwner) {
+//            handle(binding, stadapter, it)
+//        }
     }
 
     private fun handle(

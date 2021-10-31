@@ -18,7 +18,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import by.kirich1409.viewbindingdelegate.viewBinding
 import timber.log.Timber
 import ua.graviton.isida.R
 import ua.graviton.isida.databinding.DeviceLayoutListBinding
@@ -26,7 +25,6 @@ import ua.graviton.isida.domain.bl.BluetoothState
 
 @SuppressLint("NewApi")
 class DeviceList : AppCompatActivity(R.layout.device_layout_list) {
-    private val binding by viewBinding(DeviceLayoutListBinding::bind)
 
     // Member fields
     private val mBtAdapter by lazy { BluetoothAdapter.getDefaultAdapter() }
@@ -35,6 +33,8 @@ class DeviceList : AppCompatActivity(R.layout.device_layout_list) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val binding = DeviceLayoutListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         title = "Bluetooth Devices"
 
         // Set result CANCELED in case the user backs out

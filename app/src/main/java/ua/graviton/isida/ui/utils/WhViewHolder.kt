@@ -1,4 +1,4 @@
-package ua.graviton.isida.utils
+package ua.graviton.isida.ui.utils
 
 import android.content.Context
 import android.content.res.Resources

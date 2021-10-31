@@ -14,7 +14,7 @@
                  android:label="@string/app_name"
                  android:roundIcon="@mipmap/ic_launcher_round"
                  android:supportsRtl="true"
-                 android:theme="@style/Theme.ISIDA9">
+                 android:theme="@style/Theme.Isida.SplashScreen">
 
         <activity android:name=".ui.MainActivity"
                   android:exported="true">
@@ -24,11 +24,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.DeviceListActivity"
-                  android:exported="true" />
         <activity android:name=".ui.DeviceList"
-                  android:exported="true" />
-        <activity android:name=".ui.RunActivity"
                   android:exported="true" />
     </application>
 </manifest>

@@ -2,7 +2,6 @@ package ua.graviton.isida.ui.devicemode
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -25,7 +24,7 @@ class DeviceModeViewModel @Inject constructor(
     private val mode = MutableStateFlow<DeviceMode?>(null)
     private val modeExtras = MutableStateFlow<List<DeviceModeExtra>>(emptyList())
 
-    val state: LiveData<DeviceModeViewState> = combine(
+    val state: Flow<DeviceModeViewState> = combine(
         deviceId, mode, modeExtras
     ) { id, mode, extras ->
         DeviceModeViewState(
@@ -36,7 +35,6 @@ class DeviceModeViewModel @Inject constructor(
         )
     }
         .onStart { emit(DeviceModeViewState.Empty) }
-        .asLiveData(viewModelScope.coroutineContext)
 
     init {
         // Fetch device cell number

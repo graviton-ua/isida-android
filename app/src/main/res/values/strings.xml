@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">ISIDA-9</string>
+
+    <string name="home_tab_stats">Stats</string>
+    <string name="home_tab_prop">Properties</string>
+    <string name="home_tab_report">Report</string>
+
     <string name="CellNum">КАМЕРА № %1$s</string>
     <string name="btnStart">Старт</string>
     <string name="btnProp">Уст.</string>
@@ -29,13 +34,13 @@
     <string name="datetime">05.12.21</string>
     <string name="time">05ч.12мин.</string>
     <string name="prognum">НЕТ</string>
-<!--    <string name="fraction">**.*</string>-->
-<!--    <string name="fractionU">[**.*]</string>-->
-<!--    <string name="integer">***</string>-->
-<!--    <string name="integerU">[***]</string>-->
-<!--    <string name="percent">***%</string>-->
-<!--    <string name="percentU">[**%]</string>-->
-<!--    <string name="cotwoVal">****</string>-->
+    <!--    <string name="fraction">**.*</string>-->
+    <!--    <string name="fractionU">[**.*]</string>-->
+    <!--    <string name="integer">***</string>-->
+    <!--    <string name="integerU">[***]</string>-->
+    <!--    <string name="percent">***%</string>-->
+    <!--    <string name="percentU">[**%]</string>-->
+    <!--    <string name="cotwoVal">****</string>-->
     <string name="enter">Введите команду</string>
     <string name="myText">просто текст</string>
 

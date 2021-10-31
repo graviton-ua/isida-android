@@ -1,12 +1,15 @@
 package ua.graviton.isida.ui.stats
 
-import androidx.lifecycle.*
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import ua.graviton.isida.R
 import ua.graviton.isida.data.bl.model.DataPackageDto
 import ua.graviton.isida.domain.observers.ObserveDeviceData
+import ua.graviton.isida.ui.utils.ObservableLoadingCounter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -14,25 +17,45 @@ class StatsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     observeDeviceData: ObserveDeviceData,
 ) : ViewModel() {
+    private val loadingState = ObservableLoadingCounter()
+    private val pendingActions = MutableSharedFlow<StatsAction>()
 
-    val state: LiveData<StatsViewState> = observeDeviceData.flow
-        .map {
-            val deviceBgColor = when {
-                it != null && it.fuses+it.errors+it.warning > 0 -> R.color.red_500
-                it != null && it.state == 1 -> R.color.green_500
-                it != null && it.state == 2 -> R.color.yellow_500
-                else -> null
-            }
-
-            // Создаём модель состояния экрана
-            StatsViewState(
-                titleDeviceId = it?.cellId,
-                titleDeviceBackgroundColor = deviceBgColor,
-                items = it.toItems(),
-            )
+    val state: StateFlow<StatsViewState> = combine(
+        observeDeviceData.flow, loadingState.observable
+    ) { data, loading ->
+        val deviceBgColor = when {
+            data != null && data.fuses + data.errors + data.warning > 0 -> R.color.red_500
+            data != null && data.state == 1 -> R.color.green_500
+            data != null && data.state == 2 -> R.color.yellow_500
+            else -> null
         }
-        .onStart { emit(StatsViewState.Empty) }
-        .asLiveData(viewModelScope.coroutineContext)
+
+        // Создаём модель состояния экрана
+        StatsViewState(
+            titleDeviceId = data?.cellId,
+            titleDeviceBackgroundColor = deviceBgColor,
+            items = data.toItems(),
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = StatsViewState.Empty,
+    )
+
+    init {
+        viewModelScope.launch {
+            pendingActions.collect { action ->
+                when (action) {
+                    //is ReportAction.RefreshCart -> observeShopCart(Unit)
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+    fun submitAction(action: StatsAction) {
+        viewModelScope.launch { pendingActions.emit(action) }
+    }
 }
 
 private fun DataPackageDto?.toItems(): List<StatsItem> {
@@ -78,42 +101,42 @@ private fun DataPackageDto?.toItems(): List<StatsItem> {
         StatsItem(
             titleResId = R.string.fuses,
             value = this?.fuses?.let {
-            StatsItem.Value.TextResId(
-                value = when (it) {
-                    1 -> R.string.fuses_0
-                    2 -> R.string.fuses_1
-                    4 -> R.string.fuses_2
-                    8 -> R.string.fuses_3
-                    else -> R.string.no
-                }
-            )
-        }),
+                StatsItem.Value.TextResId(
+                    value = when (it) {
+                        1 -> R.string.fuses_0
+                        2 -> R.string.fuses_1
+                        4 -> R.string.fuses_2
+                        8 -> R.string.fuses_3
+                        else -> R.string.no
+                    }
+                )
+            }),
         StatsItem(
             titleResId = R.string.errors,
             value = this?.errors?.let {
-            StatsItem.Value.TextResId(
-                value = when (it) {
-                    1 -> R.string.error_01
-                    2 -> R.string.error_02
-                    4 -> R.string.error_04
-                    8 -> R.string.error_08
-                    else -> R.string.no
-                }
-            )
-        }),
+                StatsItem.Value.TextResId(
+                    value = when (it) {
+                        1 -> R.string.error_01
+                        2 -> R.string.error_02
+                        4 -> R.string.error_04
+                        8 -> R.string.error_08
+                        else -> R.string.no
+                    }
+                )
+            }),
         StatsItem(
             titleResId = R.string.warnings,
             value = this?.warning?.let {
-            StatsItem.Value.TextResId(
-                value = when (it) {
-                    1 -> R.string.warning_01
-                    2 -> R.string.warning_02
-                    4 -> R.string.warning_04
-                    8 -> R.string.warning_08
-                    else -> R.string.no
-                }
-            )
-        }),
+                StatsItem.Value.TextResId(
+                    value = when (it) {
+                        1 -> R.string.warning_01
+                        2 -> R.string.warning_02
+                        4 -> R.string.warning_04
+                        8 -> R.string.warning_08
+                        else -> R.string.no
+                    }
+                )
+            }),
         StatsItem(
             titleResId = R.string.state,
             value = this?.state?.let {
