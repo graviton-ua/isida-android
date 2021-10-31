@@ -1,13 +1,13 @@
 package ua.graviton.isida.ui.stats
 
-import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
+import androidx.compose.ui.graphics.Color
 
 data class StatsItem(
     @StringRes val titleResId: Int,
     val value: Value? = null,
-    @ColorRes val valueColor: Int? = null,
-    @ColorRes val backgroundColor: Int? = null,
+    val valueColor: Color? = null,
+    val backgroundColor: Color? = null,
 ) {
 
     sealed class Value {

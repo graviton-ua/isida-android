@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import ua.graviton.isida.R
 import ua.graviton.isida.data.bl.model.DataPackageDto
 import ua.graviton.isida.domain.observers.ObserveDeviceData
+import ua.graviton.isida.ui.theme.*
 import ua.graviton.isida.ui.utils.ObservableLoadingCounter
 import javax.inject.Inject
 
@@ -24,9 +25,9 @@ class StatsViewModel @Inject constructor(
         observeDeviceData.flow, loadingState.observable
     ) { data, loading ->
         val deviceBgColor = when {
-            data != null && data.fuses + data.errors + data.warning > 0 -> R.color.red_500
-            data != null && data.state == 1 -> R.color.green_500
-            data != null && data.state == 2 -> R.color.yellow_500
+            data != null && data.fuses + data.errors + data.warning > 0 -> Red500
+            data != null && data.state == 1 -> Green500
+            data != null && data.state == 2 -> Yellow500
             else -> null
         }
 
@@ -69,8 +70,8 @@ private fun DataPackageDto?.toItems(): List<StatsItem> {
                 )
             },
             valueColor = when {
-                this != null && pvT0 > spT0 -> R.color.red_900
-                this != null && pvT0 < spT0 -> R.color.indigo_800
+                this != null && pvT0 > spT0 -> Red900
+                this != null && pvT0 < spT0 -> Indigo800
                 else -> null
             }
         ),
@@ -86,8 +87,8 @@ private fun DataPackageDto?.toItems(): List<StatsItem> {
                 )
             },
             valueColor = when {
-                this != null && pvT1 > spT1 -> R.color.red_900
-                this != null && pvT1 < spT1 -> R.color.indigo_800
+                this != null && pvT1 > spT1 -> Red900
+                this != null && pvT1 < spT1 -> Indigo800
                 else -> null
             }
         ),
@@ -96,7 +97,7 @@ private fun DataPackageDto?.toItems(): List<StatsItem> {
         StatsItem(titleResId = R.string.cotwo, value = this?.pvCO2_1?.let { StatsItem.Value.IntVal(value = if (it < 400) null else it) }),
         StatsItem(titleResId = R.string.timer, value = this?.let { StatsItem.Value.IntVal(value = it.pvTimer, target = timer0) }),
         StatsItem(titleResId = R.string.counter, value = this?.pvTmrCount?.let { StatsItem.Value.IntVal(value = it) }),
-        StatsItem(titleResId = R.string.power, value = this?.power?.let { StatsItem.Value.IntVal(value = it) }, valueColor = R.color.power),
+        StatsItem(titleResId = R.string.power, value = this?.power?.let { StatsItem.Value.IntVal(value = it) }, valueColor = Power),
         StatsItem(titleResId = R.string.flap, value = this?.pvFlap?.let { StatsItem.Value.IntVal(value = it) }),
         StatsItem(
             titleResId = R.string.fuses,
@@ -155,9 +156,9 @@ private fun DataPackageDto?.toItems(): List<StatsItem> {
             },
             backgroundColor = this?.state?.let {
                 when (it) {
-                    0 -> R.color.blue_grey_100
-                    1 -> R.color.green_500
-                    2 -> R.color.yellow_500
+                    0 -> BlueGrey100
+                    1 -> Green500
+                    2 -> Yellow500
                     else -> null
                 }
             }

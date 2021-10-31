@@ -1,8 +1,23 @@
 package ua.graviton.isida.ui.theme
 
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
 
-// UI colors
+@Stable val BlueGrey100 = Color(0xFFCFD8DC)
+
+@Stable val Red500 = Color(0xFFF44336)
+@Stable val Red900 = Color(0xFFB71C1C)
+
+@Stable val Green500 = Color(0xFF4CAF50)
+
+@Stable val Yellow500 = Color(0xFFFFEB3B)
+
+@Stable val Indigo800 = Color(0xFF283593)
+
+// Legacy
+//TODO: Remove these colors in future updates
+@Stable val Power = Color(0xFFE91E63)
+
 val neutral000 = Color.Black // Color(0xFF000000)
 val neutral035 = Color(0xFF585858)
 val neutral055 = Color(0xFF8C8C8C)

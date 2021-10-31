@@ -1,9 +1,14 @@
 package ua.graviton.isida.ui.report
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.insets.systemBarsPadding
 import ua.graviton.isida.ui.theme.IsidaTheme
 import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
 
@@ -36,7 +41,13 @@ private fun ReportScreen(
     state: ReportViewState,
     actioner: (ReportAction) -> Unit,
 ) {
-
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .systemBarsPadding(top = true)
+    ) {
+        Text(text = "Report screen")
+    }
 }
 
 @Preview
