@@ -56,7 +56,7 @@ private fun StatsScreen(
         state = lazyListState,
         contentPadding = rememberInsetsPaddingValues(
             insets = LocalWindowInsets.current.systemBars,
-            applyTop = true,
+            applyTop = false,
             applyBottom = false,
             additionalStart = 12.dp,
             additionalEnd = 12.dp,

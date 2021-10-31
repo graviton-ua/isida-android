@@ -26,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.insets.ui.BottomNavigation
+import com.google.accompanist.insets.ui.TopAppBar
 import ua.graviton.isida.R
 import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
 
@@ -60,6 +61,11 @@ private fun HomeScreen(
 ) {
     val navController = rememberNavController()
     Scaffold(
+        topBar = {
+            HomeTopBar(
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
         bottomBar = {
             val currentSelectedItem by navController.currentScreenAsState()
             HomeBottomNavigation(
@@ -114,6 +120,19 @@ private fun NavController.currentScreenAsState(): State<HomeNavScreen> {
     }
 
     return selectedItem
+}
+
+@Composable
+private fun HomeTopBar(
+    modifier: Modifier = Modifier,
+) {
+    TopAppBar(
+        title = { Text(text = stringResource(id = R.string.app_name)) },
+        backgroundColor = MaterialTheme.colors.surface,
+        contentColor = contentColorFor(MaterialTheme.colors.surface),
+        contentPadding = rememberInsetsPaddingValues(insets = LocalWindowInsets.current.statusBars),
+        modifier = modifier
+    )
 }
 
 @Composable
