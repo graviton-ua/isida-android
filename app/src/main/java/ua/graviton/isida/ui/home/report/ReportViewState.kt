@@ -1,4 +1,4 @@
-package ua.graviton.isida.ui.report
+package ua.graviton.isida.ui.home.report
 
 data class ReportViewState(
     val cellNumber: Int = 0

@@ -1,4 +1,4 @@
-package ua.graviton.isida.ui.report
+package ua.graviton.isida.ui.home.report
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

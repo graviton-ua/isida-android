@@ -7,9 +7,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import ua.graviton.isida.ui.prop.PropScreen
-import ua.graviton.isida.ui.report.ReportScreen
-import ua.graviton.isida.ui.stats.StatsScreen
+import ua.graviton.isida.ui.home.prop.PropScreen
+import ua.graviton.isida.ui.home.report.ReportScreen
+import ua.graviton.isida.ui.home.stats.StatsScreen
 
 sealed class HomeNavScreen(val route: String) {
     object Stats : HomeNavScreen("stats")

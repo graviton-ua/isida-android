@@ -1,4 +1,4 @@
-package ua.graviton.isida.ui.stats
+package ua.graviton.isida.ui.home.stats
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color

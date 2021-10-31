@@ -1,4 +1,4 @@
-package ua.graviton.isida.ui.prop
+package ua.graviton.isida.ui.home.prop
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

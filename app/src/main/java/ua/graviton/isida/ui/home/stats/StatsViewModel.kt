@@ -1,4 +1,4 @@
-package ua.graviton.isida.ui.stats
+package ua.graviton.isida.ui.home.stats
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

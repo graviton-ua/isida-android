@@ -1,4 +1,4 @@
-package ua.graviton.isida.ui.report
+package ua.graviton.isida.ui.home.report
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
