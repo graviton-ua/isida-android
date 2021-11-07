@@ -5,7 +5,7 @@ buildscript {
         compileSdk = 31
 
         kotlin_version = '1.5.31'
-        compose_version = '1.1.0-beta01'
+        compose_version = '1.1.0-beta02'
         coreDesugaring = '1.1.5'
 
         androidx = [
@@ -18,7 +18,7 @@ buildscript {
         ]
         google = [
                 "hilt"       : '2.40',
-                "accompanist": '0.21.0-beta',
+                "accompanist": '0.21.2-beta',
                 "material"   : '1.4.0'
         ]
         kotlinx = [

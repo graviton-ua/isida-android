@@ -6,9 +6,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Analytics
-import androidx.compose.material.icons.filled.SettingsApplications
-import androidx.compose.material.icons.filled.Summarize
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material.icons.outlined.SettingsApplications
 import androidx.compose.material.icons.outlined.Summarize
@@ -16,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,27 +27,31 @@ import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.insets.ui.BottomNavigation
 import com.google.accompanist.insets.ui.TopAppBar
 import ua.graviton.isida.R
+import ua.graviton.isida.ui.scan.intentScanDevices
 import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
 
 @Composable
 fun HomeScreen() {
     //LaunchedEffect("once") { SystemBarColorManager.darkIcons.value = true }
+    val context = LocalContext.current
 
     HomeScreen(
         viewModel = hiltViewModel(),
+        openConnectDevice = { with(context) { startActivity(intentScanDevices()) } },
     )
 }
 
 @Composable
 private fun HomeScreen(
     viewModel: HomeViewModel,
+    openConnectDevice: () -> Unit
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
 
     HomeScreen(viewState) { action ->
         when (action) {
             //is ShopCartAction.Close -> navigateUp()
-            //is ShopCartAction.NavigateCheckout -> openCheckout()
+            is HomeAction.ConnectDevice -> openConnectDevice()
             else -> viewModel.submitAction(action)
         }
     }
@@ -63,7 +66,8 @@ private fun HomeScreen(
     Scaffold(
         topBar = {
             HomeTopBar(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                openConnectDevice = { actioner(HomeAction.ConnectDevice) }
             )
         },
         bottomBar = {
@@ -125,9 +129,29 @@ private fun NavController.currentScreenAsState(): State<HomeNavScreen> {
 @Composable
 private fun HomeTopBar(
     modifier: Modifier = Modifier,
+    openConnectDevice: () -> Unit,
 ) {
+    var expanded by remember { mutableStateOf(false) }
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.app_name)) },
+        actions = {
+            TextButton(onClick = { }) {
+                Icon(imageVector = Icons.Default.Flag, contentDescription = "Device menu")
+                Text(text = "Power")
+            }
+            IconButton(onClick = { expanded = !expanded }) { Icon(imageVector = Icons.Default.MoreVert, contentDescription = "Device menu") }
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                DropdownMenuItem(
+                    onClick = {
+                        openConnectDevice()
+                        expanded = false
+                    }
+                ) { Text(text = "Connect") }
+            }
+        },
         backgroundColor = MaterialTheme.colors.surface,
         contentColor = contentColorFor(MaterialTheme.colors.surface),
         contentPadding = rememberInsetsPaddingValues(insets = LocalWindowInsets.current.statusBars),

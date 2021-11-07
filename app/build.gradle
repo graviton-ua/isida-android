@@ -99,9 +99,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${androidx.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${androidx.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:${androidx.lifecycle}"
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0-rc01'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0'
 
-    implementation 'androidx.navigation:navigation-compose:2.4.0-beta01'
+    implementation 'androidx.navigation:navigation-compose:2.4.0-beta02'
     //implementation 'androidx.paging:paging-compose:1.0.0-alpha14'
     //implementation 'androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02'
 
@@ -119,8 +119,9 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:${google.hilt}"
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-alpha03'
 
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+
     implementation "com.jakewharton.timber:timber:${versions.timber}"
-    implementation 'com.akexorcist:bluetoothspp:1.0.0'
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$coreDesugaring"
 }
