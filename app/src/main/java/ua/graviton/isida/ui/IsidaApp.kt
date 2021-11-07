@@ -12,11 +12,17 @@ import ua.graviton.isida.domain.SystemBarColorManager
 import ua.graviton.isida.ui.theme.IsidaTheme
 
 @Composable
-fun IsidaApp() {
+fun IsidaApp(
+    onConnectDevice: () -> Unit,
+    onDisconnectDevice: () -> Unit,
+) {
     IsidaTheme {
         ProvideWindowInsets {
             SystemStatusBarColor()
-            AppNavigation()
+            AppNavigation(
+                onConnectDevice = onConnectDevice,
+                onDisconnectDevice = onDisconnectDevice,
+            )
         }
     }
 }

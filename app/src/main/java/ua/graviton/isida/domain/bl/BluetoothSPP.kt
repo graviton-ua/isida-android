@@ -12,10 +12,9 @@ import timber.log.Timber
 import java.util.*
 
 // Context from activity which call this class
-class BluetoothSPP(ctx: Context) {
-    private val bluetoothManager: BluetoothManager = ctx.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-    private val bluetoothAdapter: BluetoothAdapter = bluetoothManager.adapter
-
+class BluetoothSPP(
+    private val adapter: BluetoothAdapter
+) {
     // Listener for Bluetooth Status & Connection
     private var mBluetoothStateListener: BluetoothStateListener? = null
     private var mDataReceivedListener: OnDataReceivedListener? = null
@@ -44,9 +43,9 @@ class BluetoothSPP(ctx: Context) {
 
     val isBluetoothAvailable: Boolean
         @SuppressLint("HardwareIds", "MissingPermission")
-        get() = bluetoothAdapter.address != null
+        get() = adapter.address != null
 
-    val isBluetoothEnabled: Boolean get() = bluetoothAdapter.isEnabled
+    val isBluetoothEnabled: Boolean get() = adapter.isEnabled
     val isServiceAvailable: Boolean get() = mChatService != null
 
     //fun startDiscovery(): Boolean = bluetoothAdapter.startDiscovery()
@@ -54,7 +53,7 @@ class BluetoothSPP(ctx: Context) {
     //fun cancelDiscovery(): Boolean = bluetoothAdapter.cancelDiscovery()
 
     fun setupService() {
-        mChatService = BluetoothService(bluetoothAdapter, mHandler)
+        mChatService = BluetoothService(adapter, mHandler)
     }
 
     val serviceState: Int
@@ -106,7 +105,7 @@ class BluetoothSPP(ctx: Context) {
                     mBluetoothConnectionListener?.onDeviceConnected(connectedDeviceName, connectedDeviceAddress)
                     isConnected = true
                 }
-                BluetoothState.MESSAGE_TOAST -> Toast.makeText(ctx, msg.data.getString(BluetoothState.TOAST), Toast.LENGTH_LONG).show()
+                BluetoothState.MESSAGE_TOAST -> Unit//Toast.makeText(ctx, msg.data.getString(BluetoothState.TOAST), Toast.LENGTH_LONG).show()
                 BluetoothState.MESSAGE_STATE_CHANGE -> {
                     mBluetoothStateListener?.onServiceStateChanged(msg.arg1)
                     if (isConnected && msg.arg1 != BluetoothState.STATE_CONNECTED) {
@@ -138,12 +137,12 @@ class BluetoothSPP(ctx: Context) {
 
     fun connect(data: Intent?) {
         val address = data?.extras?.getString(BluetoothState.EXTRA_DEVICE_ADDRESS) ?: return
-        val device = bluetoothAdapter.getRemoteDevice(address) ?: return
+        val device = adapter.getRemoteDevice(address) ?: return
         mChatService?.connect(device)
     }
 
     fun connect(address: String?) {
-        val device = bluetoothAdapter.getRemoteDevice(address) ?: return
+        val device = adapter.getRemoteDevice(address) ?: return
         mChatService?.connect(device)
     }
 
@@ -174,7 +173,7 @@ class BluetoothSPP(ctx: Context) {
         mAutoConnectionListener = listener
     }
 
-    fun enable() = bluetoothAdapter.enable()
+    fun enable() = adapter.enable()
 
     fun send(data: ByteArray, CRLF: Boolean) {
         mChatService?.run {
@@ -202,8 +201,8 @@ class BluetoothSPP(ctx: Context) {
         }
     }
 
-    val pairedDeviceName: List<String> get() = bluetoothAdapter.bondedDevices.map { it.name }
-    val pairedDeviceAddress: List<String> get() = bluetoothAdapter.bondedDevices.map { it.address }
+    val pairedDeviceName: List<String> get() = adapter.bondedDevices.map { it.name }
+    val pairedDeviceAddress: List<String> get() = adapter.bondedDevices.map { it.address }
 
     fun autoConnect(keywordName: String) {
         if (!isAutoConnectionEnabled) {

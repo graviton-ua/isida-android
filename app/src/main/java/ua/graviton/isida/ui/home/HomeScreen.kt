@@ -14,7 +14,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,31 +26,32 @@ import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.insets.ui.BottomNavigation
 import com.google.accompanist.insets.ui.TopAppBar
 import ua.graviton.isida.R
-import ua.graviton.isida.ui.scan.intentScanDevices
 import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onConnectDevice: () -> Unit,
+    onDisconnectDevice: () -> Unit,
+) {
     //LaunchedEffect("once") { SystemBarColorManager.darkIcons.value = true }
-    val context = LocalContext.current
 
     HomeScreen(
         viewModel = hiltViewModel(),
-        openConnectDevice = { with(context) { startActivity(intentScanDevices()) } },
+        connectDevice = onConnectDevice,
     )
 }
 
 @Composable
 private fun HomeScreen(
     viewModel: HomeViewModel,
-    openConnectDevice: () -> Unit
+    connectDevice: () -> Unit
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
 
     HomeScreen(viewState) { action ->
         when (action) {
             //is ShopCartAction.Close -> navigateUp()
-            is HomeAction.ConnectDevice -> openConnectDevice()
+            is HomeAction.ConnectDevice -> connectDevice()
             else -> viewModel.submitAction(action)
         }
     }

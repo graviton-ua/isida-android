@@ -112,7 +112,7 @@ class BluetoothService(
         }
 
         // Start the thread to manage the connection and perform transmissions
-        mConnectedThread = ConnectedThread(socket, socketType).apply { start() }
+        mConnectedThread = ConnectedThread(socket).apply { start() }
 
         // Send the name of the connected device back to the UI Activity
         val msg = mHandler.obtainMessage(BluetoothState.MESSAGE_DEVICE_NAME)
@@ -297,17 +297,16 @@ class BluetoothService(
 
     // This thread runs during a connection with a remote device.
     // It handles all incoming and outgoing transmissions.
-    private inner class ConnectedThread(
-        private val mmSocket: BluetoothSocket,
-        socketType: String?
-    ) : Thread() {
-        private val mmInStream: InputStream?
-        private val mmOutStream: OutputStream?
+    private inner class ConnectedThread(private val mmSocket: BluetoothSocket) : Thread() {
+
+        private val mmInStream: InputStream = mmSocket.inputStream
+        private val mmOutStream: OutputStream = mmSocket.outputStream
+
         override fun run() {
             var buffer: ByteArray
             var arr_byte = ArrayList<Int>()
 
-            // Keep listening to the InputStream while connected
+            // Keep listening to the InputStream until an exception occurs.
             while (true) {
                 try {
                     val data = mmInStream!!.read()
@@ -352,25 +351,13 @@ class BluetoothService(
             }
         }
 
+        // Call this method from the main activity to shut down the connection.
         fun cancel() {
             try {
                 mmSocket.close()
             } catch (e: IOException) {
+                Timber.w(e, "Could not close the connect socket")
             }
-        }
-
-        init {
-            var tmpIn: InputStream? = null
-            var tmpOut: OutputStream? = null
-
-            // Get the BluetoothSocket input and output streams
-            try {
-                tmpIn = mmSocket.inputStream
-                tmpOut = mmSocket.outputStream
-            } catch (e: IOException) {
-            }
-            mmInStream = tmpIn
-            mmOutStream = tmpOut
         }
     }
 
