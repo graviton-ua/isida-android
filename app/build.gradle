@@ -20,6 +20,12 @@ android {
 
         archivesBaseName = "app-v$versionName"
 
+        manifestPlaceholders = [
+                notification_channel_General: "General"
+        ]
+
+        buildConfigField "String", "NOTIFICATION_CHANNEL_ID_GENERAL", "\"$manifestPlaceholders.notification_channel_General\""
+
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments += [
@@ -99,7 +105,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${androidx.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${androidx.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:${androidx.lifecycle}"
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:${androidx.lifecycle}"
 
     implementation 'androidx.navigation:navigation-compose:2.4.0-beta02'
     //implementation 'androidx.paging:paging-compose:1.0.0-alpha14'

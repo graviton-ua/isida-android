@@ -1,5 +1,6 @@
 package ua.graviton.isida.ui.home
 
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.Crossfade
@@ -14,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -25,26 +27,35 @@ import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.insets.ui.BottomNavigation
 import com.google.accompanist.insets.ui.TopAppBar
+import timber.log.Timber
 import ua.graviton.isida.R
+import ua.graviton.isida.domain.services.intentBLServiceConnectDevice
+import ua.graviton.isida.domain.services.intentBLServiceDisconnectDevice
+import ua.graviton.isida.ui.contracts.ScanForDeviceResultContract
 import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
 
 @Composable
-fun HomeScreen(
-    onConnectDevice: () -> Unit,
-    onDisconnectDevice: () -> Unit,
-) {
+fun HomeScreen() {
     //LaunchedEffect("once") { SystemBarColorManager.darkIcons.value = true }
+    val context = LocalContext.current
+
+    val scanForDevice = rememberLauncherForActivityResult(ScanForDeviceResultContract()) { address ->
+        Timber.d("Selected device: $address | start service")
+        if (address != null) with(context) { startService(intentBLServiceConnectDevice(address)) }
+    }
 
     HomeScreen(
         viewModel = hiltViewModel(),
-        connectDevice = onConnectDevice,
+        connectDevice = { scanForDevice.launch(Unit) },
+        disconnectDevice = { with(context) { startService(intentBLServiceDisconnectDevice()) } },
     )
 }
 
 @Composable
 private fun HomeScreen(
     viewModel: HomeViewModel,
-    connectDevice: () -> Unit
+    connectDevice: () -> Unit,
+    disconnectDevice: () -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
 
@@ -52,6 +63,7 @@ private fun HomeScreen(
         when (action) {
             //is ShopCartAction.Close -> navigateUp()
             is HomeAction.ConnectDevice -> connectDevice()
+            is HomeAction.DisconnectDevice -> disconnectDevice()
             else -> viewModel.submitAction(action)
         }
     }
@@ -66,8 +78,10 @@ private fun HomeScreen(
     Scaffold(
         topBar = {
             HomeTopBar(
+                deviceConnected = state.deviceConnected,
                 modifier = Modifier.fillMaxWidth(),
-                openConnectDevice = { actioner(HomeAction.ConnectDevice) }
+                connectDevice = { actioner(HomeAction.ConnectDevice) },
+                disconnectDevice = { actioner(HomeAction.DisconnectDevice) },
             )
         },
         bottomBar = {
@@ -128,28 +142,39 @@ private fun NavController.currentScreenAsState(): State<HomeNavScreen> {
 
 @Composable
 private fun HomeTopBar(
+    deviceConnected: Boolean,
     modifier: Modifier = Modifier,
-    openConnectDevice: () -> Unit,
+    connectDevice: () -> Unit,
+    disconnectDevice: () -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.app_name)) },
         actions = {
-            TextButton(onClick = { }) {
-                Icon(imageVector = Icons.Default.Flag, contentDescription = "Device menu")
-                Text(text = "Power")
-            }
+            if (deviceConnected)
+                TextButton(onClick = { }) {
+                    Icon(imageVector = Icons.Default.Flag, contentDescription = "Device menu")
+                    Text(text = "Power")
+                }
             IconButton(onClick = { expanded = !expanded }) { Icon(imageVector = Icons.Default.MoreVert, contentDescription = "Device menu") }
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                DropdownMenuItem(
-                    onClick = {
-                        openConnectDevice()
-                        expanded = false
-                    }
-                ) { Text(text = "Connect") }
+                when (deviceConnected) {
+                    false -> DropdownMenuItem(
+                        onClick = {
+                            connectDevice()
+                            expanded = false
+                        }
+                    ) { Text(text = "Connect") }
+                    true -> DropdownMenuItem(
+                        onClick = {
+                            disconnectDevice()
+                            expanded = false
+                        }
+                    ) { Text(text = "Disconnect") }
+                }
             }
         },
         backgroundColor = MaterialTheme.colors.surface,

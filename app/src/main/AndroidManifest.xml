@@ -28,5 +28,9 @@
         <activity android:name=".ui.scan.ScanDevicesActivity"
                   android:exported="false"
                   android:theme="@style/Theme.Isida.NoActionBar" />
+
+        <service
+            android:name=".domain.services.BluetoothConnectionService"
+            android:exported="false" />
     </application>
 </manifest>

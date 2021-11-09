@@ -61,7 +61,7 @@ class DeviceModeDialogFragment : DialogFragment(R.layout.dialog_device_mode) {
 
     private fun handle(event: DeviceModeEvent) = when (event) {
         is DeviceModeEvent.Send -> {
-            (activity as? MainActivity)?.sendCommand(event.command)
+            //(activity as? MainActivity)?.sendCommand(event.command)
             dismiss()
         }
     }

@@ -26,8 +26,6 @@ private sealed class LeafScreen(open val route: String) {
 internal fun AppNavigation(
     viewModel: MainViewModel = hiltViewModel(),
     navController: NavHostController = rememberNavController(),
-    onConnectDevice: () -> Unit,
-    onDisconnectDevice: () -> Unit,
 ) {
     NavHost(
         navController = navController,
@@ -36,8 +34,6 @@ internal fun AppNavigation(
 
         addMainNavFlowTopLevel(
             navController,
-            onConnectDevice = onConnectDevice,
-            onDisconnectDevice = onDisconnectDevice,
         )
     }
 }
@@ -45,8 +41,6 @@ internal fun AppNavigation(
 
 private fun NavGraphBuilder.addMainNavFlowTopLevel(
     navController: NavController,
-    onConnectDevice: () -> Unit,
-    onDisconnectDevice: () -> Unit,
 ) {
     navigation(
         route = Screen.Main.route,
@@ -54,8 +48,6 @@ private fun NavGraphBuilder.addMainNavFlowTopLevel(
     ) {
         addMain(
             navController, Screen.Main,
-            onConnectDevice = onConnectDevice,
-            onDisconnectDevice = onDisconnectDevice,
         )
     }
 }
@@ -64,13 +56,8 @@ private fun NavGraphBuilder.addMainNavFlowTopLevel(
 private fun NavGraphBuilder.addMain(
     navController: NavController,
     root: Screen,
-    onConnectDevice: () -> Unit,
-    onDisconnectDevice: () -> Unit,
 ) {
     composable(LeafScreen.Main.createRoute(root)) {
-        HomeScreen(
-            onConnectDevice = onConnectDevice,
-            onDisconnectDevice = onDisconnectDevice,
-        )
+        HomeScreen()
     }
 }

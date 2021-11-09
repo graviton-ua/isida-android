@@ -5,21 +5,20 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ua.graviton.isida.domain.observers.ObserveDeviceData
+import ua.graviton.isida.domain.DeviceConnectionHolder
 import ua.graviton.isida.ui.utils.ObservableLoadingCounter
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    observeDeviceData: ObserveDeviceData,
-) : ViewModel() {
+class HomeViewModel @Inject constructor() : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
     private val pendingActions = MutableSharedFlow<HomeAction>()
 
     val state: StateFlow<HomeViewState> = combine(
-        observeDeviceData.flow, loadingState.observable
-    ) { data, loading ->
+        DeviceConnectionHolder.isConnected, loadingState.observable
+    ) { deviceConnected, loading ->
         HomeViewState(
+            deviceConnected = deviceConnected,
             isLoading = loading,
         )
     }.stateIn(
