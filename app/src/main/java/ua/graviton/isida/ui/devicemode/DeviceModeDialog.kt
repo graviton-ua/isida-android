@@ -98,7 +98,7 @@ private fun DeviceModeDialog(
                 CheckItemGroup(
                     extras = state.extras,
                     toggleExtra = { actioner(DeviceModeAction.ToggleExtra(it)) },
-                    enabled = state.mode == IsidaCommands.DeviceMode.ONLY_ROTATION,
+                    enabled = state.mode == IsidaCommands.DeviceMode.ENABLE,
                     modifier = Modifier.fillMaxWidth()
                 )
             }

@@ -121,7 +121,7 @@ class BluetoothService(
     private inner class ConnectThread(private val device: BluetoothDevice) : Thread() {
 
         private val mmSocket: BluetoothSocket? by lazy(LazyThreadSafetyMode.NONE) {
-            device.createRfcommSocketToServiceRecord(UUID_ISIDA_DEVICE)
+            device.createRfcommSocketToServiceRecord(UUID_OTHER_DEVICE)
         }
 
         override fun run() {
@@ -135,6 +135,9 @@ class BluetoothService(
                     // until it succeeds or throws an exception.
                     socket.connect()
 
+                    // Reset the ConnectThread because we're done
+                    synchronized(this@BluetoothService) { mConnectThread = null }
+
                     // The connection attempt succeeded. Perform work associated with
                     // the connection in a separate thread.
                     connected(socket, device)
@@ -143,12 +146,10 @@ class BluetoothService(
                     connectionFailed()
                 }
             }
-
-            // Reset the ConnectThread because we're done
-            synchronized(this@BluetoothService) { mConnectThread = null }
         }
 
         fun cancel() {
+            Timber.d("Cancel invoked")
             try {
                 mmSocket?.close()
             } catch (e: IOException) {
@@ -185,6 +186,7 @@ class BluetoothService(
                         else -> arr_byte.add(data)
                     }
                 } catch (e: IOException) {
+                    Timber.w(e)
                     connectionLost()
                     break
                 }
