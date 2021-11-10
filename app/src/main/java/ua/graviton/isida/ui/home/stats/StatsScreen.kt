@@ -124,7 +124,10 @@ private fun Item(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    backgroundColor = android.graphics.Color.WHITE.toLong()
+)
 @Composable
 private fun Preview() {
     IsidaTheme {

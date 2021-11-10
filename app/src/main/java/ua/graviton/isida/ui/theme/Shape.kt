@@ -11,11 +11,11 @@ val IsidaShapes = Shapes(
      * the corner size to be 50%. [TextField] uses this shape with overriding the bottom corners
      * to zero.
      */
-    small = RoundedCornerShape(12.dp),
+    small = RoundedCornerShape(8.dp),
     /**
      * Shape used by medium components like [Card] or [AlertDialog].
      */
-    medium = RoundedCornerShape(12.dp),
+    medium = RoundedCornerShape(8.dp),
     /**
      * Shape used by large components like [ModalDrawer] or [ModalBottomSheetLayout].
      */

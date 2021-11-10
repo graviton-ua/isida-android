@@ -7,8 +7,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import ua.graviton.isida.ui.devicemode.DeviceModeDialog
 import ua.graviton.isida.ui.home.HomeScreen
 
 private sealed class Screen(val route: String) {
@@ -20,6 +22,7 @@ private sealed class LeafScreen(open val route: String) {
     open fun createRoute(root: Screen) = "${root.route}/$route"
 
     object Main : LeafScreen("main")
+    object PowerDialog : LeafScreen("power_dialog")
 }
 
 @Composable
@@ -46,9 +49,8 @@ private fun NavGraphBuilder.addMainNavFlowTopLevel(
         route = Screen.Main.route,
         startDestination = LeafScreen.Main.createRoute(Screen.Main)
     ) {
-        addMain(
-            navController, Screen.Main,
-        )
+        addMain(navController, Screen.Main)
+        addPowerDialog(navController, Screen.Main)
     }
 }
 
@@ -58,6 +60,19 @@ private fun NavGraphBuilder.addMain(
     root: Screen,
 ) {
     composable(LeafScreen.Main.createRoute(root)) {
-        HomeScreen()
+        HomeScreen(
+            openPowerDialog = { navController.navigate(LeafScreen.PowerDialog.createRoute(root)) }
+        )
+    }
+}
+
+private fun NavGraphBuilder.addPowerDialog(
+    navController: NavController,
+    root: Screen,
+) {
+    dialog(LeafScreen.PowerDialog.createRoute(root)) {
+        DeviceModeDialog(
+            navigateUp = { navController.navigateUp() }
+        )
     }
 }

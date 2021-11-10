@@ -35,7 +35,9 @@ import ua.graviton.isida.ui.contracts.ScanForDeviceResultContract
 import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    openPowerDialog: () -> Unit,
+) {
     //LaunchedEffect("once") { SystemBarColorManager.darkIcons.value = true }
     val context = LocalContext.current
 
@@ -48,6 +50,7 @@ fun HomeScreen() {
         viewModel = hiltViewModel(),
         connectDevice = { scanForDevice.launch(Unit) },
         disconnectDevice = { with(context) { startService(intentBLServiceDisconnectDevice()) } },
+        openPowerDialog = openPowerDialog,
     )
 }
 
@@ -56,6 +59,7 @@ private fun HomeScreen(
     viewModel: HomeViewModel,
     connectDevice: () -> Unit,
     disconnectDevice: () -> Unit,
+    openPowerDialog: () -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
 
@@ -64,6 +68,7 @@ private fun HomeScreen(
             //is ShopCartAction.Close -> navigateUp()
             is HomeAction.ConnectDevice -> connectDevice()
             is HomeAction.DisconnectDevice -> disconnectDevice()
+            is HomeAction.OpenPowerDialog -> openPowerDialog()
             else -> viewModel.submitAction(action)
         }
     }
@@ -82,6 +87,7 @@ private fun HomeScreen(
                 modifier = Modifier.fillMaxWidth(),
                 connectDevice = { actioner(HomeAction.ConnectDevice) },
                 disconnectDevice = { actioner(HomeAction.DisconnectDevice) },
+                openPowerDialog = { actioner(HomeAction.OpenPowerDialog) },
             )
         },
         bottomBar = {
@@ -146,13 +152,14 @@ private fun HomeTopBar(
     modifier: Modifier = Modifier,
     connectDevice: () -> Unit,
     disconnectDevice: () -> Unit,
+    openPowerDialog: () -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.app_name)) },
         actions = {
             if (deviceConnected)
-                TextButton(onClick = { }) {
+                TextButton(onClick = { openPowerDialog() }) {
                     Icon(imageVector = Icons.Default.Flag, contentDescription = "Device menu")
                     Text(text = "Power")
                 }

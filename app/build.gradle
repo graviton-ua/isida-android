@@ -60,10 +60,7 @@ android {
         useIR = true
     }
 
-    buildFeatures {
-        viewBinding true
-        compose true
-    }
+    buildFeatures { compose true }
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
     }
