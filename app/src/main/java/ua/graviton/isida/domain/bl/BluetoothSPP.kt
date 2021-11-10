@@ -2,92 +2,21 @@ package ua.graviton.isida.domain.bl
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothManager
-import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Message
-import android.widget.Toast
 import timber.log.Timber
 import java.util.*
 
 // Context from activity which call this class
-class BluetoothSPP(ctx: Context) {
-    private val bluetoothManager: BluetoothManager = ctx.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-    private val bluetoothAdapter: BluetoothAdapter = bluetoothManager.adapter
-
+class BluetoothSPP(
+    private val adapter: BluetoothAdapter
+) {
     // Listener for Bluetooth Status & Connection
     private var mBluetoothStateListener: BluetoothStateListener? = null
     private var mDataReceivedListener: OnDataReceivedListener? = null
     private var mBluetoothConnectionListener: BluetoothConnectionListener? = null
     private var mAutoConnectionListener: AutoConnectionListener? = null
-
-    // Member object for the chat services
-    private var mChatService: BluetoothService? = null
-
-    // Name and Address of the connected device
-    var connectedDeviceName: String? = null
-        private set
-    var connectedDeviceAddress: String? = null
-        private set
-    var isAutoConnecting = false
-        private set
-    private var isAutoConnectionEnabled = false
-    private var isConnected = false
-    private var isConnecting = false
-    private var isServiceRunning = false
-    private var keyword = ""
-    private var isAndroid: Boolean = BluetoothState.DEVICE_ANDROID
-    private var bcl: BluetoothConnectionListener? = null
-    private var c = 0
-
-
-    val isBluetoothAvailable: Boolean
-        @SuppressLint("HardwareIds", "MissingPermission")
-        get() = bluetoothAdapter.address != null
-
-    val isBluetoothEnabled: Boolean get() = bluetoothAdapter.isEnabled
-    val isServiceAvailable: Boolean get() = mChatService != null
-
-    //fun startDiscovery(): Boolean = bluetoothAdapter.startDiscovery()
-    //val isDiscovery: Boolean get() = bluetoothAdapter.isDiscovering
-    //fun cancelDiscovery(): Boolean = bluetoothAdapter.cancelDiscovery()
-
-    fun setupService() {
-        mChatService = BluetoothService(bluetoothAdapter, mHandler)
-    }
-
-    val serviceState: Int
-        get() = mChatService?.state ?: -1
-
-    fun startService(isAndroid: Boolean) {
-        mChatService?.run {
-            if (state == BluetoothState.STATE_NONE) {
-                isServiceRunning = true
-                start(isAndroid)
-                this@BluetoothSPP.isAndroid = isAndroid
-            }
-        }
-    }
-
-    fun stopService() {
-        if (mChatService != null) {
-            isServiceRunning = false
-            mChatService!!.stop()
-        }
-        Handler().postDelayed({
-            if (mChatService != null) {
-                isServiceRunning = false
-                mChatService!!.stop()
-            }
-        }, 500)
-    }
-
-    fun setDeviceTarget(isAndroid: Boolean) {
-        stopService()
-        startService(isAndroid)
-        this@BluetoothSPP.isAndroid = isAndroid
-    }
 
     //TODO: Rewrite it !!!!!!!!!!!
     @SuppressLint("HandlerLeak")
@@ -106,7 +35,7 @@ class BluetoothSPP(ctx: Context) {
                     mBluetoothConnectionListener?.onDeviceConnected(connectedDeviceName, connectedDeviceAddress)
                     isConnected = true
                 }
-                BluetoothState.MESSAGE_TOAST -> Toast.makeText(ctx, msg.data.getString(BluetoothState.TOAST), Toast.LENGTH_LONG).show()
+                BluetoothState.MESSAGE_TOAST -> Unit//Toast.makeText(ctx, msg.data.getString(BluetoothState.TOAST), Toast.LENGTH_LONG).show()
                 BluetoothState.MESSAGE_STATE_CHANGE -> {
                     mBluetoothStateListener?.onServiceStateChanged(msg.arg1)
                     if (isConnected && msg.arg1 != BluetoothState.STATE_CONNECTED) {
@@ -132,30 +61,84 @@ class BluetoothSPP(ctx: Context) {
         }
     }
 
+    // Member object for the chat services
+    private val mChatService: BluetoothService = BluetoothService(adapter, mHandler)
+
+    // Name and Address of the connected device
+    var connectedDeviceName: String? = null
+        private set
+    var connectedDeviceAddress: String? = null
+        private set
+    var isAutoConnecting = false
+        private set
+    private var isAutoConnectionEnabled = false
+    private var isConnected = false
+    private var isConnecting = false
+    private var isServiceRunning = false
+    private var keyword = ""
+    private var isAndroid: Boolean = BluetoothState.DEVICE_ANDROID
+    private var bcl: BluetoothConnectionListener? = null
+    private var c = 0
+
+
+    val isBluetoothAvailable: Boolean
+        @SuppressLint("HardwareIds", "MissingPermission")
+        get() = adapter.address != null
+
+    val isBluetoothEnabled: Boolean get() = adapter.isEnabled
+    val isServiceAvailable: Boolean get() = true
+
+    //fun startDiscovery(): Boolean = bluetoothAdapter.startDiscovery()
+    //val isDiscovery: Boolean get() = bluetoothAdapter.isDiscovering
+    //fun cancelDiscovery(): Boolean = bluetoothAdapter.cancelDiscovery()
+
+    val serviceState: Int
+        get() = mChatService.state
+
+//    fun startService(isAndroid: Boolean) {
+//        mChatService.run {
+//            if (state == BluetoothState.STATE_IDLE) {
+//                isServiceRunning = true
+//                start(isAndroid)
+//                this@BluetoothSPP.isAndroid = isAndroid
+//            }
+//        }
+//    }
+
+    fun stopService() {
+        isServiceRunning = false
+        mChatService.stop()
+        Handler().postDelayed({
+            isServiceRunning = false
+            mChatService.stop()
+        }, 500)
+    }
+
+    fun setDeviceTarget(isAndroid: Boolean) {
+        stopService()
+        //startService(isAndroid)
+        this@BluetoothSPP.isAndroid = isAndroid
+    }
+
+
     fun stopAutoConnect() {
         isAutoConnectionEnabled = false
     }
 
     fun connect(data: Intent?) {
         val address = data?.extras?.getString(BluetoothState.EXTRA_DEVICE_ADDRESS) ?: return
-        val device = bluetoothAdapter.getRemoteDevice(address) ?: return
-        mChatService?.connect(device)
+        val device = adapter.getRemoteDevice(address) ?: return
+        mChatService.connect(device)
     }
 
     fun connect(address: String?) {
-        val device = bluetoothAdapter.getRemoteDevice(address) ?: return
-        mChatService?.connect(device)
+        val device = adapter.getRemoteDevice(address) ?: return
+        mChatService.connect(device)
     }
 
     fun disconnect() {
-        mChatService?.run {
-            isServiceRunning = false
-            stop()
-            if (state == BluetoothState.STATE_NONE) {
-                isServiceRunning = true
-                start(isAndroid)
-            }
-        }
+        isServiceRunning = false
+        mChatService.stop()
     }
 
     fun setBluetoothStateListener(listener: BluetoothStateListener?) {
@@ -174,7 +157,7 @@ class BluetoothSPP(ctx: Context) {
         mAutoConnectionListener = listener
     }
 
-    fun enable() = bluetoothAdapter.enable()
+    fun enable() = adapter.enable()
 
     fun send(data: ByteArray, CRLF: Boolean) {
         mChatService?.run {
@@ -202,8 +185,8 @@ class BluetoothSPP(ctx: Context) {
         }
     }
 
-    val pairedDeviceName: List<String> get() = bluetoothAdapter.bondedDevices.map { it.name }
-    val pairedDeviceAddress: List<String> get() = bluetoothAdapter.bondedDevices.map { it.address }
+    val pairedDeviceName: List<String> get() = adapter.bondedDevices.map { it.name }
+    val pairedDeviceAddress: List<String> get() = adapter.bondedDevices.map { it.address }
 
     fun autoConnect(keywordName: String) {
         if (!isAutoConnectionEnabled) {

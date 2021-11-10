@@ -1,0 +1,246 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "64f9c9eba43bf1bf106e99db6382f8cc",
+    "entities": [
+      {
+        "tableName": "data",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `created_at` TEXT NOT NULL, `device_id` INTEGER NOT NULL, `pv_t0` REAL NOT NULL, `pv_t1` REAL NOT NULL, `pv_t2` REAL NOT NULL, `pv_t3` REAL NOT NULL, `pv_rh` REAL NOT NULL, `pv_co2_1` INTEGER NOT NULL, `pv_co2_2` INTEGER NOT NULL, `pv_co2_3` INTEGER NOT NULL, `pv_timer` INTEGER NOT NULL, `pv_tmr_count` INTEGER NOT NULL, `pv_flap` INTEGER NOT NULL, `power` INTEGER NOT NULL, `fuses` INTEGER NOT NULL, `errors` INTEGER NOT NULL, `warning` INTEGER NOT NULL, `cost0` INTEGER NOT NULL, `cost1` INTEGER NOT NULL, `date` INTEGER NOT NULL, `hours` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deviceId",
+            "columnName": "device_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pvT0",
+            "columnName": "pv_t0",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pvT1",
+            "columnName": "pv_t1",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pvT2",
+            "columnName": "pv_t2",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pvT3",
+            "columnName": "pv_t3",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pvRh",
+            "columnName": "pv_rh",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pvCO2_1",
+            "columnName": "pv_co2_1",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pvCO2_2",
+            "columnName": "pv_co2_2",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pvCO2_3",
+            "columnName": "pv_co2_3",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pvTimer",
+            "columnName": "pv_timer",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pvTmrCount",
+            "columnName": "pv_tmr_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pvFlap",
+            "columnName": "pv_flap",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "power",
+            "columnName": "power",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fuses",
+            "columnName": "fuses",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "errors",
+            "columnName": "errors",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "warning",
+            "columnName": "warning",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cost0",
+            "columnName": "cost0",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cost1",
+            "columnName": "cost1",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hours",
+            "columnName": "hours",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "roles",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `pass_hash` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "passHash",
+            "columnName": "pass_hash",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "operations",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `role_id` INTEGER NOT NULL, FOREIGN KEY(`role_id`) REFERENCES `roles`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "roleId",
+            "columnName": "role_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_operations_role_id",
+            "unique": false,
+            "columnNames": [
+              "role_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_operations_role_id` ON `${TABLE_NAME}` (`role_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "roles",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "role_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '64f9c9eba43bf1bf106e99db6382f8cc')"
+    ]
+  }
+}

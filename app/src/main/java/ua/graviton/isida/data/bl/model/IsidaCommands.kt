@@ -21,11 +21,11 @@ object IsidaCommands {
             else -> mode.code
         }
 
-        Timber.d("Command value: $commandValue")
-        if (commandValue == commandValue or DeviceModeExtra.EXTRA_1.code) Timber.d("Command extra flag 1 applied")
-        if (commandValue == commandValue or DeviceModeExtra.EXTRA_2.code) Timber.d("Command extra flag 2 applied")
-        if (commandValue == commandValue or DeviceModeExtra.EXTRA_3.code) Timber.d("Command extra flag 3 applied")
-        if (commandValue == commandValue or DeviceModeExtra.EXTRA_4.code) Timber.d("Command extra flag 4 applied")
+        //Timber.d("Command value: $commandValue")
+        //if (commandValue == commandValue or DeviceModeExtra.EXTRA_1.code) Timber.d("Command extra flag 1 applied")
+        //if (commandValue == commandValue or DeviceModeExtra.EXTRA_2.code) Timber.d("Command extra flag 2 applied")
+        //if (commandValue == commandValue or DeviceModeExtra.EXTRA_3.code) Timber.d("Command extra flag 3 applied")
+        //if (commandValue == commandValue or DeviceModeExtra.EXTRA_4.code) Timber.d("Command extra flag 4 applied")
 
         return SendPackageDto(
             deviceType = deviceType,

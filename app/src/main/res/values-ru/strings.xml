@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ISIDA-9</string>
+
+    <string name="home_tab_stats">Статистика</string>
+    <string name="home_tab_prop">Опции</string>
+    <string name="home_tab_report">Отчёт</string>
+
     <string name="CellNum">КАМЕРА № %1$s</string>
     <string name="btnStart">Старт</string>
     <string name="btnProp">Уст.</string>

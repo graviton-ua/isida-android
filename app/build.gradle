@@ -19,6 +19,21 @@ android {
         versionName "1.0"
 
         archivesBaseName = "app-v$versionName"
+
+        manifestPlaceholders = [
+                notification_channel_General: "General"
+        ]
+
+        buildConfigField "String", "NOTIFICATION_CHANNEL_ID_GENERAL", "\"$manifestPlaceholders.notification_channel_General\""
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation"  : "$projectDir/schemas".toString(),
+                        "room.incremental"     : "true",
+                        "room.expandProjection": "true"]
+            }
+        }
     }
 
     buildTypes {
@@ -45,38 +60,71 @@ android {
         useIR = true
     }
 
-    buildFeatures { viewBinding true }
+    buildFeatures { compose true }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinx.serialization}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinx.coroutines}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinx.coroutines}"
 
+    // Compose
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.ui:ui-util:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling:$compose_version"
+    //implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation "androidx.compose.foundation:foundation:$compose_version"
+    implementation "androidx.compose.foundation:foundation-layout:$compose_version"
+    implementation "androidx.compose.runtime:runtime:$compose_version"
+    implementation "androidx.compose.animation:animation:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    //implementation "androidx.compose.material:material-icons-core:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+
+    // Accompanist
+    //implementation "com.google.accompanist:accompanist-swiperefresh:${google.accompanist}"
+    implementation "com.google.accompanist:accompanist-insets:${google.accompanist}"
+    implementation "com.google.accompanist:accompanist-insets-ui:${google.accompanist}"
+    //implementation "com.google.accompanist:accompanist-pager:${google.accompanist}"
+    //implementation "com.google.accompanist:accompanist-pager-indicators:${google.accompanist}"
+    //implementation "com.google.accompanist:accompanist-flowlayout:${google.accompanist}"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:${google.accompanist}"
+    //implementation "com.google.accompanist:accompanist-placeholder:${google.accompanist}"
+    //implementation "com.google.accompanist:accompanist-placeholder-material:${google.accompanist}"
+
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${androidx.lifecycle}"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${androidx.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${androidx.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:${androidx.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:${androidx.lifecycle}"
+
+    implementation 'androidx.navigation:navigation-compose:2.4.0-beta02'
+    //implementation 'androidx.paging:paging-compose:1.0.0-alpha14'
+    //implementation 'androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02'
 
     implementation "androidx.room:room-runtime:${androidx.room}"
     kapt "androidx.room:room-compiler:${androidx.room}"
     implementation "androidx.room:room-ktx:${androidx.room}"
 
     implementation "androidx.core:core-ktx:${androidx.core}"
-    implementation "androidx.activity:activity-ktx:${androidx.activity}"
-    implementation "androidx.fragment:fragment-ktx:${androidx.fragment}"
+    implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
+    implementation "androidx.activity:activity-compose:${androidx.activity}"
     implementation "androidx.appcompat:appcompat:${androidx.appcompat}"
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation "androidx.preference:preference-ktx:${androidx.preference}"
-    implementation "com.google.android.material:material:${google.material}"
 
     implementation "com.google.dagger:hilt-android:${google.hilt}"
     kapt "com.google.dagger:hilt-android-compiler:${google.hilt}"
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-alpha03'
+
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
 
     implementation "com.jakewharton.timber:timber:${versions.timber}"
-    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.7'
-    implementation 'com.akexorcist:bluetoothspp:1.0.0'
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$coreDesugaring"
 }
