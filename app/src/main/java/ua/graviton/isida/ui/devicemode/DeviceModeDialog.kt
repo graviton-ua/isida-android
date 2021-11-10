@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -20,7 +21,9 @@ import kotlinx.coroutines.launch
 import ua.graviton.isida.R
 import ua.graviton.isida.data.bl.model.IsidaCommands
 import ua.graviton.isida.domain.services.intentBLServiceSendCommand
+import ua.graviton.isida.ui.theme.Green500
 import ua.graviton.isida.ui.theme.IsidaTheme
+import ua.graviton.isida.ui.theme.Red500
 import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
 
 @Composable
@@ -131,12 +134,14 @@ private fun RadioItemGroup(
     Column(modifier = modifier) {
         RadioItem(
             text = stringResource(id = R.string.radioButOFF),
+            textColor = Red500,
             selected = IsidaCommands.DeviceMode.DISABLE == mode,
             onClicked = { onModeSelect(IsidaCommands.DeviceMode.DISABLE) },
             modifier = Modifier.fillMaxWidth()
         )
         RadioItem(
             text = stringResource(id = R.string.radioButON),
+            textColor = Green500,
             selected = IsidaCommands.DeviceMode.ENABLE == mode,
             onClicked = { onModeSelect(IsidaCommands.DeviceMode.ENABLE) },
             modifier = Modifier.fillMaxWidth()
@@ -156,6 +161,7 @@ private fun RadioItem(
     selected: Boolean,
     onClicked: () -> Unit,
     modifier: Modifier = Modifier,
+    textColor: Color? = null,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -170,6 +176,7 @@ private fun RadioItem(
         )
         Text(
             text = text,
+            color = textColor ?: LocalContentColor.current,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 12.dp)

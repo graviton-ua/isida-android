@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="neutral085">#FFDADADA</color>
-
-    <color name="radioButOFF">#F44336</color>
-    <color name="radioButON">#4CAF50</color>
 </resources>
