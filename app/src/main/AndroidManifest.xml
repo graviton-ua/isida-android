@@ -19,7 +19,8 @@
                  android:theme="@style/Theme.Isida.SplashScreen">
 
         <activity android:name=".ui.MainActivity"
-                  android:exported="true">
+                  android:exported="true"
+                  android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -28,7 +29,8 @@
 
         <activity android:name=".ui.scan.ScanDevicesActivity"
                   android:exported="false"
-                  android:theme="@style/Theme.Isida.NoActionBar" />
+                  android:theme="@style/Theme.Isida.NoActionBar"
+                  android:windowSoftInputMode="adjustResize" />
 
         <service
             android:name=".domain.services.BluetoothConnectionService"

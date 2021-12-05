@@ -4,21 +4,21 @@ buildscript {
         targetSdk = 31
         compileSdk = 31
 
-        kotlin_version = '1.5.31'
-        compose_version = '1.1.0-beta02'
+        kotlin_version = '1.6.0'
+        compose_version = '1.1.0-beta04'
         coreDesugaring = '1.1.5'
 
         androidx = [
                 "core"      : '1.7.0',
                 "activity"  : '1.4.0',
-                "appcompat" : '1.4.0-rc01',
-                "room"      : '2.4.0-beta01',
+                "appcompat" : '1.4.0',
+                "room"      : '2.4.0-beta02',
                 "preference": '1.1.1',
                 "lifecycle" : '2.4.0'
         ]
         google = [
-                "hilt"       : '2.40',
-                "accompanist": '0.21.2-beta',
+                "hilt"       : '2.40.3',
+                "accompanist": '0.21.4-beta',
                 "material"   : '1.4.0'
         ]
         kotlinx = [
@@ -53,9 +53,10 @@ subprojects {
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         kotlinOptions {
             freeCompilerArgs += '-Xopt-in=kotlin.RequiresOptIn'
-            freeCompilerArgs += '-Xopt-in=kotlin.ExperimentalUnsignedTypes'
 
+            freeCompilerArgs += '-Xopt-in=androidx.compose.ui.ExperimentalComposeUiApi'
             freeCompilerArgs += '-Xopt-in=androidx.compose.material.ExperimentalMaterialApi'
+            freeCompilerArgs += '-Xopt-in=com.google.accompanist.insets.ExperimentalAnimatedInsets'
             freeCompilerArgs += '-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi'
             freeCompilerArgs += '-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi'
             freeCompilerArgs += '-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi'
