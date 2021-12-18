@@ -5,6 +5,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -29,6 +30,7 @@ import com.google.accompanist.insets.ui.BottomNavigation
 import com.google.accompanist.insets.ui.TopAppBar
 import timber.log.Timber
 import ua.graviton.isida.R
+import ua.graviton.isida.domain.SystemBarColorManager
 import ua.graviton.isida.domain.services.intentBLServiceConnectDevice
 import ua.graviton.isida.domain.services.intentBLServiceDisconnectDevice
 import ua.graviton.isida.ui.contracts.ScanForDeviceResultContract
@@ -38,7 +40,8 @@ import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
 fun HomeScreen(
     openPowerDialog: () -> Unit,
 ) {
-    //LaunchedEffect("once") { SystemBarColorManager.darkIcons.value = true }
+    LaunchedEffect(Unit) { SystemBarColorManager.darkIcons.value = true }
+
     val context = LocalContext.current
 
     val scanForDevice = rememberLauncherForActivityResult(ScanForDeviceResultContract()) { address ->
@@ -107,8 +110,11 @@ private fun HomeScreen(
                 modifier = Modifier.fillMaxWidth()
             )
         }
-    ) {
-        HomeNavigation(navController = navController)
+    ) { paddings ->
+        HomeNavigation(
+            navController = navController,
+            modifier = Modifier.padding(paddings)
+        )
     }
 }
 

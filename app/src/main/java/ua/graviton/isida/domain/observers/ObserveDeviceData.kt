@@ -11,7 +11,6 @@ class ObserveDeviceData @Inject constructor(
 ) : SubjectInteractor<Unit, DataPackageDto?>() {
 
     init {
-        // Do it only carefully!!!
         invoke(Unit)
     }
 

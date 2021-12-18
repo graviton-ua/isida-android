@@ -1,6 +1,7 @@
 package ua.graviton.isida.ui.home
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -19,11 +20,13 @@ sealed class HomeNavScreen(val route: String) {
 
 @Composable
 internal fun HomeNavigation(
+    modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {
     NavHost(
         navController = navController,
-        startDestination = HomeNavScreen.Stats.route
+        startDestination = HomeNavScreen.Stats.route,
+        modifier = modifier,
     ) {
 
         addStats(navController)

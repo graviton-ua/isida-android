@@ -3,10 +3,7 @@ package ua.graviton.isida.ui.devicemode
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,6 +22,7 @@ import ua.graviton.isida.ui.theme.Green500
 import ua.graviton.isida.ui.theme.IsidaTheme
 import ua.graviton.isida.ui.theme.Red500
 import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
+import ua.graviton.isida.ui.utils.rememberFlowWithLifecycle
 
 @Composable
 fun DeviceModeDialog(
@@ -42,11 +40,8 @@ fun DeviceModeDialog(
     navigateUp: () -> Unit,
 ) {
     val context = LocalContext.current
-    val viewState by viewModel.state.collectAsStateWithLifecycle()
-
     val scope = rememberCoroutineScope()
 
-    // We use SideEffect to start coroutine that will listen for Events 
     LaunchedEffect(viewModel.events) {
         scope.launch {
             viewModel.events.collect { event ->
@@ -59,6 +54,8 @@ fun DeviceModeDialog(
             }
         }
     }
+
+    val viewState by rememberFlowWithLifecycle(viewModel.state).collectAsState(initial = DeviceModeViewState.Empty)
 
     DeviceModeDialog(viewState) { action ->
         when (action) {

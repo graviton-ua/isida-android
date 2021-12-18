@@ -80,4 +80,8 @@
     <string name="ducklings">Утята</string>
     <string name="goose">Гусята</string>
     <string name="quail">Перепел</string>
+
+
+    <string name="prop_dry_sensor_label">Dry sensor</string>
+    <string name="prop_wet_sensor_label">Wet sensor</string>
 </resources>

@@ -54,7 +54,6 @@ data class DataPackageDto(
             Timber.d("package size: ${bytes.size}")
             require(bytes.size == 80) { "Input bytes are incorrect" }
             val ubytes = bytes.toUByteArray()
-            Timber.d("package raw and ubytes:\n${bytes.asList()}\n$ubytes")
             return DataPackageDto(
                 cellId = ubytes[0].toInt(),
                 pvT0 = ubytes.read2BytesAsInt(2).toFloat() / 10,
