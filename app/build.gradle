@@ -56,8 +56,13 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "11"
         useIR = true
+
+        freeCompilerArgs += [
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true"
+        ]
     }
 
     buildFeatures { compose true }
@@ -79,32 +84,26 @@ dependencies {
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-util:$compose_version"
     implementation "androidx.compose.ui:ui-tooling:$compose_version"
-    //implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation "androidx.compose.foundation:foundation:$compose_version"
     implementation "androidx.compose.foundation:foundation-layout:$compose_version"
     implementation "androidx.compose.runtime:runtime:$compose_version"
     implementation "androidx.compose.animation:animation:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
-    //implementation "androidx.compose.material:material-icons-core:$compose_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
 
     // Accompanist
     //implementation "com.google.accompanist:accompanist-swiperefresh:${google.accompanist}"
     implementation "com.google.accompanist:accompanist-insets:${google.accompanist}"
     implementation "com.google.accompanist:accompanist-insets-ui:${google.accompanist}"
-    //implementation "com.google.accompanist:accompanist-pager:${google.accompanist}"
-    //implementation "com.google.accompanist:accompanist-pager-indicators:${google.accompanist}"
     //implementation "com.google.accompanist:accompanist-flowlayout:${google.accompanist}"
     implementation "com.google.accompanist:accompanist-systemuicontroller:${google.accompanist}"
-    //implementation "com.google.accompanist:accompanist-placeholder:${google.accompanist}"
-    //implementation "com.google.accompanist:accompanist-placeholder-material:${google.accompanist}"
 
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${androidx.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${androidx.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:${androidx.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:${androidx.lifecycle}"
 
-    implementation 'androidx.navigation:navigation-compose:2.4.0-beta02'
+    implementation 'androidx.navigation:navigation-compose:2.4.0-rc01'
     //implementation 'androidx.paging:paging-compose:1.0.0-alpha14'
     //implementation 'androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02'
 
@@ -120,9 +119,9 @@ dependencies {
 
     implementation "com.google.dagger:hilt-android:${google.hilt}"
     kapt "com.google.dagger:hilt-android-compiler:${google.hilt}"
-    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-beta01'
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-rc01'
 
-    implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation 'com.google.android.gms:play-services-location:19.0.0'
 
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 

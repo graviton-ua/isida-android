@@ -1,7 +1,5 @@
 package ua.graviton.isida.data.bl.model
 
-import timber.log.Timber
-
 object IsidaCommands {
     private const val deviceType = 9
 

@@ -1,7 +1,6 @@
 package ua.graviton.isida.data.bl.model
 
 import timber.log.Timber
-import ua.graviton.isida.data.db.entities.DeviceDataEntity
 
 data class DataPackageDto(
     val cellId: Int = 0,                        // 1байт[0]     сетевой номер прибора

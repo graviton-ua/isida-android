@@ -1,7 +1,7 @@
 package ua.graviton.isida.utils
 
 inline fun <reified T : Enum<T>> enumContains(name: String): Boolean {
-    return enumValues<T>().any { it.name == name}
+    return enumValues<T>().any { it.name == name }
 }
 
 inline fun <reified T : Enum<T>> enumValueOf(name: String, defaultValue: T): T {

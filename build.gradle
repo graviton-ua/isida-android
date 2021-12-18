@@ -4,26 +4,26 @@ buildscript {
         targetSdk = 31
         compileSdk = 31
 
-        kotlin_version = '1.6.0'
-        compose_version = '1.1.0-beta04'
+        kotlin_version = '1.6.10'
+        compose_version = '1.1.0-rc01'
         coreDesugaring = '1.1.5'
 
         androidx = [
                 "core"      : '1.7.0',
                 "activity"  : '1.4.0',
                 "appcompat" : '1.4.0',
-                "room"      : '2.4.0-beta02',
+                "room"      : '2.4.0',
                 "preference": '1.1.1',
                 "lifecycle" : '2.4.0'
         ]
         google = [
-                "hilt"       : '2.40.3',
-                "accompanist": '0.21.4-beta',
+                "hilt"       : '2.40.5',
+                "accompanist": '0.21.5-rc',
                 "material"   : '1.4.0'
         ]
         kotlinx = [
                 "coroutines"   : '1.5.2',
-                "serialization": '1.3.0'
+                "serialization": '1.3.1'
         ]
         versions = [
                 "timber": "5.0.1"
@@ -34,7 +34,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.3'
+        classpath 'com.android.tools.build:gradle:7.0.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:${google.hilt}"
     }
@@ -49,24 +49,10 @@ allprojects {
 }
 
 subprojects {
-    // TODO: Remove when the Coroutine and Flow APIs leave experimental/internal/preview.
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         kotlinOptions {
-            freeCompilerArgs += '-Xopt-in=kotlin.RequiresOptIn'
-
-            freeCompilerArgs += '-Xopt-in=androidx.compose.ui.ExperimentalComposeUiApi'
-            freeCompilerArgs += '-Xopt-in=androidx.compose.material.ExperimentalMaterialApi'
-            freeCompilerArgs += '-Xopt-in=com.google.accompanist.insets.ExperimentalAnimatedInsets'
-            freeCompilerArgs += '-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi'
-            freeCompilerArgs += '-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi'
-            freeCompilerArgs += '-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi'
-            freeCompilerArgs += '-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi'
-            freeCompilerArgs += '-Xopt-in=coil.annotation.ExperimentalCoilApi'
-
-            // Enable experimental coroutines APIs, including Flow
+            freeCompilerArgs += '-Xopt-in=kotlin.ExperimentalUnsignedTypes'
             freeCompilerArgs += '-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi'
-            freeCompilerArgs += '-Xopt-in=kotlinx.coroutines.FlowPreview'
-            freeCompilerArgs += '-Xopt-in=kotlin.Experimental'
         }
     }
 }
