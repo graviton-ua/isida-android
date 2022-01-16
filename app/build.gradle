@@ -58,16 +58,11 @@ android {
     kotlinOptions {
         jvmTarget = "11"
         useIR = true
-
-        freeCompilerArgs += [
-                "-P",
-                "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true"
-        ]
     }
 
     buildFeatures { compose true }
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion '1.1.0-rc02'
     }
     packagingOptions {
         resources {

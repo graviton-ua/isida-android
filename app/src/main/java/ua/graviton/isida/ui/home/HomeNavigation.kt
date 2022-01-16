@@ -22,6 +22,7 @@ sealed class HomeNavScreen(val route: String) {
 internal fun HomeNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
+    openSetPropDialog: (String) -> Unit,
 ) {
     NavHost(
         navController = navController,
@@ -30,7 +31,7 @@ internal fun HomeNavigation(
     ) {
 
         addStats(navController)
-        addProp(navController)
+        addProp(navController, openSetPropDialog)
         addReport(navController)
     }
 }
@@ -45,9 +46,12 @@ private fun NavGraphBuilder.addStats(
 
 private fun NavGraphBuilder.addProp(
     navController: NavController,
+    openSetPropDialog: (String) -> Unit,
 ) {
     composable(HomeNavScreen.Prop.route) {
-        PropScreen()
+        PropScreen(
+            openSetPropDialog = openSetPropDialog,
+        )
     }
 }
 

@@ -2,14 +2,11 @@ package ua.graviton.isida.ui
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
+import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navigation
 import ua.graviton.isida.ui.devicemode.DeviceModeDialog
 import ua.graviton.isida.ui.home.HomeScreen
 import ua.graviton.isida.ui.setprop.SetPropDialog
@@ -24,7 +21,9 @@ private sealed class LeafScreen(open val route: String) {
 
     object Main : LeafScreen("main")
     object PowerDialog : LeafScreen("power_dialog")
-    object SetPropDialog : LeafScreen("set_prop_dialog")
+    object SetPropDialog : LeafScreen("set_prop/{id}") {
+        fun createRoute(root: Screen, id: String): String = "${root.route}/set_prop/$id"
+    }
 }
 
 @Composable
@@ -64,7 +63,8 @@ private fun NavGraphBuilder.addMain(
 ) {
     composable(LeafScreen.Main.createRoute(root)) {
         HomeScreen(
-            openPowerDialog = { navController.navigate(LeafScreen.PowerDialog.createRoute(root)) }
+            openPowerDialog = { navController.navigate(LeafScreen.PowerDialog.createRoute(root)) },
+            openSetPropDialog = { navController.navigate(LeafScreen.SetPropDialog.createRoute(root, it)) },
         )
     }
 }
@@ -84,7 +84,10 @@ private fun NavGraphBuilder.addSetPropDialog(
     navController: NavController,
     root: Screen,
 ) {
-    dialog(LeafScreen.SetPropDialog.createRoute(root)) {
+    dialog(
+        route = LeafScreen.SetPropDialog.createRoute(root),
+        arguments = listOf(navArgument("id") { type = NavType.StringType })
+    ) {
         SetPropDialog(
             navigateUp = { navController.navigateUp() }
         )

@@ -12,10 +12,10 @@ data class PropViewState(
         val Init = PropViewState(emptyList())
         val Preview = PropViewState(
             items = listOf(
-                PropItem(id = "1", title = PropItem.Title.Text("Some item example"), value = PropItem.Value.Data(23), action = null),
-                PropItem(id = "2", title = PropItem.Title.Text("item example"), value = PropItem.Value.Data(23.2333), action = null),
-                PropItem(id = "3", title = PropItem.Title.Text("Some item"), value = PropItem.Value.Text("Example"), action = null),
-                PropItem(id = "4", title = PropItem.Title.Text("Some example"), value = PropItem.Value.TextRes(R.string.timer), action = null),
+                PropItem(id = "1", title = PropItem.Title.Text("Some item example"), value = PropItem.Value.Data(23)),
+                PropItem(id = "2", title = PropItem.Title.Text("item example"), value = PropItem.Value.Data(23.2333)),
+                PropItem(id = "3", title = PropItem.Title.Text("Some item"), value = PropItem.Value.Text("Example")),
+                PropItem(id = "4", title = PropItem.Title.Text("Some example"), value = PropItem.Value.TextRes(R.string.timer)),
             )
         )
     }
@@ -25,7 +25,6 @@ data class PropItem(
     val id: String,
     val title: Title,
     val value: Value,
-    val action: PropAction? = null
 ) {
     sealed interface Title {
         @JvmInline value class Text(val text: String) : Title

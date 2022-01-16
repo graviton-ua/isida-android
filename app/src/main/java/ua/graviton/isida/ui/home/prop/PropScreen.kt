@@ -4,7 +4,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -17,21 +21,25 @@ import ua.graviton.isida.ui.theme.IsidaTheme
 import ua.graviton.isida.ui.utils.rememberFlowWithLifecycle
 
 @Composable
-fun PropScreen() {
+fun PropScreen(
+    openSetPropDialog: (String) -> Unit,
+) {
     PropScreen(
         viewModel = hiltViewModel(),
+        openSetPropDialog = openSetPropDialog,
     )
 }
 
 @Composable
 private fun PropScreen(
     viewModel: PropViewModel,
+    openSetPropDialog: (String) -> Unit,
 ) {
     val viewState by rememberFlowWithLifecycle(viewModel.state).collectAsState(initial = PropViewState.Init)
 
     PropScreen(viewState) { action ->
         when (action) {
-            //is ShopCartAction.Close -> navigateUp()
+            is PropAction.SetPropDialog -> openSetPropDialog(action.id)
             //is ShopCartAction.NavigateCheckout -> openCheckout()
             else -> viewModel.submitAction(action)
         }
@@ -72,7 +80,7 @@ private fun Item(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .height(IntrinsicSize.Min)
-            .padding(horizontal = 12.dp, vertical = 6.dp)
+            .padding(horizontal = 12.dp)
     ) {
         Text(
             text = item.title.asString(),
@@ -80,17 +88,21 @@ private fun Item(
                 .fillMaxWidth()
                 .weight(1f),
         )
-        Text(
-            text = item.value.asString(),
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-        )
+        ) {
+            Text(
+                text = item.value.asString(),
+            )
+            IconButton(onClick = { click(PropAction.SetPropDialog(item.id)) }) { Icon(Icons.Default.Edit, "edit") }
+        }
     }
 }
 
 @Preview(
-    name = "Test data",
     showBackground = true,
     backgroundColor = android.graphics.Color.LTGRAY.toLong()
 )

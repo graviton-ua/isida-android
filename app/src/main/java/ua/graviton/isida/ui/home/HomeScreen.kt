@@ -39,6 +39,7 @@ import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
 @Composable
 fun HomeScreen(
     openPowerDialog: () -> Unit,
+    openSetPropDialog: (String) -> Unit,
 ) {
     LaunchedEffect(Unit) { SystemBarColorManager.darkIcons.value = true }
 
@@ -54,6 +55,7 @@ fun HomeScreen(
         connectDevice = { scanForDevice.launch(Unit) },
         disconnectDevice = { with(context) { startService(intentBLServiceDisconnectDevice()) } },
         openPowerDialog = openPowerDialog,
+        openSetPropDialog = openSetPropDialog,
     )
 }
 
@@ -63,6 +65,7 @@ private fun HomeScreen(
     connectDevice: () -> Unit,
     disconnectDevice: () -> Unit,
     openPowerDialog: () -> Unit,
+    openSetPropDialog: (String) -> Unit,
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
 
@@ -72,6 +75,7 @@ private fun HomeScreen(
             is HomeAction.ConnectDevice -> connectDevice()
             is HomeAction.DisconnectDevice -> disconnectDevice()
             is HomeAction.OpenPowerDialog -> openPowerDialog()
+            is HomeAction.OpenSetPropDialog -> openSetPropDialog(action.id)
             else -> viewModel.submitAction(action)
         }
     }
@@ -113,7 +117,8 @@ private fun HomeScreen(
     ) { paddings ->
         HomeNavigation(
             navController = navController,
-            modifier = Modifier.padding(paddings)
+            modifier = Modifier.padding(paddings),
+            openSetPropDialog = { actioner(HomeAction.OpenSetPropDialog(it)) },
         )
     }
 }
