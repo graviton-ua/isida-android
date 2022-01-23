@@ -1,10 +1,7 @@
 package ua.graviton.isida.ui.setprop
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,7 +46,7 @@ fun SetPropDialog(
         }
     }
 
-    val viewState by rememberFlowWithLifecycle(viewModel.state).collectAsState(initial = SetPropViewState.Empty)
+    val viewState by rememberFlowWithLifecycle(viewModel.state).collectAsState(initial = SetPropViewState.Init)
 
     SetPropDialog(viewState) { action ->
         when (action) {
@@ -79,7 +76,12 @@ private fun SetPropDialog(
                 is SetPropViewState.Empty -> StateEmpty(modifier = Modifier.fillMaxSize())
                 is SetPropViewState.NoData -> StateNoData(modifier = Modifier.fillMaxSize())
                 is SetPropViewState.NotFound -> StateNotFound(modifier = Modifier.fillMaxSize())
-                is SetPropViewState.Success -> StateSuccess(state = localState, modifier = Modifier.fillMaxSize())
+                is SetPropViewState.Success -> StateSuccess(
+                    state = localState,
+                    onSend = { actioner(SetPropAction.Send) },
+                    onCancel = { actioner(SetPropAction.NavigateUp) },
+                    modifier = Modifier.fillMaxSize(),
+                )
             }
         }
     }
@@ -124,12 +126,51 @@ private fun StateNotFound(
 @Composable
 private fun StateSuccess(
     state: SetPropViewState.Success,
+    onSend: () -> Unit,
+    onCancel: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
+    Column(
         modifier = modifier.padding(8.dp)
     ) {
-        Text(text = state.property.info.id)
+        Text(text = state.propId)
+        SetPropInput(
+            state = state.inputState,
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(1f),
+        )
+        DialogButtons(
+            onSend = onSend,
+            onCancel = onCancel,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Composable
+private fun DialogButtons(
+    onSend: () -> Unit,
+    onCancel: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier,
+    ) {
+        OutlinedButton(
+            onClick = onCancel,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) { Text(text = "Cancel") }
+        Spacer(modifier = Modifier.width(4.dp))
+        Button(
+            onClick = onSend,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) { Text(text = "Apply") }
     }
 }
 

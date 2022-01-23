@@ -86,7 +86,10 @@ private fun NavGraphBuilder.addSetPropDialog(
 ) {
     dialog(
         route = LeafScreen.SetPropDialog.createRoute(root),
-        arguments = listOf(navArgument("id") { type = NavType.StringType })
+        arguments = listOf(navArgument("id") {
+            type = NavType.StringType
+            nullable = false
+        })
     ) {
         SetPropDialog(
             navigateUp = { navController.navigateUp() }

@@ -2,8 +2,10 @@ package ua.graviton.isida.domain.models
 
 sealed class DeviceCharacteristicInfo<T>(
     val id: String,
-    val limits: List<Limit<T>>,
+    val limits: List<Limit<T>> = emptyList(),
 ) {
+
+    object Unknown : DeviceCharacteristicInfo<Unit>(id = "unknown")
 
     object SpT0 : DeviceCharacteristicInfo<Float>(
         id = "spT0",
@@ -17,22 +19,18 @@ sealed class DeviceCharacteristicInfo<T>(
 
     object SpRh0 : DeviceCharacteristicInfo<Float>(
         id = "spRh0",
-        limits = emptyList(),
     )
 
     object SpRh1 : DeviceCharacteristicInfo<Float>(
         id = "spRh1",
-        limits = emptyList(),
     )
 
     object K0 : DeviceCharacteristicInfo<Int>(
         id = "K0",
-        limits = emptyList(),
     )
 
     object K1 : DeviceCharacteristicInfo<Int>(
         id = "K1",
-        limits = emptyList(),
     )
 
 
@@ -75,14 +73,14 @@ sealed class DeviceCharacteristicInfo<T>(
 
 
     companion object {
-        fun byId(id: String): DeviceCharacteristicInfo<*>? = when (id) {
+        fun byId(id: String): DeviceCharacteristicInfo<*> = when (id) {
             "spT0" -> SpT0
             "spT1" -> SpT1
             "spRh0" -> SpRh0
             "spRh1" -> SpRh1
             "K0" -> K0
             "K1" -> K1
-            else -> null
+            else -> Unknown
         }
     }
 }

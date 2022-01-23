@@ -1,18 +1,53 @@
 package ua.graviton.isida.ui.setprop
 
-import ua.graviton.isida.domain.models.DeviceProperty
-
 sealed class SetPropViewState(val id: String) {
+    /**
+     *  State used mostly as initial state with empty body for dialog window, no data yet loaded no errors yet happen
+     */
     object Empty : SetPropViewState("empty")
+
+    /**
+     *  State represents situation when data wasn't able to load, so device didn't provide us any data yet
+     */
     object NoData : SetPropViewState("no_data")
+
+    /**
+     *  State represents situation when property wasn't found in device data, should not be happen at all
+     */
     object NotFound : SetPropViewState("not_found")
+
+    /**
+     *  Success state for dialog with property data and property state for future updates
+     */
     data class Success(
-        val property: DeviceProperty<*>,
+        val propId: String,
+        //val property: DeviceProperty<*>,
+        val inputState: InputState,
     ) : SetPropViewState("success")
 
+
+    sealed interface InputState {
+        val id: String
+
+        object Unknown : InputState {
+            override val id: String get() = "unknown"
+        }
+
+        @JvmInline value class IntProperty(val value: Int) : InputState {
+            override val id: String get() = "int"
+        }
+
+        @JvmInline value class FloatProperty(val value: Float) : InputState {
+            override val id: String get() = "float"
+        }
+    }
+
     companion object {
+        val Init = Empty
         val PreviewSuccess = Success(
-            property = DeviceProperty.K1(12),
+            propId = "Some property id here",
+            inputState = InputState.IntProperty(12),
+            //property = DeviceProperty.K1(12),
         )
     }
 }
