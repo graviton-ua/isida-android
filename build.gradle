@@ -18,7 +18,7 @@ buildscript {
         ]
         google = [
                 "hilt"       : '2.40.5',
-                "accompanist": '0.22.0-rc',
+                "accompanist": '0.24.0-alpha',
                 "material"   : '1.4.0'
         ]
         kotlinx = [
