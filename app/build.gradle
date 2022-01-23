@@ -62,7 +62,7 @@ android {
 
     buildFeatures { compose true }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.1.0-rc02'
+        kotlinCompilerExtensionVersion kotlin_version
     }
     packagingOptions {
         resources {
@@ -107,7 +107,7 @@ dependencies {
     implementation "androidx.room:room-ktx:${androidx.room}"
 
     implementation "androidx.core:core-ktx:${androidx.core}"
-    implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
     implementation "androidx.activity:activity-compose:${androidx.activity}"
     implementation "androidx.appcompat:appcompat:${androidx.appcompat}"
     implementation "androidx.preference:preference-ktx:${androidx.preference}"
@@ -116,7 +116,7 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:${google.hilt}"
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-rc01'
 
-    implementation 'com.google.android.gms:play-services-location:19.0.0'
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
 
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 
