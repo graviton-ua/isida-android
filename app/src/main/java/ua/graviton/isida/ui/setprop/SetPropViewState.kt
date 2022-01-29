@@ -21,33 +21,22 @@ sealed class SetPropViewState(val id: String) {
      */
     data class Success(
         val propId: String,
-        //val property: DeviceProperty<*>,
         val inputState: InputState,
     ) : SetPropViewState("success")
 
 
     sealed interface InputState {
-        val id: String
-
-        object Unknown : InputState {
-            override val id: String get() = "unknown"
-        }
-
-        @JvmInline value class IntProperty(val value: Int) : InputState {
-            override val id: String get() = "int"
-        }
-
-        @JvmInline value class FloatProperty(val value: Float) : InputState {
-            override val id: String get() = "float"
-        }
+        object Unknown : InputState
+        @JvmInline value class NumberInput(val value: String) : InputState
+//        @JvmInline value class IntProperty(val value: Int) : InputState
+//        @JvmInline value class FloatProperty(val value: Float) : InputState
     }
 
     companion object {
         val Init = Empty
         val PreviewSuccess = Success(
             propId = "Some property id here",
-            inputState = InputState.IntProperty(12),
-            //property = DeviceProperty.K1(12),
+            inputState = InputState.NumberInput("12"),
         )
     }
 }

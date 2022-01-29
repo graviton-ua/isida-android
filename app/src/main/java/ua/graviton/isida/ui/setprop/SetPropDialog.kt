@@ -78,6 +78,7 @@ private fun SetPropDialog(
                 is SetPropViewState.NotFound -> StateNotFound(modifier = Modifier.fillMaxSize())
                 is SetPropViewState.Success -> StateSuccess(
                     state = localState,
+                    onStateUpdate = { actioner(SetPropAction.Update(it)) },
                     onSend = { actioner(SetPropAction.Send) },
                     onCancel = { actioner(SetPropAction.NavigateUp) },
                     modifier = Modifier.fillMaxSize(),
@@ -126,6 +127,7 @@ private fun StateNotFound(
 @Composable
 private fun StateSuccess(
     state: SetPropViewState.Success,
+    onStateUpdate: (SetPropAction.UpdateState) -> Unit,
     onSend: () -> Unit,
     onCancel: () -> Unit,
     modifier: Modifier = Modifier,
@@ -136,6 +138,7 @@ private fun StateSuccess(
         Text(text = state.propId)
         SetPropInput(
             state = state.inputState,
+            onStateUpdate = onStateUpdate,
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1f),
@@ -152,7 +155,7 @@ private fun StateSuccess(
 private fun DialogButtons(
     onSend: () -> Unit,
     onCancel: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,

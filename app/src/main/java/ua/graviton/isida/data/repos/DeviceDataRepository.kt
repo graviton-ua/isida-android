@@ -14,7 +14,7 @@ import javax.inject.Singleton
 class DeviceDataRepository @Inject constructor(
     private val db: AppDatabase
 ) {
-    private val _latestData = MutableStateFlow<DataPackageDto?>(null)
+    private val _latestData = MutableStateFlow<DataPackageDto?>(DataPackageDto.TestData)
 
     fun listenLatestRAMData() = _latestData.asStateFlow()
 
