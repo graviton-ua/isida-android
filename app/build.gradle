@@ -87,10 +87,8 @@ dependencies {
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
 
     // Accompanist
-    //implementation "com.google.accompanist:accompanist-swiperefresh:${google.accompanist}"
     implementation "com.google.accompanist:accompanist-insets:${google.accompanist}"
     implementation "com.google.accompanist:accompanist-insets-ui:${google.accompanist}"
-    //implementation "com.google.accompanist:accompanist-flowlayout:${google.accompanist}"
     implementation "com.google.accompanist:accompanist-systemuicontroller:${google.accompanist}"
 
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${androidx.lifecycle}"
@@ -98,9 +96,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:${androidx.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:${androidx.lifecycle}"
 
-    implementation 'androidx.navigation:navigation-compose:2.4.0-rc01'
-    //implementation 'androidx.paging:paging-compose:1.0.0-alpha14'
-    //implementation 'androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02'
+    implementation 'androidx.navigation:navigation-compose:2.4.0'
 
     implementation "androidx.room:room-runtime:${androidx.room}"
     kapt "androidx.room:room-compiler:${androidx.room}"
