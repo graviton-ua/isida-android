@@ -7,6 +7,8 @@ plugins {
     id 'dagger.hilt.android.plugin'
 }
 
+def githubVersionCode = System.getenv("GITHUB_RUN_NUMBER") as Integer ?: 1
+
 android {
     compileSdkVersion project.compileSdk
 
@@ -15,8 +17,8 @@ android {
         minSdkVersion project.minSdk
         targetSdkVersion project.targetSdk
 
-        versionCode 1
-        versionName "1.0"
+        versionCode githubVersionCode
+        versionName gitDescribe()
 
         archivesBaseName = "app-v$versionName"
 
@@ -119,28 +121,13 @@ dependencies {
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$coreDesugaring"
 }
 
-static String getVersionSuffix(String extra) {
-    def branch = "git branch --show-current".execute().text.trim()
-    def commit = "git rev-parse --short HEAD".execute().text.trim()
-    def describe = "git describe --tags".execute().text.trim()
-    def pattern = ~/(.+)-(\d+)-(.+)/
-
-    if (branch =~ "master") {
-        return ""
-    } else if (branch =~ "release/(.+)") {
-        def matcher = describe =~ pattern
-        if (matcher.find()) {
-            def (_, tag, count, hash) = matcher[0]
-            return "-RC$count${extra ? extra : ""}-$hash"
-        } else return "-RC-$commit"
-    } else {
-        def matcher = describe =~ pattern
-        if (matcher.find()) {
-            def (_, tag, count, hash) = matcher[0]
-            return "-$count${extra ? extra : ""}-$hash"
-        }
+String gitDescribe() {
+    def hashStdOut = new ByteArrayOutputStream()
+    exec {
+        commandLine "git", "describe", "--tags", "--always"
+        standardOutput = hashStdOut
     }
-    return "-$commit"
+    return hashStdOut.toString().split("\n").first().trim()
 }
 
 String gitLatestTag() {
