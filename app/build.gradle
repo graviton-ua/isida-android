@@ -42,7 +42,6 @@ android {
         debug {
             minifyEnabled false
             versionNameSuffix "-DEBUG"
-            applicationIdSuffix ".debug"
         }
 
         release {
@@ -63,14 +62,8 @@ android {
     }
 
     buildFeatures { compose true }
-    composeOptions {
-        kotlinCompilerExtensionVersion compose_version
-    }
-    packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
-    }
+    composeOptions { kotlinCompilerExtensionVersion compose_version }
+    packagingOptions { resources { excludes += '/META-INF/{AL2.0,LGPL2.1}' } }
 }
 
 dependencies {
@@ -98,21 +91,21 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:${androidx.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:${androidx.lifecycle}"
 
-    implementation 'androidx.navigation:navigation-compose:2.4.0'
+    implementation 'androidx.navigation:navigation-compose:2.5.0-beta01'
 
     implementation "androidx.room:room-runtime:${androidx.room}"
     kapt "androidx.room:room-compiler:${androidx.room}"
     implementation "androidx.room:room-ktx:${androidx.room}"
 
     implementation "androidx.core:core-ktx:${androidx.core}"
-    implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
     implementation "androidx.activity:activity-compose:${androidx.activity}"
     implementation "androidx.appcompat:appcompat:${androidx.appcompat}"
     implementation "androidx.preference:preference-ktx:${androidx.preference}"
 
     implementation "com.google.dagger:hilt-android:${google.hilt}"
     kapt "com.google.dagger:hilt-android-compiler:${google.hilt}"
-    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-rc01'
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
     implementation 'com.google.android.gms:play-services-location:19.0.1'
 

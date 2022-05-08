@@ -4,24 +4,24 @@ buildscript {
         targetSdk = 31
         compileSdk = 31
 
-        kotlin_version = '1.6.10'
-        compose_version = '1.2.0-alpha02'
+        kotlin_version = '1.6.20'
+        compose_version = '1.2.0-alpha08'
         coreDesugaring = '1.1.5'
 
         androidx = [
-                "core"      : '1.7.0',
-                "activity"  : '1.4.0',
+                "core"      : '1.8.0-beta01',
+                "activity"  : '1.5.0-beta01',
                 "appcompat" : '1.4.1',
-                "room"      : '2.4.1',
-                "preference": '1.1.1',
-                "lifecycle" : '2.4.0'
+                "room"      : '2.4.2',
+                "preference": '1.2.0',
+                "lifecycle" : '2.5.0-beta01'
         ]
         google = [
-                "hilt"       : '2.40.5',
-                "accompanist": '0.24.1-alpha',
+                "hilt"       : '2.41',
+                "accompanist": '0.24.7-alpha',
         ]
         kotlinx = [
-                "coroutines"   : '1.6.0',
+                "coroutines"   : '1.6.1',
                 "serialization": '1.3.2'
         ]
         versions = [
