@@ -1,9 +1,7 @@
 package ua.graviton.isida.ui.home.stats
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -16,8 +14,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.rememberInsetsPaddingValues
 import ua.graviton.isida.R
 import ua.graviton.isida.ui.theme.IsidaTheme
 import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
@@ -54,13 +50,7 @@ private fun StatsScreen(
     val lazyListState = rememberLazyListState()
     LazyColumn(
         state = lazyListState,
-        contentPadding = rememberInsetsPaddingValues(
-            insets = LocalWindowInsets.current.systemBars,
-            applyTop = false,
-            applyBottom = false,
-            additionalStart = 12.dp,
-            additionalEnd = 12.dp,
-        ),
+        contentPadding = WindowInsets.systemBars.add(WindowInsets(left = 12.dp, right = 12.dp)).asPaddingValues(),
         modifier = Modifier.fillMaxSize()
     ) {
         item {

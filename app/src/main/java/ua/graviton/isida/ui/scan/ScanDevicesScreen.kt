@@ -2,10 +2,7 @@ package ua.graviton.isida.ui.scan
 
 import android.bluetooth.BluetoothDevice
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -19,10 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.navigationBarsPadding
-import com.google.accompanist.insets.rememberInsetsPaddingValues
-import com.google.accompanist.insets.ui.TopAppBar
+import ua.graviton.isida.ui.compose.TopAppBar
 import ua.graviton.isida.ui.theme.IsidaTheme
 import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
 
@@ -87,7 +81,7 @@ private fun ScanDevicesScreen(
                 actions = { if (state.isLoading) CircularProgressIndicator() },
                 backgroundColor = MaterialTheme.colors.surface,
                 contentColor = contentColorFor(MaterialTheme.colors.surface),
-                contentPadding = rememberInsetsPaddingValues(insets = LocalWindowInsets.current.statusBars),
+                contentPadding = WindowInsets.statusBars.asPaddingValues(),
                 modifier = Modifier.fillMaxWidth()
             )
         },
@@ -98,7 +92,7 @@ private fun ScanDevicesScreen(
                     else actioner(ScanDevicesAction.StartScanClicked)
                 },
                 backgroundColor = if (state.isLoading) Color.Red else Color.Green,
-                modifier = Modifier.navigationBarsPadding(bottom = true)
+                modifier = Modifier.navigationBarsPadding()
             ) {
                 Text(
                     text = if (state.isLoading) "Stop scan" else "Start scan",
@@ -109,7 +103,7 @@ private fun ScanDevicesScreen(
     ) {
         LazyColumn(
             state = lazyListState,
-            contentPadding = rememberInsetsPaddingValues(insets = LocalWindowInsets.current.navigationBars),
+            contentPadding = WindowInsets.navigationBars.asPaddingValues(),
             modifier = Modifier
                 .padding(it)
                 .fillMaxSize()

@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
-import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
@@ -61,27 +60,25 @@ class ScanDevicesActivity : AppCompatActivity() {
 
         setContent {
             IsidaTheme {
-                ProvideWindowInsets {
-                    val systemBarUiController = rememberSystemUiController()
-                    systemBarUiController.setStatusBarColor(Color.Transparent, darkIcons = true)
+                val systemBarUiController = rememberSystemUiController()
+                systemBarUiController.setStatusBarColor(Color.Transparent, darkIcons = true)
 
-                    ScanDevicesScreen(
-                        navigateUp = { onBackPressed() },
-                        onStartScanClicked = { onScanClick(bluetoothAdapter) },
-                        onStopScanClicked = { bluetoothAdapter?.cancelDiscovery() },
-                        onDeviceClicked = {
-                            // Cancel discovery because it's costly and we're about to connect
-                            bluetoothAdapter?.cancelDiscovery()
+                ScanDevicesScreen(
+                    navigateUp = { onBackPressed() },
+                    onStartScanClicked = { onScanClick(bluetoothAdapter) },
+                    onStopScanClicked = { bluetoothAdapter?.cancelDiscovery() },
+                    onDeviceClicked = {
+                        // Cancel discovery because it's costly and we're about to connect
+                        bluetoothAdapter?.cancelDiscovery()
 
-                            // Create the result Intent and include the MAC address
-                            val intent = Intent().apply { putExtra(BluetoothState.EXTRA_DEVICE_ADDRESS, it.address) }
+                        // Create the result Intent and include the MAC address
+                        val intent = Intent().apply { putExtra(BluetoothState.EXTRA_DEVICE_ADDRESS, it.address) }
 
-                            // Set result and finish this Activity
-                            setResult(RESULT_OK, intent)
-                            finish()
-                        }
-                    )
-                }
+                        // Set result and finish this Activity
+                        setResult(RESULT_OK, intent)
+                        finish()
+                    }
+                )
             }
         }
     }

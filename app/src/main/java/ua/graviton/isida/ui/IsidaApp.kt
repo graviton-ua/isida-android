@@ -5,7 +5,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
-import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ua.graviton.isida.domain.SystemBarColorManager
@@ -14,10 +13,8 @@ import ua.graviton.isida.ui.theme.IsidaTheme
 @Composable
 fun IsidaApp() {
     IsidaTheme {
-        ProvideWindowInsets {
-            SystemStatusBarColor()
-            AppNavigation()
-        }
+        SystemStatusBarColor()
+        AppNavigation()
     }
 }
 

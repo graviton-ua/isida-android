@@ -2,18 +2,86 @@ package ua.graviton.isida.ui.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.coroutineScope
-import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.*
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
+import kotlinx.coroutines.flow.collectLatest
+
+/**
+ * Collects values from this [StateFlow] and represents its latest value via [State] in a
+ * lifecycle-aware manner.
+ *
+ * The [StateFlow.value] is used as an initial value. Every time there would be new value posted
+ * into the [StateFlow] the returned [State] will be updated causing recomposition of every
+ * [State.value] usage whenever the [lifecycle] is at least [minActiveState].
+ *
+ * This [StateFlow] is collected every time [lifecycle] reaches the [minActiveState] Lifecycle
+ * state. The collection stops when [lifecycle] falls below [minActiveState].
+ *
+ * Warning: [Lifecycle.State.INITIALIZED] is not allowed in this API. Passing it as a
+ * parameter will throw an [IllegalArgumentException].
+ *
+ * @param lifecycle The [Lifecycle] where the restarting collecting from `this` flow work will be
+ * kept alive.
+ * @param minActiveState [Lifecycle.State] in which the upstream flow gets collected. The
+ * collection will stop if the lifecycle falls below that state, and will restart if it's in that
+ * state again.
+ */
+@Composable
+fun <T> StateFlow<T>.collectAsStateWithLifecycle(
+    lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
+): State<T> = collectAsStateWithLifecycle(
+    initialValue = remember { this.value },
+    lifecycle = lifecycle,
+    minActiveState = minActiveState
+)
+
+/**
+ * Collects values from this [Flow] and represents its latest value via [State] in a
+ * lifecycle-aware manner.
+ *
+ * Every time there would be new value posted into the [Flow] the returned [State] will be updated
+ * causing recomposition of every [State.value] usage whenever the [lifecycle] is at
+ * least [minActiveState].
+ *
+ * This [Flow] is collected every time [lifecycle] reaches the [minActiveState] Lifecycle
+ * state. The collection stops when [lifecycle] falls below [minActiveState].
+ *
+ * Warning: [Lifecycle.State.INITIALIZED] is not allowed in this API. Passing it as a
+ * parameter will throw an [IllegalArgumentException].
+ *
+ * @param initialValue The initial value given to the returned [State.value].
+ * @param lifecycle The [Lifecycle] where the restarting collecting from `this` flow work will be
+ * kept alive.
+ * @param minActiveState [Lifecycle.State] in which the upstream flow gets collected. The
+ * collection will stop if the lifecycle falls below that state, and will restart if it's in that
+ * state again.
+ */
+@Composable
+fun <T> Flow<T>.collectAsStateWithLifecycle(
+    initialValue: T,
+    lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
+): State<T> {
+    val currentValue = remember(this) { initialValue }
+    return produceState(
+        initialValue = currentValue,
+        key1 = this,
+        key2 = lifecycle,
+        key3 = minActiveState
+    ) {
+        lifecycle.repeatOnLifecycle(minActiveState) {
+            this@collectAsStateWithLifecycle.collect {
+                this@produceState.value = it
+            }
+        }
+    }
+}
+
 
 @Composable
 fun <T> rememberFlowWithLifecycle(
@@ -27,25 +95,16 @@ fun <T> rememberFlowWithLifecycle(
     )
 }
 
-@Deprecated(message = "Use collectAsStateWithLifecycle instead")
-@Composable
-fun <T> rememberStateFlowWithLifecycle(
-    flow: StateFlow<T>,
-    lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle,
-    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
-): StateFlow<T> = remember(flow, lifecycle) {
-    val initValue = flow.value
-    flow.flowWithLifecycle(
-        lifecycle = lifecycle,
-        minActiveState = minActiveState
-    ).stateIn(
-        scope = lifecycle.coroutineScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = initValue
-    )
-}
 
-@Composable
-fun <T> StateFlow<T>.collectAsStateWithLifecycle(
-    context: CoroutineContext = EmptyCoroutineContext
-): State<T> = rememberFlowWithLifecycle(this).collectAsState(value, context)
+fun <T> Flow<T>.launchAndCollectWithLifecycle(
+    lifecycleOwner: LifecycleOwner,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+    collect: (T) -> Unit,
+) {
+    lifecycleOwner.lifecycleScope.launchWhenStarted {
+        this@launchAndCollectWithLifecycle.flowWithLifecycle(
+            lifecycle = lifecycleOwner.lifecycle,
+            minActiveState = minActiveState
+        ).collectLatest { collect(it) }
+    }
+}

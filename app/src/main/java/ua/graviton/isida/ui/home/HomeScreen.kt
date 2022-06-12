@@ -4,8 +4,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -24,15 +23,13 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.rememberInsetsPaddingValues
-import com.google.accompanist.insets.ui.BottomNavigation
-import com.google.accompanist.insets.ui.TopAppBar
 import timber.log.Timber
 import ua.graviton.isida.R
 import ua.graviton.isida.domain.SystemBarColorManager
 import ua.graviton.isida.domain.services.intentBLServiceConnectDevice
 import ua.graviton.isida.domain.services.intentBLServiceDisconnectDevice
+import ua.graviton.isida.ui.compose.BottomNavigation
+import ua.graviton.isida.ui.compose.TopAppBar
 import ua.graviton.isida.ui.contracts.ScanForDeviceResultContract
 import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
 
@@ -197,7 +194,7 @@ private fun HomeTopBar(
         },
         backgroundColor = MaterialTheme.colors.surface,
         contentColor = contentColorFor(MaterialTheme.colors.surface),
-        contentPadding = rememberInsetsPaddingValues(insets = LocalWindowInsets.current.statusBars),
+        contentPadding = WindowInsets.statusBars.asPaddingValues(),
         modifier = modifier
     )
 }
@@ -211,7 +208,7 @@ private fun HomeBottomNavigation(
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.surface,
         contentColor = contentColorFor(MaterialTheme.colors.surface),
-        contentPadding = rememberInsetsPaddingValues(LocalWindowInsets.current.navigationBars),
+        contentPadding = WindowInsets.navigationBars.asPaddingValues(),
         modifier = modifier
     ) {
         HomeNavigationItems.forEach { item ->
