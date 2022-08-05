@@ -4,18 +4,19 @@ plugins {
     id 'kotlin-parcelize'
     id 'org.jetbrains.kotlin.kapt'
     id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlin_version"
+    id 'com.google.devtools.ksp' version '1.7.10-1.0.6'
     id 'dagger.hilt.android.plugin'
 }
 
 def githubVersionCode = System.getenv("GITHUB_RUN_NUMBER") as Integer ?: 1
 
 android {
-    compileSdkVersion project.compileSdk
+    compileSdk project.compileSdk
 
     defaultConfig {
         applicationId "ua.graviton.isida"
-        minSdkVersion project.minSdk
-        targetSdkVersion project.targetSdk
+        minSdk project.minSdk
+        targetSdk project.targetSdk
 
         versionCode githubVersionCode
         versionName gitDescribe()
@@ -45,7 +46,7 @@ android {
         }
 
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -58,53 +59,72 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
-        //useIR = true //TODO: Enable when compose compiler will released for kotlin 1.7.0
+        // For creation of default methods in interfaces
+        freeCompilerArgs += "-Xjvm-default=all"
     }
 
     buildFeatures { compose true }
-    composeOptions { kotlinCompilerExtensionVersion '1.2.0-dev-k1.7.0-53370d83bb1' /*compose_version*/ }
+    composeOptions { kotlinCompilerExtensionVersion '1.3.0-beta01' }
     packagingOptions { resources { excludes += '/META-INF/{AL2.0,LGPL2.1}' } }
+    
+    applicationVariants.all { variant ->
+        kotlin.sourceSets {
+            getByName(variant.name) {
+                kotlin.srcDir("build/generated/ksp/${variant.name}/kotlin")
+            }
+        }
+    }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinx.serialization}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinx.coroutines}"
-
+    
     // Compose
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.ui:ui-util:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling:$compose_version"
-    implementation "androidx.compose.foundation:foundation:$compose_version"
-    implementation "androidx.compose.foundation:foundation-layout:$compose_version"
-    implementation "androidx.compose.runtime:runtime:$compose_version"
-    implementation "androidx.compose.animation:animation:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.ui:ui:${androidx.compose}"
+    implementation "androidx.compose.ui:ui-util:${androidx.compose}"
+    debugImplementation "androidx.compose.ui:ui-tooling:${androidx.compose}"
+    implementation "androidx.compose.ui:ui-tooling-preview:${androidx.compose}"
+    implementation "androidx.compose.foundation:foundation:${androidx.compose}"
+    implementation "androidx.compose.foundation:foundation-layout:${androidx.compose}"
+    implementation "androidx.compose.runtime:runtime:${androidx.compose}"
+    implementation "androidx.compose.animation:animation:${androidx.compose}"
+    implementation "androidx.compose.material:material:${androidx.compose}"
+    implementation "androidx.compose.material:material-icons-extended:${androidx.compose}"
 
     // Accompanist
-    //implementation "com.google.accompanist:accompanist-insets:${google.accompanist}"
-    //implementation "com.google.accompanist:accompanist-insets-ui:${google.accompanist}"
     implementation "com.google.accompanist:accompanist-systemuicontroller:${google.accompanist}"
+    implementation "com.google.accompanist:accompanist-navigation-material:${google.accompanist}"
 
+    // Compose destinations
+    implementation "io.github.raamcosta.compose-destinations:core:${versions.compose_destinations}"
+    ksp "io.github.raamcosta.compose-destinations:ksp:${versions.compose_destinations}"
+
+    // lifecycle
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${androidx.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${androidx.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:${androidx.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:${androidx.lifecycle}"
 
-    implementation 'androidx.navigation:navigation-compose:2.5.0-rc01'
+    implementation "androidx.navigation:navigation-compose:${androidx.navigation}"
 
     implementation "androidx.room:room-runtime:${androidx.room}"
     kapt "androidx.room:room-compiler:${androidx.room}"
     implementation "androidx.room:room-ktx:${androidx.room}"
 
     implementation "androidx.core:core-ktx:${androidx.core}"
-    implementation 'androidx.core:core-splashscreen:1.0.0-rc01'
+    implementation "androidx.annotation:annotation:${androidx.annotation}"
     implementation "androidx.activity:activity-compose:${androidx.activity}"
+    implementation 'androidx.core:core-splashscreen:1.0.0'
     implementation "androidx.appcompat:appcompat:${androidx.appcompat}"
     implementation "androidx.preference:preference-ktx:${androidx.preference}"
 
+    def data_store_version = "1.0.0"
+    implementation "androidx.datastore:datastore-preferences:$data_store_version"
+    implementation "androidx.datastore:datastore-core:$data_store_version"
+
     implementation "com.google.dagger:hilt-android:${google.hilt}"
-    kapt "com.google.dagger:hilt-android-compiler:${google.hilt}"
+    kapt "com.google.dagger:hilt-compiler:${google.hilt}"
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
     implementation 'com.google.android.gms:play-services-location:20.0.0'
@@ -112,6 +132,12 @@ dependencies {
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$coreDesugaring"
+}
+
+kapt { correctErrorTypes = true }
+
+ksp {
+    arg("compose-destinations.generateNavGraphs", "false")
 }
 
 String gitDescribe() {
@@ -142,5 +168,3 @@ String gitNotes(String latestTag) {
     }
     return hashStdOut.toString().trim()
 }
-
-kapt { correctErrorTypes = true }
