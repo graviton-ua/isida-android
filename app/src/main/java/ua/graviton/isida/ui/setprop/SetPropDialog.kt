@@ -9,12 +9,22 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.launch
 import ua.graviton.isida.domain.services.intentBLServiceSendCommand
+import ua.graviton.isida.ui.compose.FreeDialogStyle
 import ua.graviton.isida.ui.theme.IsidaTheme
 import ua.graviton.isida.ui.utils.Crossfade
 import ua.graviton.isida.ui.utils.rememberFlowWithLifecycle
 
+data class SetPropDialogNavArgs(
+    val id: String,
+)
+
+@Destination(
+    navArgsDelegate = SetPropDialogNavArgs::class,
+    style = FreeDialogStyle::class,
+)
 @Composable
 fun SetPropDialog(
     navigateUp: () -> Unit,

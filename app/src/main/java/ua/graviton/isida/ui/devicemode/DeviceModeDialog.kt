@@ -13,14 +13,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.launch
 import ua.graviton.isida.R
 import ua.graviton.isida.data.bl.model.IsidaCommands
 import ua.graviton.isida.domain.services.intentBLServiceSendCommand
+import ua.graviton.isida.ui.compose.FreeDialogStyle
 import ua.graviton.isida.ui.theme.IsidaColor
 import ua.graviton.isida.ui.theme.IsidaTheme
 import ua.graviton.isida.ui.utils.rememberFlowWithLifecycle
 
+@Destination(
+    style = FreeDialogStyle::class,
+)
 @Composable
 fun DeviceModeDialog(
     navigateUp: () -> Unit,

@@ -18,11 +18,13 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
+import com.ramcosta.composedestinations.annotation.Destination
 import timber.log.Timber
 import ua.graviton.isida.R
 import ua.graviton.isida.domain.SystemBarColorManager
@@ -31,8 +33,10 @@ import ua.graviton.isida.domain.services.intentBLServiceDisconnectDevice
 import ua.graviton.isida.ui.compose.BottomNavigation
 import ua.graviton.isida.ui.compose.TopAppBar
 import ua.graviton.isida.ui.contracts.ScanForDeviceResultContract
+import ua.graviton.isida.ui.theme.IsidaTheme
 import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
 
+@Destination
 @Composable
 fun HomeScreen(
     openPowerDialog: () -> Unit,
@@ -306,3 +310,15 @@ private val HomeNavigationItems = listOf(
 //        selectedIconResId = R.drawable.ic_weekend_filled,
 //    ),
 )
+
+
+@Preview
+@Composable
+private fun Preview() {
+    IsidaTheme {
+        HomeScreen(
+            state = HomeViewState.Empty,
+            actioner = {},
+        )
+    }
+}
