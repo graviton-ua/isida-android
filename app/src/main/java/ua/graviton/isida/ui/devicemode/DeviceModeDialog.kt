@@ -13,15 +13,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ua.graviton.isida.R
 import ua.graviton.isida.data.bl.model.IsidaCommands
 import ua.graviton.isida.domain.services.intentBLServiceSendCommand
-import ua.graviton.isida.ui.theme.Green500
+import ua.graviton.isida.ui.theme.IsidaColor
 import ua.graviton.isida.ui.theme.IsidaTheme
-import ua.graviton.isida.ui.theme.Red500
-import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
 import ua.graviton.isida.ui.utils.rememberFlowWithLifecycle
 
 @Composable
@@ -131,14 +128,14 @@ private fun RadioItemGroup(
     Column(modifier = modifier) {
         RadioItem(
             text = stringResource(id = R.string.radioButOFF),
-            textColor = Red500,
+            textColor = IsidaColor.Red500,
             selected = IsidaCommands.DeviceMode.DISABLE == mode,
             onClicked = { onModeSelect(IsidaCommands.DeviceMode.DISABLE) },
             modifier = Modifier.fillMaxWidth()
         )
         RadioItem(
             text = stringResource(id = R.string.radioButON),
-            textColor = Green500,
+            textColor = IsidaColor.Green500,
             selected = IsidaCommands.DeviceMode.ENABLE == mode,
             onClicked = { onModeSelect(IsidaCommands.DeviceMode.ENABLE) },
             modifier = Modifier.fillMaxWidth()

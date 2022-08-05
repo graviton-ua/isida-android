@@ -8,12 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorPalette = darkColors(
-    primary = neutral000,
-    primaryVariant = neutral000,
-    secondary = gelb,
-    background = neutral085,
+    primary = IsidaColor.neutral000,
+    primaryVariant = IsidaColor.neutral000,
+    secondary = IsidaColor.gelb,
+    background = IsidaColor.neutral085,
     surface = Color.White,
-    error = error,
+    error = IsidaColor.error,
 
     onPrimary = Color.White,
     onSecondary = Color.White,
@@ -23,12 +23,12 @@ private val DarkColorPalette = darkColors(
 )
 
 private val LightColorPalette = lightColors(
-    primary = neutral000,
-    primaryVariant = neutral000,
-    secondary = gelb,
-    background = neutral085,
+    primary = IsidaColor.neutral000,
+    primaryVariant = IsidaColor.neutral000,
+    secondary = IsidaColor.gelb,
+    background = IsidaColor.neutral085,
     surface = Color.White,
-    error = error,
+    error = IsidaColor.error,
 
     onPrimary = Color.White,
     onSecondary = Color.White,
