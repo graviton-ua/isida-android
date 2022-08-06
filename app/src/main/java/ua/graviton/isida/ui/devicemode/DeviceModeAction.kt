@@ -1,6 +1,6 @@
 package ua.graviton.isida.ui.devicemode
 
-import ua.graviton.isida.data.bl.model.IsidaCommands
+import ua.graviton.isida.data.bl.IsidaCommands
 
 sealed class DeviceModeAction {
     object NavigateUp : DeviceModeAction()

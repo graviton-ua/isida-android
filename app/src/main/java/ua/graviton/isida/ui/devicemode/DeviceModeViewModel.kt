@@ -6,9 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ua.graviton.isida.data.bl.model.IsidaCommands
-import ua.graviton.isida.data.bl.model.IsidaCommands.DeviceMode
-import ua.graviton.isida.data.bl.model.IsidaCommands.DeviceModeExtra
+import ua.graviton.isida.data.bl.IsidaCommands
+import ua.graviton.isida.data.bl.IsidaCommands.DeviceMode
+import ua.graviton.isida.data.bl.IsidaCommands.DeviceModeExtra
 import ua.graviton.isida.domain.observers.ObserveDeviceData
 import javax.inject.Inject
 

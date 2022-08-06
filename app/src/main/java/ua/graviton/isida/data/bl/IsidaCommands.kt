@@ -1,7 +1,10 @@
-package ua.graviton.isida.data.bl.model
+package ua.graviton.isida.data.bl
+
+import ua.graviton.isida.data.bl.model.SendPackageDto
+import ua.graviton.isida.utils.asByteArray
 
 object IsidaCommands {
-    private const val deviceType = 9
+    private const val deviceType = 0x09
 
     fun deviceMode(
         deviceNumber: Int,
@@ -11,29 +14,16 @@ object IsidaCommands {
         val commandId = 87
 
         val commandValue = when (mode) {
-            DeviceMode.ENABLE -> {
-                var result = mode.code
-                extras.forEach { result = result or it.code }
-                result
-            }
+            DeviceMode.ENABLE -> extras.map { it.code }.foldRight(initial = mode.code) { left, right -> left or right }
             else -> mode.code
         }
 
-        //Timber.d("Command value: $commandValue")
-        //if (commandValue == commandValue or DeviceModeExtra.EXTRA_1.code) Timber.d("Command extra flag 1 applied")
-        //if (commandValue == commandValue or DeviceModeExtra.EXTRA_2.code) Timber.d("Command extra flag 2 applied")
-        //if (commandValue == commandValue or DeviceModeExtra.EXTRA_3.code) Timber.d("Command extra flag 3 applied")
-        //if (commandValue == commandValue or DeviceModeExtra.EXTRA_4.code) Timber.d("Command extra flag 4 applied")
+        val data = commandId.toShort().asByteArray() + commandValue.toShort().asByteArray()
 
         return SendPackageDto(
             deviceType = deviceType,
             deviceNumber = deviceNumber,
-            data = ByteArray(4).apply {
-                this[0] = (commandId % 256).toByte()
-                this[1] = (commandId / 256).toByte()
-                this[2] = (commandValue % 256).toByte()
-                this[3] = (commandValue / 256).toByte()
-            }
+            data = data
         )
     }
 

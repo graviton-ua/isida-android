@@ -74,22 +74,23 @@ private fun SetPropDialog(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
             .fillMaxWidth()
-            .height(320.dp)
+            .height(IntrinsicSize.Max)
+            .padding(horizontal = 16.dp)
     ) {
         Crossfade(
             targetState = state,
             contentKey = { it.id },
         ) { localState ->
             when (localState) {
-                is SetPropViewState.Empty -> StateEmpty(modifier = Modifier.fillMaxSize())
-                is SetPropViewState.NoData -> StateNoData(modifier = Modifier.fillMaxSize())
-                is SetPropViewState.NotFound -> StateNotFound(modifier = Modifier.fillMaxSize())
+                is SetPropViewState.Empty -> StateEmpty(modifier = Modifier.fillMaxWidth())
+                is SetPropViewState.NoData -> StateNoData(modifier = Modifier.fillMaxWidth())
+                is SetPropViewState.NotFound -> StateNotFound(modifier = Modifier.fillMaxWidth())
                 is SetPropViewState.Success -> StateSuccess(
                     state = localState,
                     onStateUpdate = { actioner(SetPropAction.Update(it)) },
                     onSend = { actioner(SetPropAction.Send) },
                     onCancel = { actioner(SetPropAction.NavigateUp) },
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
         }
@@ -102,7 +103,9 @@ private fun StateEmpty(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier.padding(8.dp)
+        modifier = modifier
+            .defaultMinSize(minHeight = 72.dp)
+            .padding(8.dp),
     ) {
         CircularProgressIndicator()
     }
@@ -114,7 +117,9 @@ private fun StateNoData(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier.padding(8.dp)
+        modifier = modifier
+            .defaultMinSize(minHeight = 72.dp)
+            .padding(8.dp),
     ) {
         Text(text = "No data !")
     }
@@ -126,7 +131,9 @@ private fun StateNotFound(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier.padding(8.dp)
+        modifier = modifier
+            .defaultMinSize(minHeight = 72.dp)
+            .padding(8.dp),
     ) {
         Text(text = "Property not found !")
     }
@@ -141,7 +148,9 @@ private fun StateSuccess(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(8.dp)
+        modifier = modifier
+            .defaultMinSize(minHeight = 72.dp)
+            .padding(8.dp)
     ) {
         Text(text = state.propId)
         SetPropInput(

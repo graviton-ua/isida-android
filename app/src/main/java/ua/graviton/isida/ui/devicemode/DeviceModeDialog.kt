@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import ua.graviton.isida.R
-import ua.graviton.isida.data.bl.model.IsidaCommands
+import ua.graviton.isida.data.bl.IsidaCommands
 import ua.graviton.isida.domain.services.intentBLServiceSendCommand
 import ua.graviton.isida.ui.compose.FreeDialogStyle
 import ua.graviton.isida.ui.theme.IsidaColor
@@ -73,6 +73,7 @@ private fun DeviceModeDialog(
     Surface(
         color = MaterialTheme.colors.background,
         shape = MaterialTheme.shapes.medium,
+        modifier = Modifier.padding(horizontal = 16.dp),
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),

@@ -26,7 +26,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.ramcosta.composedestinations.annotation.Destination
 import timber.log.Timber
-import ua.graviton.isida.BuildConfig
 import ua.graviton.isida.R
 import ua.graviton.isida.domain.SystemBarColorManager
 import ua.graviton.isida.domain.services.intentBLServiceConnectDevice
@@ -171,8 +170,7 @@ private fun HomeTopBar(
         title = { Text(text = stringResource(id = R.string.app_name)) },
         actions = {
             var expanded by remember { mutableStateOf(false) }
-            //TODO: Show `power` button for DEBUG builds for TESTING purpose
-            if (deviceConnected || BuildConfig.DEBUG)
+            if (deviceConnected)
                 TextButton(onClick = { openPowerDialog() }) {
                     Icon(imageVector = Icons.Default.Flag, contentDescription = "Device menu")
                     Text(text = "Power")

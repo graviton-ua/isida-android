@@ -1,6 +1,6 @@
 package ua.graviton.isida.ui.devicemode
 
-import ua.graviton.isida.data.bl.model.IsidaCommands
+import ua.graviton.isida.data.bl.IsidaCommands
 
 data class DeviceModeViewState(
     val deviceId: Int? = null,
