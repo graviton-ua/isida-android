@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.graviton.isida.domain.models.DeviceProperty
@@ -24,8 +25,18 @@ class SetPropViewModel @Inject constructor(
     private val pendingActions = MutableSharedFlow<SetPropAction>()
 
     private val _id = MutableStateFlow<String>(savedStateHandle["id"]!!)
-    private val property = combine(_id, observeDeviceData.flow) { id, data -> data?.getProperty(id) }.take(1)
-        .stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = null)
+
+    private val deviceData = observeDeviceData.flow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = null,
+    )
+    private val property = combine(_id, deviceData) { id, data -> data?.getProperty(id) }.take(1).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = null,
+    )
+
     private val _inputState = MutableStateFlow<InputState>(InputState.Unknown)
     private val inputState = combine(property, _inputState) { property, state ->
         when (state) {
@@ -34,16 +45,15 @@ class SetPropViewModel @Inject constructor(
         }
     }
 
-    val state: StateFlow<SetPropViewState> = combine(_id, property, inputState) { id, property, input ->
-        if (property != null) {
-            when (property) {
-                DeviceProperty.Unknown -> SetPropViewState.NotFound
-                else -> SetPropViewState.Success(
-                    propId = property.info.id,
-                    inputState = input
-                )
-            }
-        } else SetPropViewState.NoData
+    val state: StateFlow<SetPropViewState> = combine(property, inputState) { property, input ->
+        if (property == null) return@combine SetPropViewState.NoData
+        when (property) {
+            DeviceProperty.Unknown -> SetPropViewState.NotFound
+            else -> SetPropViewState.Success(
+                propId = property.id,
+                inputState = input
+            )
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
@@ -56,6 +66,7 @@ class SetPropViewModel @Inject constructor(
             pendingActions.collect { action ->
                 when (action) {
                     is SetPropAction.Update -> update(action.state).join()
+                    is SetPropAction.Send -> Unit
                     else -> Unit
                 }
             }
@@ -75,11 +86,15 @@ class SetPropViewModel @Inject constructor(
         }
     }
 
-    private fun CoroutineScope.update(updateState: UpdateState) = launch {
+    private fun CoroutineScope.update(updateState: UpdateState) = launch(Dispatchers.Default) {
         _inputState.update {
             when (updateState) {
                 is UpdateState.NumberInput -> InputState.NumberInput(value = updateState.value)
             }
         }
+    }
+
+    private fun CoroutineScope.send() = launch(Dispatchers.Default) {
+        //Here we should build and send command to device
     }
 }

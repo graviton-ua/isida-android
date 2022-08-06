@@ -1,37 +1,26 @@
 package ua.graviton.isida.domain.models
 
 sealed class DeviceCharacteristicInfo<T>(
-    val id: String,
     val limits: List<Limit<T>> = emptyList(),
 ) {
 
-    object Unknown : DeviceCharacteristicInfo<Unit>(id = "unknown")
+    object Unknown : DeviceCharacteristicInfo<Unit>()
 
     object SpT0 : DeviceCharacteristicInfo<Float>(
-        id = "spT0",
         limits = listOf(Limit.FloatMinMaxLimit(12f, 42f)),
     )
 
     object SpT1 : DeviceCharacteristicInfo<Float>(
-        id = "spT1",
         limits = listOf(Limit.FloatMinMaxLimit(12f, 42f)),
     )
 
-    object SpRh0 : DeviceCharacteristicInfo<Float>(
-        id = "spRh0",
-    )
+    object SpRh0 : DeviceCharacteristicInfo<Float>()
 
-    object SpRh1 : DeviceCharacteristicInfo<Float>(
-        id = "spRh1",
-    )
+    object SpRh1 : DeviceCharacteristicInfo<Float>()
 
-    object K0 : DeviceCharacteristicInfo<Int>(
-        id = "K0",
-    )
+    object K0 : DeviceCharacteristicInfo<Int>()
 
-    object K1 : DeviceCharacteristicInfo<Int>(
-        id = "K1",
-    )
+    object K1 : DeviceCharacteristicInfo<Int>()
 
 
     sealed interface Limit<in T> {
@@ -69,18 +58,5 @@ sealed class DeviceCharacteristicInfo<T>(
             val list: List<Int>,
             val map: (Int) -> String,
         ) : Enum<Int>
-    }
-
-
-    companion object {
-        fun byId(id: String): DeviceCharacteristicInfo<*> = when (id) {
-            "spT0" -> SpT0
-            "spT1" -> SpT1
-            "spRh0" -> SpRh0
-            "spRh1" -> SpRh1
-            "K0" -> K0
-            "K1" -> K1
-            else -> Unknown
-        }
     }
 }
