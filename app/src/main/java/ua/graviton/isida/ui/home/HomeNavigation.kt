@@ -29,7 +29,6 @@ internal fun HomeNavigation(
         startDestination = HomeNavScreen.Stats.route,
         modifier = modifier,
     ) {
-
         addStats(navController)
         addProp(navController, openSetPropDialog)
         addReport(navController)

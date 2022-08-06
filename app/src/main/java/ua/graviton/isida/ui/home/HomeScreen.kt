@@ -26,6 +26,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.ramcosta.composedestinations.annotation.Destination
 import timber.log.Timber
+import ua.graviton.isida.BuildConfig
 import ua.graviton.isida.R
 import ua.graviton.isida.domain.SystemBarColorManager
 import ua.graviton.isida.domain.services.intentBLServiceConnectDevice
@@ -166,11 +167,12 @@ private fun HomeTopBar(
     disconnectDevice: () -> Unit,
     openPowerDialog: () -> Unit,
 ) {
-    var expanded by remember { mutableStateOf(false) }
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.app_name)) },
         actions = {
-            if (deviceConnected)
+            var expanded by remember { mutableStateOf(false) }
+            //TODO: Show `power` button for DEBUG builds for TESTING purpose
+            if (deviceConnected || BuildConfig.DEBUG)
                 TextButton(onClick = { openPowerDialog() }) {
                     Icon(imageVector = Icons.Default.Flag, contentDescription = "Device menu")
                     Text(text = "Power")
@@ -302,13 +304,6 @@ private val HomeNavigationItems = listOf(
         iconImageVector = Icons.Outlined.Summarize,
         selectedImageVector = Icons.Filled.Summarize,
     ),
-//    HomeNavigationItem.ResourceIcon(
-//        screen = HomeNavScreen.Stats,
-//        labelResId = R.string.discover_title,
-//        contentDescriptionResId = R.string.cd_discover_title,
-//        iconResId = R.drawable.ic_weekend_outline,
-//        selectedIconResId = R.drawable.ic_weekend_filled,
-//    ),
 )
 
 

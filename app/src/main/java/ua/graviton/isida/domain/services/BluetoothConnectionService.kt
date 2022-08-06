@@ -104,6 +104,7 @@ class BluetoothConnectionService : Service() {
                 bt.connect(address)
             }
             Action.SEND_CMD -> {
+                //TODO: Implement unified commands interface
                 val command: SendPackageDto? = intent.getParcelableExtra("command")
                 if (command != null) bt.send(command.asByteArray(), false)
             }

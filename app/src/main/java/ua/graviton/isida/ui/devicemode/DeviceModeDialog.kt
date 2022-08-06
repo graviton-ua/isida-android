@@ -1,27 +1,28 @@
 package ua.graviton.isida.ui.devicemode
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
-import kotlinx.coroutines.launch
 import ua.graviton.isida.R
 import ua.graviton.isida.data.bl.model.IsidaCommands
 import ua.graviton.isida.domain.services.intentBLServiceSendCommand
 import ua.graviton.isida.ui.compose.FreeDialogStyle
 import ua.graviton.isida.ui.theme.IsidaColor
 import ua.graviton.isida.ui.theme.IsidaTheme
-import ua.graviton.isida.ui.utils.rememberFlowWithLifecycle
+import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
 
 @Destination(
     style = FreeDialogStyle::class,
@@ -42,22 +43,19 @@ fun DeviceModeDialog(
     navigateUp: () -> Unit,
 ) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(viewModel.events) {
-        scope.launch {
-            viewModel.events.collect { event ->
-                when (event) {
-                    is DeviceModeEvent.Send -> {
-                        with(context) { startService(intentBLServiceSendCommand(event.command)) }
-                        navigateUp()
-                    }
+        viewModel.events.collect { event ->
+            when (event) {
+                is DeviceModeEvent.Send -> {
+                    with(context) { startService(intentBLServiceSendCommand(event.command)) }
+                    navigateUp()
                 }
             }
         }
     }
 
-    val viewState by rememberFlowWithLifecycle(viewModel.state).collectAsState(initial = DeviceModeViewState.Empty)
+    val viewState by viewModel.state.collectAsStateWithLifecycle()
 
     DeviceModeDialog(viewState) { action ->
         when (action) {
@@ -77,9 +75,10 @@ private fun DeviceModeDialog(
         shape = MaterialTheme.shapes.medium,
     ) {
         Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(8.dp),
         ) {
 
             RadioItemGroup(
@@ -88,30 +87,24 @@ private fun DeviceModeDialog(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Surface(
-                color = MaterialTheme.colors.surface,
-                shape = RectangleShape,
-            ) {
+            if (state.mode == IsidaCommands.DeviceMode.ENABLE)
                 CheckItemGroup(
                     extras = state.extras,
                     toggleExtra = { actioner(DeviceModeAction.ToggleExtra(it)) },
                     enabled = state.mode == IsidaCommands.DeviceMode.ENABLE,
                     modifier = Modifier.fillMaxWidth()
                 )
-            }
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Row {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
                 OutlinedButton(
                     onClick = { actioner(DeviceModeAction.NavigateUp) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
                 ) { Text(text = "Cancel") }
-                Spacer(modifier = Modifier.width(4.dp))
                 Button(
                     onClick = { actioner(DeviceModeAction.ApplyMode) },
                     modifier = Modifier
@@ -191,7 +184,10 @@ private fun CheckItemGroup(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier
+            .background(color = MaterialTheme.colors.surface),
+    ) {
         CheckItem(
             text = stringResource(id = R.string.txtChip1),
             checked = extras.contains(IsidaCommands.DeviceModeExtra.EXTRA_1),
@@ -273,7 +269,7 @@ private fun Preview1() {
 private fun Preview2() {
     IsidaTheme {
         DeviceModeDialog(
-            state = DeviceModeViewState(mode = IsidaCommands.DeviceMode.ONLY_ROTATION),
+            state = DeviceModeViewState(mode = IsidaCommands.DeviceMode.ENABLE),
             actioner = {}
         )
     }

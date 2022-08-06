@@ -10,7 +10,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ua.graviton.isida.ui.theme.IsidaTheme
-import ua.graviton.isida.ui.utils.rememberFlowWithLifecycle
+import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
 
 @Composable
 fun PropScreen(
@@ -35,7 +34,7 @@ private fun PropScreen(
     viewModel: PropViewModel,
     openSetPropDialog: (String) -> Unit,
 ) {
-    val viewState by rememberFlowWithLifecycle(viewModel.state).collectAsState(initial = PropViewState.Init)
+    val viewState by viewModel.state.collectAsStateWithLifecycle()
 
     PropScreen(viewState) { action ->
         when (action) {
@@ -78,9 +77,7 @@ private fun Item(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .height(IntrinsicSize.Min)
-            .padding(horizontal = 12.dp)
+        modifier = modifier.padding(horizontal = 12.dp)
     ) {
         Text(
             text = item.title.asString(),

@@ -44,9 +44,9 @@ object IsidaCommands {
     }
 
     enum class DeviceModeExtra(val code: Int) {
-        EXTRA_1(0x40),   //"Мониторинг тихоход. вентилятора" data = data | 0x40
-        EXTRA_2(0x20),   //"Мониторинг поворота лотков" data = data | 0x20
-        EXTRA_3(0x08),   //"Горизонтальное положение лотков" data = data | 0x08
-        EXTRA_4(0x02),   //"Режим подгототка к ОХЛАЖДЕНИЮ" data = data | 0x02
+        EXTRA_1(0x40),   //"Мониторинг тихоход. вентилятора"    data = data | 0x40
+        EXTRA_2(0x20),   //"Мониторинг поворота лотков"         data = data | 0x20
+        EXTRA_3(0x08),   //"Горизонтальное положение лотков"    data = data | 0x08
+        EXTRA_4(0x02),   //"Режим подгототка к ОХЛАЖДЕНИЮ"      data = data | 0x02
     }
 }

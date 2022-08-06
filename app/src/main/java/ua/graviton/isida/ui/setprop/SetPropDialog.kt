@@ -2,7 +2,9 @@ package ua.graviton.isida.ui.setprop
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -10,12 +12,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
-import kotlinx.coroutines.launch
 import ua.graviton.isida.domain.services.intentBLServiceSendCommand
 import ua.graviton.isida.ui.compose.FreeDialogStyle
 import ua.graviton.isida.ui.theme.IsidaTheme
 import ua.graviton.isida.ui.utils.Crossfade
-import ua.graviton.isida.ui.utils.rememberFlowWithLifecycle
+import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
 
 data class SetPropDialogNavArgs(
     val id: String,
@@ -41,22 +42,19 @@ fun SetPropDialog(
     navigateUp: () -> Unit,
 ) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(viewModel.events) {
-        scope.launch {
-            viewModel.events.collect { event ->
-                when (event) {
-                    is SetPropEvent.Send -> {
-                        with(context) { startService(intentBLServiceSendCommand(event.command)) }
-                        navigateUp()
-                    }
+        viewModel.events.collect { event ->
+            when (event) {
+                is SetPropEvent.Send -> {
+                    with(context) { startService(intentBLServiceSendCommand(event.command)) }
+                    navigateUp()
                 }
             }
         }
     }
 
-    val viewState by rememberFlowWithLifecycle(viewModel.state).collectAsState(initial = SetPropViewState.Init)
+    val viewState by viewModel.state.collectAsStateWithLifecycle()
 
     SetPropDialog(viewState) { action ->
         when (action) {

@@ -20,8 +20,6 @@ import ua.graviton.isida.ui.utils.collectAsStateWithLifecycle
 
 @Composable
 fun StatsScreen() {
-    //LaunchedEffect("once") { SystemBarColorManager.darkIcons.value = true }
-
     StatsScreen(
         viewModel = hiltViewModel(),
     )
@@ -50,12 +48,12 @@ private fun StatsScreen(
     val lazyListState = rememberLazyListState()
     LazyColumn(
         state = lazyListState,
-        contentPadding = WindowInsets.systemBars.add(WindowInsets(left = 12.dp, right = 12.dp)).asPaddingValues(),
+        contentPadding = WindowInsets.statusBars.add(WindowInsets(left = 12.dp, right = 12.dp)).asPaddingValues(),
         modifier = Modifier.fillMaxSize()
     ) {
-        item {
+        stickyHeader {
             Text(
-                text = stringResource(id = R.string.CellNum, state.titleDeviceId?.toString() ?: "--"),
+                text = stringResource(R.string.CellNum, state.titleDeviceId?.toString() ?: "--"),
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(state.titleDeviceBackgroundColor ?: Color.Transparent)

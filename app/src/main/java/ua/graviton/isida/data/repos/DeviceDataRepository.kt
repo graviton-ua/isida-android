@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
+import ua.graviton.isida.BuildConfig
 import ua.graviton.isida.data.bl.model.DataPackageDto
 import ua.graviton.isida.data.db.AppDatabase
 import ua.graviton.isida.data.db.entities.toEntity
@@ -12,9 +13,10 @@ import javax.inject.Singleton
 
 @Singleton
 class DeviceDataRepository @Inject constructor(
-    private val db: AppDatabase
+    private val db: AppDatabase,
 ) {
-    private val _latestData = MutableStateFlow<DataPackageDto?>(DataPackageDto.TestData)
+    //TODO: TestData should be replaced with null after testing complete
+    private val _latestData = MutableStateFlow<DataPackageDto?>(if (BuildConfig.DEBUG) DataPackageDto.TestData else null)
 
     fun listenLatestRAMData() = _latestData.asStateFlow()
 
