@@ -16,7 +16,7 @@ class DeviceDataRepository @Inject constructor(
     private val db: AppDatabase,
 ) {
     //TODO: TestData should be replaced with null after testing complete
-    private val _latestData = MutableStateFlow<DataPackageDto?>(if (BuildConfig.DEBUG) DataPackageDto.TestData else null)
+    private val _latestData = MutableStateFlow<DataPackageDto?>(/*if (BuildConfig.DEBUG) DataPackageDto.TestData else*/ null)
 
     fun listenLatestRAMData() = _latestData.asStateFlow()
 

@@ -1,6 +1,8 @@
 package ua.graviton.isida.domain.bl
 
-import android.bluetooth.*
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothSocket
 import android.os.Handler
 import androidx.core.os.bundleOf
 import timber.log.Timber
@@ -168,22 +170,36 @@ class BluetoothService(
         override fun run() {
             var buffer: ByteArray
             var arr_byte = ArrayList<Int>()
+            var endOfMessage: Boolean = false
 
             // Keep listening to the InputStream until an exception occurs.
             while (true) {
                 try {
                     when (val data = mmInStream.read()) {
-                        0x0A -> Unit    // Do nothing
-                        0x0D -> {
-                            buffer = ByteArray(arr_byte.size)
-                            for (i in arr_byte.indices) {
-                                buffer[i] = arr_byte[i].toByte()
+                        0x0A -> {
+                            if (endOfMessage) {
+                                arr_byte.removeLastOrNull()
+                                buffer = ByteArray(arr_byte.size)
+                                for (i in arr_byte.indices) {
+                                    buffer[i] = arr_byte[i].toByte()
+                                }
+                                // Send the obtained bytes to the UI Activity
+                                handler.obtainMessage(BluetoothState.MESSAGE_READ, buffer.size, -1, buffer).sendToTarget()
+                                arr_byte = ArrayList()
+                                endOfMessage = false
+                            } else {
+                                arr_byte.add(data)
+                                endOfMessage = false
                             }
-                            // Send the obtained bytes to the UI Activity
-                            handler.obtainMessage(BluetoothState.MESSAGE_READ, buffer.size, -1, buffer).sendToTarget()
-                            arr_byte = ArrayList()
                         }
-                        else -> arr_byte.add(data)
+                        0x0D -> {
+                            endOfMessage = true
+                            arr_byte.add(data)
+                        }
+                        else -> {
+                            arr_byte.add(data)
+                            endOfMessage = false
+                        }
                     }
                 } catch (e: IOException) {
                     Timber.w(e)
