@@ -47,12 +47,11 @@ object CRC16 {
     }
 
     fun crcSimple(buffer: ByteArray): Int {
-        var crc = 0
-        //TODO: This small trick ( + byteArrayOf(0)) should be discussed
-        buffer.forEach { byte ->
+        var crc: UInt = 0u
+        buffer.toUByteArray().forEach { byte ->
             crc += byte
             crc = crc xor (crc shr 2)
         }
-        return crc
+        return crc.toInt()
     }
 }
