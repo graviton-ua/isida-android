@@ -22,6 +22,7 @@ import ua.graviton.isida.domain.bl.BluetoothSPP
 import ua.graviton.isida.domain.interactors.SaveDataPackage
 import ua.graviton.isida.ui.intentMain
 import ua.graviton.isida.utils.enumValueOf
+import ua.graviton.isida.utils.toHexString
 import javax.inject.Inject
 
 fun Context.intentBLConnectionService() = Intent(this, BluetoothConnectionService::class.java)
@@ -64,7 +65,7 @@ class BluetoothConnectionService : Service() {
 
         bt.setOnDataReceivedListener(object : BluetoothSPP.OnDataReceivedListener {
             override fun onDataReceived(data: ByteArray, message: String) {
-                Timber.d("Device data received")
+                Timber.d("Device data received | state: ${data.getOrNull(68)?.toUByte()}")
                 scope.parseAndSave(data)
             }
         })
@@ -106,7 +107,7 @@ class BluetoothConnectionService : Service() {
             Action.SEND_CMD -> {
                 //TODO: Implement unified commands interface
                 val command: SendPackageDto? = intent.getParcelableExtra("command")
-                if (command != null) bt.send(command.asByteArray(), false)
+                if (command != null) bt.send(command.asByteArray().also { Timber.d("Send command: ${it.toHexString()}") }, false)
             }
             Action.DISCONNECT -> {
                 bt.disconnect()

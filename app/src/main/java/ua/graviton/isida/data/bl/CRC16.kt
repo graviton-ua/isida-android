@@ -49,7 +49,7 @@ object CRC16 {
     fun crcSimple(buffer: ByteArray): Int {
         var crc = 0
         //TODO: This small trick ( + byteArrayOf(0)) should be discussed
-        (buffer + byteArrayOf(0)).forEach { byte ->
+        buffer.forEach { byte ->
             crc += byte
             crc = crc xor (crc shr 2)
         }

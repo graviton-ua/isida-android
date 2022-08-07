@@ -50,9 +50,9 @@ class DeviceModeViewModel @Inject constructor(
                 .map {
                     val state = it.state
                     val mode = when (state) {
-                        state or DeviceMode.DISABLE.code -> DeviceMode.DISABLE
+                        state or DeviceMode.ENABLE.code -> DeviceMode.ENABLE
                         state or DeviceMode.ONLY_ROTATION.code -> DeviceMode.ONLY_ROTATION
-                        else -> DeviceMode.ENABLE
+                        else -> DeviceMode.DISABLE
                     }
                     val extras = if (mode == DeviceMode.ENABLE) {
                         val result = mutableListOf<DeviceModeExtra>()

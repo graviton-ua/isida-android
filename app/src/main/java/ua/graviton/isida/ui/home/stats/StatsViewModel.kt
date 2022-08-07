@@ -141,8 +141,8 @@ private fun DataPackageDto?.toItems(): List<StatsItem> {
             value = this?.state?.let {
                 StatsItem.Value.TextResId(
                     value = when (it) {
-                        0 -> R.string.state_Off
-                        1 -> R.string.state_On
+                        1 -> R.string.state_Off
+                        0 -> R.string.state_On
                         3 -> R.string.state_1
                         5 -> R.string.state_2
                         9 -> R.string.state_3
