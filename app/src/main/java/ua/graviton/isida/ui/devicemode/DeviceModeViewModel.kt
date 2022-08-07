@@ -105,7 +105,7 @@ class DeviceModeViewModel @Inject constructor(
         events.emit(
             DeviceModeEvent.Send(
                 command = IsidaCommands.deviceMode(device, mode, *modeExtras.value.toTypedArray())
-            ) as DeviceModeEvent
+            )
         )
     }
 }

@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
+import ua.graviton.isida.domain.models.DeviceProperty
 import ua.graviton.isida.domain.services.intentBLServiceSendCommand
 import ua.graviton.isida.ui.compose.FreeDialogStyle
 import ua.graviton.isida.ui.theme.IsidaTheme
@@ -87,7 +88,7 @@ private fun SetPropDialog(
                 is SetPropViewState.NotFound -> StateNotFound(modifier = Modifier.fillMaxWidth())
                 is SetPropViewState.Success -> StateSuccess(
                     state = localState,
-                    onStateUpdate = { actioner(SetPropAction.Update(it)) },
+                    onPropertyChanged = { actioner(SetPropAction.UpdateProperty(it)) },
                     onSend = { actioner(SetPropAction.Send) },
                     onCancel = { actioner(SetPropAction.NavigateUp) },
                     modifier = Modifier.fillMaxWidth(),
@@ -142,7 +143,7 @@ private fun StateNotFound(
 @Composable
 private fun StateSuccess(
     state: SetPropViewState.Success,
-    onStateUpdate: (SetPropAction.UpdateState) -> Unit,
+    onPropertyChanged: (DeviceProperty<*>?) -> Unit,
     onSend: () -> Unit,
     onCancel: () -> Unit,
     modifier: Modifier = Modifier,
@@ -152,10 +153,10 @@ private fun StateSuccess(
             .defaultMinSize(minHeight = 72.dp)
             .padding(8.dp)
     ) {
-        Text(text = state.propId)
+        Text(text = state.property.id)
         SetPropInput(
-            state = state.inputState,
-            onStateUpdate = onStateUpdate,
+            property = state.property,
+            onPropertyChanged = onPropertyChanged,
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1f),

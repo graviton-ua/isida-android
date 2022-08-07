@@ -8,11 +8,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import ua.graviton.isida.data.bl.IsidaCommands
 import ua.graviton.isida.domain.models.DeviceProperty
 import ua.graviton.isida.domain.models.getProperty
 import ua.graviton.isida.domain.observers.ObserveDeviceData
-import ua.graviton.isida.ui.setprop.SetPropAction.UpdateState
-import ua.graviton.isida.ui.setprop.SetPropViewState.InputState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,22 +35,14 @@ class SetPropViewModel @Inject constructor(
         started = SharingStarted.Eagerly,
         initialValue = null,
     )
+    private val updatedProperty = MutableStateFlow<DeviceProperty<*>?>(null)
 
-    private val _inputState = MutableStateFlow<InputState>(InputState.Unknown)
-    private val inputState = combine(property, _inputState) { property, state ->
-        when (state) {
-            is InputState.Unknown -> property?.toInputState() ?: state
-            else -> state
-        }
-    }
-
-    val state: StateFlow<SetPropViewState> = combine(property, inputState) { property, input ->
-        if (property == null) return@combine SetPropViewState.NoData
+    val state: StateFlow<SetPropViewState> = property.map { property ->
+        if (property == null) return@map SetPropViewState.NoData
         when (property) {
             DeviceProperty.Unknown -> SetPropViewState.NotFound
             else -> SetPropViewState.Success(
-                propId = property.id,
-                inputState = input
+                property = property
             )
         }
     }.stateIn(
@@ -65,7 +56,7 @@ class SetPropViewModel @Inject constructor(
         viewModelScope.launch {
             pendingActions.collect { action ->
                 when (action) {
-                    is SetPropAction.Update -> update(action.state).join()
+                    is SetPropAction.UpdateProperty -> with(updatedProperty) { value = action.property }
                     is SetPropAction.Send -> send()
                     else -> Unit
                 }
@@ -78,26 +69,15 @@ class SetPropViewModel @Inject constructor(
     }
 
 
-    private fun <T> DeviceProperty<T>.toInputState(): InputState {
-        return when (value) {
-            is Int -> InputState.NumberInput(value.toString())
-            is Float -> InputState.NumberInput(value.toString())
-            else -> InputState.Unknown
-        }
-    }
-
-    private fun CoroutineScope.update(updateState: UpdateState) = launch(Dispatchers.Default) {
-        _inputState.update {
-            when (updateState) {
-                is UpdateState.NumberInput -> InputState.NumberInput(value = updateState.value)
-            }
-        }
-    }
-
     private fun CoroutineScope.send() = launch(Dispatchers.Default) {
         //Here we should build and send command to device
-        val currentDeviceDataSnapshot = deviceData.value ?: return@launch
-        val propertyToUpdate = property.value ?: return@launch
-        val inputState = _inputState.value
+        val dataSnapshot = deviceData.value ?: return@launch
+        val device = dataSnapshot.deviceNumber
+        val prop = updatedProperty.value ?: property.value ?: return@launch
+        _events.emit(
+            SetPropEvent.Send(
+                command = IsidaCommands.updateProperties(device, dataSnapshot, prop)
+            )
+        )
     }
 }
