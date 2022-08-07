@@ -66,7 +66,7 @@ class SetPropViewModel @Inject constructor(
             pendingActions.collect { action ->
                 when (action) {
                     is SetPropAction.Update -> update(action.state).join()
-                    is SetPropAction.Send -> Unit
+                    is SetPropAction.Send -> send()
                     else -> Unit
                 }
             }
@@ -96,5 +96,8 @@ class SetPropViewModel @Inject constructor(
 
     private fun CoroutineScope.send() = launch(Dispatchers.Default) {
         //Here we should build and send command to device
+        val currentDeviceDataSnapshot = deviceData.value ?: return@launch
+        val propertyToUpdate = property.value ?: return@launch
+        val inputState = _inputState.value
     }
 }
