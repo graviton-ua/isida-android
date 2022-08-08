@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="state_Off">ВКЛЮЧЕНА</string>
-    <string name="state_On">ОТКЛЮЧЕНА</string>
-    <string name="state_1">Подгототка к ОХЛАЖДЕНИЮ</string>
+    <string name="device_mode_enabled">ВКЛЮЧЕНА</string>
+    <string name="device_mode_disabled">ОТКЛЮЧЕНА</string>
     <string name="state_2">Подгототка к ВКЛЮЧЕНИЮ</string>
     <string name="state_3">Переход в ГОРИЗОНТ</string>
-    <string name="state_4">ГОРИЗОНТ УСТАНОВЛЕН</string>
-    <string name="state_5">ВКЛЮЧЕН мониторинг поворота лотков</string>
-    <string name="state_6">ВКЛЮЧЕН мониторинг тихоходного вентилятора</string>
-    <string name="state_7">Поворот лотков</string>
+    <string name="device_mode_extra_1">ВКЛЮЧЕН мониторинг тихоходного вентилятора</string>
+    <string name="device_mode_extra_2">ВКЛЮЧЕН мониторинг поворота лотков</string>
+    <string name="device_mode_extra_3">ГОРИЗОНТ УСТАНОВЛЕН</string>
+    <string name="device_mode_extra_4">Подгототка к ОХЛАЖДЕНИЮ</string>
+    <string name="device_mode_turn">Поворот лотков</string>
 
     <string name="fuses_0">ОСТАНОВ вентилятора</string>
     <string name="fuses_1">НЕТ ПОВОРОТА лотков</string>

@@ -36,6 +36,7 @@ object IsidaCommands {
     }
 
     enum class DeviceModeExtra(val code: Int) {
+        //TODO: There is 2 more states need to be added later
         EXTRA_1(0x40),   //"Мониторинг тихоход. вентилятора"    data = data | 0x40
         EXTRA_2(0x20),   //"Мониторинг поворота лотков"         data = data | 0x20
         EXTRA_3(0x08),   //"Горизонтальное положение лотков"    data = data | 0x08

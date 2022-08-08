@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothSocket
 import android.os.Handler
 import androidx.core.os.bundleOf
 import timber.log.Timber
+import ua.graviton.isida.utils.toHexString
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
@@ -217,6 +218,7 @@ class BluetoothService(
                     buffer2[i] = buffer[i];
                 buffer2[buffer2.length - 2] = 0x0A;
                 buffer2[buffer2.length - 1] = 0x0D;*/
+                Timber.d("out: ${bytes.toHexString(" ")}")
                 mmOutStream.write(bytes)
             } catch (e: IOException) {
                 Timber.w(e, "Error occurred when sending data")

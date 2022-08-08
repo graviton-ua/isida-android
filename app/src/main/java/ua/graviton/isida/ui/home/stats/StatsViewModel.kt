@@ -6,9 +6,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.graviton.isida.R
+import ua.graviton.isida.data.bl.IsidaCommands
 import ua.graviton.isida.data.bl.model.DataPackageDto
 import ua.graviton.isida.domain.observers.ObserveDeviceData
-import ua.graviton.isida.ui.theme.*
+import ua.graviton.isida.ui.theme.IsidaColor
 import ua.graviton.isida.ui.utils.ObservableLoadingCounter
 import javax.inject.Inject
 
@@ -139,16 +140,30 @@ private fun DataPackageDto?.toItems(): List<StatsItem> {
         StatsItem(
             titleResId = R.string.state,
             value = this?.state?.let {
+                val mode = when (it) {
+                    it or IsidaCommands.DeviceMode.ENABLE.code -> IsidaCommands.DeviceMode.ENABLE
+                    it or IsidaCommands.DeviceMode.ONLY_ROTATION.code -> IsidaCommands.DeviceMode.ONLY_ROTATION
+                    else -> IsidaCommands.DeviceMode.DISABLE
+                }
+                val extras = if (mode == IsidaCommands.DeviceMode.ENABLE) {
+                    val result = mutableListOf<IsidaCommands.DeviceModeExtra>()
+                    if (it == it or IsidaCommands.DeviceModeExtra.EXTRA_1.code) result.add(IsidaCommands.DeviceModeExtra.EXTRA_1)
+                    if (it == it or IsidaCommands.DeviceModeExtra.EXTRA_2.code) result.add(IsidaCommands.DeviceModeExtra.EXTRA_2)
+                    if (it == it or IsidaCommands.DeviceModeExtra.EXTRA_3.code) result.add(IsidaCommands.DeviceModeExtra.EXTRA_3)
+                    if (it == it or IsidaCommands.DeviceModeExtra.EXTRA_4.code) result.add(IsidaCommands.DeviceModeExtra.EXTRA_4)
+                    result
+                } else {
+                    emptyList()
+                }
                 StatsItem.Value.TextResId(
-                    value = when (it) {
-                        1 -> R.string.state_Off
-                        0 -> R.string.state_On
-                        3 -> R.string.state_1
-                        5 -> R.string.state_2
-                        9 -> R.string.state_3
-                        17 -> R.string.state_4
-                        128 -> R.string.state_7
-                        else -> null
+                    value = when (mode) {
+                        IsidaCommands.DeviceMode.DISABLE -> R.string.device_mode_disabled
+                        IsidaCommands.DeviceMode.ONLY_ROTATION -> R.string.device_mode_turn
+                        IsidaCommands.DeviceMode.ENABLE -> when {
+                            extras.contains(IsidaCommands.DeviceModeExtra.EXTRA_3) -> R.string.device_mode_extra_3
+                            extras.contains(IsidaCommands.DeviceModeExtra.EXTRA_4) -> R.string.device_mode_extra_4
+                            else -> R.string.device_mode_enabled
+                        }
                     }
                 )
             },

@@ -165,8 +165,8 @@ class BluetoothSPP(
                 if (CRLF) {
                     val data2 = ByteArray(data.size + 2)
                     for (i in data.indices) data2[i] = data[i]
-                    data2[data2.size - 2] = 0x0A
-                    data2[data2.size - 1] = 0x0D
+                    data2[data2.size - 2] = 0x0D
+                    data2[data2.size - 1] = 0x0A
                     write(data2)
                 } else {
                     write(data)

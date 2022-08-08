@@ -107,7 +107,7 @@ class BluetoothConnectionService : Service() {
             Action.SEND_CMD -> {
                 //TODO: Implement unified commands interface
                 val command: SendPackageDto? = intent.getParcelableExtra("command")
-                if (command != null) bt.send(command.asByteArray().also { Timber.d("Send command: ${it.toHexString(" ")}") }, false)
+                if (command != null) bt.send(command.asByteArray().also { Timber.d("Send command: ${it.toHexString(" ")}") }, true)
             }
             Action.DISCONNECT -> {
                 bt.disconnect()
