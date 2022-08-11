@@ -177,6 +177,7 @@ private fun DialogButtons(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
         modifier = modifier,
     ) {
         OutlinedButton(
@@ -185,7 +186,7 @@ private fun DialogButtons(
                 .fillMaxWidth()
                 .weight(1f)
         ) { Text(text = "Cancel") }
-        Spacer(modifier = Modifier.width(4.dp))
+
         Button(
             onClick = onSend,
             modifier = Modifier

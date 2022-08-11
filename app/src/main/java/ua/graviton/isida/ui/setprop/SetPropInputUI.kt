@@ -17,6 +17,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import ua.graviton.isida.domain.models.DeviceProperty
 import ua.graviton.isida.ui.theme.IsidaTheme
+import java.util.*
 
 @Composable
 fun SetPropInput(
@@ -26,187 +27,187 @@ fun SetPropInput(
 ): Unit = when (property) {
     is DeviceProperty.Air0 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.Air1 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.Alarm0 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.Alarm1 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.CoolOff -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.CoolOn -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.DeviceNumber -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.EnergyMeter -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.ExtOff0 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.ExtOff1 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.ExtOn0 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.ExtOn1 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.ExtendMode -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.ForceHeat -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.HihEnable -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.Hysteresis -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.K0 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.K1 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.KOffCurr -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.MaxRun -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.MinRun -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.Period -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.Program -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.RelayMode -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.SpCO2 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.SpRh0 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toFloat()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.SpRh1 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toFloat()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.SpT0 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toFloat()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.SpT1 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toFloat()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.State -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.Ti0 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.Ti1 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.TimeOut -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.Timer0 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.Timer1 -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.TurnTime -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     is DeviceProperty.Zonality -> NumberInput(
         init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it.toInt()) }) },
+        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         modifier = modifier,
     )
     else -> InputUnknown(modifier = modifier)
@@ -225,17 +226,19 @@ private fun InputUnknown(
 }
 
 @Composable
-private fun NumberInput(
-    init: Number,
-    onChanged: (Number?) -> Unit,
+private inline fun <reified T : Number> NumberInput(
+    init: T,
+    crossinline onChanged: (T?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
+    val errorState = remember { mutableStateOf(false) }
+
     var textFieldValue by remember(init) {
         when (init) {
-            is Float -> String.format("%.1f", init)
+            is Float -> String.format(locale = Locale.ENGLISH, "%.1f", init)
             else -> init.toString()
         }.let { mutableStateOf(TextFieldValue(text = it, selection = TextRange(it.length))) }
     }
@@ -243,12 +246,11 @@ private fun NumberInput(
         value = textFieldValue,
         onValueChange = { value ->
             textFieldValue = value
-            val numberValue = when (init) {
-                is Float -> value.text.toFloatOrNull()
-                else -> value.text.toIntOrNull()
-            }
-            onChanged(numberValue)
+            val converted: T? = value.text.convertAndCast()
+            errorState.value = converted?.let { false } ?: true
+            onChanged(converted)
         },
+        isError = errorState.value,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = {
@@ -257,6 +259,14 @@ private fun NumberInput(
         }),
         modifier = modifier,
     )
+}
+
+private inline fun <reified T : Number> String.convertAndCast(): T? {
+    return when (T::class) {
+        Float::class -> toFloatOrNull()
+        Int::class -> toIntOrNull()
+        else -> toIntOrNull()
+    } as? T
 }
 
 
