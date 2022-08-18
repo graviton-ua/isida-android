@@ -66,8 +66,8 @@ object IsidaCommands {
 
         val timer0 = (props.findIsInstance<DeviceProperty.Timer0>()?.value ?: deviceDataSnapshot.timer0).toByte()
         val timer1 = (props.findIsInstance<DeviceProperty.Timer1>()?.value ?: deviceDataSnapshot.timer1).toByte()
-        val alarm0 = (props.findIsInstance<DeviceProperty.Alarm0>()?.value ?: deviceDataSnapshot.alarm0).toByte()
-        val alarm1 = (props.findIsInstance<DeviceProperty.Alarm1>()?.value ?: deviceDataSnapshot.alarm1).toByte()
+        val alarm0 = ((props.findIsInstance<DeviceProperty.Alarm0>()?.value ?: deviceDataSnapshot.alarm0) * 10).toInt().toByte()
+        val alarm1 = ((props.findIsInstance<DeviceProperty.Alarm1>()?.value ?: deviceDataSnapshot.alarm1) * 10).toInt().toByte()
         val extOn0 = (props.findIsInstance<DeviceProperty.ExtOn0>()?.value ?: deviceDataSnapshot.extOn0).toByte()
         val extOn1 = (props.findIsInstance<DeviceProperty.ExtOn1>()?.value ?: deviceDataSnapshot.extOn1).toByte()
         val extOff0 = (props.findIsInstance<DeviceProperty.ExtOff0>()?.value ?: deviceDataSnapshot.extOff0).toByte()

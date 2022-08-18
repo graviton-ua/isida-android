@@ -81,6 +81,8 @@
     <string name="goose">Гусята</string>
     <string name="quail">Перепел</string>
 
+    <string name="prop_dimen_percent" translatable="false">%1$s %%</string>
+    <string name="prop_dimen_sec">%1$s sec.</string>
 
     <string name="prop_dry_sensor_label">Dry sensor</string>
     <string name="prop_wet_sensor_label">Wet sensor</string>

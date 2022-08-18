@@ -22,6 +22,8 @@ sealed class DeviceCharacteristicInfo<T>(
 
     object K1 : DeviceCharacteristicInfo<Int>()
 
+    object Alarm : DeviceCharacteristicInfo<Float>()
+
 
     sealed interface Limit<in T> {
         fun isValid(value: T): Boolean

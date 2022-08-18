@@ -1,11 +1,12 @@
 package ua.graviton.isida.ui.home.prop
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -56,14 +58,16 @@ private fun PropScreen(
         contentPadding = PaddingValues(vertical = 8.dp),
         modifier = Modifier.fillMaxSize()
     ) {
-        items(
+        itemsIndexed(
             items = state.items,
-            key = { it.id },
-        ) { item ->
+            key = { index, it -> it.id },
+        ) { index, item ->
             Item(
                 item = item,
                 click = { actioner(it) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = if (index.mod(2) == 0) Color.Unspecified else Color.White.copy(alpha = 0.2f)),
             )
         }
     }
@@ -77,25 +81,29 @@ private fun Item(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.padding(horizontal = 12.dp)
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = modifier
+            .clickable(onClick = { click(PropAction.SetPropDialog(item.id)) })
+            .defaultMinSize(minHeight = 42.dp)
+            .padding(horizontal = 12.dp)
     ) {
         Text(
             text = item.title.asString(),
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
+                .weight(2f),
         )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
+        Text(
+            text = item.value.asString(),
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-        ) {
-            Text(
-                text = item.value.asString(),
-            )
-            IconButton(onClick = { click(PropAction.SetPropDialog(item.id)) }) { Icon(Icons.Default.Edit, "edit") }
-        }
+        )
+        Icon(
+            imageVector = Icons.Default.Edit,
+            contentDescription = null,
+            modifier = Modifier.size(16.dp),
+        )
     }
 }
 

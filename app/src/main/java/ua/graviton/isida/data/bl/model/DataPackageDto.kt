@@ -30,7 +30,7 @@ data class DataPackageDto(
     val timeOut: Int = 0,       // 2байт[52;53] время ожидания начала режима охлаждения
     val energyMeter: Int = 0,   // 2байт[54;55] счетчик элктрической энергии
     val timer0: Int = 0, val timer1: Int = 0,   // 2байт[56;57] [0]-отключ.состояниe [1]-включ.состояниe
-    val alarm0: Int = 0, val alarm1: Int = 0,   // 2байт[58;59] дельта 5 = 0.5 гр.C
+    val alarm0: Float = 0f, val alarm1: Float = 0f,// 2байт[58;59] дельта 5 = 0.5 гр.C
     val extOn0: Int = 0, val extOn1: Int = 0,   // 2байт[60;61] смещение для ВКЛ. вспомогательного канала
     val extOff0: Int = 0, val extOff1: Int = 0, // 2байт[62;63] смещение для ОТКЛ. вспомогательного канала
     val air0: Int = 0, val air1: Int = 0,       // 2байт[64;65] таймер проветривания air[0]-пауза; air[1]-работа; если air[1]=0-ОТКЛЮЧЕНО
@@ -83,7 +83,8 @@ data class DataPackageDto(
                 timeOut = ubytes.read2BytesAsInt(52),
                 energyMeter = ubytes.read2BytesAsInt(54),
                 timer0 = ubytes[56].toInt(), timer1 = ubytes[57].toInt(),
-                alarm0 = ubytes[58].toInt(), alarm1 = ubytes[59].toInt(),
+                alarm0 = ubytes[58].toInt().toFloat() / 10,
+                alarm1 = ubytes[59].toInt().toFloat() / 10,
                 extOn0 = ubytes[60].toInt(), extOn1 = ubytes[61].toInt(),
                 extOff0 = ubytes[62].toInt(), extOff1 = ubytes[63].toInt(),
                 air0 = ubytes[64].toInt(), air1 = ubytes[65].toInt(),

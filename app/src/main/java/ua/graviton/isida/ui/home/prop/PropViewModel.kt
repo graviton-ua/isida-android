@@ -1,5 +1,6 @@
 package ua.graviton.isida.ui.home.prop
 
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -67,7 +68,7 @@ private fun DataPackageDto?.toItems(): List<PropItem> {
         PropItem(
             id = "spRh1",
             title = Title.ResId(R.string.prop_rh_sensor_label),
-            value = Value.Data(this?.spRh1) { it?.format() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.spRh1) { it?.format()?.let { stringResource(R.string.prop_dimen_percent, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "K0",
@@ -92,7 +93,7 @@ private fun DataPackageDto?.toItems(): List<PropItem> {
         PropItem(
             id = "minRun",
             title = Title.ResId(R.string.prop_min_impulse_label),
-            value = Value.Data(this?.minRun) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.minRun) { it?.toString()?.let { stringResource(R.string.prop_dimen_sec, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "maxRun",

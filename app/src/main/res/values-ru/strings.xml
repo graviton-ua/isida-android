@@ -82,15 +82,17 @@
     <string name="goose">Гусята</string>
     <string name="quail">Перепел</string>
 
+    <string name="prop_dimen_sec">%1$s сек.</string>
+
     <string name="prop_dry_sensor_label">Сухой датчик (грд.Ц)</string>
     <string name="prop_wet_sensor_label">Влажный датчик (грд.Ц)</string>
     <string name="prop_rh_ofset_label">Коррекция RH датчика (%)</string>
-    <string name="prop_rh_sensor_label">RH датчик (%)</string>
+    <string name="prop_rh_sensor_label">RH датчик</string>
     <string name="prop_p_coef_dry_label">Пропорц.кф.канала нагрева</string>
     <string name="prop_p_coef_wet_label">Пропорц.кф.канала увлажнения</string>
     <string name="prop_i_coef_dry_label">Интеграл.кф.канала нагрева</string>
     <string name="prop_i_coef_wet_label">Интеграл.кф.канала увлажнения</string>
-    <string name="prop_min_impulse_label">Минимальный импульс (сек.)</string>
+    <string name="prop_min_impulse_label">Минимальный импульс</string>
     <string name="prop_max_impulse_label">Максимальный импульс (сек.)</string>
     <string name="prop_repeat_time_label">Период повторения импульсов (сек.)</string>
     <string name="prop_waiting_time_label">Время ожидания охлаждения (мин.)</string>
