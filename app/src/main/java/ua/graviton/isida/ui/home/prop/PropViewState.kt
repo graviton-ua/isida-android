@@ -2,9 +2,11 @@ package ua.graviton.isida.ui.home.prop
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.res.stringResource
 import ua.graviton.isida.R
 
+@Stable
 data class PropViewState(
     val items: List<PropItem>
 ) {
@@ -21,6 +23,7 @@ data class PropViewState(
     }
 }
 
+@Stable
 data class PropItem(
     val id: String,
     val title: Title,

@@ -6,59 +6,46 @@ sealed class DeviceCharacteristicInfo<T>(
 
     object Unknown : DeviceCharacteristicInfo<Unit>()
 
-    object SpT0 : DeviceCharacteristicInfo<Float>(
-        limits = listOf(Limit.FloatMinMaxLimit(12f, 42f)),
+    object SpT : DeviceCharacteristicInfo<Float>(
+        limits = listOf(Limit.MinMax(12f, 42f)),
     )
 
-    object SpT1 : DeviceCharacteristicInfo<Float>(
-        limits = listOf(Limit.FloatMinMaxLimit(12f, 42f)),
-    )
-
-    object SpRh0 : DeviceCharacteristicInfo<Float>()
-
-    object SpRh1 : DeviceCharacteristicInfo<Float>()
-
-    object K0 : DeviceCharacteristicInfo<Int>()
-
-    object K1 : DeviceCharacteristicInfo<Int>()
-
+    object SpRh : DeviceCharacteristicInfo<Float>()
+    object K : DeviceCharacteristicInfo<Int>()
     object Alarm : DeviceCharacteristicInfo<Float>()
 
 
     sealed interface Limit<in T> {
         fun isValid(value: T): Boolean
 
-        data class IntMinMaxLimit(val min: Int = Int.MIN_VALUE, val max: Int = Int.MAX_VALUE) : Limit<Int> {
-            override fun isValid(value: Int): Boolean = (value < max) && (value > min)
+        data class MinMax<T : Number>(val min: T, val max: T) : Limit<T> {
+            override fun isValid(value: T): Boolean {
+                return when (value::class) {
+                    Int::class -> ((value as Int) < (max as Int)) && ((value as Int) > (min as Int))
+                    Float::class -> ((value as Float) < (max as Float)) && ((value as Float) > (min as Float))
+                    else -> true
+                }
+            }
         }
 
-        data class IntMaxLimit(val max: Int = Int.MAX_VALUE) : Limit<Int> {
-            override fun isValid(value: Int): Boolean = value < max
+        data class Max<T : Number>(val max: T) : Limit<T> {
+            override fun isValid(value: T): Boolean {
+                return when (value::class) {
+                    Int::class -> (value as Int) < (max as Int)
+                    Float::class -> (value as Float) < (max as Float)
+                    else -> true
+                }
+            }
         }
 
-        data class IntMinLimit(val min: Int = Int.MIN_VALUE) : Limit<Int> {
-            override fun isValid(value: Int): Boolean = value > min
+        data class Min<T : Number>(val max: T) : Limit<T> {
+            override fun isValid(value: T): Boolean {
+                return when (value::class) {
+                    Int::class -> (value as Int) > (max as Int)
+                    Float::class -> (value as Float) > (max as Float)
+                    else -> true
+                }
+            }
         }
-
-
-        data class FloatMinMaxLimit(val min: Float = Float.MIN_VALUE, val max: Float = Float.MAX_VALUE) : Limit<Float> {
-            override fun isValid(value: Float): Boolean = (value < max) && (value > min)
-        }
-
-        data class FloatMaxLimit(val max: Float = Float.MAX_VALUE) : Limit<Float> {
-            override fun isValid(value: Float): Boolean = value < max
-        }
-
-        data class FloatMinLimit(val min: Float = Float.MIN_VALUE) : Limit<Float> {
-            override fun isValid(value: Float): Boolean = value > min
-        }
-    }
-
-    sealed interface Enum<in T> {
-
-        data class IntEnum(
-            val list: List<Int>,
-            val map: (Int) -> String,
-        ) : Enum<Int>
     }
 }
