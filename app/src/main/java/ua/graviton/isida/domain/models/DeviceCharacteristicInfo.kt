@@ -20,9 +20,9 @@ sealed class DeviceCharacteristicInfo<T>(
 
         data class MinMax<T : Number>(val min: T, val max: T) : Limit<T> {
             override fun isValid(value: T): Boolean {
-                return when (value::class) {
-                    Int::class -> ((value as Int) < (max as Int)) && ((value as Int) > (min as Int))
-                    Float::class -> ((value as Float) < (max as Float)) && ((value as Float) > (min as Float))
+                return when (value) {
+                    is Int -> (value < (max as Int)) && (value > (min as Int))
+                    is Float -> (value < (max as Float)) && (value > (min as Float))
                     else -> true
                 }
             }
@@ -30,19 +30,19 @@ sealed class DeviceCharacteristicInfo<T>(
 
         data class Max<T : Number>(val max: T) : Limit<T> {
             override fun isValid(value: T): Boolean {
-                return when (value::class) {
-                    Int::class -> (value as Int) < (max as Int)
-                    Float::class -> (value as Float) < (max as Float)
+                return when (value) {
+                    is Int -> value < (max as Int)
+                    is Float -> value < (max as Float)
                     else -> true
                 }
             }
         }
 
-        data class Min<T : Number>(val max: T) : Limit<T> {
+        data class Min<T : Number>(val min: T) : Limit<T> {
             override fun isValid(value: T): Boolean {
-                return when (value::class) {
-                    Int::class -> (value as Int) > (max as Int)
-                    Float::class -> (value as Float) > (max as Float)
+                return when (value) {
+                    is Int -> value > (min as Int)
+                    is Float -> value > (min as Float)
                     else -> true
                 }
             }
