@@ -12,11 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import ua.graviton.isida.R
 import ua.graviton.isida.domain.models.DeviceCharacteristicInfo
 import ua.graviton.isida.domain.models.DeviceProperty
 import ua.graviton.isida.ui.theme.IsidaTheme
@@ -76,25 +78,25 @@ fun SetPropInput(
         info = property.info,
         modifier = modifier,
     )
-    is DeviceProperty.ExtOff0 -> DefaultIntInput(
+    is DeviceProperty.ExtOff0 -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
         modifier = modifier,
     )
-    is DeviceProperty.ExtOff1 -> DefaultIntInput(
+    is DeviceProperty.ExtOff1 -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
         modifier = modifier,
     )
-    is DeviceProperty.ExtOn0 -> DefaultIntInput(
+    is DeviceProperty.ExtOn0 -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
         modifier = modifier,
     )
-    is DeviceProperty.ExtOn1 -> DefaultIntInput(
+    is DeviceProperty.ExtOn1 -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
@@ -106,7 +108,7 @@ fun SetPropInput(
         info = property.info,
         modifier = modifier,
     )
-    is DeviceProperty.ForceHeat -> DefaultIntInput(
+    is DeviceProperty.ForceHeat -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
@@ -430,9 +432,9 @@ private fun <T> Limit(
     modifier: Modifier = Modifier,
 ) {
     val text = when (limit) {
-        is DeviceCharacteristicInfo.Limit.Max -> "Value should be less then ${limit.max}"
-        is DeviceCharacteristicInfo.Limit.Min -> "Value should be bigger then ${limit.min}"
-        is DeviceCharacteristicInfo.Limit.MinMax -> "Value should be in range from ${limit.min} to ${limit.max}"
+        is DeviceCharacteristicInfo.Limit.Max -> stringResource(R.string.prop_info_limit_max, limit.max.toString())
+        is DeviceCharacteristicInfo.Limit.Min -> stringResource(R.string.prop_info_limit_min, limit.min.toString())
+        is DeviceCharacteristicInfo.Limit.MinMax -> stringResource(R.string.prop_info_limit_min_max, limit.min.toString(), limit.max.toString())
     }
     Text(
         text = text,
@@ -465,7 +467,7 @@ private fun PreviewUnknown() {
 private fun PreviewNumber() {
     IsidaTheme {
         SetPropInput(
-            property = DeviceProperty.SpT0(29f),
+            property = DeviceProperty.K1(29),
             onPropertyChanged = {},
         )
     }

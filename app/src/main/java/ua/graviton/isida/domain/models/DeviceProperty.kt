@@ -10,12 +10,12 @@ sealed class DeviceProperty<T>(
 
     object Unknown : DeviceProperty<Unit>(id = "unknown", value = Unit, info = DeviceCharacteristicInfo.Unknown)
 
-    data class SpT0(private val _value: Float) : DeviceProperty<Float>(id = "spT0", value = _value, info = DeviceCharacteristicInfo.SpT)
-    data class SpT1(private val _value: Float) : DeviceProperty<Float>(id = "spT1", value = _value, info = DeviceCharacteristicInfo.SpT)
+    data class SpT0(private val _value: Float) : DeviceProperty<Float>(id = "spT0", value = _value, info = DeviceCharacteristicInfo.Temperature)
+    data class SpT1(private val _value: Float) : DeviceProperty<Float>(id = "spT1", value = _value, info = DeviceCharacteristicInfo.Temperature)
     data class SpRh0(private val _value: Float) : DeviceProperty<Float>(id = "spRh0", value = _value, info = DeviceCharacteristicInfo.SpRh)
     data class SpRh1(private val _value: Float) : DeviceProperty<Float>(id = "spRh1", value = _value, info = DeviceCharacteristicInfo.SpRh)
     data class K0(private val _value: Int) : DeviceProperty<Int>(id = "K0", value = _value, info = DeviceCharacteristicInfo.K)
-    data class K1(private val _value: Int) : DeviceProperty<Int>(id = "K1", value = _value, info = DeviceCharacteristicInfo.K)
+    data class K1(private val _value: Int) : DeviceProperty<Int>(id = "K1", value = _value, info = DeviceCharacteristicInfo.K1)
     data class Ti0(private val _value: Int) : DeviceProperty<Int>(id = "Ti0", value = _value, info = DeviceCharacteristicInfo.K)
     data class Ti1(private val _value: Int) : DeviceProperty<Int>(id = "Ti1", value = _value, info = DeviceCharacteristicInfo.K)
     data class MinRun(private val _value: Int) : DeviceProperty<Int>(id = "minRun", value = _value, info = DeviceCharacteristicInfo.K)
