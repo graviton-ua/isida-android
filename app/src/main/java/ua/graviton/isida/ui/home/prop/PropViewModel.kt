@@ -175,11 +175,11 @@ private fun DataPackageDto?.toItems(): List<PropItem> {
             title = Title.ResId(R.string.prop_id_label),
             value = Value.Data(this?.deviceNumber) { it?.toString() ?: EMPTY_PLACEHOLDER },
         ),
-        PropItem(
-            id = "state",
-            title = Title.ResId(R.string.prop_camera_status_label),
-            value = Value.Data(this?.state) { it?.toString() ?: EMPTY_PLACEHOLDER },
-        ),
+//        PropItem(
+//            id = "state",
+//            title = Title.ResId(R.string.prop_camera_status_label),
+//            value = Value.Data(this?.state) { it?.toString() ?: EMPTY_PLACEHOLDER },
+//        ),
         PropItem(
             id = "extendMode",
             title = Title.ResId(R.string.prop_extended_mode_label),

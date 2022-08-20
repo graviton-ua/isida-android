@@ -11,8 +11,17 @@ sealed class DeviceCharacteristicInfo<T>(
     )
 
     object SpRh : DeviceCharacteristicInfo<Float>()
-    object K : DeviceCharacteristicInfo<Int>(limits = listOf(Limit.Min(10)))
-    object K1 : DeviceCharacteristicInfo<Int>(limits = listOf(Limit.Max(10), Limit.MinMax(6, 9)))
+    object K : DeviceCharacteristicInfo<Int>(
+        limits = listOf(Limit.Min(10))
+    )
+
+    object K1 : DeviceCharacteristicInfo<Int>(
+        limits = listOf(
+            Limit.Max(10),
+            Limit.MinMax(6, 9)
+        )
+    )
+
     object Alarm : DeviceCharacteristicInfo<Float>()
 
 
