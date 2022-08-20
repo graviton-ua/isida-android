@@ -81,17 +81,21 @@
     <string name="goose">Гусята</string>
     <string name="quail">Перепел</string>
 
+    <string name="prop_dimen_celsius" translatable="false">%1$s °C</string>
     <string name="prop_dimen_percent" translatable="false">%1$s %%</string>
+    <string name="prop_dimen_ppm" translatable="false">%1$s ppm.</string>
     <string name="prop_dimen_sec">%1$s sec.</string>
+    <string name="prop_dimen_min">%1$s min.</string>
+    <string name="prop_dimen_kwt">%1$s kWt/h.</string>
 
     <string name="prop_dry_sensor_label">Dry sensor</string>
     <string name="prop_wet_sensor_label">Wet sensor</string>
     <string name="prop_rh_ofset_label">Ofset RH sensor</string>
     <string name="prop_rh_sensor_label">RH sensor</string>
-    <string name="prop_p_coef_dry_label">Proportional dry sensor</string>
-    <string name="prop_p_coef_wet_label">Proportional wet sensor</string>
-    <string name="prop_i_coef_dry_label">Integral dry sensor</string>
-    <string name="prop_i_coef_wet_label">Integral wet sensor</string>
+    <string name="prop_p_coef_dry_label">Coeff. P dry sensor</string>
+    <string name="prop_p_coef_wet_label">Coeff. P wet sensor</string>
+    <string name="prop_i_coef_dry_label">Coeff. I dry sensor</string>
+    <string name="prop_i_coef_wet_label">Coeff. I wet sensor</string>
     <string name="prop_min_impulse_label">Minimum impulse</string>
     <string name="prop_max_impulse_label">Maximum impulse</string>
     <string name="prop_repeat_time_label">Repeat time</string>

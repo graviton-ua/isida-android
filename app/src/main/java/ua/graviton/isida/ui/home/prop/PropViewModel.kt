@@ -53,17 +53,17 @@ private fun DataPackageDto?.toItems(): List<PropItem> {
         PropItem(
             id = "spT0",
             title = Title.ResId(R.string.prop_dry_sensor_label),
-            value = Value.Data(this?.spT0) { it?.format() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.spT0) { it?.format()?.let { stringResource(R.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "spT1",
             title = Title.ResId(R.string.prop_wet_sensor_label),
-            value = Value.Data(this?.spT1) { it?.format() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.spT1) { it?.format()?.let { stringResource(R.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "spRh0",
             title = Title.ResId(R.string.prop_rh_ofset_label),
-            value = Value.Data(this?.spRh0) { it?.format() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.spRh0) { it?.format()?.let { stringResource(R.string.prop_dimen_percent, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "spRh1",
@@ -98,77 +98,77 @@ private fun DataPackageDto?.toItems(): List<PropItem> {
         PropItem(
             id = "maxRun",
             title = Title.ResId(R.string.prop_max_impulse_label),
-            value = Value.Data(this?.maxRun) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.maxRun) { it?.toString()?.let { stringResource(R.string.prop_dimen_sec, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "period",
             title = Title.ResId(R.string.prop_repeat_time_label),
-            value = Value.Data(this?.period) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.period) { it?.toString()?.let { stringResource(R.string.prop_dimen_sec, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "timeOut",
             title = Title.ResId(R.string.prop_waiting_time_label),
-            value = Value.Data(this?.timeOut) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.timeOut) { it?.toString()?.let { stringResource(R.string.prop_dimen_min, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "energyMeter",
             title = Title.ResId(R.string.prop_Wattmeter_label),
-            value = Value.Data(this?.energyMeter) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.energyMeter) { it?.toString()?.let { stringResource(R.string.prop_dimen_kwt, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "timer0",
             title = Title.ResId(R.string.prop_turned_off_label),
-            value = Value.Data(this?.timer0) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.timer0) { it?.toString()?.let { stringResource(R.string.prop_dimen_min, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "timer1",
             title = Title.ResId(R.string.prop_turned_on_label),
-            value = Value.Data(this?.timer1) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.timer1) { it?.toString()?.let { stringResource(R.string.prop_dimen_min, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "alarm0",
             title = Title.ResId(R.string.prop_bias_alarm_dry_label),
-            value = Value.Data(this?.alarm0) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.alarm0) { it?.toString()?.let { stringResource(R.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "alarm1",
             title = Title.ResId(R.string.prop_bias_alarm_wet_label),
-            value = Value.Data(this?.alarm1) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.alarm1) { it?.toString()?.let { stringResource(R.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "extOn0",
             title = Title.ResId(R.string.prop_bias_extOn_dry_label),
-            value = Value.Data(this?.extOn0) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.extOn0) { it?.toString()?.let { stringResource(R.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "extOn1",
             title = Title.ResId(R.string.prop_bias_extOn_wet_label),
-            value = Value.Data(this?.extOn1) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.extOn1) { it?.toString()?.let { stringResource(R.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "extOff0",
             title = Title.ResId(R.string.prop_bias_extOff_dry_label),
-            value = Value.Data(this?.extOff0) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.extOff0) { it?.toString()?.let { stringResource(R.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "extOff1",
             title = Title.ResId(R.string.prop_bias_extOff_wet_label),
-            value = Value.Data(this?.extOff1) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.extOff1) { it?.toString()?.let { stringResource(R.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "air0",
             title = Title.ResId(R.string.prop_pause_airing_label),
-            value = Value.Data(this?.air0) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.air0) { it?.toString()?.let { stringResource(R.string.prop_dimen_min, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "air1",
             title = Title.ResId(R.string.prop_airing_work_label),
-            value = Value.Data(this?.air1) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.air1) { it?.toString()?.let { stringResource(R.string.prop_dimen_sec, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "spCO2",
             title = Title.ResId(R.string.prop_CO2_concentration_label),
-            value = Value.Data(this?.spCO2) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.spCO2) { it?.toString()?.let { stringResource(R.string.prop_dimen_ppm, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "deviceNumber",
@@ -198,17 +198,17 @@ private fun DataPackageDto?.toItems(): List<PropItem> {
         PropItem(
             id = "hysteresis",
             title = Title.ResId(R.string.prop_Hysteresis_label),
-            value = Value.Data(this?.hysteresis) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.hysteresis) { it?.toString()?.let { stringResource(R.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "forceHeat",
             title = Title.ResId(R.string.prop_forced_heating_label),
-            value = Value.Data(this?.forceHeat) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.forceHeat) { it?.toString()?.let { stringResource(R.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "turnTime",
             title = Title.ResId(R.string.prop_tray_passage_time_label),
-            value = Value.Data(this?.turnTime) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.turnTime) { it?.toString()?.let { stringResource(R.string.prop_dimen_sec, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
             id = "hihEnable",
@@ -233,7 +233,7 @@ private fun DataPackageDto?.toItems(): List<PropItem> {
         PropItem(
             id = "zonality",
             title = Title.ResId(R.string.prop_zone_threshold_label),
-            value = Value.Data(this?.zonality) { it?.toString() ?: EMPTY_PLACEHOLDER },
+            value = Value.Data(this?.zonality) { it?.toString()?.let { stringResource(R.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
         ),
     )
 }

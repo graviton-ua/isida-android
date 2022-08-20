@@ -29,11 +29,11 @@ data class DataPackageDto(
     val period: Int = 0,        // 2байт[50;51] импульсное управление насосом увлажнителя
     val timeOut: Int = 0,       // 2байт[52;53] время ожидания начала режима охлаждения
     val energyMeter: Int = 0,   // 2байт[54;55] счетчик элктрической энергии
-    val timer0: Int = 0, val timer1: Int = 0,   // 2байт[56;57] [0]-отключ.состояниe [1]-включ.состояниe
-    val alarm0: Float = 0f, val alarm1: Float = 0f,// 2байт[58;59] дельта 5 = 0.5 гр.C
-    val extOn0: Int = 0, val extOn1: Int = 0,   // 2байт[60;61] смещение для ВКЛ. вспомогательного канала
-    val extOff0: Int = 0, val extOff1: Int = 0, // 2байт[62;63] смещение для ОТКЛ. вспомогательного канала
-    val air0: Int = 0, val air1: Int = 0,       // 2байт[64;65] таймер проветривания air[0]-пауза; air[1]-работа; если air[1]=0-ОТКЛЮЧЕНО
+    val timer0: Int = 0, val timer1: Int = 0,         // 2байт[56;57] [0]-отключ.состояниe [1]-включ.состояниe
+    val alarm0: Float = 0f, val alarm1: Float = 0f,   // 2байт[58;59] дельта 5 = 0.5 гр.C
+    val extOn0: Float = 0f, val extOn1: Float = 0f,   // 2байт[60;61] смещение для ВКЛ. вспомогательного канала
+    val extOff0: Float = 0f, val extOff1: Float = 0f, // 2байт[62;63] смещение для ОТКЛ. вспомогательного канала
+    val air0: Int = 0, val air1: Int = 0,             // 2байт[64;65] таймер проветривания air[0]-пауза; air[1]-работа; если air[1]=0-ОТКЛЮЧЕНО
     val spCO2: Int = 0,         // 1байт[66]    опорное значение для управления концетрацией СО2
     val deviceNumber: Int = 0,  // 1байт[67]    сетевой номер прибора
     val state: Int = 0,         // 1байт[68]    состояние камеры (ОТКЛ. ВКЛ. ОХЛАЖДЕНИЕ, и т.д.)
@@ -41,7 +41,7 @@ data class DataPackageDto(
     val relayMode: Int = 0,     // 1байт[70]    релейный режим работы  0-НЕТ; 1->по кан.[0] 2->по кан.[1] 3->по кан.[0]&[1]
     val programm: Int = 0,      // 1байт[71]    работа по программе
     val hysteresis: Int = 0,    // 1байт[72]    Гистерезис канала увлажнения
-    val forceHeat: Int = 0,     // 1байт[73]    Форсированный нагрев 5 = 0.5 грд.С.
+    val forceHeat: Float = 0f,  // 1байт[73]    Форсированный нагрев 5 = 0.5 грд.С.
     val turnTime: Int = 0,      // 1байт[74]    время ожидания прохода лотков в секундах
     val hihEnable: Int = 0,     // 1байт[75]    разрешение использования датчика влажности
     val kOffCurr: Int = 0,      // 1байт[76]    маштабный коэф. по току симистора  (160 для AC1010 или 80 для другого)
@@ -82,11 +82,13 @@ data class DataPackageDto(
                 period = ubytes.read2BytesAsInt(50),
                 timeOut = ubytes.read2BytesAsInt(52),
                 energyMeter = ubytes.read2BytesAsInt(54),
-                timer0 = ubytes[56].toInt(), timer1 = ubytes[57].toInt(),
-                alarm0 = ubytes[58].toInt().toFloat() / 10,
-                alarm1 = ubytes[59].toInt().toFloat() / 10,
-                extOn0 = ubytes[60].toInt(), extOn1 = ubytes[61].toInt(),
-                extOff0 = ubytes[62].toInt(), extOff1 = ubytes[63].toInt(),
+                timer0  = ubytes[56].toInt(), timer1 = ubytes[57].toInt(),
+                alarm0  = ubytes[58].toInt().toFloat() / 10,
+                alarm1  = ubytes[59].toInt().toFloat() / 10,
+                extOn0  = ubytes[60].toInt().toFloat() / 10,
+                extOn1 = ubytes[61].toInt().toFloat() / 10,
+                extOff0 = ubytes[62].toInt().toFloat() / 10,
+                extOff1 = ubytes[63].toInt().toFloat() / 10,
                 air0 = ubytes[64].toInt(), air1 = ubytes[65].toInt(),
                 spCO2 = ubytes[66].toInt(),
                 deviceNumber = ubytes[67].toInt(),
@@ -95,7 +97,7 @@ data class DataPackageDto(
                 relayMode = ubytes[70].toInt(),
                 programm = ubytes[71].toInt(),
                 hysteresis = ubytes[72].toInt(),
-                forceHeat = ubytes[73].toInt(),
+                forceHeat = ubytes[73].toInt().toFloat() / 10,
                 turnTime = ubytes[74].toInt(),
                 hihEnable = ubytes[75].toInt(),
                 kOffCurr = ubytes[76].toInt(),
