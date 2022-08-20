@@ -419,7 +419,7 @@ private fun <T> InputInfo(
     Column(
         modifier = modifier,
     ) {
-        stringResource(R.string.input_info_limit)
+        Text(text = stringResource(R.string.input_info_limit))
         info.limits.forEach {
             Limit(limit = it, modifier = Modifier)
         }
@@ -451,7 +451,7 @@ private fun <T> Limit(
 //}
 
 
-@Preview(name = "Unknown property")
+@Preview(name = "Unknown property", locale = "ru")
 @Composable
 private fun PreviewUnknown() {
     IsidaTheme {
@@ -462,7 +462,7 @@ private fun PreviewUnknown() {
     }
 }
 
-@Preview(name = "Number property")
+@Preview(name = "Number property", locale = "ru")
 @Composable
 private fun PreviewNumber() {
     IsidaTheme {
