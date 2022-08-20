@@ -61,7 +61,7 @@ object IsidaCommands {
         val minRun = (props.findIsInstance<DeviceProperty.MinRun>()?.value ?: deviceDataSnapshot.minRun).toShort().asByteArray()
         val maxRun = (props.findIsInstance<DeviceProperty.MaxRun>()?.value ?: deviceDataSnapshot.maxRun).toShort().asByteArray()
         val period = (props.findIsInstance<DeviceProperty.Period>()?.value ?: deviceDataSnapshot.period).toShort().asByteArray()
-        val timeOut = (props.findIsInstance<DeviceProperty.TimeOut>()?.value ?: deviceDataSnapshot.timeOut).toShort().asByteArray()
+        val timeOut = ((props.findIsInstance<DeviceProperty.TimeOut>()?.value ?: deviceDataSnapshot.timeOut) * 60).toShort().asByteArray()
         val energyMeter = (props.findIsInstance<DeviceProperty.EnergyMeter>()?.value ?: deviceDataSnapshot.energyMeter).toShort().asByteArray()
 
         val timer0 = (props.findIsInstance<DeviceProperty.Timer0>()?.value ?: deviceDataSnapshot.timer0).toByte()
@@ -87,7 +87,7 @@ object IsidaCommands {
         val kOffCurr = (props.findIsInstance<DeviceProperty.KOffCurr>()?.value ?: deviceDataSnapshot.kOffCurr).toByte()
         val coolOn = (props.findIsInstance<DeviceProperty.CoolOn>()?.value ?: deviceDataSnapshot.coolOn).toByte()
         val coolOff = (props.findIsInstance<DeviceProperty.CoolOff>()?.value ?: deviceDataSnapshot.coolOff).toByte()
-        val zonality = (props.findIsInstance<DeviceProperty.Zonality>()?.value ?: deviceDataSnapshot.zonality).toByte()
+        val zonality = ((props.findIsInstance<DeviceProperty.Zonality>()?.value ?: deviceDataSnapshot.zonality) * 10).toInt().toByte()
 
         val data = commandId.toShort().asByteArray() +
                 spT0 + spT1 + spRh0 + spRh1 + k0 + k1 + ti0 + ti1 +

@@ -126,7 +126,8 @@
     <string name="prop_not_used1_label">not used</string>
     <string name="prop_zone_threshold_label">Zone threshold</string>
 
-    <string name="prop_info_limit_min_max">Value should be in range from %1$s to %2$s</string>
-    <string name="prop_info_limit_max">Value should be less then %1$s</string>
-    <string name="prop_info_limit_min">Value should be bigger then %1$s</string>
+    <string name="input_info_limit">Defined limits</string>
+    <string name="input_info_limit_min_max">Value should be in range from %1$s to %2$s</string>
+    <string name="input_info_limit_max">Value should be less then %1$s</string>
+    <string name="input_info_limit_min">Value should be bigger then %1$s</string>
 </resources>

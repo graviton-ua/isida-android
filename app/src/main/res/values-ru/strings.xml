@@ -123,4 +123,9 @@
     <string name="prop_not_used0_label">Зарезервирован</string>
     <string name="prop_not_used1_label">Зарезервирован</string>
     <string name="prop_zone_threshold_label">Порог зональности в камере</string>
+
+    <string name="input_info_limit">Установленные ограничения</string>
+    <string name="input_info_limit_min_max">Значение должно быть от %1$s до %2$s.</string>
+    <string name="input_info_limit_max">Значение должно быть меньше %1$s</string>
+    <string name="input_info_limit_min">Значение должно быть больше %1$s</string>
 </resources>

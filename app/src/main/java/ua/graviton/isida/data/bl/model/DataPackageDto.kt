@@ -47,7 +47,7 @@ data class DataPackageDto(
     val kOffCurr: Int = 0,      // 1байт[76]    маштабный коэф. по току симистора  (160 для AC1010 или 80 для другого)
     val coolOn: Int = 0,        // 1байт[77]    порог включения вентилятора обдува сисмистора coolOn=80~>65 грд.С.
     val coolOff: Int = 0,       // 1байт[78]    порог отключения вентилятора обдува сисмистора
-    val zonality: Int = 0,      // 1байт[79]    порог зональности в камере
+    val zonality: Float = 0f,   // 1байт[79]    порог зональности в камере
 ) {
     companion object {
         fun parseData(bytes: ByteArray): DataPackageDto {
@@ -80,7 +80,7 @@ data class DataPackageDto(
                 minRun = ubytes.read2BytesAsInt(46),
                 maxRun = ubytes.read2BytesAsInt(48),
                 period = ubytes.read2BytesAsInt(50),
-                timeOut = ubytes.read2BytesAsInt(52),
+                timeOut = ubytes.read2BytesAsInt(52)/60,
                 energyMeter = ubytes.read2BytesAsInt(54),
                 timer0  = ubytes[56].toInt(), timer1 = ubytes[57].toInt(),
                 alarm0  = ubytes[58].toInt().toFloat() / 10,
@@ -103,7 +103,7 @@ data class DataPackageDto(
                 kOffCurr = ubytes[76].toInt(),
                 coolOn = ubytes[77].toInt(),
                 coolOff = ubytes[78].toInt(),
-                zonality = ubytes[79].toInt(),
+                zonality = ubytes[79].toInt().toFloat() / 10,
             )
         }
 

@@ -246,7 +246,7 @@ fun SetPropInput(
         info = property.info,
         modifier = modifier,
     )
-    is DeviceProperty.Zonality -> DefaultIntInput(
+    is DeviceProperty.Zonality -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
@@ -419,7 +419,7 @@ private fun <T> InputInfo(
     Column(
         modifier = modifier,
     ) {
-        Text(text = "Rules here")
+        stringResource(R.string.input_info_limit)
         info.limits.forEach {
             Limit(limit = it, modifier = Modifier)
         }
@@ -432,9 +432,9 @@ private fun <T> Limit(
     modifier: Modifier = Modifier,
 ) {
     val text = when (limit) {
-        is DeviceCharacteristicInfo.Limit.Max -> stringResource(R.string.prop_info_limit_max, limit.max.toString())
-        is DeviceCharacteristicInfo.Limit.Min -> stringResource(R.string.prop_info_limit_min, limit.min.toString())
-        is DeviceCharacteristicInfo.Limit.MinMax -> stringResource(R.string.prop_info_limit_min_max, limit.min.toString(), limit.max.toString())
+        is DeviceCharacteristicInfo.Limit.Max -> stringResource(R.string.input_info_limit_max, limit.max.toString())
+        is DeviceCharacteristicInfo.Limit.Min -> stringResource(R.string.input_info_limit_min, limit.min.toString())
+        is DeviceCharacteristicInfo.Limit.MinMax -> stringResource(R.string.input_info_limit_min_max, limit.min.toString(), limit.max.toString())
     }
     Text(
         text = text,
