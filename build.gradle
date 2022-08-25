@@ -15,15 +15,15 @@ buildscript {
                 "preference": '1.2.0',
                 "lifecycle" : '2.5.1',
                 "navigation": '2.5.1',
-                "compose"   : '1.2.0',
+                "compose"   : '1.2.1',
         ]
         google = [
                 "hilt"       : '2.43.2',
-                "accompanist": '0.25.0',
+                "accompanist": '0.25.1',
         ]
         kotlinx = [
                 "coroutines"   : '1.6.4',
-                "serialization": '1.4.0-RC',
+                "serialization": '1.4.0',
         ]
         versions = [
                 "timber"              : '5.0.1',
