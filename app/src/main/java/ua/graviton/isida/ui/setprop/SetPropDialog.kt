@@ -2,9 +2,7 @@ package ua.graviton.isida.ui.setprop
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -154,9 +152,11 @@ private fun StateSuccess(
             .padding(8.dp)
     ) {
         Text(text = state.property.id)
+        val validState = remember { mutableStateOf(true) }
         SetPropInput(
             property = state.property,
             onPropertyChanged = onPropertyChanged,
+            validState = validState,
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1f),
@@ -164,6 +164,7 @@ private fun StateSuccess(
         DialogButtons(
             onSend = onSend,
             onCancel = onCancel,
+            validState = validState,
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -173,6 +174,7 @@ private fun StateSuccess(
 private fun DialogButtons(
     onSend: () -> Unit,
     onCancel: () -> Unit,
+    validState: State<Boolean>,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -189,6 +191,7 @@ private fun DialogButtons(
 
         Button(
             onClick = onSend,
+            enabled = validState.value,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)

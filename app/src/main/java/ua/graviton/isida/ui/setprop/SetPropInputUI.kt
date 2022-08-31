@@ -28,228 +28,266 @@ import java.util.*
 fun SetPropInput(
     property: DeviceProperty<*>,
     onPropertyChanged: (DeviceProperty<*>?) -> Unit,
+    validState: MutableState<Boolean>,
     modifier: Modifier = Modifier,
 ): Unit = when (property) {
     is DeviceProperty.Air0 -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.Air1 -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.Alarm0 -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.Alarm1 -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.CoolOff -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.CoolOn -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.DeviceNumber -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.EnergyMeter -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.ExtOff0 -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.ExtOff1 -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.ExtOn0 -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.ExtOn1 -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.ExtendMode -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.ForceHeat -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.HihEnable -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.Hysteresis -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.K0 -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.K1 -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.KOffCurr -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.MaxRun -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.MinRun -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.Period -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.Program -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.RelayMode -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.SpCO2 -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.SpRh0 -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.SpRh1 -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.SpT0 -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.SpT1 -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.State -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.Ti0 -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.Ti1 -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.TimeOut -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.Timer0 -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.Timer1 -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.TurnTime -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.Zonality -> DefaultFloatInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
+        validState = validState,
         modifier = modifier,
     )
     is DeviceProperty.Unknown -> InputUnknown(modifier = modifier)
@@ -267,55 +305,12 @@ private fun InputUnknown(
     }
 }
 
-//@Composable
-//private inline fun <reified T : Number> NumberInput(
-//    init: T,
-//    crossinline onChanged: (T?) -> Unit,
-//    info: DeviceCharacteristicInfo<T>,
-//    modifier: Modifier = Modifier,
-//) {
-//    val focusManager = LocalFocusManager.current
-//    val keyboardController = LocalSoftwareKeyboardController.current
-//
-//    val convertedState = remember { mutableStateOf<T?>(null) }
-//    val errorState = remember { mutableStateOf(false) }
-//    val infoValidState = remember {
-//        derivedStateOf {
-//            convertedState.value?.let { converted -> info.limits.all { it.isValid(converted) } } ?: true
-//        }
-//    }
-//
-//    var textFieldValue by remember(init) {
-//        when (init) {
-//            is Float -> String.format(locale = Locale.ENGLISH, "%.1f", init)
-//            else -> init.toString()
-//        }.let { mutableStateOf(TextFieldValue(text = it, selection = TextRange(it.length))) }
-//    }
-//    OutlinedTextField(
-//        value = textFieldValue,
-//        onValueChange = { value ->
-//            textFieldValue = value
-//            val converted: T? = value.text.convertAndCast()
-//            convertedState.value = converted
-//            errorState.value = converted?.let { false } ?: true
-//            onChanged(converted)
-//        },
-//        isError = errorState.value || !infoValidState.value,
-//        singleLine = true,
-//        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
-//        keyboardActions = KeyboardActions(onDone = {
-//            focusManager.clearFocus()
-//            keyboardController?.hide()
-//        }),
-//        modifier = modifier,
-//    )
-//}
-
 @Composable
 private fun DefaultIntInput(
     init: Int,
     onChanged: (Int?) -> Unit,
     info: DeviceCharacteristicInfo<Int>,
+    validState: MutableState<Boolean>,
     modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
@@ -330,6 +325,7 @@ private fun DefaultIntInput(
                 convertedState.value?.let { converted -> info.limits.all { it.isValid(converted) } } ?: true
             }
         }
+        validState.value = infoValidState.value && !errorState.value
 
         var textFieldValue by remember(init) {
             init.toString().let { mutableStateOf(TextFieldValue(text = it, selection = TextRange(it.length))) }
@@ -365,6 +361,7 @@ private fun DefaultFloatInput(
     init: Float,
     onChanged: (Float?) -> Unit,
     info: DeviceCharacteristicInfo<Float>,
+    validState: MutableState<Boolean>,
     modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
@@ -379,6 +376,7 @@ private fun DefaultFloatInput(
                 convertedState.value?.let { converted -> info.limits.all { it.isValid(converted) } } ?: true
             }
         }
+        validState.value = infoValidState.value && !errorState.value
 
         var textFieldValue by remember(init) {
             String.format(locale = Locale.ENGLISH, "%.1f", init)
@@ -442,14 +440,6 @@ private fun <T> Limit(
     )
 }
 
-//private inline fun <reified T : Number> String.convertAndCast(): T? {
-//    return when (T::class) {
-//        Float::class -> toFloatOrNull()
-//        Int::class -> toIntOrNull()
-//        else -> toIntOrNull()
-//    } as? T
-//}
-
 
 @Preview(name = "Unknown property", locale = "ru")
 @Composable
@@ -458,6 +448,7 @@ private fun PreviewUnknown() {
         SetPropInput(
             property = DeviceProperty.Unknown,
             onPropertyChanged = {},
+            validState = remember { mutableStateOf(false) },
         )
     }
 }
@@ -469,6 +460,7 @@ private fun PreviewNumber() {
         SetPropInput(
             property = DeviceProperty.K1(29),
             onPropertyChanged = {},
+            validState = remember { mutableStateOf(false) },
         )
     }
 }
