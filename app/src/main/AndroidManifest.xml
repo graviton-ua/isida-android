@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ua.graviton.isida">
+          xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -12,12 +12,12 @@
 
     <application
         android:name=".App"
-        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Isida.SplashScreen">
+        android:theme="@style/Theme.Isida.SplashScreen"
+        tools:ignore="LockedOrientationActivity">
 
         <activity
             android:name=".ui.MainActivity"
@@ -33,8 +33,8 @@
         <activity
             android:name=".ui.scan.ScanDevicesActivity"
             android:exported="false"
-            android:theme="@style/Theme.Isida.NoActionBar"
             android:screenOrientation="sensorPortrait"
+            android:theme="@style/Theme.Isida.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
 
         <service
