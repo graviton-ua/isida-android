@@ -18,8 +18,7 @@ class SaveDataPackage @Inject constructor(
             DataPackageDto.parseData(params.bytes)
         } catch (t: Throwable) {
             null
-        }
-        if (dto == null) return
+        } ?: return
 
         repo.saveDataPackage(dto).getOrThrow()  // Ignore result
     }

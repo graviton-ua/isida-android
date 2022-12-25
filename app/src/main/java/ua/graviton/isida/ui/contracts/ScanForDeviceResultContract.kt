@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
-import ua.graviton.isida.domain.bl.BluetoothState
+import ua.graviton.isida.domain.bl.BluetoothConstants
 import ua.graviton.isida.ui.scan.intentScanDevices
 
 class ScanForDeviceResultContract : ActivityResultContract<Unit, String?>() {
@@ -16,7 +16,7 @@ class ScanForDeviceResultContract : ActivityResultContract<Unit, String?>() {
      *  If Bluetooth was not enabled due to an error (or the user responded "Deny") then the result code is RESULT_CANCELED.
      */
     override fun parseResult(resultCode: Int, intent: Intent?): String? = when (resultCode) {
-        Activity.RESULT_OK -> intent?.getStringExtra(BluetoothState.EXTRA_DEVICE_ADDRESS)
+        Activity.RESULT_OK -> intent?.getStringExtra(BluetoothConstants.EXTRA_DEVICE_ADDRESS)
         else -> null
     }
 }

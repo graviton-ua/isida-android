@@ -1,6 +1,7 @@
 package ua.graviton.isida.ui.scan
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
@@ -9,7 +10,7 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.graphics.Color
@@ -22,19 +23,22 @@ import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import ua.graviton.isida.domain.bl.BluetoothState
+import ua.graviton.isida.domain.bl.BluetoothConstants
 import ua.graviton.isida.ui.contracts.EnableBluetoothResultContract
 import ua.graviton.isida.ui.theme.IsidaTheme
 
 
 fun Context.intentScanDevices() = Intent(this, ScanDevicesActivity::class.java)
 
+@SuppressLint("MissingPermission")
 @AndroidEntryPoint
 class ScanDevicesActivity : AppCompatActivity() {
     private val viewModel: ScanDevicesViewModel by viewModels()
 
-    private val bluetoothManager: BluetoothManager by lazy { getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager }
+    private val bluetoothManager: BluetoothManager by lazy { getSystemService(BluetoothManager::class.java) }
     private val bluetoothAdapter: BluetoothAdapter? by lazy { bluetoothManager.adapter }
+
+    private val requestBluetoothPermission = registerForActivityResult(RequestPermission()) { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +76,7 @@ class ScanDevicesActivity : AppCompatActivity() {
                         bluetoothAdapter?.cancelDiscovery()
 
                         // Create the result Intent and include the MAC address
-                        val intent = Intent().apply { putExtra(BluetoothState.EXTRA_DEVICE_ADDRESS, it.address) }
+                        val intent = Intent().apply { putExtra(BluetoothConstants.EXTRA_DEVICE_ADDRESS, it.address) }
 
                         // Set result and finish this Activity
                         setResult(RESULT_OK, intent)
@@ -161,7 +165,7 @@ class ScanDevicesActivity : AppCompatActivity() {
         if (enabled) onScanClick(bluetoothAdapter)
     }
 
-    private val requestPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { enabled ->
+    private val requestPermission = registerForActivityResult(RequestPermission()) { enabled ->
         if (enabled) onScanClick(bluetoothAdapter)
     }
 

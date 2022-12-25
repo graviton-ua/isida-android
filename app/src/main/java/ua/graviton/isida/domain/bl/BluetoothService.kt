@@ -1,10 +1,14 @@
 package ua.graviton.isida.domain.bl
 
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.os.Handler
 import androidx.core.os.bundleOf
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import timber.log.Timber
 import ua.graviton.isida.utils.toHexString
 import java.io.IOException
@@ -12,6 +16,7 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.util.*
 
+@SuppressLint("MissingPermission")
 class BluetoothService(
     private val adapter: BluetoothAdapter,
     private val handler: Handler,
@@ -19,22 +24,24 @@ class BluetoothService(
     // Member fields
     private var mConnectThread: ConnectThread? = null
     private var mConnectedThread: ConnectedThread? = null
-    private var mState: Int = BluetoothState.STATE_IDLE
 
-    // Set the current state of the chat connection
-    // state : An integer defining the current connection state
-    // Return the current connection state.
-    @get:Synchronized
-    @set:Synchronized
-    var state: Int
-        get() = mState
-        private set(state) {
-            Timber.d("setState() $mState -> $state")
-            mState = state
+    // Current state of the bluetooth connection
+    private val _state = MutableStateFlow(BluetoothState.IDLE)
+    val state = _state.asStateFlow()
 
-            // Give the new state to the Handler so the UI Activity can update
-            handler.obtainMessage(BluetoothState.MESSAGE_STATE_CHANGE, state, -1).sendToTarget()
-        }
+//    // state : An integer defining the current connection state
+//    // Return the current connection state.
+//    @get:Synchronized
+//    @set:Synchronized
+//    var state: Int
+//        get() = mState
+//        private set(state) {
+//            Timber.d("setState() $mState -> $state")
+//            mState = state
+//
+//            // Give the new state to the Handler so the UI Activity can update
+//            handler.obtainMessage(BluetoothConstants.MESSAGE_STATE_CHANGE, state, -1).sendToTarget()
+//        }
 
 
     // Start the ConnectThread to initiate a connection to a remote device
@@ -43,7 +50,7 @@ class BluetoothService(
     @Synchronized
     fun connect(device: BluetoothDevice) {
         // Cancel any thread attempting to make a connection
-        if (mState == BluetoothState.STATE_CONNECTING) {
+        if (state.value == BluetoothState.CONNECTING) {
             mConnectThread?.cancel()
             mConnectThread = null
         }
@@ -54,7 +61,7 @@ class BluetoothService(
 
         // Start the thread to connect with the given device
         mConnectThread = ConnectThread(device).apply { start() }
-        state = BluetoothState.STATE_CONNECTING
+        _state.update { BluetoothState.CONNECTING }
     }
 
     /**
@@ -76,13 +83,13 @@ class BluetoothService(
         mConnectedThread = ConnectedThread(socket).apply { start() }
 
         // Send the name of the connected device back to the UI Activity
-        val msg = handler.obtainMessage(BluetoothState.MESSAGE_DEVICE_NAME)
+        val msg = handler.obtainMessage(BluetoothConstants.MESSAGE_DEVICE_NAME)
         msg.data = bundleOf(
-            BluetoothState.DEVICE_NAME to device.name,
-            BluetoothState.DEVICE_ADDRESS to device.address,
+            BluetoothConstants.DEVICE_NAME to device.name,
+            BluetoothConstants.DEVICE_ADDRESS to device.address,
         )
         handler.sendMessage(msg)
-        state = BluetoothState.STATE_CONNECTED
+        _state.update { BluetoothState.CONNECTED }
     }
 
     // Stop all threads
@@ -94,7 +101,7 @@ class BluetoothService(
         mConnectedThread?.cancel()
         mConnectedThread = null
 
-        state = BluetoothState.STATE_IDLE
+        _state.update { BluetoothState.IDLE }
     }
 
     // Write to the ConnectedThread in an unsynchronized manner
@@ -104,7 +111,7 @@ class BluetoothService(
         var r: ConnectedThread?
         // Synchronize a copy of the ConnectedThread
         synchronized(this) {
-            if (mState != BluetoothState.STATE_CONNECTED) return
+            if (state.value != BluetoothState.CONNECTED) return
             r = mConnectedThread
         }
         // Perform the write unsynchronized
@@ -171,7 +178,7 @@ class BluetoothService(
         override fun run() {
             var buffer: ByteArray
             var arr_byte = ArrayList<Int>()
-            var endOfMessage: Boolean = false
+            var endOfMessage = false
 
             // Keep listening to the InputStream until an exception occurs.
             while (true) {
@@ -185,7 +192,7 @@ class BluetoothService(
                                     buffer[i] = arr_byte[i].toByte()
                                 }
                                 // Send the obtained bytes to the UI Activity
-                                handler.obtainMessage(BluetoothState.MESSAGE_READ, buffer.size, -1, buffer).sendToTarget()
+                                handler.obtainMessage(BluetoothConstants.MESSAGE_READ, buffer.size, -1, buffer).sendToTarget()
                                 arr_byte = ArrayList()
                                 endOfMessage = false
                             } else {
@@ -224,14 +231,14 @@ class BluetoothService(
                 Timber.w(e, "Error occurred when sending data")
 
                 // Send a failure message back to the activity.
-                val writeErrorMsg = handler.obtainMessage(BluetoothState.MESSAGE_TOAST)
+                val writeErrorMsg = handler.obtainMessage(BluetoothConstants.MESSAGE_TOAST)
                 writeErrorMsg.data = bundleOf("toast" to "Couldn't send data to the other device")
                 handler.sendMessage(writeErrorMsg)
                 return
             }
 
             // Share the sent message back to the UI Activity
-            handler.obtainMessage(BluetoothState.MESSAGE_WRITE, -1, -1, bytes).sendToTarget()
+            handler.obtainMessage(BluetoothConstants.MESSAGE_WRITE, -1, -1, bytes).sendToTarget()
         }
 
         // Call this method from the main activity to shut down the connection.

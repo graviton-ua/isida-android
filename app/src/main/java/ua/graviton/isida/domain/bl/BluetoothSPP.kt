@@ -5,12 +5,17 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Handler
 import android.os.Message
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
 
-// Context from activity which call this class
+@SuppressLint("MissingPermission")
 class BluetoothSPP(
-    private val adapter: BluetoothAdapter
+    scope: CoroutineScope,
+    private val adapter: BluetoothAdapter,
 ) {
     // Listener for Bluetooth Status & Connection
     private var mBluetoothStateListener: BluetoothStateListener? = null
@@ -23,40 +28,19 @@ class BluetoothSPP(
     private val mHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
-                BluetoothState.MESSAGE_WRITE -> Unit
-                BluetoothState.MESSAGE_READ -> {
+                BluetoothConstants.MESSAGE_WRITE -> Unit
+                BluetoothConstants.MESSAGE_READ -> {
                     val readBuf = msg.obj as ByteArray
                     val readMessage = String(readBuf)
                     if (readBuf.isNotEmpty()) mDataReceivedListener?.onDataReceived(readBuf, readMessage)
                 }
-                BluetoothState.MESSAGE_DEVICE_NAME -> {
-                    connectedDeviceName = msg.data.getString(BluetoothState.DEVICE_NAME)
-                    connectedDeviceAddress = msg.data.getString(BluetoothState.DEVICE_ADDRESS)
+                BluetoothConstants.MESSAGE_DEVICE_NAME -> {
+                    connectedDeviceName = msg.data.getString(BluetoothConstants.DEVICE_NAME)
+                    connectedDeviceAddress = msg.data.getString(BluetoothConstants.DEVICE_ADDRESS)
                     mBluetoothConnectionListener?.onDeviceConnected(connectedDeviceName, connectedDeviceAddress)
                     isConnected = true
                 }
-                BluetoothState.MESSAGE_TOAST -> Unit//Toast.makeText(ctx, msg.data.getString(BluetoothState.TOAST), Toast.LENGTH_LONG).show()
-                BluetoothState.MESSAGE_STATE_CHANGE -> {
-                    mBluetoothStateListener?.onServiceStateChanged(msg.arg1)
-                    if (isConnected && msg.arg1 != BluetoothState.STATE_CONNECTED) {
-                        mBluetoothConnectionListener?.onDeviceDisconnected()
-                        if (isAutoConnectionEnabled) {
-                            isAutoConnectionEnabled = false
-                            autoConnect(keyword)
-                        }
-                        isConnected = false
-                        connectedDeviceName = null
-                        connectedDeviceAddress = null
-                    }
-                    if (!isConnecting && msg.arg1 == BluetoothState.STATE_CONNECTING) {
-                        isConnecting = true
-                    } else if (isConnecting) {
-                        if (msg.arg1 != BluetoothState.STATE_CONNECTED) {
-                            mBluetoothConnectionListener?.onDeviceConnectionFailed()
-                        }
-                        isConnecting = false
-                    }
-                }
+                BluetoothConstants.MESSAGE_TOAST -> Unit//Toast.makeText(ctx, msg.data.getString(BluetoothState.TOAST), Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -76,7 +60,7 @@ class BluetoothSPP(
     private var isConnecting = false
     private var isServiceRunning = false
     private var keyword = ""
-    private var isAndroid: Boolean = BluetoothState.DEVICE_ANDROID
+    private var isAndroid: Boolean = BluetoothConstants.DEVICE_ANDROID
     private var bcl: BluetoothConnectionListener? = null
     private var c = 0
 
@@ -92,8 +76,7 @@ class BluetoothSPP(
     //val isDiscovery: Boolean get() = bluetoothAdapter.isDiscovering
     //fun cancelDiscovery(): Boolean = bluetoothAdapter.cancelDiscovery()
 
-    val serviceState: Int
-        get() = mChatService.state
+    val serviceState get() = mChatService.state.value
 
 //    fun startService(isAndroid: Boolean) {
 //        mChatService.run {
@@ -104,6 +87,11 @@ class BluetoothSPP(
 //            }
 //        }
 //    }
+
+    init {
+        // Start listening for bluetooth connection state updates
+        scope.listenForConnectionState(mChatService)
+    }
 
     fun stopService() {
         isServiceRunning = false
@@ -126,7 +114,7 @@ class BluetoothSPP(
     }
 
     fun connect(data: Intent?) {
-        val address = data?.extras?.getString(BluetoothState.EXTRA_DEVICE_ADDRESS) ?: return
+        val address = data?.extras?.getString(BluetoothConstants.EXTRA_DEVICE_ADDRESS) ?: return
         val device = adapter.getRemoteDevice(address) ?: return
         mChatService.connect(device)
     }
@@ -157,11 +145,9 @@ class BluetoothSPP(
         mAutoConnectionListener = listener
     }
 
-    fun enable() = adapter.enable()
-
     fun send(data: ByteArray, CRLF: Boolean) {
-        mChatService?.run {
-            if (state == BluetoothState.STATE_CONNECTED) {
+        mChatService.run {
+            if (state.value == BluetoothState.CONNECTED) {
                 if (CRLF) {
                     val data2 = ByteArray(data.size + 2)
                     for (i in data.indices) data2[i] = data[i]
@@ -176,19 +162,18 @@ class BluetoothSPP(
     }
 
     fun send(data: String, CRLF: Boolean) {
-        var data = data
-        mChatService?.run {
-            if (state == BluetoothState.STATE_CONNECTED) {
-                if (CRLF) data += "\r\n"
-                write(data.toByteArray())
+        mChatService.run {
+            if (state.value == BluetoothState.CONNECTED) {
+                val final = data.let { if (CRLF) it + "\r\n" else it }
+                write(final.toByteArray())
             }
         }
     }
 
-    val pairedDeviceName: List<String> get() = adapter.bondedDevices.map { it.name }
-    val pairedDeviceAddress: List<String> get() = adapter.bondedDevices.map { it.address }
+    private val pairedDeviceName: List<String> get() = adapter.bondedDevices.map { it.name }
+    private val pairedDeviceAddress: List<String> get() = adapter.bondedDevices.map { it.address }
 
-    fun autoConnect(keywordName: String) {
+    private fun autoConnect(keywordName: String) {
         if (!isAutoConnectionEnabled) {
             keyword = keywordName
             isAutoConnectionEnabled = true
@@ -199,7 +184,7 @@ class BluetoothSPP(
             val arr_name = pairedDeviceName
             val arr_address = pairedDeviceAddress
             for (i in arr_name.indices) {
-                if (arr_name[i]!!.contains(keywordName)) {
+                if (arr_name[i].contains(keywordName)) {
                     arr_filter_address.add(arr_address[i])
                     arr_filter_name.add(arr_name[i])
                 }
@@ -240,9 +225,33 @@ class BluetoothSPP(
         }
     }
 
+    private fun CoroutineScope.listenForConnectionState(service: BluetoothService) = launch(Dispatchers.Default) {
+        service.state.collectLatest {
+            mBluetoothStateListener?.onServiceStateChanged(it)
+            if (isConnected && it != BluetoothState.CONNECTED) {
+                mBluetoothConnectionListener?.onDeviceDisconnected()
+                if (isAutoConnectionEnabled) {
+                    isAutoConnectionEnabled = false
+                    autoConnect(keyword)
+                }
+                isConnected = false
+                connectedDeviceName = null
+                connectedDeviceAddress = null
+            }
+            if (!isConnecting && it == BluetoothState.CONNECTING) {
+                isConnecting = true
+            } else if (isConnecting) {
+                if (it != BluetoothState.CONNECTED) {
+                    mBluetoothConnectionListener?.onDeviceConnectionFailed()
+                }
+                isConnecting = false
+            }
+        }
+    }
+
 
     interface BluetoothStateListener {
-        fun onServiceStateChanged(state: Int)
+        fun onServiceStateChanged(state: BluetoothState)
     }
 
     interface OnDataReceivedListener {

@@ -54,14 +54,14 @@ class BluetoothConnectionService : Service() {
         super.onCreate()
         Timber.d("Service created")
 
-        val bluetoothManager: BluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        val bluetoothManager: BluetoothManager = getSystemService(BluetoothManager::class.java)
         val bluetoothAdapter: BluetoothAdapter? = bluetoothManager.adapter
         if (bluetoothAdapter == null) {
             stopSelf()
             return
         }
         Timber.d("BluetoothSPP created")
-        bt = BluetoothSPP(bluetoothAdapter)
+        bt = BluetoothSPP(scope, bluetoothAdapter)
 
         bt.setOnDataReceivedListener(object : BluetoothSPP.OnDataReceivedListener {
             override fun onDataReceived(data: ByteArray, message: String) {
@@ -150,10 +150,10 @@ class BluetoothConnectionService : Service() {
 
 
     private val pendingIntentOpenApp: PendingIntent
-        get() = PendingIntent.getActivity(this, 0, intentMain(), PendingIntent.FLAG_UPDATE_CURRENT)
+        get() = PendingIntent.getActivity(this, 0, intentMain(), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
     private val pendingIntentDisconnect: PendingIntent
-        get() = PendingIntent.getService(this, 0, intentBLServiceDisconnectDevice(), 0)
+        get() = PendingIntent.getService(this, 0, intentBLServiceDisconnectDevice(), PendingIntent.FLAG_IMMUTABLE)
 
 
     inner class ConnectionBinder : Binder() {
