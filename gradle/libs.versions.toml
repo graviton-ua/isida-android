@@ -1,32 +1,32 @@
 [versions]
-agp = "8.0.2"#"8.1.0"
+agp = "8.3.0"
 compileSdk = "34"
 targetSdk = "34"
 minSdk = "23"
 #Kotlin
-kotlin = "1.9.0"
-kotlinx-serialization = "1.5.1"
-kotlinx-coroutines = "1.7.3"
+kotlin = "1.9.22"
+kotlinx-serialization = "1.6.3"
+kotlinx-coroutines = "1.8.0"
 #Compose
-compose = "1.5.0"
-composecompiler = "1.5.1"
+compose = "1.6.3"
+composecompiler = "1.5.10"
 #Squareup
-squareup-okhttp3 = "4.11.0"
+squareup-okhttp3 = "4.12.0"
 squareup-retrofit2 = "2.9.0"
 #Android
-androidx-activity = "1.7.2"
+androidx-activity = "1.8.2"
 androidx-appcompat = "1.7.0-alpha03"
 #Google
-google-hilt = "2.47"
+google-hilt = "2.51"
 google-maps = "17.0.0"
 #Apollo
 apollo3 = "3.8.1"
 #Others
-lifecycle = "2.7.0-alpha01"
-accompanist = "0.31.5-beta"
+lifecycle = "2.7.0"
+accompanist = "0.34.0"
 braze = "26.3.1"
-coil = "2.4.0"
-compose-destinations = "1.9.51"
+coil = "2.6.0"
+compose-destinations = "1.10.2"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -38,11 +38,11 @@ kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 google-play-publisher = { id = "com.github.triplet.play", version = "3.8.1" }
 google-hilt = { id = "com.google.dagger.hilt.android", version.ref = "google-hilt" }
-google-gms = { id = "com.google.gms.google-services", version = "4.3.15" }
-ksp = { id = "com.google.devtools.ksp", version = "1.9.0-1.0.12" }
+google-gms = { id = "com.google.gms.google-services", version = "4.4.1" }
+ksp = { id = "com.google.devtools.ksp", version = "1.9.22-1.0.17" }
 apollo3 = { id = "com.apollographql.apollo3", version.ref = "apollo3" }
-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "2.9.5" }
-firebase-appdistribution = { id = "com.google.firebase.appdistribution", version = "4.0.0" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "2.9.9" }
+firebase-appdistribution = { id = "com.google.firebase.appdistribution", version = "4.2.0" }
 
 [libraries]
 #Classpath
@@ -58,7 +58,7 @@ squareup-okhttp3-logging = { module = "com.squareup.okhttp3:logging-interceptor"
 squareup-retrofit2 = { module = "com.squareup.retrofit2:retrofit", version.ref = "squareup-retrofit2" }
 squareup-retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version = "1.0.0" }
 #Androidx
-androidx-core = { module = "androidx.core:core-ktx", version = "1.12.0-rc01" }
+androidx-core = { module = "androidx.core:core-ktx", version = "1.12.0" }
 androidx-activity-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-fragment = { module = "androidx.fragment:fragment-ktx", version = "1.6.1" }
@@ -91,12 +91,6 @@ google-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref
 google-auth = { module = "com.google.android.gms:play-services-auth", version = "20.6.0" }
 google-play-core = { module = "com.google.android.play:core-ktx", version = "1.8.1" }
 google-places = { module = "com.google.android.libraries.places:places", version = "3.2.0" }
-#Apollo
-apollo3-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo3" }
-apollo3-adapters = { module = "com.apollographql.apollo3:apollo-adapters", version.ref = "apollo3" }
-apollo3-http-cache = { module = "com.apollographql.apollo3:apollo-http-cache", version.ref = "apollo3" }
-apollo3-normalized-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache", version.ref = "apollo3" }
-apollo3-normalized-cache-sqlite = { module = "com.apollographql.apollo3:apollo-normalized-cache-sqlite", version.ref = "apollo3" }
 
 lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
 lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
