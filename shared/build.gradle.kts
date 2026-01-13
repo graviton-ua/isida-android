@@ -1,5 +1,5 @@
 plugins {
-    id("app.s2c.kotlin.multiplatform")
+    id("com.whoppah.kotlin.multiplatform")
     alias(libs.plugins.metro)
 }
 
@@ -14,13 +14,13 @@ kotlin {
 
             api(projects.common.ui.metrox.viewmodel)
 
-            api(projects.ui.home)
-            api(projects.ui.configs)
-            api(projects.ui.settings)
-            api(projects.ui.services)
-            api(projects.ui.balance)
-            api(projects.ui.orders)
-            api(projects.ui.blockchain)
+            api(projects.ui.devicemode)
+            api(projects.ui.home.base)
+            api(projects.ui.home.prop)
+            api(projects.ui.home.report)
+            api(projects.ui.home.stats)
+            api(projects.ui.scan)
+            api(projects.ui.setprop)
         }
     }
 }

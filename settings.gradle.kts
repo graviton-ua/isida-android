@@ -61,12 +61,23 @@ include(
     ":common:ui:metrox:viewmodel",
     ":common:ui:resources",
     ":common:ui:permissions",
+    ":common:ui:navigation",
 
     ":data:db",
     ":data:models",
     ":data:repos",
 
     ":domain",
+
+    ":ui:devicemode",
+    ":ui:home:base",
+    ":ui:home:prop",
+    ":ui:home:report",
+    ":ui:home:stats",
+    ":ui:scan",
+    ":ui:setprop",
+
+    ":shared",
 
     ":app",
 )

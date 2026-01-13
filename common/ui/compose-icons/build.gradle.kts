@@ -12,7 +12,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(libs.jetbrains.compose.material3)
-            implementation(libs.jetbrains.compose.icons)
+            api(libs.jetbrains.compose.icons)
             implementation(libs.jetbrains.compose.ui.tooling.preview)
         }
 

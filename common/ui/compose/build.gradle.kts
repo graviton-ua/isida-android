@@ -18,9 +18,9 @@ kotlin {
             api(projects.common.ui.resources)
 
             implementation(libs.jetbrains.compose.runtime)
-            implementation(libs.jetbrains.compose.ui)
+            api(libs.jetbrains.compose.ui)
             api(libs.jetbrains.compose.ui.tooling.preview)
-            implementation(libs.jetbrains.compose.material3)
+            api(libs.jetbrains.compose.material3)
             implementation(libs.jetbrains.lifecycle.runtime)
             implementation(libs.jetbrains.navigation.compose)
 
