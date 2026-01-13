@@ -1,0 +1,3 @@
+package com.whoppah.metrox.viewmodel
+
+interface ViewModelAssistedFactory

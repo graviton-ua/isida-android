@@ -1,0 +1,43 @@
+-- Define the table
+-- We assume the 'RoleEntity' maps to a table named 'roles'.
+-- If your Role table has a different name, update the REFERENCES clause.
+CREATE TABLE operations (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    role_id INTEGER NOT NULL,
+    FOREIGN KEY (role_id) REFERENCES roles(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- Define the index (Room: indices = [Index(value = ["role_id"])])
+CREATE INDEX operations_role_id_index ON operations(role_id);
+
+-- 1. Insert (Implicit in Base Dao)
+insertOperation:
+INSERT OR IGNORE INTO operations (name, role_id)
+VALUES (?, ?);
+
+-- 2. Select All (dao: operations(), listenOperations())
+selectAll:
+SELECT * FROM operations;
+
+-- 3. Select by Role (dao: operations(roleId), listenOperations(roleId))
+selectByRoleId:
+SELECT * FROM operations
+WHERE role_id = ?;
+
+-- 4. Check Allowed (dao: isAllowed(roleId, operation))
+-- Returns 0 or 1 row
+selectAllowedOperation:
+SELECT * FROM operations
+WHERE role_id = ? AND name = ?
+LIMIT 1;
+
+-- 5. Delete by ID (dao: delete(id))
+deleteById:
+DELETE FROM operations
+WHERE id = ?;
+
+-- 6. Delete by Role and Name (dao: delete(roleId, name))
+deleteByRoleAndName:
+DELETE FROM operations
+WHERE role_id = ? AND name = ?;

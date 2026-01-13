@@ -6,21 +6,23 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.os.Handler
 import androidx.core.os.bundleOf
+import co.touchlab.kermit.Logger
+import com.whoppah.extensions.toHexString
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import timber.log.Timber
-import ua.graviton.isida.utils.toHexString
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
-import java.util.*
+import java.util.UUID
 
 @SuppressLint("MissingPermission")
 class BluetoothService(
     private val adapter: BluetoothAdapter,
     private val handler: Handler,
 ) {
+    private val logger by lazy { Logger.withTag("BluetoothService") }
+
     // Member fields
     private var mConnectThread: ConnectThread? = null
     private var mConnectedThread: ConnectedThread? = null
@@ -152,18 +154,18 @@ class BluetoothService(
                     // the connection in a separate thread.
                     connected(socket, device)
                 } catch (e: IOException) {
-                    Timber.w(e, "Could not connect the client socket")
+                    logger.w(e) { "Could not connect the client socket" }
                     connectionFailed()
                 }
             }
         }
 
         fun cancel() {
-            Timber.d("Cancel invoked")
+            logger.d("Cancel invoked")
             try {
                 mmSocket?.close()
             } catch (e: IOException) {
-                Timber.w(e, "Could not close the client socket")
+                logger.w(e) { "Could not close the client socket" }
             }
         }
     }
@@ -200,17 +202,19 @@ class BluetoothService(
                                 endOfMessage = false
                             }
                         }
+
                         0x0D -> {
                             endOfMessage = true
                             arr_byte.add(data)
                         }
+
                         else -> {
                             arr_byte.add(data)
                             endOfMessage = false
                         }
                     }
                 } catch (e: IOException) {
-                    Timber.w(e)
+                    logger.w(e) { e.message ?: "Unknown error" }
                     connectionLost()
                     break
                 }
@@ -225,10 +229,10 @@ class BluetoothService(
                     buffer2[i] = buffer[i];
                 buffer2[buffer2.length - 2] = 0x0A;
                 buffer2[buffer2.length - 1] = 0x0D;*/
-                Timber.d("out: ${bytes.toHexString(" ")}")
+                logger.d("out: ${bytes.toHexString(" ")}")
                 mmOutStream.write(bytes)
             } catch (e: IOException) {
-                Timber.w(e, "Error occurred when sending data")
+                logger.w(e) { "Error occurred when sending data" }
 
                 // Send a failure message back to the activity.
                 val writeErrorMsg = handler.obtainMessage(BluetoothConstants.MESSAGE_TOAST)
@@ -246,7 +250,7 @@ class BluetoothService(
             try {
                 mmSocket.close()
             } catch (e: IOException) {
-                Timber.w(e, "Could not close the connect socket")
+                logger.w(e) { "Could not close the connect socket" }
             }
         }
     }

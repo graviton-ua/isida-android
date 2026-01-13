@@ -7,7 +7,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.graviton.isida.domain.observers.ObserveDeviceData
-import ua.graviton.isida.ui.utils.ObservableLoadingCounter
 import java.util.*
 import javax.inject.Inject
 

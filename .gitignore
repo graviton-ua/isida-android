@@ -1,11 +1,16 @@
-*.iml
+# Gradle
 .gradle
-/local.properties
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
+build/
+.kotlin
 
+captures
+
+/local.properties
+
+# IntelliJ .idea folder
 .idea
+*.iml
+
+# General
+.DS_Store
+.externalNativeBuild

@@ -1,17 +1,18 @@
 package ua.graviton.isida.domain.interactors
 
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ua.graviton.isida.data.repos.RolesRepository
 import ua.graviton.isida.domain.Interactor
-import javax.inject.Inject
 
-class AddRole @Inject constructor(
+@Inject
+class AddRole(
     private val repo: RolesRepository
-) : Interactor<AddRole.Params>() {
+) : Interactor<AddRole.Params, Unit>() {
 
     override suspend fun doWork(params: Params) = withContext(dispatcher) {
-        repo.addRole(params.name, params.pass)
+        //TODO: repo.addRole(params.name, params.pass)
         // Ignore any result here
         Unit
     }

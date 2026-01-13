@@ -1,6 +1,6 @@
 package ua.graviton.isida.domain.models
 
-import ua.graviton.isida.data.bl.model.DataPackageDto
+import ua.graviton.isida.data.models.DataPackageDto
 
 sealed class DeviceProperty<T>(
     val id: String,

@@ -1,0 +1,46 @@
+CREATE TABLE roles (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    pass_hash TEXT NOT NULL
+);
+
+-- Indexes (Implicitly created by PK, but if you query by name often):
+CREATE INDEX roles_name_index ON roles(name);
+
+-- 1. Standard CRUD
+insertRole:
+INSERT OR IGNORE INTO roles (name, pass_hash)
+VALUES (?, ?);
+
+selectLastInsertId:
+SELECT last_insert_rowid();
+
+selectAll:
+SELECT * FROM roles;
+
+selectById:
+SELECT * FROM roles WHERE id = ?;
+
+deleteById:
+DELETE FROM roles WHERE id = ?;
+
+-- 2. Relational Queries (Replacing @Relation)
+-- We fetch the Role AND the Operation in one go using LEFT JOIN.
+-- This allows us to see Roles even if they have no Operations.
+
+selectAllWithOperations:
+SELECT roles.*, operations.*
+FROM roles
+LEFT JOIN operations ON roles.id = operations.role_id;
+
+selectByIdWithOperations:
+SELECT roles.*, operations.*
+FROM roles
+LEFT JOIN operations ON roles.id = operations.role_id
+WHERE roles.id = ?;
+
+selectByCredsWithOperations:
+SELECT roles.*, operations.*
+FROM roles
+LEFT JOIN operations ON roles.id = operations.role_id
+WHERE roles.name = ? AND roles.pass_hash = ?;

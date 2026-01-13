@@ -1,0 +1,53 @@
+import kotlin.Float;
+import kotlin.Int;
+import kotlin.time.Instant;
+
+CREATE TABLE device_data (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    created_at INTEGER AS Instant NOT NULL,
+    device_id INTEGER AS Int NOT NULL,
+    pv_t0 REAL AS Float NOT NULL,
+    pv_t1 REAL AS Float NOT NULL,
+    pv_t2 REAL AS Float NOT NULL,
+    pv_t3 REAL AS Float NOT NULL,
+    pv_rh REAL AS Float NOT NULL,
+    pv_co2_1 INTEGER AS Int NOT NULL,
+    pv_co2_2 INTEGER AS Int NOT NULL,
+    pv_co2_3 INTEGER AS Int NOT NULL,
+    pv_timer INTEGER AS Int NOT NULL,
+    pv_tmr_count INTEGER AS Int NOT NULL,
+    pv_flap INTEGER AS Int NOT NULL,
+    power INTEGER AS Int NOT NULL,
+    fuses INTEGER AS Int NOT NULL,
+    errors INTEGER AS Int NOT NULL,
+    warning INTEGER AS Int NOT NULL,
+    cost0 INTEGER AS Int NOT NULL,
+    cost1 INTEGER AS Int NOT NULL,
+    date INTEGER AS Int NOT NULL,
+    hours INTEGER AS Int NOT NULL
+);
+
+-- Insert Query
+insertDeviceData:
+INSERT OR IGNORE INTO device_data (
+    created_at, device_id, pv_t0, pv_t1, pv_t2, pv_t3, pv_rh,
+    pv_co2_1, pv_co2_2, pv_co2_3, pv_timer, pv_tmr_count, pv_flap,
+    power, fuses, errors, warning, cost0, cost1, date, hours
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+-- Select Latest
+-- Because we store created_at as INTEGER (milliseconds), generic numerical sorting works perfectly.
+selectLatest:
+SELECT *
+FROM device_data
+ORDER BY created_at DESC
+LIMIT 1;
+
+selectAll:
+SELECT * FROM device_data;
+
+deleteById:
+DELETE FROM device_data WHERE id = ?;
+
+deleteAll:
+DELETE FROM device_data;

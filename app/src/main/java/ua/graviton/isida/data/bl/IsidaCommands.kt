@@ -1,9 +1,9 @@
 package ua.graviton.isida.data.bl
 
-import ua.graviton.isida.data.bl.model.DataPackageDto
-import ua.graviton.isida.data.bl.model.SendPackageDto
+import com.whoppah.extensions.asByteArray
+import ua.graviton.isida.data.models.DataPackageDto
+import ua.graviton.isida.data.models.SendPackageDto
 import ua.graviton.isida.domain.models.DeviceProperty
-import ua.graviton.isida.utils.asByteArray
 
 object IsidaCommands {
     private const val deviceType = 0x09
@@ -36,7 +36,7 @@ object IsidaCommands {
     }
 
     enum class DeviceModeExtra(val code: Int) {
-        //TODO: There is 2 more states need to be added later
+        // TODO: There is 2 more states need to be added later
         EXTRA_1(0x40),   //"Мониторинг тихоход. вентилятора"    data = data | 0x40
         EXTRA_2(0x20),   //"Мониторинг поворота лотков"         data = data | 0x20
         EXTRA_3(0x08),   //"Горизонтальное положение лотков"    data = data | 0x08

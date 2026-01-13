@@ -5,25 +5,26 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Handler
 import android.os.Message
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import java.util.*
 
 @SuppressLint("MissingPermission")
 class BluetoothSPP(
     scope: CoroutineScope,
     private val adapter: BluetoothAdapter,
 ) {
+    private val logger by lazy { Logger.withTag("BluetoothSPP") }
+
     // Listener for Bluetooth Status & Connection
     private var mBluetoothStateListener: BluetoothStateListener? = null
     private var mDataReceivedListener: OnDataReceivedListener? = null
     private var mBluetoothConnectionListener: BluetoothConnectionListener? = null
     private var mAutoConnectionListener: AutoConnectionListener? = null
 
-    //TODO: Rewrite it !!!!!!!!!!!
+    // TODO: Rewrite it !!!!!!!!!!!
     @SuppressLint("HandlerLeak")
     private val mHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -34,13 +35,15 @@ class BluetoothSPP(
                     val readMessage = String(readBuf)
                     if (readBuf.isNotEmpty()) mDataReceivedListener?.onDataReceived(readBuf, readMessage)
                 }
+
                 BluetoothConstants.MESSAGE_DEVICE_NAME -> {
                     connectedDeviceName = msg.data.getString(BluetoothConstants.DEVICE_NAME)
                     connectedDeviceAddress = msg.data.getString(BluetoothConstants.DEVICE_ADDRESS)
                     mBluetoothConnectionListener?.onDeviceConnected(connectedDeviceName, connectedDeviceAddress)
                     isConnected = true
                 }
-                BluetoothConstants.MESSAGE_TOAST -> Unit//Toast.makeText(ctx, msg.data.getString(BluetoothState.TOAST), Toast.LENGTH_LONG).show()
+
+                BluetoothConstants.MESSAGE_TOAST -> Unit// Toast.makeText(ctx, msg.data.getString(BluetoothState.TOAST), Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -72,9 +75,9 @@ class BluetoothSPP(
     val isBluetoothEnabled: Boolean get() = adapter.isEnabled
     val isServiceAvailable: Boolean get() = true
 
-    //fun startDiscovery(): Boolean = bluetoothAdapter.startDiscovery()
-    //val isDiscovery: Boolean get() = bluetoothAdapter.isDiscovering
-    //fun cancelDiscovery(): Boolean = bluetoothAdapter.cancelDiscovery()
+    // fun startDiscovery(): Boolean = bluetoothAdapter.startDiscovery()
+    // val isDiscovery: Boolean get() = bluetoothAdapter.isDiscovering
+    // fun cancelDiscovery(): Boolean = bluetoothAdapter.cancelDiscovery()
 
     val serviceState get() = mChatService.state.value
 
@@ -104,7 +107,7 @@ class BluetoothSPP(
 
     fun setDeviceTarget(isAndroid: Boolean) {
         stopService()
-        //startService(isAndroid)
+        // startService(isAndroid)
         this@BluetoothSPP.isAndroid = isAndroid
     }
 
@@ -197,13 +200,13 @@ class BluetoothSPP(
 
                 override fun onDeviceDisconnected() {}
                 override fun onDeviceConnectionFailed() {
-                    Timber.e("Failed")
+                    logger.e("Failed")
                     if (isServiceRunning) {
                         if (isAutoConnectionEnabled) {
                             c++
                             if (c >= arr_filter_address.size) c = 0
                             connect(arr_filter_address[c])
-                            Timber.e("Connect")
+                            logger.e("Connect")
                             if (mAutoConnectionListener != null) mAutoConnectionListener!!.onNewConnection(
                                 arr_filter_name[c], arr_filter_address[c]
                             )
@@ -220,8 +223,8 @@ class BluetoothSPP(
                 arr_name[c],
                 arr_address[c]
             )
-            if (arr_filter_address.size > 0) connect(arr_filter_address[c]) else Timber.e("Device name mismatch")
-            //Toast.makeText(mContext, "Device name mismatch", Toast.LENGTH_SHORT).show()
+            if (arr_filter_address.size > 0) connect(arr_filter_address[c]) else logger.e("Device name mismatch")
+            // Toast.makeText(mContext, "Device name mismatch", Toast.LENGTH_SHORT).show()
         }
     }
 

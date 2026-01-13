@@ -1,5 +1,6 @@
 package ua.graviton.isida.domain.services
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.app.Service
 import android.bluetooth.BluetoothAdapter
@@ -9,21 +10,19 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import dagger.hilt.android.AndroidEntryPoint
+import co.touchlab.kermit.Logger
+import com.whoppah.extensions.enumValueOf
+import com.whoppah.extensions.toHexString
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import timber.log.Timber
-import ua.graviton.isida.BuildConfig
 import ua.graviton.isida.R
-import ua.graviton.isida.data.bl.model.SendPackageDto
+import ua.graviton.isida.data.models.SendPackageDto
 import ua.graviton.isida.domain.DeviceConnectionHolder
 import ua.graviton.isida.domain.bl.BluetoothSPP
 import ua.graviton.isida.domain.interactors.SaveDataPackage
 import ua.graviton.isida.ui.intentMain
-import ua.graviton.isida.utils.enumValueOf
-import ua.graviton.isida.utils.toHexString
-import javax.inject.Inject
 
 fun Context.intentBLConnectionService() = Intent(this, BluetoothConnectionService::class.java)
 
@@ -36,13 +35,14 @@ fun Context.intentBLServiceConnectDevice(address: String) =
 fun Context.intentBLServiceSendCommand(cmd: SendPackageDto) =
     intentBLConnectionService().apply {
         action = BluetoothConnectionService.Action.SEND_CMD.name
-        putExtra("command", cmd)
+        //putExtra("command", cmd)
     }
 
 fun Context.intentBLServiceDisconnectDevice() = intentBLConnectionService().apply { action = BluetoothConnectionService.Action.DISCONNECT.name }
 
-@AndroidEntryPoint
 class BluetoothConnectionService : Service() {
+    private val logger by lazy { Logger.withTag("BluetoothConnectionService") }
+
     @Inject lateinit var saveDataPackage: SaveDataPackage
     private lateinit var bt: BluetoothSPP
 
@@ -52,7 +52,7 @@ class BluetoothConnectionService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        Timber.d("Service created")
+        logger.d("Service created")
 
         val bluetoothManager: BluetoothManager = getSystemService(BluetoothManager::class.java)
         val bluetoothAdapter: BluetoothAdapter? = bluetoothManager.adapter
@@ -60,12 +60,12 @@ class BluetoothConnectionService : Service() {
             stopSelf()
             return
         }
-        Timber.d("BluetoothSPP created")
+        logger.d("BluetoothSPP created")
         bt = BluetoothSPP(scope, bluetoothAdapter)
 
         bt.setOnDataReceivedListener(object : BluetoothSPP.OnDataReceivedListener {
             override fun onDataReceived(data: ByteArray, message: String) {
-                Timber.d("Device data received | ${data.toHexString(" ")}")
+                logger.d("Device data received | ${data.toHexString(" ")}")
                 scope.parseAndSave(data)
             }
         })
@@ -73,20 +73,21 @@ class BluetoothConnectionService : Service() {
         bt.setBluetoothConnectionListener(object : BluetoothSPP.BluetoothConnectionListener {
             override fun onDeviceDisconnected() {
                 DeviceConnectionHolder.isConnected.value = false
-                //viewModel.submitStreamEnd()
+                // viewModel.submitStreamEnd()
                 scope.parseAndSave(null)
-                Timber.d("Device disconnected")
+                logger.d("Device disconnected")
                 stopSelf()
             }
 
             override fun onDeviceConnectionFailed() {
                 DeviceConnectionHolder.isConnected.value = false
-                Timber.w("Device connection failed")
+                logger.w("Device connection failed")
                 stopSelf()
             }
 
+            @SuppressLint("ForegroundServiceType")
             override fun onDeviceConnected(name: String?, address: String?) {
-                Timber.d("Device connected \"$name\" [$address]")
+                logger.d("Device connected \"$name\" [$address]")
                 startForeground(NOTIFICATION_ID, notificationCountDown(name).build())
                 DeviceConnectionHolder.isConnected.value = true
             }
@@ -97,22 +98,25 @@ class BluetoothConnectionService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        Timber.d("onStartCommand: $intent")
+        logger.d("onStartCommand: $intent")
         when (intent?.action?.let { enumValueOf(it, Action.UNKNOWN) }) {
             Action.CONNECT -> {
                 val address: String? = intent.getStringExtra("address")
-                //val device: BluetoothDevice? = intent.getParcelableExtra("device")
+                // val device: BluetoothDevice? = intent.getParcelableExtra("device")
                 bt.connect(address)
             }
+
             Action.SEND_CMD -> {
-                //TODO: Implement unified commands interface
+                // TODO: Implement unified commands interface
                 val command: SendPackageDto? = intent.getParcelableExtra("command")
-                if (command != null) bt.send(command.asByteArray().also { Timber.d("Send command: ${it.toHexString(" ")}") }, true)
+                if (command != null) bt.send(command.asByteArray().also { logger.d("Send command: ${it.toHexString(" ")}") }, true)
             }
+
             Action.DISCONNECT -> {
                 bt.disconnect()
                 stopSelf()
             }
+
             else -> Unit
         }
         return START_STICKY
@@ -124,7 +128,7 @@ class BluetoothConnectionService : Service() {
         scope.cancel()
         super.onDestroy()
         stopForeground(true)
-        Timber.d("Service destroyed")
+        logger.d("Service destroyed")
     }
 
 
@@ -132,13 +136,13 @@ class BluetoothConnectionService : Service() {
         try {
             saveDataPackage.executeSync(SaveDataPackage.Params(bytes))
         } catch (t: Throwable) {
-            Timber.w(t)
+            logger.w(t) { t.message ?: "Unknown error" }
         }
     }
 
 
     private fun notificationCountDown(name: String?): NotificationCompat.Builder {
-        return NotificationCompat.Builder(this, BuildConfig.NOTIFICATION_CHANNEL_ID_GENERAL)
+        return NotificationCompat.Builder(this, "BuildConfig.NOTIFICATION_CHANNEL_ID_GENERAL")
             .setContentTitle("ISIDA Connected")
             .setContentText("We successfully connected to: $name")
             .setSmallIcon(R.drawable.ic_launcher_foreground)

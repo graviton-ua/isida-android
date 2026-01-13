@@ -1,12 +1,13 @@
 package ua.graviton.isida.domain.observers
 
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
-import ua.graviton.isida.data.bl.model.DataPackageDto
+import ua.graviton.isida.data.models.DataPackageDto
 import ua.graviton.isida.data.repos.DeviceDataRepository
 import ua.graviton.isida.domain.SubjectInteractor
-import javax.inject.Inject
 
-class ObserveDeviceData @Inject constructor(
+@Inject
+class ObserveDeviceData(
     private val repo: DeviceDataRepository
 ) : SubjectInteractor<Unit, DataPackageDto?>() {
 

@@ -7,12 +7,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.ramcosta.composedestinations.navigation.navigate
-import com.ramcosta.composedestinations.utils.composable
-import com.ramcosta.composedestinations.utils.dialogComposable
-import ua.graviton.isida.ui.destinations.DeviceModeDialogDestination
-import ua.graviton.isida.ui.destinations.HomeScreenDestination
-import ua.graviton.isida.ui.destinations.SetPropDialogDestination
 import ua.graviton.isida.ui.devicemode.DeviceModeDialog
 import ua.graviton.isida.ui.home.HomeScreen
 import ua.graviton.isida.ui.setprop.SetPropDialog

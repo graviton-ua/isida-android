@@ -10,7 +10,6 @@ import ua.graviton.isida.data.bl.IsidaCommands
 import ua.graviton.isida.data.bl.model.DataPackageDto
 import ua.graviton.isida.domain.observers.ObserveDeviceData
 import ua.graviton.isida.ui.theme.IsidaColor
-import ua.graviton.isida.ui.utils.ObservableLoadingCounter
 import javax.inject.Inject
 
 @HiltViewModel

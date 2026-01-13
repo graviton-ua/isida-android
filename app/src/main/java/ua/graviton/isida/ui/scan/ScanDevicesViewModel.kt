@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ua.graviton.isida.ui.utils.ObservableLoadingCounter
 import javax.inject.Inject
 
 @HiltViewModel

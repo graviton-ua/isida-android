@@ -1,13 +1,14 @@
 package ua.graviton.isida.domain.interactors
 
-import ua.graviton.isida.data.bl.model.DataPackageDto
+import dev.zacsweers.metro.Inject
+import ua.graviton.isida.data.models.DataPackageDto
 import ua.graviton.isida.data.repos.DeviceDataRepository
-import ua.graviton.isida.domain.Interactor
-import javax.inject.Inject
+import ua.graviton.isida.domain.ResultInteractor
 
-class SaveDataPackage @Inject constructor(
+@Inject
+class SaveDataPackage(
     private val repo: DeviceDataRepository
-) : Interactor<SaveDataPackage.Params>() {
+) : ResultInteractor<SaveDataPackage.Params, Unit>() {
 
     override suspend fun doWork(params: Params) {
         if (params.bytes == null) {
