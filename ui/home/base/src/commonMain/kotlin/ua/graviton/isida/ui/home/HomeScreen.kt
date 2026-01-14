@@ -1,5 +1,6 @@
 package ua.graviton.isida.ui.home
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -127,6 +128,9 @@ private fun HomeScreen(
                         screen = it,
                         selected = it == navigationState.topLevelRoute,
                         onSelect = { navigator.navigateTo(it) },
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .weight(1f),
                     )
                 }
             }
