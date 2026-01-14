@@ -80,4 +80,5 @@ include(
     ":shared",
 
     ":androidApp",
+    ":desktopApp",
 )
