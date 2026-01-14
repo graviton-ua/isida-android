@@ -6,13 +6,15 @@ import ua.graviton.isida.ui.navigation.Navigator
 
 fun EntryProviderScope<NavKey>.addHomeScreen(
     navigator: Navigator,
+    openPowerDialog: () -> Unit,
+    openSetPropDialog: (String) -> Unit,
 ) {
     entry<HomeScreen> {
         HomeScreen(
             connectDevice = {},
             disconnectDevice = {},
-            openPowerDialog = {},
-            openSetPropDialog = {},
+            openPowerDialog = openPowerDialog,
+            openSetPropDialog = openSetPropDialog,
         )
     }
 }

@@ -1,6 +1,7 @@
 package ua.graviton.isida.shared.di
 
 import android.app.Application
+import android.bluetooth.BluetoothAdapter
 import android.content.ContentResolver
 import android.content.Context
 import com.whoppah.base.PlatformConfig
@@ -28,6 +29,12 @@ interface AndroidAppGraph : AppGraph {
 
     @Provides
     fun provideContentResolver(@Named("APPLICATION_CONTEXT") context: Context): ContentResolver = context.contentResolver
+
+    @Provides
+    fun provideBluetoothAdapter(@Named("APPLICATION_CONTEXT") context: Context): BluetoothAdapter? {
+        val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as android.bluetooth.BluetoothManager
+        return manager.adapter
+    }
 
     @Provides @SingleIn(AppScope::class)
     fun provideCoroutineDispatchers(): AppCoroutineDispatchers = AppCoroutineDispatchers(

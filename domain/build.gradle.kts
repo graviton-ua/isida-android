@@ -13,6 +13,7 @@ kotlin {
 
             api(projects.data.models)
             api(projects.data.repos)
+            api(projects.data.bluetooth)
 
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.datetime)

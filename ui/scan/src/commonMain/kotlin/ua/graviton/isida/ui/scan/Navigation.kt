@@ -4,10 +4,13 @@ import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import ua.graviton.isida.ui.navigation.Navigator
 
-fun EntryProviderScope<NavKey>.addBlockchainScreen(
+fun EntryProviderScope<NavKey>.addScanDevicesScreen(
     navigator: Navigator,
 ) {
-    // entry<BlockchainScreen> {
-    //     BlockchainScreen()
-    // }
+    entry<ScanDevicesScreen> {
+        ScanDevicesScreen(
+            navigateUp = navigator::navigateUp,
+            onDeviceSelected = { /*TODO: Need to be implemented*/ },
+        )
+    }
 }

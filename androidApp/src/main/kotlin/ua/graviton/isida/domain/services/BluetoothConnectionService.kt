@@ -1,9 +1,7 @@
 package ua.graviton.isida.domain.services
 
-import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.app.Service
-import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
@@ -16,10 +14,15 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ua.graviton.isida.R
+import ua.graviton.isida.data.bluetooth.AndroidBluetoothClient
+import ua.graviton.isida.data.bluetooth.BluetoothClient
+import ua.graviton.isida.data.bluetooth.ConnectionState
+import ua.graviton.isida.data.bluetooth.DeviceAddress
 import ua.graviton.isida.data.models.SendPackageDto
 import ua.graviton.isida.domain.DeviceConnectionHolder
-import ua.graviton.isida.domain.bl.BluetoothSPP
 import ua.graviton.isida.domain.interactors.SaveDataPackage
 import ua.graviton.isida.ui.intentMain
 
@@ -34,7 +37,7 @@ fun Context.intentBLServiceConnectDevice(address: String) =
 fun Context.intentBLServiceSendCommand(cmd: SendPackageDto) =
     intentBLConnectionService().apply {
         action = BluetoothConnectionService.Action.SEND_CMD.name
-        //putExtra("command", cmd)
+        putExtra("command", cmd.asByteArray())
     }
 
 fun Context.intentBLServiceDisconnectDevice() = intentBLConnectionService().apply { action = BluetoothConnectionService.Action.DISCONNECT.name }
@@ -43,7 +46,7 @@ class BluetoothConnectionService : Service() {
     private val logger by lazy { Logger.withTag("BluetoothConnectionService") }
 
     @Inject lateinit var saveDataPackage: SaveDataPackage
-    private lateinit var bt: BluetoothSPP
+    private lateinit var bluetoothClient: BluetoothClient
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private val _isRecording = MutableStateFlow(false)
@@ -54,65 +57,104 @@ class BluetoothConnectionService : Service() {
         logger.d("Service created")
 
         val bluetoothManager: BluetoothManager = getSystemService(BluetoothManager::class.java)
-        val bluetoothAdapter: BluetoothAdapter? = bluetoothManager.adapter
-        if (bluetoothAdapter == null) {
+        val adapter = bluetoothManager.adapter
+        if (adapter == null) {
             stopSelf()
             return
         }
-        logger.d("BluetoothSPP created")
-        bt = BluetoothSPP(scope, bluetoothAdapter)
 
-        bt.setOnDataReceivedListener(object : BluetoothSPP.OnDataReceivedListener {
-            override fun onDataReceived(data: ByteArray, message: String) {
+        // Initialize the new client
+        bluetoothClient = AndroidBluetoothClient(adapter, scope)
+
+        // Observe Data
+        bluetoothClient.incomingData
+            .onEach { data ->
                 logger.d("Device data received | ${data.toHexString(" ")}")
                 scope.parseAndSave(data)
             }
-        })
+            .launchIn(scope)
 
-        bt.setBluetoothConnectionListener(object : BluetoothSPP.BluetoothConnectionListener {
-            override fun onDeviceDisconnected() {
-                DeviceConnectionHolder.isConnected.value = false
-                // viewModel.submitStreamEnd()
-                scope.parseAndSave(null)
-                logger.d("Device disconnected")
-                stopSelf()
-            }
+        // Observe State for Notifications/Cleanup
+        bluetoothClient.state
+            .onEach { state ->
+                DeviceConnectionHolder.isConnected.value = (state == ConnectionState.CONNECTED)
+                when (state) {
+                    ConnectionState.DISCONNECTED -> {
+                        // viewModel.submitStreamEnd()
+                        scope.parseAndSave(null)
+                        logger.d("Device disconnected")
+                        stopSelf()
+                    }
 
-            override fun onDeviceConnectionFailed() {
-                DeviceConnectionHolder.isConnected.value = false
-                logger.w("Device connection failed")
-                stopSelf()
-            }
+                    ConnectionState.CONNECTED -> {
+                        // // We don't have the name easily in the client wrapper yet,
+                        // // you might pass it in intent or fetch from adapter
+                        // startForeground(NOTIFICATION_ID, notificationCountDown("Device").build())
+                        //logger.d("Device connected \"$name\" [$address]")
+                        startForeground(NOTIFICATION_ID, notificationCountDown("Device").build())
+                    }
 
-            @SuppressLint("ForegroundServiceType")
-            override fun onDeviceConnected(name: String?, address: String?) {
-                logger.d("Device connected \"$name\" [$address]")
-                startForeground(NOTIFICATION_ID, notificationCountDown(name).build())
-                DeviceConnectionHolder.isConnected.value = true
+                    ConnectionState.ERROR -> {
+                        logger.w("Device connection failed")
+                        stopSelf()
+                    }
+
+                    else -> Unit
+                }
             }
-        })
+            .launchIn(scope)
+        // bt.setBluetoothConnectionListener(object : BluetoothSPP.BluetoothConnectionListener {
+        //     override fun onDeviceDisconnected() {
+        //         DeviceConnectionHolder.isConnected.value = false
+        //         // viewModel.submitStreamEnd()
+        //         scope.parseAndSave(null)
+        //         logger.d("Device disconnected")
+        //         stopSelf()
+        //     }
+        //
+        //     override fun onDeviceConnectionFailed() {
+        //         DeviceConnectionHolder.isConnected.value = false
+        //         logger.w("Device connection failed")
+        //         stopSelf()
+        //     }
+        //
+        //     @SuppressLint("ForegroundServiceType")
+        //     override fun onDeviceConnected(name: String?, address: String?) {
+        //         logger.d("Device connected \"$name\" [$address]")
+        //         startForeground(NOTIFICATION_ID, notificationCountDown(name).build())
+        //         DeviceConnectionHolder.isConnected.value = true
+        //     }
+        // })
     }
 
     override fun onBind(intent: Intent?): IBinder = ConnectionBinder()
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
+        val action = intent?.action?.let { Action.valueOf(it) } ?: return START_NOT_STICKY
         logger.d("onStartCommand: $intent")
-        when (intent?.action?.let { Action.valueOf(it) }) {
+
+        when (action) {
             Action.CONNECT -> {
                 val address: String? = intent.getStringExtra("address")
                 // val device: BluetoothDevice? = intent.getParcelableExtra("device")
-                bt.connect(address)
+                if (address != null) {
+                    scope.launch { bluetoothClient.connect(DeviceAddress(address)) }
+                }
             }
 
             Action.SEND_CMD -> {
                 // TODO: Implement unified commands interface
-                val command: SendPackageDto? = intent.getParcelableExtra("command")
-                if (command != null) bt.send(command.asByteArray().also { logger.d("Send command: ${it.toHexString(" ")}") }, true)
+                val command: ByteArray? = intent.getByteArrayExtra("command")
+                if (command != null) {
+                    //bt.send(command.asByteArray().also { logger.d("Send command: ${it.toHexString(" ")}") }, true)
+                    scope.launch { bluetoothClient.send(command.also { logger.d("Send command: ${it.toHexString(" ")}") }) }
+                }
+
             }
 
             Action.DISCONNECT -> {
-                bt.disconnect()
+                scope.launch { bluetoothClient.disconnect() }
                 stopSelf()
             }
 
@@ -123,7 +165,7 @@ class BluetoothConnectionService : Service() {
 
     override fun onDestroy() {
         DeviceConnectionHolder.isConnected.value = false
-        bt.disconnect()
+        scope.launch { bluetoothClient.disconnect() }
         scope.cancel()
         super.onDestroy()
         stopForeground(true)

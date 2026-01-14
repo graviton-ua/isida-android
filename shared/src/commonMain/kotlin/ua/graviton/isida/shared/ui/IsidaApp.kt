@@ -11,9 +11,15 @@ import androidx.savedstate.serialization.SavedStateConfiguration
 import com.whoppah.common.compose.theme.WhoppahTheme
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
+import ua.graviton.isida.ui.devicemode.DeviceModeDialog
+import ua.graviton.isida.ui.devicemode.addDeviceModeDialog
 import ua.graviton.isida.ui.home.HomeScreen
 import ua.graviton.isida.ui.home.addHomeScreen
 import ua.graviton.isida.ui.navigation.Navigator
+import ua.graviton.isida.ui.scan.ScanDevicesScreen
+import ua.graviton.isida.ui.scan.addScanDevicesScreen
+import ua.graviton.isida.ui.setprop.SetPropDialog
+import ua.graviton.isida.ui.setprop.addSetPropDialog
 
 @Composable
 fun IsidaApp(
@@ -28,7 +34,14 @@ fun IsidaApp(
             backStack = backStack,
             sceneStrategy = dialogStrategy,
             entryProvider = entryProvider {
-                addHomeScreen(navigator = navigator)
+                addHomeScreen(
+                    navigator = navigator,
+                    openPowerDialog = { navigator.navigateTo(DeviceModeDialog) },
+                    openSetPropDialog = { navigator.navigateTo(SetPropDialog(it)) },
+                )
+                addDeviceModeDialog(navigator = navigator)
+                addScanDevicesScreen(navigator = navigator)
+                addSetPropDialog(navigator = navigator)
             },
             entryDecorators = listOf(
                 rememberSaveableStateHolderNavEntryDecorator(),
@@ -56,6 +69,9 @@ private val config = SavedStateConfiguration {
     serializersModule = SerializersModule {
         polymorphic(NavKey::class) {
             subclass(HomeScreen::class, HomeScreen.serializer())
+            subclass(DeviceModeDialog::class, DeviceModeDialog.serializer())
+            subclass(ScanDevicesScreen::class, ScanDevicesScreen.serializer())
+            subclass(SetPropDialog::class, SetPropDialog.serializer())
         }
     }
 }

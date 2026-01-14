@@ -62,7 +62,7 @@ data class PropItem(
     }
 }
 
-sealed class PropAction {
+internal sealed class PropAction {
     data class SetPropDialog(
         val id: String,
     ) : PropAction()

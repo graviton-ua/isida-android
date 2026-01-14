@@ -44,7 +44,7 @@ class PropViewModel(
         }
     }
 
-    fun submitAction(action: PropAction) {
+    internal fun submitAction(action: PropAction) {
         viewModelScope.launch { pendingActions.emit(action) }
     }
 }

@@ -108,7 +108,7 @@ class BluetoothSPP(
     fun setDeviceTarget(isAndroid: Boolean) {
         stopService()
         // startService(isAndroid)
-        this@BluetoothSPP.isAndroid = isAndroid
+        //this@BluetoothSPP.isAndroid = isAndroid
     }
 
 

@@ -17,6 +17,8 @@ import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.whoppah.common.compose.theme.WhoppahTheme
+import com.whoppah.common.compose.ui.WhScaffold
+import com.whoppah.common.compose.ui.WhTopAppBar
 import com.whoppah.common.resources.Res
 import com.whoppah.common.resources.app_name
 import com.whoppah.metrox.viewmodel.injectedViewModel
@@ -81,8 +83,6 @@ internal fun HomeScreen(
             //is ShopCartAction.Close -> navigateUp()
             is HomeAction.ConnectDevice -> connectDevice()
             is HomeAction.DisconnectDevice -> disconnectDevice()
-            is HomeAction.OpenPowerDialog -> openPowerDialog()
-            is HomeAction.OpenSetPropDialog -> openSetPropDialog(action.id)
             else -> viewModel.submitAction(action)
         }
     }
@@ -109,14 +109,14 @@ private fun HomeScreen(
         }
     }
 
-    Scaffold(
+    WhScaffold(
         topBar = {
             HomeTopBar(
                 deviceConnected = state.deviceConnected,
                 modifier = Modifier.fillMaxWidth(),
                 connectDevice = { actioner(HomeAction.ConnectDevice) },
                 disconnectDevice = { actioner(HomeAction.DisconnectDevice) },
-                openPowerDialog = { actioner(HomeAction.OpenPowerDialog) },
+                openPowerDialog = openPowerDialog,
             )
         },
         bottomBar = {
@@ -136,14 +136,7 @@ private fun HomeScreen(
             }
         }
     ) { paddings ->
-        // HomeNavigation(
-        //     navController = navController,
-        //     openSetPropDialog = { actioner(HomeAction.OpenSetPropDialog(it)) },
-        //     modifier = Modifier.padding(paddings),
-        //)
-
         val dialogStrategy = remember { DialogSceneStrategy<NavKey>() }
-
         NavDisplay(
             entries = navigationState.toEntries(entryProvider),
             onBack = navigator::navigateUp,
@@ -162,12 +155,12 @@ private fun HomeTopBar(
     disconnectDevice: () -> Unit,
     openPowerDialog: () -> Unit,
 ) {
-    MediumTopAppBar(
+    WhTopAppBar(
         title = { Text(text = stringResource(Res.string.app_name)) },
         actions = {
             var expanded by remember { mutableStateOf(false) }
             if (deviceConnected)
-                TextButton(onClick = { openPowerDialog() }) {
+                TextButton(onClick = openPowerDialog) {
                     Icon(imageVector = Icons.Default.Flag, contentDescription = "Device menu")
                     Text(text = "Power")
                 }

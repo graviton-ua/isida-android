@@ -25,10 +25,6 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.domain.IsidaCommands
 
-// @Destination(
-//     style = FreeDialogStyle::class,
-// )
-
 @Serializable
 data object DeviceModeDialog : NavKey
 
