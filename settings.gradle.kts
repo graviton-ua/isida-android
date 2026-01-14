@@ -79,5 +79,5 @@ include(
 
     ":shared",
 
-    ":app",
+    ":androidApp",
 )
