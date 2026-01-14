@@ -7,7 +7,7 @@ import com.whoppah.appinitializers.AppInitializer
 internal object CrashlyticsAndroidInitializer : AppInitializer {
 
     override fun init() {
-        enableCrashlytics()
+        //enableCrashlytics()
 
         // Add Crashlytics log writer
         Logger.addLogWriter(CrashlyticsLoggerWriter())

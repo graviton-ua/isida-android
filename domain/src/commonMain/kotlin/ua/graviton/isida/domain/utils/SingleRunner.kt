@@ -1,4 +1,4 @@
-package ua.crypto.domain.utils
+package ua.graviton.domain.utils
 
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job

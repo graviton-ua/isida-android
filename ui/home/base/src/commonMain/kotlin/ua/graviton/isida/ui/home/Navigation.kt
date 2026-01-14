@@ -1,13 +1,18 @@
-package ua.crypto.ui.blockchain
+package ua.graviton.isida.ui.home
 
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import ua.graviton.isida.ui.navigation.Navigator
 
-fun EntryProviderScope<NavKey>.addBlockchainScreen(
+fun EntryProviderScope<NavKey>.addHomeScreen(
     navigator: Navigator,
 ) {
-    entry<BlockchainScreen> {
-        BlockchainScreen()
+    entry<HomeScreen> {
+        HomeScreen(
+            connectDevice = {},
+            disconnectDevice = {},
+            openPowerDialog = {},
+            openSetPropDialog = {},
+        )
     }
 }

@@ -1,18 +1,32 @@
 plugins {
     id("com.whoppah.kotlin.multiplatform")
-    alias(libs.plugins.metro)
+    id("com.whoppah.android.library")
+    id("com.whoppah.compose")
+    id("com.whoppah.metro")
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
+
+    android {
+        namespace = "ua.graviton.isida.shared"
+    }
+
     sourceSets {
         commonMain.dependencies {
             api(projects.core.base)
             api(projects.core.logging)
             api(projects.core.preferences)
+
+            api(projects.common.ui.compose)
+            api(projects.common.ui.composeIcons)
+            api(projects.common.ui.metrox.viewmodel)
+            api(projects.common.ui.permissions)
+            api(projects.common.ui.resources)
+            api(projects.common.ui.navigation)
+            
             api(projects.data.repos)
             api(projects.domain)
-
-            api(projects.common.ui.metrox.viewmodel)
 
             api(projects.ui.devicemode)
             api(projects.ui.home.base)
@@ -21,6 +35,9 @@ kotlin {
             api(projects.ui.home.stats)
             api(projects.ui.scan)
             api(projects.ui.setprop)
+
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.jetbrains.lifecycle.viewmodel.navigation3)
         }
     }
 }

@@ -11,6 +11,7 @@ kotlin {
 
             api(libs.jetbrains.compose.runtime)
             api(libs.jetbrains.navigation3.ui)
+            implementation(libs.jetbrains.lifecycle.viewmodel.navigation3)
         }
     }
 }

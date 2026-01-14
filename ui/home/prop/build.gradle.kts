@@ -1,11 +1,17 @@
 plugins {
     id("com.whoppah.kotlin.multiplatform")
+    id("com.whoppah.android.library")
     id("com.whoppah.compose")
     id("com.whoppah.metro")
     alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
+
+    android {
+        namespace = "ua.graviton.isida.ui.home.prop"
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.base)
@@ -17,8 +23,6 @@ kotlin {
             implementation(projects.common.ui.resources)
             implementation(projects.common.ui.metrox.viewmodel)
             implementation(projects.common.ui.navigation)
-
-            implementation(projects.ui.setprop)
 
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)

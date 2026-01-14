@@ -1,9 +1,9 @@
 package ua.graviton.isida.domain.interactors
 
 import dev.zacsweers.metro.Inject
-import ua.graviton.isida.data.exceptions.UnAuthException
 import ua.graviton.isida.data.repos.RolesRepository
 import ua.graviton.isida.domain.ResultInteractor
+import ua.graviton.isida.domain.exceptions.UnAuthException
 import ua.graviton.isida.domain.models.RoleModel
 
 @Inject

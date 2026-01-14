@@ -22,9 +22,12 @@ kotlin {
             api(libs.jetbrains.compose.ui.tooling.preview)
             api(libs.jetbrains.compose.material3)
             implementation(libs.jetbrains.lifecycle.runtime)
-            implementation(libs.jetbrains.navigation.compose)
 
             implementation(libs.kotlinx.serialization.json)
+        }
+
+        androidMain.dependencies {
+            implementation(libs.androidx.core)
         }
     }
 }

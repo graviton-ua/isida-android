@@ -1,6 +1,7 @@
 package com.whoppah.core.logging
 
 import com.whoppah.appinitializers.AppInitializer
+import com.whoppah.base.PlatformConfig
 import dev.zacsweers.metro.Inject
 
 @Inject

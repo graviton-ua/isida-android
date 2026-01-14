@@ -5,6 +5,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 import ua.graviton.isida.data.sql.Database
@@ -17,7 +18,7 @@ actual interface SqlDatabasePlatformComponent {
     @Provides
     @SingleIn(AppScope::class)
     fun provideSqlDriver(
-        context: Context,
+        @Named("APPLICATION_CONTEXT") context: Context,
     ): SqlDriver {
         return AndroidSqliteDriver(
             schema = Database.Schema,

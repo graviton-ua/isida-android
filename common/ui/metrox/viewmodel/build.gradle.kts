@@ -12,7 +12,6 @@ kotlin {
 
             api(libs.jetbrains.lifecycle.runtime)
             api(libs.jetbrains.lifecycle.viewmodel)
-            api(libs.jetbrains.navigation.compose)
         }
     }
 }

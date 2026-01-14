@@ -3,6 +3,7 @@ package com.whoppah.core.logging
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.Severity
 import com.whoppah.appinitializers.AppInitializer
+import com.whoppah.base.PlatformConfig
 import dev.zacsweers.metro.Inject
 
 @Inject

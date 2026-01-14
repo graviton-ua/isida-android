@@ -5,24 +5,32 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation3.runtime.NavKey
 import com.whoppah.common.compose.theme.WhoppahTheme
 import com.whoppah.common.resources.CellNum
 import com.whoppah.common.resources.Res
+import com.whoppah.common.resources.home_tab_stats
 import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import ua.graviton.isida.ui.navigation.HomeTabScreen
 
 @Serializable
-data object StatsScreen : NavKey
+data object StatsScreen : HomeTabScreen {
+    override val icon: ImageVector = Icons.Outlined.Analytics
+    override val title: StringResource = Res.string.home_tab_stats
+}
 
 @Composable
 internal fun StatsScreen(
@@ -54,7 +62,7 @@ private fun StatsScreen(
             )
         }
 
-        items(state.items, { it.titleResId }) {
+        items(state.items, { it.titleResId.key }) {
             Item(item = it)
         }
     }

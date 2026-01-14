@@ -36,4 +36,16 @@
     <string name="warning_20">Превышено время охлаждения</string>
     <string name="warning_40">!!!</string>
     <string name="warning_80">Нет обдува симистора!</string>
+
+    <string name="common_accept">Accept</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_register_block_email">Email as username is not allowed</string>
+    <string name="register_block_whoppah">Whoppah isn't allowed</string>
+    <string name="error_invalid_pass">Invalid password</string>
+    <string name="error_invalid_pass_repeat">Passwords do not match</string>
+    <string name="common_required">Required</string>
+    <string name="common_error_price_invalid">Invalid</string>
+    <string name="common_error_price_less_than">Can't be less than %1$s</string>
+    <string name="common_error_price_more_than">Can't be more than %1$s</string>
+    <string name="common_error_price_required">Required</string>
 </resources>

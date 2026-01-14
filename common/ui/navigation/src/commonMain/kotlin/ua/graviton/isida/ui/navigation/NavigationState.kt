@@ -3,6 +3,7 @@ package ua.graviton.isida.ui.navigation
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSerializable
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.*
 import androidx.savedstate.compose.serialization.serializers.MutableStateSerializer
 import androidx.savedstate.serialization.SavedStateConfiguration
@@ -71,6 +72,7 @@ fun NavigationState.toEntries(
     val decoratedEntries = backStacks.mapValues { (_, stack) ->
         val decorators = listOf(
             rememberSaveableStateHolderNavEntryDecorator<NavKey>(),
+            rememberViewModelStoreNavEntryDecorator(),
         )
         rememberDecoratedNavEntries(
             backStack = stack,

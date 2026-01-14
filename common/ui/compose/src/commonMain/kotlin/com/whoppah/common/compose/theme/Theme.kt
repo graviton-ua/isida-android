@@ -13,16 +13,16 @@ fun WhoppahTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
     // For now we not gonna support dark theme
     val localWhoppahColors: WhoppahColorsScheme = if (darkTheme) WhoppahDarkColorsScheme else WhoppahLightColorsScheme
 
-    //val typography = rememberWhoppahTypography()
+    val typography = rememberWhoppahTypography()
 
     CompositionLocalProvider(
         LocalWhoppahColor provides localWhoppahColors,
-        //LocalWhoppahTypography provides typography,
+        LocalWhoppahTypography provides typography,
         LocalWhoppahShapes provides WhoppahShapes,
     ) {
         MaterialTheme(
             colorScheme = LocalWhoppahColor.current.asMaterialColors(),
-            //typography = LocalWhoppahTypography.current.asMaterialTypography(),
+            typography = LocalWhoppahTypography.current.asMaterialTypography(),
             shapes = LocalWhoppahShapes.current.asMaterialShapes(),
         ) {
             val selectionColors = LocalTextSelectionColors.current

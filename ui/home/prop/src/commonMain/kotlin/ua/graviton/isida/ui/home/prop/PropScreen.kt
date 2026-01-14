@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.SettingsApplications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,18 +15,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation3.runtime.NavKey
 import com.whoppah.common.compose.icons.WhIcons
 import com.whoppah.common.compose.icons.action.Edit
 import com.whoppah.common.compose.theme.WhoppahTheme
+import com.whoppah.common.resources.Res
+import com.whoppah.common.resources.home_tab_prop
 import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.StringResource
+import ua.graviton.isida.ui.navigation.HomeTabScreen
 
 @Serializable
-data object PropScreen : NavKey
+data object PropScreen : HomeTabScreen {
+    override val icon: ImageVector = Icons.Outlined.SettingsApplications
+    override val title: StringResource = Res.string.home_tab_prop
+}
 
 @Composable
 internal fun PropScreen(

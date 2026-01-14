@@ -1,57 +1,69 @@
 package ua.graviton.isida.ui.home
 
-import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.Analytics
-import androidx.compose.material.icons.outlined.SettingsApplications
-import androidx.compose.material.icons.outlined.Summarize
+import androidx.compose.material.icons.filled.Flag
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.scene.DialogSceneStrategy
+import androidx.navigation3.ui.NavDisplay
+import androidx.savedstate.serialization.SavedStateConfiguration
 import com.whoppah.common.compose.theme.WhoppahTheme
-import com.whoppah.common.resources.*
-import org.jetbrains.compose.resources.StringResource
+import com.whoppah.common.resources.Res
+import com.whoppah.common.resources.app_name
+import com.whoppah.metrox.viewmodel.injectedViewModel
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
 import org.jetbrains.compose.resources.stringResource
-import ua.graviton.isida.domain.SystemBarColorManager
+import ua.graviton.isida.ui.home.prop.PropScreen
+import ua.graviton.isida.ui.home.prop.addPropScreen
+import ua.graviton.isida.ui.home.report.ReportScreen
+import ua.graviton.isida.ui.home.report.addReportScreen
+import ua.graviton.isida.ui.home.stats.StatsScreen
+import ua.graviton.isida.ui.home.stats.addStatsScreen
+import ua.graviton.isida.ui.navigation.*
 
-@Destination
+@Serializable
+data object HomeScreen : NavKey
+
+// @Composable
+// fun HomeScreen(
+//     openPowerDialog: () -> Unit,
+//     openSetPropDialog: (String) -> Unit,
+// ) {
+//     LaunchedEffect(Unit) { SystemBarColorManager.darkIcons.value = true }
+//
+//     val context = LocalContext.current
+//
+//     val scanForDevice = rememberLauncherForActivityResult(ScanForDeviceResultContract()) { address ->
+//         Timber.d("Selected device: $address | start service")
+//         if (address != null) with(context) { startService(intentBLServiceConnectDevice(address)) }
+//     }
+//
+//     HomeScreen(
+//         viewModel = hiltViewModel(),
+//         connectDevice = { scanForDevice.launch(Unit) },
+//         disconnectDevice = { with(context) { startService(intentBLServiceDisconnectDevice()) } },
+//         openPowerDialog = openPowerDialog,
+//         openSetPropDialog = openSetPropDialog,
+//     )
+// }
+
+private val TOP_LEVEL_ROUTES: List<HomeTabScreen> = listOf(
+    StatsScreen, PropScreen, ReportScreen,
+)
+
 @Composable
-fun HomeScreen(
-    openPowerDialog: () -> Unit,
-    openSetPropDialog: (String) -> Unit,
-) {
-    LaunchedEffect(Unit) { SystemBarColorManager.darkIcons.value = true }
-
-    val context = LocalContext.current
-
-    val scanForDevice = rememberLauncherForActivityResult(ScanForDeviceResultContract()) { address ->
-        Timber.d("Selected device: $address | start service")
-        if (address != null) with(context) { startService(intentBLServiceConnectDevice(address)) }
-    }
-
-    HomeScreen(
-        viewModel = hiltViewModel(),
-        connectDevice = { scanForDevice.launch(Unit) },
-        disconnectDevice = { with(context) { startService(intentBLServiceDisconnectDevice()) } },
-        openPowerDialog = openPowerDialog,
-        openSetPropDialog = openSetPropDialog,
-    )
-}
-
-@Composable
-private fun HomeScreen(
-    viewModel: HomeViewModel,
+internal fun HomeScreen(
+    viewModel: HomeViewModel = injectedViewModel(),
     connectDevice: () -> Unit,
     disconnectDevice: () -> Unit,
     openPowerDialog: () -> Unit,
@@ -59,7 +71,11 @@ private fun HomeScreen(
 ) {
     val viewState by viewModel.state.collectAsStateWithLifecycle()
 
-    HomeScreen(viewState) { action ->
+    HomeScreen(
+        state = viewState,
+        openPowerDialog = openPowerDialog,
+        openSetPropDialog = openSetPropDialog,
+    ) { action ->
         when (action) {
             //is ShopCartAction.Close -> navigateUp()
             is HomeAction.ConnectDevice -> connectDevice()
@@ -74,9 +90,24 @@ private fun HomeScreen(
 @Composable
 private fun HomeScreen(
     state: HomeViewState,
+    openPowerDialog: () -> Unit,
+    openSetPropDialog: (String) -> Unit,
     actioner: (HomeAction) -> Unit,
 ) {
-    val navController = rememberNavController()
+    val navigationState = rememberNavigationState(
+        configuration = config,
+        startRoute = StatsScreen,
+        topLevelRoutes = TOP_LEVEL_ROUTES.toSet(),
+    )
+    val navigator = remember(navigationState) { NavigatorImpl(navigationState) }
+    val entryProvider = remember(navigator) {
+        entryProvider {
+            addStatsScreen(navigator = navigator)
+            addPropScreen(navigator = navigator, openSetPropDialog = openSetPropDialog)
+            addReportScreen(navigator = navigator)
+        }
+    }
+
     Scaffold(
         topBar = {
             HomeTopBar(
@@ -88,66 +119,36 @@ private fun HomeScreen(
             )
         },
         bottomBar = {
-            val currentSelectedItem by navController.currentScreenAsState()
-            HomeBottomNavigation(
-                selectedNavigation = currentSelectedItem,
-                onNavigationSelected = { selected ->
-                    navController.navigate(selected.route) {
-                        launchSingleTop = true
-                        restoreState = true
-
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                    }
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
+            MainBottomBar(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                TOP_LEVEL_ROUTES.forEach {
+                    TabItem(
+                        screen = it,
+                        selected = it == navigationState.topLevelRoute,
+                        onSelect = { navigator.navigateTo(it) },
+                    )
+                }
+            }
         }
     ) { paddings ->
-        HomeNavigation(
-            navController = navController,
-            openSetPropDialog = { actioner(HomeAction.OpenSetPropDialog(it)) },
+        // HomeNavigation(
+        //     navController = navController,
+        //     openSetPropDialog = { actioner(HomeAction.OpenSetPropDialog(it)) },
+        //     modifier = Modifier.padding(paddings),
+        //)
+
+        val dialogStrategy = remember { DialogSceneStrategy<NavKey>() }
+
+        NavDisplay(
+            entries = navigationState.toEntries(entryProvider),
+            onBack = navigator::navigateUp,
+            sceneStrategy = dialogStrategy,
             modifier = Modifier.padding(paddings),
         )
     }
 }
 
-
-/**
- * Adds an [NavController.OnDestinationChangedListener] to this [NavController] and updates the
- * returned [State] which is updated as the destination changes.
- */
-@Stable
-@Composable
-private fun NavController.currentScreenAsState(): State<HomeNavScreen> {
-    val selectedItem = remember { mutableStateOf<HomeNavScreen>(HomeNavScreen.Stats) }
-
-    DisposableEffect(this) {
-        val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
-            when {
-                destination.hierarchy.any { it.route == HomeNavScreen.Stats.route } -> {
-                    selectedItem.value = HomeNavScreen.Stats
-                }
-
-                destination.hierarchy.any { it.route == HomeNavScreen.Prop.route } -> {
-                    selectedItem.value = HomeNavScreen.Prop
-                }
-
-                destination.hierarchy.any { it.route == HomeNavScreen.Report.route } -> {
-                    selectedItem.value = HomeNavScreen.Report
-                }
-            }
-        }
-        addOnDestinationChangedListener(listener)
-
-        onDispose {
-            removeOnDestinationChangedListener(listener)
-        }
-    }
-
-    return selectedItem
-}
 
 @Composable
 private fun HomeTopBar(
@@ -157,7 +158,7 @@ private fun HomeTopBar(
     disconnectDevice: () -> Unit,
     openPowerDialog: () -> Unit,
 ) {
-    TopAppBar(
+    MediumTopAppBar(
         title = { Text(text = stringResource(Res.string.app_name)) },
         actions = {
             var expanded by remember { mutableStateOf(false) }
@@ -184,103 +185,63 @@ private fun HomeTopBar(
                 }
             }
         },
-        backgroundColor = WhoppahTheme.colors.surface,
-        contentColor = contentColorFor(WhoppahTheme.colors.surface),
-        contentPadding = WindowInsets.statusBars.asPaddingValues(),
+        //backgroundColor = WhoppahTheme.colors.surface,
+        //contentColor = contentColorFor(WhoppahTheme.colors.surface),
+        //contentPadding = WindowInsets.statusBars.asPaddingValues(),
         modifier = modifier
     )
 }
 
+
 @Composable
-private fun HomeBottomNavigation(
-    selectedNavigation: HomeNavScreen,
-    onNavigationSelected: (HomeNavScreen) -> Unit,
+private fun TabItem(
+    screen: HomeTabScreen,
+    selected: Boolean,
+    onSelect: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    BottomNavigation(
-        backgroundColor = WhoppahTheme.colors.surface,
-        contentColor = contentColorFor(WhoppahTheme.colors.surface),
-        contentPadding = WindowInsets.navigationBars.asPaddingValues(),
-        modifier = modifier
-    ) {
-        HomeNavigationItems.forEach { item ->
-            BottomNavigationItem(
-                icon = {
-                    HomeNavigationItemIcon(
-                        item = item,
-                        selected = selectedNavigation == item.screen
-                    )
-                },
-                label = { Text(text = stringResource(item.labelResId)) },
-                selected = selectedNavigation == item.screen,
-                onClick = { onNavigationSelected(item.screen) },
-            )
+    Item(
+        isSelected = selected,
+        onClick = onSelect,
+        icon = screen.icon,
+        title = stringResource(screen.title),
+        modifier = modifier,
+    )
+}
+
+private class NavigatorImpl(val state: NavigationState) : Navigator {
+
+    override fun navigateUp() {
+        val currentStack = state.backStacks[state.topLevelRoute] ?: error("Stack for ${state.topLevelRoute} not found")
+        val currentRoute = currentStack.last()
+
+        // If we're at the base of the current route, go back to the start route stack.
+        if (currentRoute == state.topLevelRoute) {
+            state.topLevelRoute = state.startRoute
+        } else {
+            currentStack.removeLastOrNull()
+        }
+    }
+
+    override fun navigateTo(key: NavKey) {
+        if (key in state.backStacks.keys) {
+            // This is a top level route, just switch to it
+            state.topLevelRoute = key
+        } else {
+            state.backStacks[state.topLevelRoute]?.add(key)
         }
     }
 }
 
-@Composable
-private fun HomeNavigationItemIcon(item: HomeNavigationItem, selected: Boolean) {
-    val painter = when (item) {
-        is HomeNavigationItem.ImageVectorIcon -> rememberVectorPainter(item.iconImageVector)
-    }
-    val selectedPainter = when (item) {
-        is HomeNavigationItem.ImageVectorIcon -> item.selectedImageVector?.let { rememberVectorPainter(it) }
-    }
-
-    if (selectedPainter != null) {
-        Crossfade(targetState = selected) {
-            Icon(
-                painter = if (it) selectedPainter else painter,
-                contentDescription = stringResource(item.contentDescriptionResId),
-            )
+private val config = SavedStateConfiguration {
+    serializersModule = SerializersModule {
+        polymorphic(NavKey::class) {
+            subclass(PropScreen::class, PropScreen.serializer())
+            subclass(ReportScreen::class, ReportScreen.serializer())
+            subclass(StatsScreen::class, StatsScreen.serializer())
         }
-    } else {
-        Icon(
-            painter = painter,
-            contentDescription = stringResource(item.contentDescriptionResId),
-        )
     }
 }
-
-
-private sealed class HomeNavigationItem(
-    val screen: HomeNavScreen,
-    val labelResId: StringResource,
-    val contentDescriptionResId: StringResource,
-) {
-    class ImageVectorIcon(
-        screen: HomeNavScreen,
-        labelResId: StringResource,
-        contentDescriptionResId: StringResource,
-        val iconImageVector: ImageVector,
-        val selectedImageVector: ImageVector? = null,
-    ) : HomeNavigationItem(screen, labelResId, contentDescriptionResId)
-}
-
-private val HomeNavigationItems = listOf(
-    HomeNavigationItem.ImageVectorIcon(
-        screen = HomeNavScreen.Stats,
-        labelResId = Res.string.home_tab_stats,
-        contentDescriptionResId = Res.string.home_tab_stats,
-        iconImageVector = Icons.Outlined.Analytics,
-        selectedImageVector = Icons.Filled.Analytics,
-    ),
-    HomeNavigationItem.ImageVectorIcon(
-        screen = HomeNavScreen.Prop,
-        labelResId = Res.string.home_tab_prop,
-        contentDescriptionResId = Res.string.home_tab_prop,
-        iconImageVector = Icons.Outlined.SettingsApplications,
-        selectedImageVector = Icons.Filled.SettingsApplications,
-    ),
-    HomeNavigationItem.ImageVectorIcon(
-        screen = HomeNavScreen.Report,
-        labelResId = Res.string.home_tab_report,
-        contentDescriptionResId = Res.string.home_tab_report,
-        iconImageVector = Icons.Outlined.Summarize,
-        selectedImageVector = Icons.Filled.Summarize,
-    ),
-)
 
 
 @Preview
@@ -289,6 +250,8 @@ private fun Preview() {
     WhoppahTheme {
         HomeScreen(
             state = HomeViewState.Empty,
+            openPowerDialog = {},
+            openSetPropDialog = {},
             actioner = {},
         )
     }

@@ -2,9 +2,9 @@ plugins {
     id("com.whoppah.android.application")
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlinx.serialization)
-    alias(libs.plugins.google.gms)
-    alias(libs.plugins.firebase.crashlytics)
-    alias(libs.plugins.firebase.appdistribution)
+    //alias(libs.plugins.google.gms)
+    //alias(libs.plugins.firebase.crashlytics)
+    //alias(libs.plugins.firebase.appdistribution)
     id("com.whoppah.metro")
 }
 
@@ -58,25 +58,7 @@ android {
 }
 
 dependencies {
-
-    implementation(projects.core.base)
-    implementation(projects.core.logging)
-    implementation(projects.core.datetime)
-    implementation(projects.core.preferences)
-
-    implementation(projects.common.ui.compose)
-    implementation(projects.common.ui.composeIcons)
-    implementation(projects.common.ui.metrox)
-    implementation(projects.common.ui.resources)
-    implementation(projects.common.ui.permissions)
-
-    implementation(projects.domain)
-
-    implementation(libs.jetbrains.compose.ui)
-    implementation(libs.jetbrains.compose.ui.backhandler)
-    implementation(libs.jetbrains.compose.material3)
-    implementation(libs.jetbrains.lifecycle.runtime)
-    implementation(libs.jetbrains.navigation.compose)
+    implementation(projects.shared)
 
     implementation(libs.kotlinx.serialization.json)
 
