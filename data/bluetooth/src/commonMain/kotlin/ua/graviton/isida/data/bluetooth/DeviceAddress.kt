@@ -1,7 +1,5 @@
 package ua.graviton.isida.data.bluetooth
 
-import kotlin.jvm.JvmInline
-
 /**
  * Platform-agnostic identifier.
  * - Android: MAC Address (e.g., "00:11:22:33:44:55")
@@ -9,3 +7,5 @@ import kotlin.jvm.JvmInline
  */
 @JvmInline
 value class DeviceAddress(val value: String)
+
+fun String.asDeviceAddress() = DeviceAddress(this)

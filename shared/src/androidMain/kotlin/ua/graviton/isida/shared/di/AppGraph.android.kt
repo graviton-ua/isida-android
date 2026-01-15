@@ -8,6 +8,7 @@ import com.whoppah.base.PlatformConfig
 import com.whoppah.util.AppCoroutineDispatchers
 import dev.zacsweers.metro.*
 import kotlinx.coroutines.Dispatchers
+import ua.graviton.isida.shared.BluetoothStateService
 
 @DependencyGraph(AppScope::class)
 interface AndroidAppGraph : AppGraph {
@@ -21,7 +22,7 @@ interface AndroidAppGraph : AppGraph {
     }
 
 
-    //fun inject(target: SpecialFirebaseMessagingService)
+    fun inject(target: BluetoothStateService)
 
 
     @Provides @Named("APPLICATION_CONTEXT")

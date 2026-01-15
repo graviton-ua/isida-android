@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothSocket
 import co.touchlab.kermit.Logger
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
@@ -13,9 +16,11 @@ import java.io.OutputStream
 import java.util.UUID
 
 @SuppressLint("MissingPermission")
+@Inject
+@ContributesBinding(AppScope::class)
 class AndroidBluetoothClient(
     private val adapter: BluetoothAdapter?,
-    private val scope: CoroutineScope // Provide an Application-bound scope
+    private val scope: CoroutineScope, // Provide an Application-bound scope
 ) : BluetoothClient {
     private val logger by lazy { Logger.withTag("AndroidBluetoothClient") }
 
