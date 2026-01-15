@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUnsignedTypes::class)
+
 package ua.graviton.isida.domain.bluetooth
 
 import co.touchlab.kermit.Logger
@@ -10,6 +12,7 @@ import ua.graviton.isida.data.bluetooth.BluetoothClient
 import ua.graviton.isida.data.bluetooth.ConnectionState
 import ua.graviton.isida.data.bluetooth.DeviceAddress
 import ua.graviton.isida.data.bluetooth.asDeviceAddress
+import ua.graviton.isida.data.models.DataPackageDto
 import ua.graviton.isida.domain.interactors.SaveDataPackage
 
 @Inject
@@ -20,6 +23,7 @@ class DeviceConnectionManager(
     private val appScope: CoroutineScope, // Scope that lives as long as the app
 ) {
     private val logger by lazy { Logger.withTag("DeviceConnectionManager") }
+
     // 1. Expose State clearly to the rest of the app
     val connectionState: StateFlow<ConnectionState> = client.state
 
@@ -35,10 +39,12 @@ class DeviceConnectionManager(
     private fun observerDataStream() {
         client.incomingData
             .onEach { data ->
-                logger.d { "Incoming data: ${data.toHexString()}" }
+                logger.d { "Incoming data: ${data.toUByteArray().joinToString(", ")}" }
                 // Your logic from the old Service
                 try {
-                    saveDataPackage.executeSync(SaveDataPackage.Params(data))
+                    //saveDataPackage.executeSync(SaveDataPackage.Params(data))
+                    val result = DataPackageDto.parseData(data)
+                    logger.d { "Result data: $result" }
                 } catch (e: Exception) {
                     // Log error
                 }
