@@ -3,26 +3,14 @@ package ua.graviton.isida.data.bluetooth
 import kotlinx.coroutines.flow.StateFlow
 
 interface DeviceScanner {
-    /**
-     * True if the system is currently looking for devices.
-     */
     val isScanning: StateFlow<Boolean>
-
-    /**
-     * A list of devices known to the system (e.g., Paired on Android).
-     * On JVM, this might be empty or a list of saved COM ports.
-     */
     val pairedDevices: StateFlow<List<DiscoveredDevice>>
-
-    /**
-     * A list of new devices found during the current scan session.
-     */
     val foundDevices: StateFlow<List<DiscoveredDevice>>
-
     val error: StateFlow<String?>
+    val isBluetoothEnabled: StateFlow<Boolean>
 
     /**
-     * Starts the discovery process.
+     * Starts the discovery process (Inquiry).
      */
     fun startScan()
 
@@ -30,4 +18,10 @@ interface DeviceScanner {
      * Stops the discovery process.
      */
     fun stopScan()
+
+    /**
+     * Called when the owner (ViewModel) is cleared.
+     * Implementation should unregister receivers and cancel internal scopes.
+     */
+    fun cleanup()
 }

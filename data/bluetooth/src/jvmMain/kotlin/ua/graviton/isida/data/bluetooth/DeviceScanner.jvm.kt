@@ -21,32 +21,31 @@ class JvmDeviceScanner(
     override val isScanning = _isScanning.asStateFlow()
 
     private val _pairedDevices = MutableStateFlow<List<DiscoveredDevice>>(emptyList())
-    override val pairedDevices = _pairedDevices.asStateFlow() // On JVM, mapped ports act like paired devices
+    override val pairedDevices = _pairedDevices.asStateFlow()
 
-    // JVM jSerialComm doesn't really "find" new devices via radio, it only sees ports.
-    // So foundDevices will always be empty, everything goes into pairedDevices (Mapped Ports).
     override val foundDevices = MutableStateFlow(emptyList<DiscoveredDevice>())
-
     override val error = MutableStateFlow<String?>(null)
+    override val isBluetoothEnabled = MutableStateFlow(true)
 
-    private var scanJob: Job? = null
+    // Scope tied to this instance
     private val scope = CoroutineScope(dispatchers.io + SupervisorJob())
+    private var scanJob: Job? = null
 
     override fun startScan() {
         stopScan()
         _isScanning.value = true
 
-        // Emulate scanning behavior by polling ports periodically
         scanJob = scope.launch {
             try {
-                // Poll for 10 seconds or until stopped
-                repeat(5) {
+                // Poll ports for 10 seconds
+                val endTime = System.currentTimeMillis() + 10_000
+                while (isActive && System.currentTimeMillis() < endTime) {
                     val ports = SerialPort.getCommPorts()
                     val devices = ports.map { port ->
                         DiscoveredDevice(
                             name = port.descriptivePortName ?: port.systemPortName,
                             address = DeviceAddress(port.systemPortName),
-                            isPaired = true // Treat OS mapped ports as paired
+                            isPaired = true
                         )
                     }
                     _pairedDevices.value = devices
@@ -61,5 +60,10 @@ class JvmDeviceScanner(
     override fun stopScan() {
         scanJob?.cancel()
         _isScanning.value = false
+    }
+
+    override fun cleanup() {
+        stopScan()
+        scope.cancel() // Kill the scope when ViewModel dies
     }
 }
