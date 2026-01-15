@@ -36,6 +36,7 @@ fun IsidaApp(
             entryProvider = entryProvider {
                 addHomeScreen(
                     navigator = navigator,
+                    navigateScanDevices = { navigator.navigateTo(ScanDevicesScreen) },
                     openPowerDialog = { navigator.navigateTo(DeviceModeDialog) },
                     openSetPropDialog = { navigator.navigateTo(SetPropDialog(it)) },
                 )
