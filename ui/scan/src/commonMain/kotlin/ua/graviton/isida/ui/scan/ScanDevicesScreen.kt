@@ -12,7 +12,6 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -107,11 +106,7 @@ private fun ScanDevicesScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {
-                    if (state.isLoading) onStopScan()
-                    else onStartScan()
-                },
-                containerColor = if (state.isLoading) Color.Red else Color.Green,
+                onClick = { if (state.isLoading) onStopScan() else onStartScan() },
                 modifier = Modifier.navigationBarsPadding()
             ) {
                 Text(
