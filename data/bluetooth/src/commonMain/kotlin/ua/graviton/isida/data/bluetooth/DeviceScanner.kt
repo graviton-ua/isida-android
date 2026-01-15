@@ -19,6 +19,8 @@ interface DeviceScanner {
      */
     val foundDevices: StateFlow<List<DiscoveredDevice>>
 
+    val error: StateFlow<String?>
+
     /**
      * Starts the discovery process.
      */

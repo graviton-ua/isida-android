@@ -6,8 +6,10 @@ import com.whoppah.metrox.viewmodel.ViewModelKey
 import com.whoppah.metrox.viewmodel.ViewModelScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import ua.graviton.isida.data.bluetooth.DeviceScanner
 
 @Inject
@@ -16,7 +18,6 @@ import ua.graviton.isida.data.bluetooth.DeviceScanner
 class ScanDevicesViewModel(
     private val scanner: DeviceScanner,
 ) : ViewModel() {
-    private val pendingActions = MutableSharedFlow<ScanDevicesAction>()
 
     val state: StateFlow<ScanDevicesViewState> = combine(
         scanner.pairedDevices,
@@ -34,28 +35,11 @@ class ScanDevicesViewModel(
         initialValue = ScanDevicesViewState.Empty,
     )
 
-    init {
-        // Auto-start scan if on JVM, or wait for permission on Android?
-        // Usually better to let the UI trigger it after permission checks.
-
-        viewModelScope.launch {
-            pendingActions.collect { action ->
-                when (action) {
-                    is ScanDevicesAction.StartScanClicked -> scanner.startScan()
-                    is ScanDevicesAction.StopScanClicked -> scanner.stopScan()
-                    // OnDeviceClicked and NavigateUp are handled by the Screen/Navigation
-                    else -> Unit
-                }
-            }
-        }
-    }
-
     override fun onCleared() {
         scanner.stopScan()
         super.onCleared()
     }
 
-    fun submitAction(action: ScanDevicesAction) {
-        viewModelScope.launch { pendingActions.emit(action) }
-    }
+    fun startScan() = scanner.startScan()
+    fun stopScan() = scanner.stopScan()
 }

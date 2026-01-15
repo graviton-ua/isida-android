@@ -33,6 +33,9 @@ class AndroidDeviceScanner(
     private val _foundDevices = MutableStateFlow<List<DiscoveredDevice>>(emptyList())
     override val foundDevices: StateFlow<List<DiscoveredDevice>> = _foundDevices.asStateFlow()
 
+    private val _error = MutableStateFlow<String?>(null)
+    override val error = _error.asStateFlow()
+
     // Android BroadcastReceiver to listen for Found devices
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -58,7 +61,14 @@ class AndroidDeviceScanner(
     }
 
     override fun startScan() {
-        if (adapter == null) return
+        if (adapter == null) {
+            _error.value = "Bluetooth not supported"
+            return
+        }
+        if (!adapter.isEnabled) {
+            _error.value = "Bluetooth is disabled"
+            return
+        }
 
         // 1. Refresh paired
         refreshPairedDevices()
@@ -79,23 +89,25 @@ class AndroidDeviceScanner(
             if (adapter.isDiscovering) adapter.cancelDiscovery()
             adapter.startDiscovery()
         } catch (e: Exception) {
-            logger.e(e) { "Failed to start scan" }
+            logger.e(e) { "Failed to start scan (Permissions?)" }
+            _error.value = "Scan failed: ${e.message}"
+            _isScanning.value = false
         }
     }
 
     override fun stopScan() {
-        if (adapter == null) return
         try {
-            adapter.cancelDiscovery()
-            // We typically unregister in onCleared or similar, but for manual stop:
-            try {
-                context.unregisterReceiver(receiver)
-            } catch (e: IllegalArgumentException) {
-                // Receiver not registered
-            }
+            adapter?.cancelDiscovery()
         } catch (e: Exception) {
-            logger.w(e) { "Error stopping scan" }
+            logger.w(e) { "Error cancelling discovery" }
         }
+
+        try {
+            context.unregisterReceiver(receiver)
+        } catch (e: IllegalArgumentException) {
+            // Receiver not registered, ignore
+        }
+        _isScanning.value = false
     }
 
     private fun refreshPairedDevices() {

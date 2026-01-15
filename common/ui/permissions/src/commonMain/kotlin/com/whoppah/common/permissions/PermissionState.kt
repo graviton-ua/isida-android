@@ -8,15 +8,13 @@ import androidx.compose.runtime.Stable
  * Add other permissions here as needed.
  */
 enum class PermissionType {
-    CAMERA,
-    //GALLERY,
     STORAGE,
     WRITE_STORAGE,
     //LOCATION,
     //COARSE_LOCATION,
-    //BLUETOOTH_LE,
+    BLUETOOTH_SCAN,
+    BLUETOOTH_CONNECT,
     REMOTE_NOTIFICATION,
-    //RECORD_AUDIO
 }
 
 @Stable
@@ -30,7 +28,7 @@ val PermissionStatus.isGranted: Boolean
 
 @Stable
 interface PermissionState {
-    val permission: PermissionType
+    val permissions: List<PermissionType>
     val status: PermissionStatus
 
     fun launchPermissionRequest()
@@ -41,6 +39,6 @@ interface PermissionState {
  */
 @Composable
 expect fun rememberPermissionState(
-    permission: PermissionType,
+    vararg permissions: PermissionType,
     onPermissionResult: ((Boolean) -> Unit)? = null
 ): PermissionState

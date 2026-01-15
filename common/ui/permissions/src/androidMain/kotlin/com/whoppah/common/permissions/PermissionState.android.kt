@@ -10,7 +10,8 @@ import dev.icerock.moko.permissions.DeniedAlwaysException
 import dev.icerock.moko.permissions.DeniedException
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.PermissionsController
-import dev.icerock.moko.permissions.camera.CAMERA
+import dev.icerock.moko.permissions.bluetooth.BLUETOOTH_CONNECT
+import dev.icerock.moko.permissions.bluetooth.BLUETOOTH_SCAN
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import dev.icerock.moko.permissions.notifications.REMOTE_NOTIFICATION
 import dev.icerock.moko.permissions.storage.STORAGE
@@ -20,18 +21,28 @@ import kotlinx.coroutines.launch
 
 @Composable
 actual fun rememberPermissionState(
-    permission: PermissionType,
+    vararg permissions: PermissionType,
     onPermissionResult: ((Boolean) -> Unit)?
 ): PermissionState {
-    val mokoPermission = permission.toMokoPermission()
+    // Convert all requested types to Moko permissions
+    val mokoPermissions = remember(permissions) {
+        permissions.map { it.toMokoPermission() }
+    }
+
     val factory = rememberPermissionsControllerFactory()
     val controller = remember(factory) { factory.createPermissionsController() }
     val scope = rememberCoroutineScope()
 
     BindEffect(controller)
 
-    val permissionState = remember(mokoPermission, controller, scope) {
-        MokoPermissionState(mokoPermission, permission, controller, scope, onPermissionResult)
+    val permissionState = remember(mokoPermissions, controller, scope) {
+        MokoPermissionState(
+            mokoPermissions = mokoPermissions,
+            permissions = permissions.toList(),
+            controller = controller,
+            scope = scope,
+            onPermissionResult = onPermissionResult
+        )
     }
 
     // Refresh on resume (e.g. coming back from settings)
@@ -70,8 +81,8 @@ private fun BindEffect(permissionsController: PermissionsController) {
 
 @Stable
 private class MokoPermissionState(
-    private val mokoPermission: Permission,
-    override val permission: PermissionType,
+    private val mokoPermissions: List<Permission>,
+    override val permissions: List<PermissionType>,
     private val controller: PermissionsController,
     private val scope: CoroutineScope,
     private val onPermissionResult: ((Boolean) -> Unit)?
@@ -87,7 +98,11 @@ private class MokoPermissionState(
     override fun launchPermissionRequest() {
         scope.launch {
             try {
-                controller.providePermission(mokoPermission)
+                // Request permissions sequentially.
+                // If one fails, the catch block triggers and the process stops.
+                mokoPermissions.forEach { permission ->
+                    controller.providePermission(permission)
+                }
                 status = PermissionStatus.Granted
                 onPermissionResult?.invoke(true)
             } catch (e: DeniedAlwaysException) {
@@ -104,7 +119,10 @@ private class MokoPermissionState(
 
     fun refreshStatus() {
         scope.launch {
-            if (controller.isPermissionGranted(mokoPermission)) {
+            // Check if ALL permissions in the list are granted
+            val allGranted = mokoPermissions.all { controller.isPermissionGranted(it) }
+            
+            if (allGranted) {
                 status = PermissionStatus.Granted
             } else {
                 // If currently Granted but system says no, revoke it.
@@ -118,14 +136,11 @@ private class MokoPermissionState(
 
 private fun PermissionType.toMokoPermission(): Permission {
     return when (this) {
-        PermissionType.CAMERA -> Permission.CAMERA
-        //PermissionType.GALLERY -> Permission.GALLERY
         PermissionType.STORAGE -> Permission.STORAGE
         PermissionType.WRITE_STORAGE -> Permission.WRITE_STORAGE
         //PermissionType.LOCATION -> Permission.LOCATION
-        //PermissionType.COARSE_LOCATION -> Permission.COARSE_LOCATION
-        //PermissionType.BLUETOOTH_LE -> Permission.BLUETOOTH_LE
+        PermissionType.BLUETOOTH_SCAN -> Permission.BLUETOOTH_SCAN
+        PermissionType.BLUETOOTH_CONNECT -> Permission.BLUETOOTH_CONNECT
         PermissionType.REMOTE_NOTIFICATION -> Permission.REMOTE_NOTIFICATION
-        //PermissionType.RECORD_AUDIO -> Permission.RECORD_AUDIO
     }
 }

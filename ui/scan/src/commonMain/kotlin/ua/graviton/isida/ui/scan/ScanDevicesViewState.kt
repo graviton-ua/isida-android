@@ -13,12 +13,3 @@ data class ScanDevicesViewState(
         val Empty = ScanDevicesViewState()
     }
 }
-
-sealed class ScanDevicesAction {
-    object NavigateUp : ScanDevicesAction()
-    object StartScanClicked : ScanDevicesAction()
-    object StopScanClicked : ScanDevicesAction()
-
-    // We pass the generic DiscoveredDevice, not the Android BluetoothDevice
-    data class OnDeviceClicked(val device: DiscoveredDevice) : ScanDevicesAction()
-}

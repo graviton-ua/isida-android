@@ -21,16 +21,10 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
 
-            implementation(libs.moko.permissions.camera)
+            implementation(libs.moko.permissions.bluetooth)
             implementation(libs.moko.permissions.notifications)
             implementation(libs.moko.permissions.storage)
             implementation(libs.moko.permissions.compose)
         }
-        // iosMain.dependencies {
-        //     implementation(libs.moko.permissions.camera)
-        //     implementation(libs.moko.permissions.notifications)
-        //     implementation(libs.moko.permissions.storage)
-        //     implementation(libs.moko.permissions.compose)
-        // }
     }
 }

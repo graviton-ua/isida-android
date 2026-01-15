@@ -6,22 +6,20 @@ import androidx.compose.runtime.remember
 
 @Composable
 actual fun rememberPermissionState(
-    permission: PermissionType,
+    vararg permissions: PermissionType,
     onPermissionResult: ((Boolean) -> Unit)?
 ): PermissionState {
-    return remember { JvmPermissionState(permission) }
+    return remember { JvmPermissionState(permissions.toList()) }
 }
 
 @Stable
 private class JvmPermissionState(
-    override val permission: PermissionType
+    override val permissions: List<PermissionType>,
 ) : PermissionState {
 
-    // Default to Granted for Desktop previews
     override val status: PermissionStatus = PermissionStatus.Granted
 
     override fun launchPermissionRequest() {
-        // No-op on JVM
-        println("JVM: Launching permission request for $permission (Auto-Granted)")
+        println("JVM: Launching permission request for $permissions (Auto-Granted)")
     }
 }
