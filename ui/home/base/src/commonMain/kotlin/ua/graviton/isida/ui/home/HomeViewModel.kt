@@ -45,6 +45,10 @@ class HomeViewModel(
         }
     }
 
+    fun disconnect() {
+        viewModelScope.launch { deviceConnectionManager.disconnect() }
+    }
+
     fun submitAction(action: HomeAction) {
         viewModelScope.launch { pendingActions.emit(action) }
     }

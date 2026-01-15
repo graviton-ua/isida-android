@@ -10,13 +10,17 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import ua.graviton.isida.data.bluetooth.DeviceAddress
 import ua.graviton.isida.data.bluetooth.DeviceScanner
+import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
 
 @Inject
 @ViewModelKey(ScanDevicesViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 class ScanDevicesViewModel(
     private val scanner: DeviceScanner,
+    private val connectionManager: DeviceConnectionManager,
 ) : ViewModel() {
 
     val state: StateFlow<ScanDevicesViewState> = combine(
@@ -44,4 +48,9 @@ class ScanDevicesViewModel(
 
     fun startScan() = scanner.startScan()
     fun stopScan() = scanner.stopScan()
+
+    fun selectDevice(address: DeviceAddress) {
+        stopScan()
+        viewModelScope.launch { connectionManager.connect(address) }
+    }
 }

@@ -68,7 +68,6 @@ private val TOP_LEVEL_ROUTES: List<HomeTabScreen> = listOf(
 internal fun HomeScreen(
     viewModel: HomeViewModel = injectedViewModel(),
     connectDevice: () -> Unit,
-    disconnectDevice: () -> Unit,
     openPowerDialog: () -> Unit,
     openSetPropDialog: (String) -> Unit,
 ) {
@@ -76,13 +75,13 @@ internal fun HomeScreen(
 
     HomeScreen(
         state = viewState,
+        disconnectDevice = viewModel::disconnect,
         openPowerDialog = openPowerDialog,
         openSetPropDialog = openSetPropDialog,
     ) { action ->
         when (action) {
             //is ShopCartAction.Close -> navigateUp()
             is HomeAction.ConnectDevice -> connectDevice()
-            is HomeAction.DisconnectDevice -> disconnectDevice()
             else -> viewModel.submitAction(action)
         }
     }
@@ -91,6 +90,7 @@ internal fun HomeScreen(
 @Composable
 private fun HomeScreen(
     state: HomeViewState,
+    disconnectDevice: () -> Unit,
     openPowerDialog: () -> Unit,
     openSetPropDialog: (String) -> Unit,
     actioner: (HomeAction) -> Unit,
@@ -115,7 +115,7 @@ private fun HomeScreen(
                 deviceConnected = state.deviceConnected,
                 modifier = Modifier.fillMaxWidth(),
                 connectDevice = { actioner(HomeAction.ConnectDevice) },
-                disconnectDevice = { actioner(HomeAction.DisconnectDevice) },
+                disconnectDevice = disconnectDevice,
                 openPowerDialog = openPowerDialog,
             )
         },
@@ -247,6 +247,7 @@ private fun Preview() {
     WhoppahTheme {
         HomeScreen(
             state = HomeViewState.Empty,
+            disconnectDevice = {},
             openPowerDialog = {},
             openSetPropDialog = {},
             actioner = {},

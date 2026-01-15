@@ -14,5 +14,4 @@ data class HomeViewState(
 
 sealed class HomeAction {
     object ConnectDevice : HomeAction()
-    object DisconnectDevice : HomeAction()
 }

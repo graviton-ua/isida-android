@@ -7,6 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import ua.graviton.isida.data.bluetooth.BluetoothClient
 import ua.graviton.isida.data.bluetooth.ConnectionState
+import ua.graviton.isida.data.bluetooth.DeviceAddress
 import ua.graviton.isida.data.bluetooth.asDeviceAddress
 import ua.graviton.isida.domain.interactors.SaveDataPackage
 
@@ -42,7 +43,8 @@ class DeviceConnectionManager(
             .launchIn(appScope)
     }
 
-    suspend fun connect(address: String) = client.connect(address.asDeviceAddress())
+    suspend fun connect(address: DeviceAddress) = client.connect(address)
+    suspend fun connect(address: String) = connect(address.asDeviceAddress())
     suspend fun disconnect() = client.disconnect()
     suspend fun sendCommand(cmd: ByteArray) = client.send(cmd)
 }

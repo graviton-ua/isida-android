@@ -74,7 +74,7 @@ internal fun ScanDevicesScreen(
     }
 
     val deviceClicked: (DiscoveredDevice) -> Unit = remember(onDeviceSelected, viewModel) {
-        { viewModel.stopScan(); onDeviceSelected(it.address.value) }
+        { viewModel.selectDevice(it.address); onDeviceSelected(it.address.value) }
     }
 
     ScanDevicesScreen(

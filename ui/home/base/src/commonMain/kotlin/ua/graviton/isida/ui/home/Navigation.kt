@@ -13,7 +13,6 @@ fun EntryProviderScope<NavKey>.addHomeScreen(
     entry<HomeScreen> {
         HomeScreen(
             connectDevice = navigateScanDevices,
-            disconnectDevice = {},
             openPowerDialog = openPowerDialog,
             openSetPropDialog = openSetPropDialog,
         )
