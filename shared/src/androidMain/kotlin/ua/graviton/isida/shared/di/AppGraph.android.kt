@@ -7,7 +7,9 @@ import android.content.Context
 import com.whoppah.base.PlatformConfig
 import com.whoppah.util.AppCoroutineDispatchers
 import dev.zacsweers.metro.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import ua.graviton.isida.shared.BluetoothStateService
 
 @DependencyGraph(AppScope::class)
@@ -28,6 +30,9 @@ interface AndroidAppGraph : AppGraph {
     @Provides @Named("APPLICATION_CONTEXT")
     fun provideApplicationContext(application: Application): Context = application
 
+    @Provides @SingleIn(AppScope::class)
+    fun provideAppScope(): CoroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
     @Provides
     fun provideContentResolver(@Named("APPLICATION_CONTEXT") context: Context): ContentResolver = context.contentResolver
 
@@ -43,9 +48,4 @@ interface AndroidAppGraph : AppGraph {
         computation = Dispatchers.Default,
         main = Dispatchers.Main
     )
-
-    // @Provides @SingleIn(AppScope::class)
-    // fun provideCredentialManager(
-    //     @Named("APPLICATION_CONTEXT") ctx: Context,
-    // ): CredentialManager = CredentialManager.create(ctx)
 }

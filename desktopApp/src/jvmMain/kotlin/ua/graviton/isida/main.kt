@@ -7,8 +7,8 @@ import com.whoppah.base.PlatformConfig
 import com.whoppah.base.PlatformInfo
 import com.whoppah.metrox.viewmodel.LocalViewModelFactoryOwner
 import com.whoppah.metrox.viewmodel.ViewModelFactoryOwner
-import dev.zacsweers.metro.createGraph
 import dev.zacsweers.metro.createGraphFactory
+import kotlinx.coroutines.cancel
 import ua.graviton.isida.shared.di.JvmAppGraph
 
 fun main() {
@@ -37,7 +37,7 @@ fun main() {
             },
         ) {
             App(
-                state = rememberAppState(exitApp = ::exitApplication)
+                state = rememberAppState(exitApp = { appGraph.appScope.cancel(); exitApplication() })
             )
         }
     }

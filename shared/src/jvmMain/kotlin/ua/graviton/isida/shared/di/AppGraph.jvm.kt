@@ -6,7 +6,9 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 
 @DependencyGraph(AppScope::class)
 interface JvmAppGraph : AppGraph {
@@ -19,8 +21,10 @@ interface JvmAppGraph : AppGraph {
     }
 
 
-    //fun inject(target: SpecialFirebaseMessagingService)
+    val appScope: CoroutineScope
 
+    @Provides @SingleIn(AppScope::class)
+    fun provideAppScope(): CoroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     @Provides @SingleIn(AppScope::class)
     fun provideCoroutineDispatchers(): AppCoroutineDispatchers = AppCoroutineDispatchers(

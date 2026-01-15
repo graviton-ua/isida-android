@@ -8,6 +8,9 @@ import android.os.Build
 import com.whoppah.base.PlatformConfig
 import com.whoppah.base.PlatformInfo
 import dev.zacsweers.metro.createGraphFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import ua.graviton.isida.shared.di.AndroidAppGraph
 
 class App : Application() {

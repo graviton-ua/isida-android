@@ -9,17 +9,20 @@ import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ua.graviton.isida.domain.DeviceConnectionHolder
+import ua.graviton.isida.data.bluetooth.ConnectionState
+import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
 
 @Inject
 @ViewModelKey(HomeViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
-class HomeViewModel : ViewModel() {
+class HomeViewModel(
+    private val deviceConnectionManager: DeviceConnectionManager,
+) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
     private val pendingActions = MutableSharedFlow<HomeAction>()
 
     val state: StateFlow<HomeViewState> = combine(
-        DeviceConnectionHolder.isConnected, loadingState.observable
+        deviceConnectionManager.connectionState.map { it == ConnectionState.CONNECTED }, loadingState.observable
     ) { deviceConnected, loading ->
         HomeViewState(
             deviceConnected = deviceConnected,

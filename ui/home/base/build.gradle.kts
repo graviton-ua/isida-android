@@ -17,6 +17,7 @@ kotlin {
             implementation(projects.core.base)
             implementation(projects.core.logging)
             implementation(projects.core.preferences)
+            implementation(projects.data.bluetooth)
             implementation(projects.domain)
 
             implementation(projects.common.ui.compose)
