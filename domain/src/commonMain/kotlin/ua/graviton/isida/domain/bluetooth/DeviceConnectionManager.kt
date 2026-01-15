@@ -1,5 +1,6 @@
 package ua.graviton.isida.domain.bluetooth
 
+import co.touchlab.kermit.Logger
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
@@ -18,6 +19,7 @@ class DeviceConnectionManager(
     private val saveDataPackage: SaveDataPackage,
     private val appScope: CoroutineScope, // Scope that lives as long as the app
 ) {
+    private val logger by lazy { Logger.withTag("DeviceConnectionManager") }
     // 1. Expose State clearly to the rest of the app
     val connectionState: StateFlow<ConnectionState> = client.state
 
@@ -33,6 +35,7 @@ class DeviceConnectionManager(
     private fun observerDataStream() {
         client.incomingData
             .onEach { data ->
+                logger.d { "Incoming data: ${data.toHexString()}" }
                 // Your logic from the old Service
                 try {
                     saveDataPackage.executeSync(SaveDataPackage.Params(data))

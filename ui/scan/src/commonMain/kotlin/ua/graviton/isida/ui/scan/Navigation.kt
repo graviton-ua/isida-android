@@ -10,7 +10,7 @@ fun EntryProviderScope<NavKey>.addScanDevicesScreen(
     entry<ScanDevicesScreen> {
         ScanDevicesScreen(
             navigateUp = navigator::navigateUp,
-            onDeviceSelected = { /*TODO: Need to be implemented*/ },
+            onDeviceSelected = { navigator.navigateUp() },
         )
     }
 }

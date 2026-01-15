@@ -8,6 +8,7 @@ import androidx.core.app.NotificationCompat
 import co.touchlab.kermit.Logger
 import kotlinx.coroutines.launch
 import ua.graviton.isida.App
+import ua.graviton.isida.BuildConfig
 import ua.graviton.isida.R
 import ua.graviton.isida.intentMain
 import ua.graviton.isida.shared.BluetoothStateService
@@ -44,7 +45,7 @@ class BluetoothConnectionService : BluetoothStateService() {
 
 
     private fun notificationCountDown(name: String?): NotificationCompat.Builder {
-        return NotificationCompat.Builder(this, "BuildConfig.NOTIFICATION_CHANNEL_ID_GENERAL")
+        return NotificationCompat.Builder(this, BuildConfig.NOTIFICATION_CHANNEL_ID_GENERAL)
             .setContentTitle("ISIDA Connected")
             .setContentText("We successfully connected to: $name")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
