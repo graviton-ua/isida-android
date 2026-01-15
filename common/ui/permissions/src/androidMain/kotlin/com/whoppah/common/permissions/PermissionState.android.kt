@@ -13,6 +13,8 @@ import dev.icerock.moko.permissions.PermissionsController
 import dev.icerock.moko.permissions.bluetooth.BLUETOOTH_CONNECT
 import dev.icerock.moko.permissions.bluetooth.BLUETOOTH_SCAN
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
+import dev.icerock.moko.permissions.location.COARSE_LOCATION
+import dev.icerock.moko.permissions.location.LOCATION
 import dev.icerock.moko.permissions.notifications.REMOTE_NOTIFICATION
 import dev.icerock.moko.permissions.storage.STORAGE
 import dev.icerock.moko.permissions.storage.WRITE_STORAGE
@@ -121,7 +123,7 @@ private class MokoPermissionState(
         scope.launch {
             // Check if ALL permissions in the list are granted
             val allGranted = mokoPermissions.all { controller.isPermissionGranted(it) }
-            
+
             if (allGranted) {
                 status = PermissionStatus.Granted
             } else {
@@ -138,7 +140,8 @@ private fun PermissionType.toMokoPermission(): Permission {
     return when (this) {
         PermissionType.STORAGE -> Permission.STORAGE
         PermissionType.WRITE_STORAGE -> Permission.WRITE_STORAGE
-        //PermissionType.LOCATION -> Permission.LOCATION
+        PermissionType.LOCATION -> Permission.LOCATION
+        PermissionType.COARSE_LOCATION -> Permission.COARSE_LOCATION
         PermissionType.BLUETOOTH_SCAN -> Permission.BLUETOOTH_SCAN
         PermissionType.BLUETOOTH_CONNECT -> Permission.BLUETOOTH_CONNECT
         PermissionType.REMOTE_NOTIFICATION -> Permission.REMOTE_NOTIFICATION

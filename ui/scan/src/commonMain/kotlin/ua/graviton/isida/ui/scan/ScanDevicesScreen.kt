@@ -22,6 +22,8 @@ import com.whoppah.common.compose.ui.WhScaffold
 import com.whoppah.common.permissions.PermissionType
 import com.whoppah.common.permissions.isGranted
 import com.whoppah.common.permissions.rememberPermissionState
+import com.whoppah.common.services.ServiceType
+import com.whoppah.common.services.rememberServiceEnabler
 import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import ua.graviton.isida.data.bluetooth.DiscoveredDevice
@@ -42,35 +44,37 @@ internal fun ScanDevicesScreen(
         onDispose { viewModel.stopScan() }
     }
 
-    // Permission state for the camera.
-    val scanPermission = rememberPermissionState(PermissionType.BLUETOOTH_SCAN) { isGranted ->
+    val bluetoothEnabler = rememberServiceEnabler(
+        type = ServiceType.BLUETOOTH,
+        onEnabled = { viewModel.startScan() }, // Success callback
+        onDenied = { AppToaster.showError("Bluetooth is required to scan") }
+    )
+
+    // Note: We chain them. Location is requested AFTER Bluetooth is confirmed.
+    val locationEnabler = rememberServiceEnabler(
+        type = ServiceType.LOCATION,
+        onEnabled = { bluetoothEnabler.requestEnable() }, // Once GPS is on, check Bluetooth
+        onDenied = { AppToaster.showError("Location is required to scan") }
+    )
+
+    val bePermission = rememberPermissionState(
+        PermissionType.BLUETOOTH_SCAN, PermissionType.BLUETOOTH_CONNECT, PermissionType.LOCATION,
+    ) { isGranted ->
         if (isGranted) {
-            viewModel.startScan()
+            // Permissions OK -> Now check System Services
+            locationEnabler.requestEnable()
         } else {
             // You can show a rationale here if needed.
-            AppToaster.showError("BLUETOOTH_SCAN permission is required to start scanning.")
+            AppToaster.showError("BLUETOOTH_SCAN and BLUETOOTH_CONNECT permission is required to start scanning.")
         }
     }
 
-    val connectPermission = rememberPermissionState(PermissionType.BLUETOOTH_CONNECT) { isGranted ->
-        if (isGranted) {
-            //Do nothing
-        } else {
-            // You can show a rationale here if needed.
-            AppToaster.showError("BLUETOOTH_CONNECT permission is required to connect device.")
-        }
+    val startScan: () -> Unit = remember(bePermission, locationEnabler) {
+        { if (bePermission.status.isGranted) locationEnabler.requestEnable() else bePermission.launchPermissionRequest() }
     }
 
-    val startScan: () -> Unit = remember(scanPermission, viewModel) {
-        { if (scanPermission.status.isGranted) viewModel.startScan() else scanPermission.launchPermissionRequest() }
-    }
-
-    val deviceClicked: (DiscoveredDevice) -> Unit = remember(connectPermission, onDeviceSelected, viewModel) {
-        {
-            if (connectPermission.status.isGranted) {
-                viewModel.stopScan(); onDeviceSelected(it.address.value)
-            } else connectPermission.launchPermissionRequest()
-        }
+    val deviceClicked: (DiscoveredDevice) -> Unit = remember(onDeviceSelected, viewModel) {
+        { viewModel.stopScan(); onDeviceSelected(it.address.value) }
     }
 
     ScanDevicesScreen(
@@ -99,18 +103,18 @@ private fun ScanDevicesScreen(
                         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 },
-                actions = { if (state.isLoading) CircularProgressIndicator() },
+                actions = { if (state.isScanning) CircularProgressIndicator() },
                 contentPadding = WindowInsets.statusBars.asPaddingValues(),
                 modifier = Modifier.fillMaxWidth()
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { if (state.isLoading) onStopScan() else onStartScan() },
+                onClick = { if (state.isScanning) onStopScan() else onStartScan() },
                 modifier = Modifier.navigationBarsPadding()
             ) {
                 Text(
-                    text = if (state.isLoading) "Stop scan" else "Start scan",
+                    text = if (state.isScanning) "Stop scan" else "Start scan",
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
             }

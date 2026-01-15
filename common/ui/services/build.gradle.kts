@@ -6,7 +6,7 @@ plugins {
 
 kotlin {
     android {
-        namespace = "com.whoppah.common.permissions"
+        namespace = "com.whoppah.common.services"
     }
 
     sourceSets {
@@ -15,17 +15,11 @@ kotlin {
             implementation(projects.core.logging)
 
             implementation(libs.jetbrains.compose.runtime)
-            implementation(libs.jetbrains.lifecycle.runtime)
         }
 
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
-
-            implementation(libs.moko.permissions.bluetooth)
-            implementation(libs.moko.permissions.location)
-            implementation(libs.moko.permissions.notifications)
-            implementation(libs.moko.permissions.storage)
-            implementation(libs.moko.permissions.compose)
+            implementation(libs.google.gms.location)
         }
     }
 }

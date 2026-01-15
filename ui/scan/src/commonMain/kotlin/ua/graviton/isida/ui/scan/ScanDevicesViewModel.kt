@@ -20,14 +20,16 @@ class ScanDevicesViewModel(
 ) : ViewModel() {
 
     val state: StateFlow<ScanDevicesViewState> = combine(
+        scanner.isBluetoothEnabled,
         scanner.pairedDevices,
         scanner.foundDevices,
         scanner.isScanning
-    ) { paired, found, scanning ->
+    ) { isEnabled, paired, found, scanning ->
         ScanDevicesViewState(
+            isBluetoothEnabled = isEnabled,
             paired = paired,
             found = found,
-            isLoading = scanning,
+            isScanning = scanning,
         )
     }.stateIn(
         scope = viewModelScope,
@@ -36,7 +38,7 @@ class ScanDevicesViewModel(
     )
 
     override fun onCleared() {
-        scanner.stopScan()
+        scanner.cleanup()
         super.onCleared()
     }
 

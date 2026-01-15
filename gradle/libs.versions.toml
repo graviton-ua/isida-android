@@ -68,6 +68,7 @@ androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", versi
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version = "1.12.2" }
 
 moko-permissions-bluetooth = { module = "dev.icerock.moko:permissions-bluetooth", version.ref = "moko-permissions" }
+moko-permissions-location = { module = "dev.icerock.moko:permissions-location", version.ref = "moko-permissions" }
 moko-permissions-notifications = { module = "dev.icerock.moko:permissions-notifications", version.ref = "moko-permissions" }
 moko-permissions-storage = { module = "dev.icerock.moko:permissions-storage", version.ref = "moko-permissions" }
 moko-permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "moko-permissions" }
@@ -93,6 +94,7 @@ kermit-kermit = { module = "co.touchlab:kermit", version = "2.0.8" }
 crashkios-crashlytics = { module = "co.touchlab.crashkios:crashlytics", version = "0.9.0" }
 
 jSerialComm = { module = "com.fazecast:jSerialComm", version = "2.11.4" }
+google-gms-location = { module = "com.google.android.gms:play-services-location", version = "21.3.0" }
 
 
 tools-desugarjdklibs = { module = "com.android.tools:desugar_jdk_libs", version = "2.1.5" }

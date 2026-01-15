@@ -62,6 +62,7 @@ include(
     ":common:ui:resources",
     ":common:ui:permissions",
     ":common:ui:navigation",
+    ":common:ui:services",
 
     ":data:db",
     ":data:bluetooth",

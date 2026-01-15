@@ -1,5 +1,6 @@
 package ua.graviton.isida.data.bluetooth
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
@@ -7,6 +8,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
+import android.location.LocationManager
+import android.os.Build
 import co.touchlab.kermit.Logger
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
@@ -84,39 +88,66 @@ class AndroidDeviceScanner(
     }
 
     override fun startScan() {
-        logger.d { "Starting scan" }
-        if (adapter == null || !adapter.isEnabled) {
-            _error.value = "Bluetooth disabled or unavailable"
+        logger.d { "Requesting startScan" }
+        _error.value = null // Clear previous errors
+
+        // 1. Check if Adapter exists and is enabled
+        if (adapter == null) {
+            _error.value = "Bluetooth not supported on this device"
+            return
+        }
+        if (!adapter.isEnabled) {
+            _error.value = "Bluetooth is disabled"
             return
         }
 
-        // FIX: Guard clause. If we are already scanning, do nothing.
+        // 2. Check Runtime Permissions
+        if (!hasScanPermission()) {
+            _error.value = "Missing Bluetooth permissions"
+            logger.e { "startScan failed: Missing Runtime Permissions" }
+            return
+        }
+
+        // 3. Check Location Services (GPS) - CRITICAL for returning TRUE
+        // On Android 12+, if we have BLUETOOTH_SCAN, we usually don't need GPS strictly for discovery
+        // depending on "neverForLocation", but for Classic discovery or older Androids, we do.
+        if (!isLocationServiceEnabled()) {
+            _error.value = "Location Services (GPS) must be enabled to scan"
+            logger.e { "startScan failed: Location Services disabled" }
+            return
+        }
+
+        // 4. Safe Start
         if (_isScanning.value) return
 
-        // ALTERNATIVE FIX (More robust):
-        // Unregister any existing receiver to ensure a clean slate before registering again.
-        // Since stopScan() handles the try-catch for unregistering, we can just call it.
-        stopScan()
-
-        // Safety: If already scanning, restart involves cancelling first
-        if (adapter.isDiscovering) adapter.cancelDiscovery()
+        // Cancel any previous discovery to be safe
+        try {
+            if (adapter.isDiscovering) adapter.cancelDiscovery()
+        } catch (e: SecurityException) { /* no-op */
+        }
 
         refreshPairedDevices()
         _foundDevices.value = emptyList()
 
-        val success = adapter.startDiscovery()
-        if (!success) {
-            // Usually indicates GPS is Off or Permission Missing
-            logger.e { "startDiscovery returned false" }
-            _error.value = "Scan failed to start. Check GPS."
-            _isScanning.value = false
-        }
+        try {
+            val success = adapter.startDiscovery()
+            logger.d { "adapter.startDiscovery() returned: $success" }
 
+            if (!success) {
+                _error.value = "System refused to start scan (Unknown error)"
+                _isScanning.value = false
+            }
+        } catch (e: SecurityException) {
+            _error.value = "Security Exception: ${e.message}"
+            logger.e(e) { "Security Exception during startDiscovery" }
+        }
     }
 
     override fun stopScan() {
         try {
-            adapter?.cancelDiscovery()
+            if (hasScanPermission()) {
+                adapter?.cancelDiscovery()
+            }
         } catch (e: Exception) {
             logger.w(e) { "Error cancelling discovery" }
         }
@@ -138,11 +169,41 @@ class AndroidDeviceScanner(
     }
 
     private fun refreshPairedDevices() {
+        if (!hasScanPermission()) return
         try {
             _pairedDevices.value = adapter?.bondedDevices?.map { it.toDomain(isPaired = true) } ?: emptyList()
-        } catch (e: Exception) {
-            logger.w(e) { "Can't get bonded devices" }
+        } catch (e: SecurityException) {
+            logger.w(e) { "Permission denied getting bonded devices" }
         }
+    }
+
+    /**
+     * Helper to check permissions based on Android Version
+     */
+    private fun hasScanPermission(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            context.checkSelfPermission(Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED &&
+                    context.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
+        } else {
+            context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        }
+    }
+
+    /**
+     * Helper to check if GPS/Location is enabled
+     */
+    private fun isLocationServiceEnabled(): Boolean {
+        // On Android 12+ (S), if you have BLUETOOTH_SCAN, you theoretically don't need location enabled
+        // for "finding devices", but many manufacturers still enforce it for Classic Bluetooth.
+        // It is safer to require it if scanning fails.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            // You can try returning true here to relax requirements for Android 12+,
+            // but if startDiscovery returns false, revert to checking location.
+        }
+
+        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as? LocationManager
+        return locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) == true ||
+                locationManager?.isProviderEnabled(LocationManager.NETWORK_PROVIDER) == true
     }
 
     private fun BluetoothDevice.toDomain(isPaired: Boolean = false): DiscoveredDevice {

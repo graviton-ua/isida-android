@@ -10,8 +10,8 @@ import androidx.compose.runtime.Stable
 enum class PermissionType {
     STORAGE,
     WRITE_STORAGE,
-    //LOCATION,
-    //COARSE_LOCATION,
+    LOCATION,
+    COARSE_LOCATION,
     BLUETOOTH_SCAN,
     BLUETOOTH_CONNECT,
     REMOTE_NOTIFICATION,
