@@ -1,4 +1,4 @@
-package ua.graviton.isida.ui
+package ua.graviton.isida
 
 import android.content.Context
 import android.content.Intent
@@ -13,7 +13,6 @@ import co.touchlab.kermit.Logger
 import com.whoppah.metrox.viewmodel.LocalViewModelFactoryOwner
 import com.whoppah.metrox.viewmodel.ViewModelFactoryOwner
 import kotlinx.coroutines.flow.MutableStateFlow
-import ua.graviton.isida.App
 import ua.graviton.isida.shared.ui.IsidaApp
 
 fun Context.intentMain() = Intent(this, MainActivity::class.java)

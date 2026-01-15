@@ -24,7 +24,7 @@ import ua.graviton.isida.data.bluetooth.DeviceAddress
 import ua.graviton.isida.data.models.SendPackageDto
 import ua.graviton.isida.domain.DeviceConnectionHolder
 import ua.graviton.isida.domain.interactors.SaveDataPackage
-import ua.graviton.isida.ui.intentMain
+import ua.graviton.isida.intentMain
 
 fun Context.intentBLConnectionService() = Intent(this, BluetoothConnectionService::class.java)
 
