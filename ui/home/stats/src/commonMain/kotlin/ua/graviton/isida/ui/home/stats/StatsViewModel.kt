@@ -20,11 +20,21 @@ import ua.graviton.isida.domain.observers.ObserveDeviceData
 @Inject
 @ViewModelKey(StatsViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
+/**
+ * ViewModel for the Stats Screen.
+ * Responsible for observing device data and transforming it into a list of [StatsItem]s
+ * using the [buildStats] DSL.
+ */
 class StatsViewModel(
     observeDeviceData: ObserveDeviceData,
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
 
+    /**
+     * Stream of UI state.
+     * Combines the latest device data with loading state.
+     * If data is null (not yet received), it falls back to [PlaceholderStats] to show the structure.
+     */
     val state: StateFlow<StatsViewState> = combine(
         observeDeviceData.flow, loadingState.observable
     ) { data, loading ->
@@ -48,7 +58,12 @@ class StatsViewModel(
     )
 }
 
-private val PlaceholderStats = buildStats {
+/**
+ * A static list of items used when no real data is available.
+ * Mirrors the structure of [toItems] but with all values set to null.
+ * This ensures the UI displays the correct labels and layout even before the first packet arrives.
+ */
+internal val PlaceholderStats = buildStats {
     item<Float>(Res.string.pv_t0_label, null, null)
     item<Float>(Res.string.pv_t1_label, null, null)
     item<Float>(Res.string.pv_t2_label, null)
@@ -64,6 +79,11 @@ private val PlaceholderStats = buildStats {
     mapStringResource<Int>(Res.string.programm, null) { null }
 }
 
+/**
+ * Transforms a [DataPackageDto] into a list of [StatsItem]s.
+ * Uses the [buildStats] DSL to define the layout and logic for each row.
+ * This is where the mapping from raw bytes to UI representation happens.
+ */
 private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     // T0
     item(

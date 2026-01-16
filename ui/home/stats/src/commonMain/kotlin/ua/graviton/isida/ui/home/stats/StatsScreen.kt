@@ -32,6 +32,10 @@ data object StatsScreen : HomeTabScreen {
     override val title: StringResource = Res.string.home_tab_stats
 }
 
+/**
+ * The main screen for displaying device statistics.
+ * Connects the [StatsViewModel] state to the UI.
+ */
 @Composable
 internal fun StatsScreen(
     viewModel: StatsViewModel = injectedViewModel(),
@@ -43,6 +47,10 @@ internal fun StatsScreen(
     )
 }
 
+/**
+ * Stateless implementation of the Stats Screen.
+ * Renders a sticky header with the device ID and a scrollable list of [StatsItem]s.
+ */
 @Composable
 private fun StatsScreen(
     state: StatsViewState,
@@ -68,6 +76,10 @@ private fun StatsScreen(
     }
 }
 
+/**
+ * Renders a single [StatsItem].
+ * Handles different content types (Numeric, TextResource, TextRaw) and formatting.
+ */
 @Composable
 private fun Item(
     item: StatsItem

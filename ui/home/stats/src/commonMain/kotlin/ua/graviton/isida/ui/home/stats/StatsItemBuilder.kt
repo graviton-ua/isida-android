@@ -3,16 +3,32 @@ package ua.graviton.isida.ui.home.stats
 import androidx.compose.ui.graphics.Color
 import org.jetbrains.compose.resources.StringResource
 
+/**
+ * A builder class responsible for constructing a list of [StatsItem]s using a DSL.
+ * It provides methods to easily add items with different content types and styling logic.
+ */
 class StatsListBuilder {
     private val list = mutableListOf<StatsItem>()
 
     /**
-     * Adds a numeric item (Int, Float, etc.).
-     * @param title The label resource ID.
-     * @param value The primary value.
-     * @param target The target/setpoint value (optional).
-     * @param backgroundColor Optional lambda to determine the background color.
-     * @param valueColor Optional lambda to determine the value's color based on logic.
+     * Adds a numeric item (Int, Float, etc.) to the list.
+     * Use this for sensor readings like Temperature, Humidity, or Timer values.
+     *
+     * @param title The label resource ID for the item.
+     * @param value The primary numeric value (e.g., current temp).
+     * @param target The target/setpoint numeric value (optional, e.g., target temp).
+     * @param backgroundColor Optional lambda to dynamically determine the row's background color based on [value].
+     * @param valueColor Optional lambda to dynamically determine the text color based on [value] and [target].
+     *
+     * Example:
+     * ```
+     * item(
+     *     title = Res.string.temp_label,
+     *     value = currentTemp,
+     *     target = setPoint,
+     *     valueColor = { v, t -> if (v > t) Color.Red else Color.Green }
+     * )
+     * ```
      */
     fun <T : Number> item(
         title: StringResource,
@@ -31,12 +47,24 @@ class StatsListBuilder {
     }
 
     /**
-     * Adds an item that maps a value to a String Resource.
+     * Adds an item that maps a value (usually an Enum or Int code) to a localized [StringResource].
+     * Use this for status codes, errors, or modes that have translation resources.
+     *
      * @param title The label resource ID.
-     * @param value The source value (e.g., an Int status code).
-     * @param valueColor Optional color logic.
-     * @param backgroundColor Optional background color logic.
-     * @param mapper Function that converts the source value [T] to a [StringResource].
+     * @param value The source value to be mapped.
+     * @param target An optional target value to be mapped.
+     * @param backgroundColor Optional lambda for background color logic.
+     * @param valueColor Optional lambda for text color logic.
+     * @param mapper A function that converts the [value] (of type T) into a [StringResource]?.
+     *
+     * Example:
+     * ```
+     * mapStringResource(
+     *     title = Res.string.status,
+     *     value = statusCode,
+     *     mapper = { code -> if (code == 1) Res.string.active else Res.string.inactive }
+     * )
+     * ```
      */
     fun <T> mapStringResource(
         title: StringResource,
@@ -61,9 +89,23 @@ class StatsListBuilder {
 
     /**
      * Adds an item that maps a value to a raw String.
+     * Use this when the text is dynamic or comes from a source without Resource IDs.
+     *
      * @param title The label resource ID.
-     * @param value The source value.
-     * @param mapper Function that converts the source value [T] to a [String].
+     * @param value The source value to be mapped.
+     * @param target An optional target value to be mapped.
+     * @param backgroundColor Optional lambda for background color logic.
+     * @param valueColor Optional lambda for text color logic.
+     * @param mapper A function that converts the [value] (of type T) into a [String]?.
+     *
+     * Example:
+     * ```
+     * mapString(
+     *     title = Res.string.mode,
+     *     value = modeInt,
+     *     mapper = { it -> "Mode #$it" }
+     * )
+     * ```
      */
     fun <T> mapString(
         title: StringResource,
@@ -86,11 +128,17 @@ class StatsListBuilder {
         )
     }
 
+    /**
+     * Finalizes the build process and returns the immutable list of [StatsItem]s.
+     */
     fun build() = list.toList()
 }
 
 /**
- * DSL entry point.
+ * DSL Entry Point for creating a list of [StatsItem]s.
+ *
+ * @param block The builder lambda where you define items using [StatsListBuilder.item], [StatsListBuilder.mapStringResource], etc.
+ * @return A list of [StatsItem].
  */
 fun buildStats(block: StatsListBuilder.() -> Unit): List<StatsItem> {
     val builder = StatsListBuilder()
