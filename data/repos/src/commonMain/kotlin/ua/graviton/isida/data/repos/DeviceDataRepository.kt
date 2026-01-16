@@ -39,18 +39,14 @@ class DeviceDataRepository(
 
 private fun DataPackageDto.toEntity(): DeviceDataEntity {
     return DeviceDataEntity(
-        deviceId = cellId,
+        deviceId = node,
         pvT0 = pvT0, pvT1 = pvT1,
-        pvT2 = pvT2, pvT3 = pvT3,
+        pvT2 = pvT2,
         pvRh = pvRh,
-        pvCO2_1 = pvCO2_1, pvCO2_2 = pvCO2_2,
-        pvCO2_3 = pvCO2_3,
+        pvCO2 = pvCO2,
         pvTimer = pvTimer,
-        pvTmrCount = pvTmrCount,
         pvFlap = pvFlap,
         power = power, fuses = fuses,
         errors = errors, warning = warning,
-        cost0 = cost0, cost1 = cost1,
-        date = date, hours = hours,
     )
 }
