@@ -23,6 +23,11 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
+/**
+ * Android implementation of [rememberServiceEnabler].
+ * - Bluetooth: Uses [BluetoothAdapter.ACTION_REQUEST_ENABLE] intent.
+ * - Location: Uses Google Play Services (GMS) [LocationSettingsRequest] to show a resolution dialog.
+ */
 @Composable
 actual fun rememberServiceEnabler(
     type: ServiceType,

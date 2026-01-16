@@ -4,6 +4,11 @@ import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 
+/**
+ * Android implementation of [rememberWriteStorageAction].
+ * Automatically grants access on Android 10+ (Q) for download-related tasks, 
+ * otherwise requests WRITE_EXTERNAL_STORAGE.
+ */
 @Composable
 actual fun rememberWriteStorageAction(onAction: () -> Unit): () -> Unit {
     // Logic: Android Q (10) and above do not need permission for DownloadManager

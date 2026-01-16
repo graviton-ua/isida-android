@@ -21,6 +21,10 @@ import dev.icerock.moko.permissions.storage.WRITE_STORAGE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+/**
+ * Android implementation of [rememberPermissionState] using Moko Permissions.
+ * Automatically refreshes status when the activity is resumed.
+ */
 @Composable
 actual fun rememberPermissionState(
     vararg permissions: PermissionType,
@@ -81,6 +85,9 @@ private fun BindEffect(permissionsController: PermissionsController) {
     }
 }
 
+/**
+ * Wrapper for Moko's [PermissionsController] that implements our common [PermissionState].
+ */
 @Stable
 private class MokoPermissionState(
     private val mokoPermissions: List<Permission>,
@@ -119,6 +126,9 @@ private class MokoPermissionState(
         }
     }
 
+    /**
+     * Re-checks the permission status from the controller.
+     */
     fun refreshStatus() {
         scope.launch {
             // Check if ALL permissions in the list are granted

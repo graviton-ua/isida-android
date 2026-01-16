@@ -3,6 +3,11 @@ package com.whoppah.common.services
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 
+/**
+ * JVM/Desktop implementation of [rememberServiceEnabler].
+ * Since Desktop platforms don't have a standardized cross-platform API for toggling system services, 
+ * this implementation assumes the hardware is present/manual and immediately calls [onEnabled].
+ */
 @Composable
 actual fun rememberServiceEnabler(
     type: ServiceType,

@@ -4,6 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 
+/**
+ * JVM/Desktop implementation of [rememberPermissionState].
+ * Since Desktop platforms don't have a standardized runtime permission system for these types, 
+ * it defaults to [PermissionStatus.Granted].
+ */
 @Composable
 actual fun rememberPermissionState(
     vararg permissions: PermissionType,
@@ -12,6 +17,9 @@ actual fun rememberPermissionState(
     return remember { JvmPermissionState(permissions.toList()) }
 }
 
+/**
+ * Emulated permission state for JVM that auto-grants all requests.
+ */
 @Stable
 private class JvmPermissionState(
     override val permissions: List<PermissionType>,
