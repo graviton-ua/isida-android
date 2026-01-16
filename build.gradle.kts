@@ -16,7 +16,7 @@ subprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         compilerOptions {
             optIn.add("kotlin.time.ExperimentalTime")
-            freeCompilerArgs.add("-Xskip-prerelease-check")
+            //freeCompilerArgs.add("-Xskip-prerelease-check")
         }
     }
 }

@@ -8,7 +8,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.core.base)
             implementation(libs.kotlinx.datetime)
-            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.serialization.core)
         }
     }
 }

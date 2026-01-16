@@ -1,9 +1,8 @@
 plugins {
     id("com.whoppah.kotlin.multiplatform")
     id("com.whoppah.android.library")
-    alias(libs.plugins.kotlinx.serialization)
-    alias(libs.plugins.sqldelight)
     id("com.whoppah.metro")
+    alias(libs.plugins.sqldelight)
 }
 
 kotlin {
@@ -18,10 +17,6 @@ kotlin {
 
             implementation(projects.data.models)
             implementation(libs.kotlinx.datetime)
-            implementation(libs.kotlinx.serialization.json)
-            // Need to force upgrade these for recent Kotlin support
-            // api(libs.kotlinx.atomicfu)
-            implementation(libs.kotlinx.coroutines.core)
 
             implementation(libs.sqldelight.coroutines)
             implementation(libs.sqldelight.primitive)
