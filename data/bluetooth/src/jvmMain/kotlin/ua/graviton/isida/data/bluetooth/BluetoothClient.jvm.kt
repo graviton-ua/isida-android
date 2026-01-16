@@ -104,43 +104,35 @@ class JvmBluetoothDriver(
                 while (isActive && port.isOpen) {
                     // This call blocks until at least 1 byte is available
                     // or timeout (if set) occurs.
-                    val available = inputStream.available()
-                    if (available > 0) {
-                        // Read exactly what is available to avoid blocking unnecessarily
-                        val bytesRead = inputStream.read(readBuffer, 0, minOf(readBuffer.size, available))
+                    val bytesRead = inputStream.read(readBuffer)
 
-                        if (bytesRead > 0) {
-                            for (i in 0 until bytesRead) {
-                                val byteInt = readBuffer[i].toInt() and 0xFF // Convert to unsigned int
+                    if (bytesRead > 0) {
+                        for (i in 0 until bytesRead) {
+                            val byteInt = readBuffer[i].toInt() and 0xFF // Convert to unsigned int
 
-                                // Logic: Buffer until 0x0A (LF) and 0x0D (CR)
-                                if (byteInt == 0x0A) {
-                                    // Check previous byte logic
-                                    // Logic: 0x0D then 0x0A means end of message
-                                    if (buffer.isNotEmpty() && buffer.last() == 0x0D) {
-                                        // Add the LF
-                                        buffer.add(byteInt)
+                            // Logic: Buffer until 0x0A (LF) and 0x0D (CR)
+                            if (byteInt == 0x0A) {
+                                // Check previous byte logic
+                                // Logic: 0x0D then 0x0A means end of message
+                                if (buffer.isNotEmpty() && buffer.last() == 0x0D) {
+                                    // Add the LF
+                                    buffer.add(byteInt)
 
-                                        // Emit packet
-                                        val packet = buffer.map { it.toByte() }.toByteArray()
-                                        _incomingData.emit(packet)
+                                    // Emit packet
+                                    val packet = buffer.map { it.toByte() }.toByteArray()
+                                    _incomingData.emit(packet)
 
-                                        buffer.clear()
-                                    } else {
-                                        buffer.add(byteInt)
-                                    }
+                                    buffer.clear()
                                 } else {
                                     buffer.add(byteInt)
                                 }
+                            } else {
+                                buffer.add(byteInt)
                             }
-                        } else if (bytesRead == -1) {
-                            // End of stream
-                            break
                         }
-                    } else {
-                        // Small delay to prevent CPU spinning if implementation
-                        // doesn't block perfectly on .available()
-                        delay(10)
+                    } else if (bytesRead == -1) {
+                        // End of stream
+                        break
                     }
                 }
             } catch (e: IOException) {
