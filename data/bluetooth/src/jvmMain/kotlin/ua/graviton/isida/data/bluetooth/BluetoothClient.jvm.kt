@@ -96,7 +96,8 @@ class JvmBluetoothDriver(
     private fun startReading(port: SerialPort) {
         readJob?.cancel()
         readJob = scope.launch(Dispatchers.IO) {
-            val buffer = ByteArray(1024) // Adjust buffer size as needed
+            val buffer = ArrayList<Int>() // Accumulation buffer
+            val readBuffer = ByteArray(1024) // Raw read buffer
             val inputStream = port.inputStream
 
             try {
@@ -106,12 +107,32 @@ class JvmBluetoothDriver(
                     val available = inputStream.available()
                     if (available > 0) {
                         // Read exactly what is available to avoid blocking unnecessarily
-                        val bytesRead = inputStream.read(buffer, 0, minOf(buffer.size, available))
+                        val bytesRead = inputStream.read(readBuffer, 0, minOf(readBuffer.size, available))
 
                         if (bytesRead > 0) {
-                            // Copy only the valid bytes
-                            val actualData = buffer.copyOf(bytesRead)
-                            _incomingData.emit(actualData)
+                            for (i in 0 until bytesRead) {
+                                val byteInt = readBuffer[i].toInt() and 0xFF // Convert to unsigned int
+
+                                // Logic: Buffer until 0x0A (LF) and 0x0D (CR)
+                                if (byteInt == 0x0A) {
+                                    // Check previous byte logic
+                                    // Logic: 0x0D then 0x0A means end of message
+                                    if (buffer.isNotEmpty() && buffer.last() == 0x0D) {
+                                        // Add the LF
+                                        buffer.add(byteInt)
+
+                                        // Emit packet
+                                        val packet = buffer.map { it.toByte() }.toByteArray()
+                                        _incomingData.emit(packet)
+
+                                        buffer.clear()
+                                    } else {
+                                        buffer.add(byteInt)
+                                    }
+                                } else {
+                                    buffer.add(byteInt)
+                                }
+                            }
                         } else if (bytesRead == -1) {
                             // End of stream
                             break
