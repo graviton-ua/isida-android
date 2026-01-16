@@ -18,6 +18,12 @@ import java.util.UUID
 @SuppressLint("MissingPermission")
 @Inject
 @ContributesBinding(AppScope::class)
+/**
+ * Android implementation of [BluetoothClient] using standard Android Bluetooth APIs.
+ * Connects via RFCOMM socket (SPP).
+ * @param adapter The system BluetoothAdapter.
+ * @param scope Application-bound scope for background operations.
+ */
 class AndroidBluetoothClient(
     private val adapter: BluetoothAdapter?,
     private val scope: CoroutineScope, // Provide an Application-bound scope
@@ -44,6 +50,11 @@ class AndroidBluetoothClient(
     // Job to track the active reading loop
     private var readJob: Job? = null
 
+    /**
+     * Connects to the given Android Bluetooth device.
+     * Uses an insecure RFCOMM socket to maximize compatibility.
+     * @param address MAC address of the device.
+     */
     override suspend fun connect(address: DeviceAddress) = withContext(Dispatchers.IO) {
         if (adapter == null) {
             logger.e { "BluetoothAdapter is null" }
@@ -78,6 +89,9 @@ class AndroidBluetoothClient(
         }
     }
 
+    /**
+     * Disconnects the socket and cancels the reading job.
+     */
     override suspend fun disconnect(): Unit = withContext(Dispatchers.IO) {
         logger.d { "Disconnecting..." }
         readJob?.cancelAndJoin()
@@ -92,6 +106,10 @@ class AndroidBluetoothClient(
         }
     }
 
+    /**
+     * Writes bytes to the Bluetooth socket.
+     * @param data Data to send.
+     */
     override suspend fun send(data: ByteArray) = withContext(Dispatchers.IO) {
         if (_state.value != ConnectionState.CONNECTED) {
             logger.w { "Attempted to send data while not connected" }

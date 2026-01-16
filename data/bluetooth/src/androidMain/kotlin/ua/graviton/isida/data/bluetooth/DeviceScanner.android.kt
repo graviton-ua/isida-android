@@ -23,6 +23,11 @@ import kotlinx.coroutines.flow.update
 @SuppressLint("MissingPermission")
 @Inject
 @ContributesBinding(AppScope::class)
+/**
+ * Android implementation of [DeviceScanner].
+ * Uses BroadcastReceiver to listen for discovery events and found devices.
+ * Requires BLUETOOTH_SCAN and BLUETOOTH_CONNECT (Android 12+) or Location permissions.
+ */
 class AndroidDeviceScanner(
     @param:Named("APPLICATION_CONTEXT") private val context: Context,
     private val adapter: BluetoothAdapter? = null,
@@ -87,6 +92,10 @@ class AndroidDeviceScanner(
         }
     }
 
+    /**
+     * Initiates Bluetooth discovery.
+     * Checks for necessary permissions and location services before starting.
+     */
     override fun startScan() {
         logger.d { "Requesting startScan" }
         _error.value = null // Clear previous errors
@@ -143,6 +152,9 @@ class AndroidDeviceScanner(
         }
     }
 
+    /**
+     * Cancels the active discovery process.
+     */
     override fun stopScan() {
         try {
             if (hasScanPermission()) {
@@ -154,7 +166,8 @@ class AndroidDeviceScanner(
     }
 
     /**
-     * Lifecycle End: Called by ViewModel.onCleared()
+     * Unregisters the BroadcastReceiver and stops scanning.
+     * Must be called when the lifecycle owner is destroyed.
      */
     override fun cleanup() {
         stopScan()

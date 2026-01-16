@@ -10,6 +10,11 @@ import java.io.IOException
 
 @Inject
 @ContributesBinding(AppScope::class)
+/**
+ * JVM/Desktop implementation of [BluetoothClient] using jSerialComm.
+ * Connects to standard Serial ports (COM3, /dev/ttyUSB0, etc.) which are often mapped to Bluetooth SPP devices.
+ * @param scope CoroutineScope for managing background IO operations.
+ */
 class JvmBluetoothDriver(
     private val scope: CoroutineScope
 ) : BluetoothClient {
@@ -25,8 +30,8 @@ class JvmBluetoothDriver(
     private var readJob: Job? = null
 
     /**
-     * @param address For JVM Serial, this is effectively the Port Descriptor
-     * (e.g., "COM3" on Windows or "/dev/tty.Isida" on Mac/Linux).
+     * Connects to the specified Serial Port.
+     * @param address For JVM, this is the port descriptor (e.g., "COM3" or "/dev/tty.Isida").
      */
     override suspend fun connect(address: DeviceAddress) = withContext(Dispatchers.IO) {
         if (_state.value == ConnectionState.CONNECTED) return@withContext
@@ -66,11 +71,18 @@ class JvmBluetoothDriver(
         }
     }
 
+    /**
+     * Closes the serial port and cancels reading.
+     */
     override suspend fun disconnect() = withContext(Dispatchers.IO) {
         closePort()
         _state.value = ConnectionState.DISCONNECTED
     }
 
+    /**
+     * Writes bytes to the open serial port.
+     * @param data Data to send.
+     */
     override suspend fun send(data: ByteArray) = withContext(Dispatchers.IO) {
         val port = activePort ?: return@withContext
         if (!port.isOpen) {

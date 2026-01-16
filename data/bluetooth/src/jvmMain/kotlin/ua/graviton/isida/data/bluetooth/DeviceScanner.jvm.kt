@@ -13,6 +13,11 @@ import kotlinx.coroutines.flow.asStateFlow
 @Inject
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
+/**
+ * JVM/Desktop implementation of [DeviceScanner].
+ * Scans for available Serial ports (COM ports) rather than strictly Bluetooth devices.
+ * Emulates "pairing" by listing all found ports as "paired".
+ */
 class JvmDeviceScanner(
     dispatchers: AppCoroutineDispatchers,
 ) : DeviceScanner {
@@ -31,6 +36,10 @@ class JvmDeviceScanner(
     private val scope = CoroutineScope(dispatchers.io + SupervisorJob())
     private var scanJob: Job? = null
 
+    /**
+     * Starts polling for available COM ports.
+     * Runs for 10 seconds, refreshing the list every 2 seconds.
+     */
     override fun startScan() {
         stopScan()
         _isScanning.value = true
@@ -57,11 +66,17 @@ class JvmDeviceScanner(
         }
     }
 
+    /**
+     * Stops the active polling job.
+     */
     override fun stopScan() {
         scanJob?.cancel()
         _isScanning.value = false
     }
 
+    /**
+     * Cancels the scope and stops scanning.
+     */
     override fun cleanup() {
         stopScan()
         scope.cancel() // Kill the scope when ViewModel dies
