@@ -5,15 +5,26 @@ import org.jetbrains.compose.resources.StringResource
 
 data class StatsItem(
     val titleResId: StringResource,
-    val value: Value? = null,
-    val valueColor: Color? = null,
+    val content: Content,
     val backgroundColor: Color? = null,
 ) {
+    sealed interface Content {
+        data class Numeric<T : Number>(
+            val value: T?,
+            val target: T? = null,
+            val valueColor: Color? = null
+        ) : Content
 
-    sealed class Value {
-        data class IntVal(val value: Int?, val target: Int? = null) : Value()
-        data class FloatVal(val value: Float?, val target: Float? = null) : Value()
-        data class TextRaw(val value: String?, val target: String? = null) : Value()
-        data class TextResId(val value: StringResource?, val target: StringResource? = null) : Value()
+        data class TextResource(
+            val value: StringResource?,
+            val target: StringResource? = null,
+            val valueColor: Color? = null
+        ) : Content
+
+        data class TextRaw(
+            val value: String?,
+            val target: String? = null,
+            val valueColor: Color? = null
+        ) : Content
     }
 }

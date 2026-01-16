@@ -79,38 +79,50 @@ private fun Item(
     ) {
         Text(
             text = stringResource(item.titleResId),
-            color = item.valueColor ?: Color.Black,
+            color = (item.content as? StatsItem.Content.Numeric<*>)?.valueColor
+                ?: (item.content as? StatsItem.Content.TextResource)?.valueColor
+                ?: (item.content as? StatsItem.Content.TextRaw)?.valueColor
+                ?: Color.Black,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
         )
-        val value = when (val v = item.value) {
-            is StatsItem.Value.FloatVal -> {
-                val value = v.value?.let { String.format("%.1f", it) }
-                if (v.target == null) value ?: "--" else value?.let { it + "  [${v.target}]" } ?: "--"
+
+        val valueText = when (val content = item.content) {
+            is StatsItem.Content.Numeric<*> -> {
+                val v = content.value
+                val t = content.target
+                if (v == null) "--"
+                else {
+                    val vStr = if (v is Float) String.format("%.1f", v) else v.toString()
+                    if (t != null) {
+                        val tStr = if (t is Float) String.format("%.1f", t) else t.toString()
+                        "$vStr  [$tStr]"
+                    } else {
+                        vStr
+                    }
+                }
             }
 
-            is StatsItem.Value.IntVal -> {
-                val value = v.value?.toString()
-                if (v.target == null) value ?: "--" else value?.let { it + "  [${v.target}]" } ?: "--"
+            is StatsItem.Content.TextResource -> {
+                val v = content.value?.let { stringResource(it) }
+                val t = content.target?.let { stringResource(it) }
+                if (v == null) "--"
+                else if (t != null) "$v  [$t]"
+                else v
             }
 
-            is StatsItem.Value.TextRaw -> {
-                if (v.target == null) v.value ?: "--" else v.value?.let { it + "  [${v.target}]" } ?: "--"
+            is StatsItem.Content.TextRaw -> {
+                val v = content.value
+                val t = content.target
+                if (v == null) "--"
+                else if (t != null) "$v  [$t]"
+                else v
             }
-
-            is StatsItem.Value.TextResId -> {
-                if (v.target == null)
-                    v.value?.let { stringResource(it) } ?: "--"
-                else
-                    v.value?.let { stringResource(it) + "  [${stringResource(v.target)}]" } ?: "--"
-
-            }
-
-            null -> "--"
         }
+
         Text(
-            text = value,
+            text = valueText,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
