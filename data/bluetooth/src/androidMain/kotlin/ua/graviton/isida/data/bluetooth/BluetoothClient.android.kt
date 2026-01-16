@@ -111,35 +111,38 @@ class AndroidBluetoothClient(
     private fun startReading(inputStream: InputStream) {
         readJob = scope.launch(Dispatchers.IO) {
             val buffer = ArrayList<Int>()
+            val readBuffer = ByteArray(1024)
 
             // Replicating your original logic: Buffer until 0x0A (LF) and 0x0D (CR)
-            // Note: Efficient reading usually reads byte arrays, but for strict
-            // protocol matching with your legacy code, byte-by-byte is safer for now.
             try {
                 while (isActive) {
-                    val byteInt = inputStream.read() // Blocking read
-                    if (byteInt == -1) throw IOException("EOF")
+                    val bytesRead = inputStream.read(readBuffer) // Blocking read
+                    if (bytesRead == -1) throw IOException("EOF")
 
-                    when (byteInt) {
-                        0x0A -> { // LF
-                            // Check previous byte logic from your original code
-                            // Logic: 0x0D then 0x0A means end of message
-                            if (buffer.isNotEmpty() && buffer.last() == 0x0D) {
-                                // Add the LF
-                                buffer.add(byteInt)
+                    for (i in 0 until bytesRead) {
+                        val byteInt = readBuffer[i].toInt() and 0xFF
 
-                                // Emit packet
-                                val packet = buffer.map { it.toByte() }.toByteArray()
-                                _incomingData.emit(packet)
+                        when (byteInt) {
+                            0x0A -> { // LF
+                                // Check previous byte logic from your original code
+                                // Logic: 0x0D then 0x0A means end of message
+                                if (buffer.isNotEmpty() && buffer.last() == 0x0D) {
+                                    // Add the LF
+                                    buffer.add(byteInt)
 
-                                buffer.clear()
-                            } else {
+                                    // Emit packet
+                                    val packet = buffer.map { it.toByte() }.toByteArray()
+                                    _incomingData.emit(packet)
+
+                                    buffer.clear()
+                                } else {
+                                    buffer.add(byteInt)
+                                }
+                            }
+
+                            else -> {
                                 buffer.add(byteInt)
                             }
-                        }
-
-                        else -> {
-                            buffer.add(byteInt)
                         }
                     }
                 }
