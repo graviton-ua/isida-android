@@ -21,8 +21,6 @@ sealed class DeviceProperty<T>(
     data class MinRun(private val _value: Int) : DeviceProperty<Int>(id = "minRun", value = _value, info = DeviceCharacteristicInfo.Min100)
     data class MaxRun(private val _value: Int) : DeviceProperty<Int>(id = "maxRun", value = _value, info = DeviceCharacteristicInfo.Min1)
     data class Period(private val _value: Int) : DeviceProperty<Int>(id = "period", value = _value, info = DeviceCharacteristicInfo.Min10)
-    data class TimeOut(private val _value: Int) : DeviceProperty<Int>(id = "timeOut", value = _value, info = DeviceCharacteristicInfo.Int1_100)
-    data class EnergyMeter(private val _value: Int) : DeviceProperty<Int>(id = "energyMeter", value = _value, info = DeviceCharacteristicInfo.Max1)
     data class Timer0(private val _value: Int) : DeviceProperty<Int>(id = "timer0", value = _value, info = DeviceCharacteristicInfo.Int10_1000)
     data class Timer1(private val _value: Int) : DeviceProperty<Int>(id = "timer1", value = _value, info = DeviceCharacteristicInfo.Min0)
     data class Alarm0(private val _value: Float) : DeviceProperty<Float>(id = "alarm0", value = _value, info = DeviceCharacteristicInfo.Fl01_10)
@@ -40,13 +38,7 @@ sealed class DeviceProperty<T>(
     data class RelayMode(private val _value: Int) : DeviceProperty<Int>(id = "relayMode", value = _value, info = DeviceCharacteristicInfo.Max3)
     data class Program(private val _value: Int) : DeviceProperty<Int>(id = "programm", value = _value, info = DeviceCharacteristicInfo.Max5)
     data class Hysteresis(private val _value: Int) : DeviceProperty<Int>(id = "hysteresis", value = _value, info = DeviceCharacteristicInfo.Min1)
-    data class ForceHeat(private val _value: Float) : DeviceProperty<Float>(id = "forceHeat", value = _value, info = DeviceCharacteristicInfo.Fl01_10)
     data class TurnTime(private val _value: Int) : DeviceProperty<Int>(id = "turnTime", value = _value, info = DeviceCharacteristicInfo.Min1)
-    data class HihEnable(private val _value: Int) : DeviceProperty<Int>(id = "hihEnable", value = _value, info = DeviceCharacteristicInfo.Max1)
-    data class KOffCurr(private val _value: Int) : DeviceProperty<Int>(id = "kOffCurr", value = _value, info = DeviceCharacteristicInfo.Min10)
-    data class CoolOn(private val _value: Int) : DeviceProperty<Int>(id = "coolOn", value = _value, info = DeviceCharacteristicInfo.Min0)
-    data class CoolOff(private val _value: Int) : DeviceProperty<Int>(id = "coolOff", value = _value, info = DeviceCharacteristicInfo.Min0)
-    data class Zonality(private val _value: Float) : DeviceProperty<Float>(id = "zonality", value = _value, info = DeviceCharacteristicInfo.Fl01_10)
 }
 
 fun DataPackageDto.asProperties(): List<DeviceProperty<*>> = listOf(
@@ -54,15 +46,13 @@ fun DataPackageDto.asProperties(): List<DeviceProperty<*>> = listOf(
     DeviceProperty.SpT1(spT1),
     DeviceProperty.SpRh0(spRh0),
     DeviceProperty.SpRh1(spRh1),
-    DeviceProperty.K0(K0),
-    DeviceProperty.K1(K1),
-    DeviceProperty.Ti0(Ti0),
-    DeviceProperty.Ti1(Ti1),
+    DeviceProperty.K0(pkoff0),
+    DeviceProperty.K1(pkoff1),
+    DeviceProperty.Ti0(ikoff0),
+    DeviceProperty.Ti1(ikoff1),
     DeviceProperty.MinRun(minRun),
     DeviceProperty.MaxRun(maxRun),
     DeviceProperty.Period(period),
-    DeviceProperty.TimeOut(timeOut),
-    DeviceProperty.EnergyMeter(energyMeter),
     DeviceProperty.Timer0(timer0),
     DeviceProperty.Timer1(timer1),
     DeviceProperty.Alarm0(alarm0),
@@ -74,19 +64,13 @@ fun DataPackageDto.asProperties(): List<DeviceProperty<*>> = listOf(
     DeviceProperty.Air0(air0),
     DeviceProperty.Air1(air1),
     DeviceProperty.SpCO2(spCO2),
-    DeviceProperty.DeviceNumber(deviceNumber),
+    DeviceProperty.DeviceNumber(node),
     DeviceProperty.State(state),
     DeviceProperty.ExtendMode(extendMode),
     DeviceProperty.RelayMode(relayMode),
     DeviceProperty.Program(programm),
     DeviceProperty.Hysteresis(hysteresis),
-    DeviceProperty.ForceHeat(forceHeat),
     DeviceProperty.TurnTime(turnTime),
-    DeviceProperty.HihEnable(hihEnable),
-    DeviceProperty.KOffCurr(kOffCurr),
-    DeviceProperty.CoolOn(coolOn),
-    DeviceProperty.CoolOff(coolOff),
-    DeviceProperty.Zonality(zonality),
 )
 
 fun DataPackageDto.getProperty(id: String): DeviceProperty<*> = asProperties().find { it.id == id } ?: DeviceProperty.Unknown

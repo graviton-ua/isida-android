@@ -9,7 +9,7 @@ CREATE TABLE device_data (
     pv_t0 REAL AS Float NOT NULL,
     pv_t1 REAL AS Float NOT NULL,
     pv_t2 REAL AS Float NOT NULL,
-    pv_rh REAL AS Int NOT NULL,
+    pv_rh INTEGER AS Int NOT NULL,
     pv_co2 INTEGER AS Int NOT NULL,
     pv_timer INTEGER AS Int NOT NULL,
     pv_flap INTEGER AS Int NOT NULL,
