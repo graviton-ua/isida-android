@@ -24,7 +24,7 @@ class JvmBluetoothDriver(
     override val state: StateFlow<ConnectionState> = _state.asStateFlow()
 
     private val _incomingData = MutableSharedFlow<ByteArray>(replay = 0)
-    override val incomingData: Flow<ByteArray> = _incomingData.asSharedFlow()
+    override val incomingData: SharedFlow<ByteArray> = _incomingData.asSharedFlow()
 
     private var activePort: SerialPort? = null
     private var readJob: Job? = null

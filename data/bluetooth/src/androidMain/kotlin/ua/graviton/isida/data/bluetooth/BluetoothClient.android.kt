@@ -42,7 +42,7 @@ class AndroidBluetoothClient(
         extraBufferCapacity = 64,
         onBufferOverflow = BufferOverflow.SUSPEND
     )
-    override val incomingData: Flow<ByteArray> = _incomingData.asSharedFlow()
+    override val incomingData: SharedFlow<ByteArray> = _incomingData.asSharedFlow()
 
     private var socket: BluetoothSocket? = null
     private var outputStream: OutputStream? = null

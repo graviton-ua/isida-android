@@ -1,6 +1,6 @@
 package ua.graviton.isida.data.bluetooth
 
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
 /**
@@ -20,7 +20,7 @@ interface BluetoothClient {
      * Implementation guarantees IO thread execution.
      * Example: `client.incomingData.collect { packet -> println(packet) }`
      */
-    val incomingData: Flow<ByteArray>
+    val incomingData: SharedFlow<ByteArray>
 
     /**
      * Connects to the specific device.
