@@ -57,7 +57,7 @@ data class DataPackageDto(
 ) {
     companion object {
         fun parseData(bytes: ByteArray): DataPackageDto {
-            require(bytes.size == 60) { "Input bytes are incorrect" }
+            require(bytes.size == 64) { "Input bytes are incorrect" }
             val ubytes = bytes.toUByteArray()
             return DataPackageDto(
                 model = ubytes[0].toInt(),

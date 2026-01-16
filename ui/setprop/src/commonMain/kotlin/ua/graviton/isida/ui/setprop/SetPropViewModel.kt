@@ -2,6 +2,7 @@ package ua.graviton.isida.ui.setprop
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.whoppah.metrox.viewmodel.ViewModelAssistedFactory
 import com.whoppah.metrox.viewmodel.ViewModelKey
 import com.whoppah.metrox.viewmodel.ViewModelScope
@@ -31,6 +32,8 @@ class SetPropViewModel(
         fun create(id: String): SetPropViewModel
     }
 
+    private val logger by lazy { Logger.withTag("SetPropViewModel") }
+
     private val _events = MutableSharedFlow<SetPropEvent>()
     val events = _events.asSharedFlow()
     private val pendingActions = MutableSharedFlow<SetPropAction>()
@@ -40,7 +43,7 @@ class SetPropViewModel(
         started = SharingStarted.Eagerly,
         initialValue = null,
     )
-    private val property = deviceData.map { it?.getProperty(id) }.take(1).stateIn(
+    private val property = deviceData.mapNotNull { it?.getProperty(id) }.take(1).stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = null,
@@ -62,6 +65,7 @@ class SetPropViewModel(
     )
 
     init {
+        logger.d { "id: $id" }
         // Listen actions
         viewModelScope.launch {
             pendingActions.collect { action ->

@@ -19,7 +19,6 @@ import ua.graviton.isida.domain.interactors.SaveDataPackage
 @SingleIn(AppScope::class)
 class DeviceConnectionManager(
     private val client: BluetoothClient, // Platform implementation injected here
-    private val saveDataPackage: SaveDataPackage,
     private val appScope: CoroutineScope, // Scope that lives as long as the app
 ) {
     private val logger by lazy { Logger.withTag("DeviceConnectionManager") }
@@ -37,19 +36,18 @@ class DeviceConnectionManager(
     }
 
     private fun observerDataStream() {
-        client.incomingData
-            .onEach { data ->
-                logger.d { "Incoming data: ${data.toUByteArray().joinToString(", ")}" }
-                // Your logic from the old Service
-                try {
-                    //saveDataPackage.executeSync(SaveDataPackage.Params(data))
-                    val result = DataPackageDto.parseData(data)
-                    logger.d { "Result data: $result" }
-                } catch (e: Exception) {
-                    // Log error
-                }
-            }
-            .launchIn(appScope)
+        // client.incomingData
+        //     .onEach { data ->
+        //         //logger.d { "Incoming data: ${data.toUByteArray().joinToString(", ")}" }
+        //         // Your logic from the old Service
+        //         try {
+        //             val result = DataPackageDto.parseData(data)
+        //             //logger.d { "Result data: $result" }
+        //         } catch (e: Exception) {
+        //             logger.w(e) { "Parse failed" }
+        //         }
+        //     }
+        //     .launchIn(appScope)
     }
 
     suspend fun connect(address: DeviceAddress) = client.connect(address)
