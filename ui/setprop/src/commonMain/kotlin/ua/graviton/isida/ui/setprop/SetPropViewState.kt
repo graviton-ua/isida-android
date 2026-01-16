@@ -30,7 +30,7 @@ sealed class SetPropViewState(val id: String) {
     companion object {
         val Init = Empty
         val PreviewSuccess = Success(
-            property = DeviceProperty.Zonality(_value = 2f),
+            property = DeviceProperty.DeviceNumber(_value = 2),
         )
     }
 }

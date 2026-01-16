@@ -35,7 +35,7 @@ class StatsViewModel(
 
         // Создаём модель состояния экрана
         StatsViewState(
-            titleDeviceId = data?.cellId,
+            titleDeviceId = data?.node,
             titleDeviceBackgroundColor = deviceBgColor,
             items = data.toItems(),
         )
@@ -66,7 +66,7 @@ private fun DataPackageDto?.toItems(): List<StatsItem> {
         ),
         StatsItem(
             titleResId = when {
-                this?.pvRh != 0f -> Res.string.pv_rh_label
+                this?.pvRh != 0 -> Res.string.pv_rh_label
                 else -> Res.string.pv_t1_label
             },
             value = this?.let {
@@ -82,10 +82,9 @@ private fun DataPackageDto?.toItems(): List<StatsItem> {
             }
         ),
         StatsItem(titleResId = Res.string.pv_t2_label, value = this?.pvT2?.let { StatsItem.Value.FloatVal(value = if (it > 80) null else it) }),
-        StatsItem(titleResId = Res.string.pv_t3_label, value = this?.pvT3?.let { StatsItem.Value.FloatVal(value = if (it > 80) null else it) }),
-        StatsItem(titleResId = Res.string.cotwo, value = this?.pvCO2_1?.let { StatsItem.Value.IntVal(value = if (it < 400) null else it) }),
+        StatsItem(titleResId = Res.string.cotwo, value = this?.pvCO2?.let { StatsItem.Value.IntVal(value = if (it < 400) null else it) }),
         StatsItem(titleResId = Res.string.timer, value = this?.let { StatsItem.Value.IntVal(value = it.pvTimer, target = timer0) }),
-        StatsItem(titleResId = Res.string.counter, value = this?.pvTmrCount?.let { StatsItem.Value.IntVal(value = it) }),
+        //StatsItem(titleResId = Res.string.counter, value = this?.pvTmrCount?.let { StatsItem.Value.IntVal(value = it) }),
         StatsItem(titleResId = Res.string.power, value = this?.power?.let { StatsItem.Value.IntVal(value = it) }, valueColor = IsidaColor.Power),
         StatsItem(titleResId = Res.string.flap, value = this?.pvFlap?.let { StatsItem.Value.IntVal(value = it) }),
         StatsItem(
@@ -192,7 +191,7 @@ private fun DataPackageDto?.toItems(): List<StatsItem> {
                 }
             )
         }),
-        StatsItem(titleResId = Res.string.incubation, value = this?.hours?.let { StatsItem.Value.IntVal(value = it) }),
-        StatsItem(titleResId = Res.string.energyMeter, value = this?.energyMeter?.let { StatsItem.Value.IntVal(value = it) }),
+        //StatsItem(titleResId = Res.string.incubation, value = this?.hours?.let { StatsItem.Value.IntVal(value = it) }),
+        //StatsItem(titleResId = Res.string.energyMeter, value = this?.energyMeter?.let { StatsItem.Value.IntVal(value = it) }),
     )
 }

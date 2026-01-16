@@ -82,7 +82,7 @@ class SetPropViewModel(
     private fun CoroutineScope.send() = launch(Dispatchers.Default) {
         //Here we should build and send command to device
         val dataSnapshot = deviceData.value ?: return@launch
-        val device = dataSnapshot.deviceNumber
+        val device = dataSnapshot.node
         val prop = updatedProperty.value ?: property.value ?: return@launch
         _events.emit(
             SetPropEvent.Send(

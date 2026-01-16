@@ -45,7 +45,7 @@ class DeviceModeViewModel(
     init {
         // Fetch device cell number
         viewModelScope.launch {
-            observeDeviceData.flow.mapNotNull { it?.cellId }.take(1).collect { deviceId.value = it }
+            observeDeviceData.flow.mapNotNull { it?.node }.take(1).collect { deviceId.value = it }
         }
 
         // Fetch device state/mode/extras

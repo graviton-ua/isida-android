@@ -1,5 +1,5 @@
 [versions]
-agp = "9.0.0-rc03"
+agp = "9.0.0"
 #Kotlin
 kotlin = "2.3.20-Beta2-3"
 kotlinx-serialization = "1.10.0-RC"

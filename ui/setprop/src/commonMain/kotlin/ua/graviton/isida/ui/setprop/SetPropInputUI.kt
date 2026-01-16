@@ -63,21 +63,21 @@ fun SetPropInput(
         modifier = modifier,
     )
 
-    is DeviceProperty.CoolOff -> DefaultIntInput(
-        init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
-        info = property.info,
-        validState = validState,
-        modifier = modifier,
-    )
+    // is DeviceProperty.CoolOff -> DefaultIntInput(
+    //     init = property.value,
+    //     onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
+    //     info = property.info,
+    //     validState = validState,
+    //     modifier = modifier,
+    // )
 
-    is DeviceProperty.CoolOn -> DefaultIntInput(
-        init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
-        info = property.info,
-        validState = validState,
-        modifier = modifier,
-    )
+    // is DeviceProperty.CoolOn -> DefaultIntInput(
+    //     init = property.value,
+    //     onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
+    //     info = property.info,
+    //     validState = validState,
+    //     modifier = modifier,
+    // )
 
     is DeviceProperty.DeviceNumber -> DefaultIntInput(
         init = property.value,
@@ -87,13 +87,13 @@ fun SetPropInput(
         modifier = modifier,
     )
 
-    is DeviceProperty.EnergyMeter -> DefaultIntInput(
-        init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
-        info = property.info,
-        validState = validState,
-        modifier = modifier,
-    )
+    // is DeviceProperty.EnergyMeter -> DefaultIntInput(
+    //     init = property.value,
+    //     onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
+    //     info = property.info,
+    //     validState = validState,
+    //     modifier = modifier,
+    // )
 
     is DeviceProperty.ExtOff0 -> DefaultFloatInput(
         init = property.value,
@@ -135,21 +135,21 @@ fun SetPropInput(
         modifier = modifier,
     )
 
-    is DeviceProperty.ForceHeat -> DefaultFloatInput(
-        init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
-        info = property.info,
-        validState = validState,
-        modifier = modifier,
-    )
+    // is DeviceProperty.ForceHeat -> DefaultFloatInput(
+    //     init = property.value,
+    //     onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
+    //     info = property.info,
+    //     validState = validState,
+    //     modifier = modifier,
+    // )
 
-    is DeviceProperty.HihEnable -> DefaultIntInput(
-        init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
-        info = property.info,
-        validState = validState,
-        modifier = modifier,
-    )
+    // is DeviceProperty.HihEnable -> DefaultIntInput(
+    //     init = property.value,
+    //     onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
+    //     info = property.info,
+    //     validState = validState,
+    //     modifier = modifier,
+    // )
 
     is DeviceProperty.Hysteresis -> DefaultIntInput(
         init = property.value,
@@ -175,13 +175,13 @@ fun SetPropInput(
         modifier = modifier,
     )
 
-    is DeviceProperty.KOffCurr -> DefaultIntInput(
-        init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
-        info = property.info,
-        validState = validState,
-        modifier = modifier,
-    )
+    // is DeviceProperty.KOffCurr -> DefaultIntInput(
+    //     init = property.value,
+    //     onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
+    //     info = property.info,
+    //     validState = validState,
+    //     modifier = modifier,
+    // )
 
     is DeviceProperty.MaxRun -> DefaultIntInput(
         init = property.value,
@@ -287,13 +287,13 @@ fun SetPropInput(
         modifier = modifier,
     )
 
-    is DeviceProperty.TimeOut -> DefaultIntInput(
-        init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
-        info = property.info,
-        validState = validState,
-        modifier = modifier,
-    )
+    // is DeviceProperty.TimeOut -> DefaultIntInput(
+    //     init = property.value,
+    //     onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
+    //     info = property.info,
+    //     validState = validState,
+    //     modifier = modifier,
+    // )
 
     is DeviceProperty.Timer0 -> DefaultIntInput(
         init = property.value,
@@ -319,13 +319,13 @@ fun SetPropInput(
         modifier = modifier,
     )
 
-    is DeviceProperty.Zonality -> DefaultFloatInput(
-        init = property.value,
-        onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
-        info = property.info,
-        validState = validState,
-        modifier = modifier,
-    )
+    // is DeviceProperty.Zonality -> DefaultFloatInput(
+    //     init = property.value,
+    //     onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
+    //     info = property.info,
+    //     validState = validState,
+    //     modifier = modifier,
+    // )
 
     is DeviceProperty.Unknown -> InputUnknown(modifier = modifier)
 }

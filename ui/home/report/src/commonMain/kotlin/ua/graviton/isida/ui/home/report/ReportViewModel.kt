@@ -28,7 +28,7 @@ class ReportViewModel(
         observeDeviceData.flow, headerState, itemsState, loadingState.observable
     ) { data, header, items, loading ->
         ReportViewState(
-            cellNumber = data?.deviceNumber ?: 0,
+            cellNumber = data?.node ?: 0,
             header = header,
             items = items,
         )
