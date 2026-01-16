@@ -64,7 +64,6 @@ include(
     ":common:ui:navigation",
     ":common:ui:services",
 
-    ":data:db",
     ":data:bluetooth",
     ":data:models",
     ":data:repos",

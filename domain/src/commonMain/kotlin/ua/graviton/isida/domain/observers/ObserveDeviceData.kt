@@ -3,9 +3,7 @@ package ua.graviton.isida.domain.observers
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import ua.graviton.isida.data.models.DataPackageDto
-import ua.graviton.isida.data.repos.DeviceDataRepository
 import ua.graviton.isida.domain.SubjectInteractor
 import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
 
