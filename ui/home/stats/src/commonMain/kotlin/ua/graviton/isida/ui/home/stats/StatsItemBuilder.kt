@@ -4,10 +4,10 @@ import androidx.compose.ui.graphics.Color
 import org.jetbrains.compose.resources.StringResource
 
 /**
- * A builder class responsible for constructing a list of [StatsItem]s using a DSL.
- * It provides methods to easily add items with different content types and styling logic.
+ * Класс-строитель, отвечающий за создание списка элементов [StatsItem] с использованием DSL.
+ * Предоставляет методы для удобного добавления элементов с различными типами контента и логикой стилизации.
  *
- * **Example of usage:**
+ * **Пример использования:**
  * ```kotlin
  * val items = buildStats {
  *     header(Res.string.section_sensors)
@@ -20,10 +20,10 @@ class StatsListBuilder {
     private val list = mutableListOf<StatsItem>()
 
     /**
-     * Adds a header item with a raw string title.
+     * Добавляет элемент заголовка с заголовком в виде обычной строки.
      *
-     * @param title The title text.
-     * @param backgroundColor Optional background color.
+     * @param title Текст заголовка.
+     * @param backgroundColor Необязательный фоновый цвет.
      */
     fun header(
         title: String,
@@ -31,10 +31,10 @@ class StatsListBuilder {
     ) = list.add(StatsItem.Header(title = title, backgroundColor = backgroundColor))
 
     /**
-     * Adds a header item with a resource ID title.
+     * Добавляет элемент заголовка с заголовком в виде ID ресурса.
      *
-     * @param title The title resource ID.
-     * @param backgroundColor Optional background color.
+     * @param title ID ресурса заголовка.
+     * @param backgroundColor Необязательный фоновый цвет.
      */
     fun header(
         title: StringResource,
@@ -43,16 +43,16 @@ class StatsListBuilder {
 
 
     /**
-     * Adds a numeric item (Int, Float, etc.) to the list.
-     * Use this for sensor readings like Temperature, Humidity, or Timer values.
+     * Добавляет числовой элемент (Int, Float и т. д.) в список.
+     * Используйте это для показаний датчиков, таких как температура, влажность или значения таймера.
      *
-     * @param title The label resource ID for the item.
-     * @param value The primary numeric value (e.g., current temp).
-     * @param target The target/setpoint numeric value (optional, e.g., target temp).
-     * @param backgroundColor Optional lambda to dynamically determine the value's background color based on [value].
-     * @param valueColor Optional lambda to dynamically determine the text color based on [value] and [target].
+     * @param title ID ресурса метки для элемента.
+     * @param value Основное числовое значение (например, текущая температура).
+     * @param target Целевое/заданное числовое значение (необязательно, например, целевая температура).
+     * @param backgroundColor Необязательная лямбда для динамического определения фонового цвета значения на основе [value].
+     * @param valueColor Необязательная лямбда для динамического определения цвета текста на основе [value] и [target].
      *
-     * **Example of usage:**
+     * **Пример использования:**
      * ```kotlin
      * item(
      *     title = Res.string.temp_label,
@@ -79,17 +79,17 @@ class StatsListBuilder {
     }
 
     /**
-     * Adds an item that maps a single value (usually an Enum or Int code) to a localized [StringResource].
-     * Use this for simple status codes or states.
+     * Добавляет элемент, который сопоставляет одно значение (обычно Enum или Int код) с локализованным [StringResource].
+     * Используйте это для простых кодов состояния или состояний.
      *
-     * @param title The label resource ID.
-     * @param value The source value to be mapped.
-     * @param target An optional target value to be mapped.
-     * @param backgroundColor Optional lambda for background color logic.
-     * @param valueColor Optional lambda for text color logic.
-     * @param mapper A function that converts the [value] (of type T) into a single [StringResource]?.
+     * @param title ID ресурса метки.
+     * @param value Исходное значение для сопоставления.
+     * @param target Необязательное целевое значение для сопоставления.
+     * @param backgroundColor Необязательная лямбда для логики фонового цвета.
+     * @param valueColor Необязательная лямбда для логики цвета текста.
+     * @param mapper Функция, которая преобразует [value] (типа T) в один [StringResource]?.
      *
-     * **Example of usage:**
+     * **Пример использования:**
      * ```kotlin
      * mapStringResource(
      *     title = Res.string.status,
@@ -120,17 +120,17 @@ class StatsListBuilder {
     }
 
     /**
-     * Adds an item that maps a value to a **list** of [StringResource]s.
-     * Use this when a single value represents multiple states or flags (e.g., a bitmask).
+     * Добавляет элемент, который сопоставляет значение со **списком** [StringResource].
+     * Используйте это, когда одно значение представляет несколько состояний или флагов (например, битовую маску).
      *
-     * @param title The label resource ID.
-     * @param value The source value to be mapped.
-     * @param target An optional target value to be mapped.
-     * @param backgroundColor Optional lambda for background color logic.
-     * @param valueColor Optional lambda for text color logic.
-     * @param mapper A function that converts the [value] (of type T) into a [List] of [StringResource]s.
+     * @param title ID ресурса метки.
+     * @param value Исходное значение для сопоставления.
+     * @param target Необязательное целевое значение для сопоставления.
+     * @param backgroundColor Необязательная лямбда для логики фонового цвета.
+     * @param valueColor Необязательная лямбда для логики цвета текста.
+     * @param mapper Функция, которая преобразует [value] (типа T) в [List] из [StringResource].
      *
-     * **Example of usage:**
+     * **Пример использования:**
      * ```kotlin
      * mapStringResources(
      *     title = Res.string.features,
@@ -166,17 +166,17 @@ class StatsListBuilder {
     }
 
     /**
-     * Adds an item that maps a value to a raw String.
-     * Use this when the text is dynamic or comes from a source without Resource IDs (e.g., formatted dates, names).
+     * Добавляет элемент, который сопоставляет значение с обычной строкой (Raw String).
+     * Используйте это, когда текст является динамическим или поступает из источника без ID ресурсов (например, отформатированные даты, имена).
      *
-     * @param title The label resource ID.
-     * @param value The source value to be mapped.
-     * @param target An optional target value to be mapped.
-     * @param backgroundColor Optional lambda for background color logic.
-     * @param valueColor Optional lambda for text color logic.
-     * @param mapper A function that converts the [value] (of type T) into a [String]?.
+     * @param title ID ресурса метки.
+     * @param value Исходное значение для сопоставления.
+     * @param target Необязательное целевое значение для сопоставления.
+     * @param backgroundColor Необязательная лямбда для логики фонового цвета.
+     * @param valueColor Необязательная лямбда для логики цвета текста.
+     * @param mapper Функция, которая преобразует [value] (типа T) в [String]?.
      *
-     * **Example of usage:**
+     * **Пример использования:**
      * ```kotlin
      * mapString(
      *     title = Res.string.mode,
@@ -207,18 +207,18 @@ class StatsListBuilder {
     }
 
     /**
-     * Finalizes the build process and returns the immutable list of [StatsItem]s.
+     * Завершает процесс сборки и возвращает неизменяемый список [StatsItem].
      */
     fun build() = list.toList()
 }
 
 /**
- * DSL Entry Point for creating a list of [StatsItem]s.
+ * Точка входа DSL для создания списка элементов [StatsItem].
  *
- * @param block The builder lambda where you define items using [StatsListBuilder.item], [StatsListBuilder.mapStringResource], etc.
- * @return A list of [StatsItem].
+ * @param block Лямбда строителя, в которой вы определяете элементы с помощью [StatsListBuilder.item], [StatsListBuilder.mapStringResource] и т. д.
+ * @return Список элементов [StatsItem].
  *
- * **Example of usage:**
+ * **Пример использования:**
  * ```kotlin
  * val statsList = buildStats {
  *    header(Res.string.group_1)

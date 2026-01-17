@@ -27,7 +27,7 @@ import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.ui.navigation.HomeTabScreen
 
 /**
- * Defines the Stats screen route and metadata for navigation.
+ * Определяет маршрут экрана статистики и метаданные для навигации.
  */
 @Serializable
 data object StatsScreen : HomeTabScreen {
@@ -36,10 +36,10 @@ data object StatsScreen : HomeTabScreen {
 }
 
 /**
- * The main screen entry point for displaying device statistics.
- * Connects the [StatsViewModel] state to the UI using [collectAsStateWithLifecycle].
+ * Основная точка входа экрана для отображения статистики устройства.
+ * Подключает состояние [StatsViewModel] к пользовательскому интерфейсу с помощью [collectAsStateWithLifecycle].
  *
- * @param viewModel The ViewModel instance, injected by default.
+ * @param viewModel Экземпляр ViewModel, внедряемый по умолчанию.
  */
 @Composable
 internal fun StatsScreen(
@@ -53,10 +53,10 @@ internal fun StatsScreen(
 }
 
 /**
- * Stateless implementation of the Stats Screen.
- * Renders a sticky header with the device ID and a scrollable list of [StatsItem]s.
+ * Stateless-реализация экрана статистики.
+ * Отрисовывает закрепленный заголовок с ID устройства и прокручиваемый список элементов [StatsItem].
  *
- * @param state The current UI state to render.
+ * @param state Текущее состояние пользовательского интерфейса для отрисовки.
  */
 @Composable
 private fun StatsScreen(
@@ -87,16 +87,16 @@ private fun StatsScreen(
 }
 
 /**
- * Renders a sticky header item.
+ * Отрисовывает элемент закрепленного заголовка.
  *
- * @param item The header data item.
+ * @param item Элемент данных заголовка.
  */
 @Composable
 private fun HeaderItem(item: StatsItem.Header) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(item.backgroundColor ?: Color.LightGray) // Default header color if none provided
+            .background(item.backgroundColor ?: Color.LightGray) // Цвет заголовка по умолчанию, если не указан
             .padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
         Text(
@@ -107,11 +107,11 @@ private fun HeaderItem(item: StatsItem.Header) {
 }
 
 /**
- * Renders a single [StatsItem.Info] row.
- * Handles different content types (Numeric, TextResource, TextRaw) and formatting.
- * The background color is applied only to the value portion of the row.
+ * Отрисовывает одну информационную строку [StatsItem.Info].
+ * Обрабатывает различные типы контента (числовой, строковый ресурс, обычный текст) и форматирование.
+ * Фоновый цвет применяется только к части строки со значением.
  *
- * @param item The info data item.
+ * @param item Элемент данных информации.
  */
 @Composable
 private fun InfoItem(

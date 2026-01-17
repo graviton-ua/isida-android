@@ -21,9 +21,9 @@ import ua.graviton.isida.domain.observers.ObserveDeviceData
 @ViewModelKey(StatsViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 /**
- * ViewModel for the Stats Screen.
- * Responsible for observing device data and transforming it into a list of [StatsItem]s
- * using the [buildStats] DSL.
+ * ViewModel для экрана статистики.
+ * Отвечает за наблюдение за данными устройства и преобразование их в список [StatsItem]
+ * с использованием DSL [buildStats].
  */
 class StatsViewModel(
     observeDeviceData: ObserveDeviceData,
@@ -31,9 +31,9 @@ class StatsViewModel(
     private val loadingState = ObservableLoadingCounter()
 
     /**
-     * Stream of UI state.
-     * Combines the latest device data with loading state.
-     * If data is null (not yet received), it falls back to [PlaceholderStats] to show the structure.
+     * Поток состояния пользовательского интерфейса.
+     * Объединяет последние данные устройства с состоянием загрузки.
+     * Если данные равны null (еще не получены), возвращается к [PlaceholderStats] для отображения структуры.
      */
     val state: StateFlow<StatsViewState> = combine(
         observeDeviceData.flow, loadingState.observable
@@ -45,7 +45,7 @@ class StatsViewModel(
             else -> null
         }
 
-        // Creates the screen state model
+        // Создает модель состояния экрана
         StatsViewState(
             titleDeviceId = data?.node,
             titleDeviceBackgroundColor = deviceBgColor,
@@ -59,9 +59,9 @@ class StatsViewModel(
 }
 
 /**
- * A static list of items used when no real data is available.
- * Mirrors the structure of [toItems] but with all values set to null.
- * This ensures the UI displays the correct labels and layout even before the first packet arrives.
+ * Статический список элементов, используемый, когда реальные данные недоступны.
+ * Отражает структуру [toItems], но со всеми значениями, установленными в null.
+ * Это гарантирует, что пользовательский интерфейс отображает правильные метки и макет еще до прибытия первого пакета данных.
  */
 internal val PlaceholderStats = buildStats {
     item<Float>(Res.string.pv_t0_label, null, null)
@@ -80,9 +80,9 @@ internal val PlaceholderStats = buildStats {
 }
 
 /**
- * Transforms a [DataPackageDto] into a list of [StatsItem]s.
- * Uses the [buildStats] DSL to define the layout and logic for each row.
- * This is where the mapping from raw bytes to UI representation happens.
+ * Преобразует [DataPackageDto] в список элементов [StatsItem].
+ * Использует DSL [buildStats] для определения макета и логики для каждой строки.
+ * Здесь происходит сопоставление сырых байтов с представлением в пользовательском интерфейсе.
  */
 private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     // T0

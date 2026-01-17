@@ -7,11 +7,11 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 /**
- * Represents a single item in the Statistics screen list.
- * This sealed interface allows for different types of items, such as headers and information rows.
+ * Представляет собой отдельный элемент в списке на экране статистики.
+ * Этот sealed интерфейс позволяет использовать различные типы элементов, такие как заголовки и информационные строки.
  *
- * @property id A unique identifier for the item, used for list optimization (e.g., in LazyColumn).
- * @property title The title of the item, which can be a resource or a raw string.
+ * @property id Уникальный идентификатор элемента, используемый для оптимизации списка (например, в LazyColumn).
+ * @property title Заголовок элемента, который может быть ресурсом или обычной строкой.
  */
 @Immutable
 sealed interface StatsItem {
@@ -19,18 +19,18 @@ sealed interface StatsItem {
     val title: Title
 
     /**
-     * Represents the title of a [StatsItem].
-     * Can be either a [StringResource] or a raw [String].
+     * Представляет собой заголовок [StatsItem].
+     * Может быть либо [StringResource], либо обычной строкой [String].
      */
     @Immutable
     sealed interface Title {
-        /** A title defined by a string resource. */
+        /** Заголовок, определенный строковым ресурсом. */
         data class Resource(val res: StringResource) : Title
-        /** A title defined by a raw string. */
+        /** Заголовок, определенный обычной строкой. */
         data class Raw(val text: String) : Title
 
         /**
-         * Resolves the title to a [String] within a Composable context.
+         * Разрешает заголовок в [String] внутри Composable-контекста.
          */
         @Composable
         fun asString(): String {
@@ -42,12 +42,12 @@ sealed interface StatsItem {
     }
 
     /**
-     * A sticky header item for grouping or labeling sections.
+     * Элемент закрепленного заголовка для группировки или маркировки разделов.
      *
-     * @property title The header title.
-     * @property backgroundColor Optional background color for the header.
+     * @property title Заголовок заголовка.
+     * @property backgroundColor Необязательный фоновый цвет для заголовка.
      *
-     * **Example of usage:**
+     * **Пример использования:**
      * ```kotlin
      * StatsItem.Header(title = Res.string.section_title, backgroundColor = Color.LightGray)
      * ```
@@ -64,13 +64,13 @@ sealed interface StatsItem {
     }
 
     /**
-     * An information row displaying a label and a value (content).
+     * Информационная строка, отображающая метку и значение (контент).
      *
-     * @property title The label of the row.
-     * @property content The data content to display (numeric, text resource, or raw text).
-     * @property backgroundColor Optional background color for the value/content part of the row.
+     * @property title Метка строки.
+     * @property content Данные для отображения (числовые, строковый ресурс или обычный текст).
+     * @property backgroundColor Необязательный фоновый цвет для части строки со значением/контентом.
      *
-     * **Example of usage:**
+     * **Пример использования:**
      * ```kotlin
      * StatsItem.Info(
      *     title = Res.string.temperature,
@@ -91,16 +91,16 @@ sealed interface StatsItem {
     }
 
     /**
-     * Defines the type of content displayed in an [Info] row.
+     * Определяет тип контента, отображаемого в строке [Info].
      */
     @Immutable
     sealed interface Content {
         /**
-         * Numeric content (e.g., sensor readings).
+         * Числовой контент (например, показания датчиков).
          *
-         * @property value The current value.
-         * @property target An optional target or setpoint value.
-         * @property valueColor Optional text color for the value (e.g., to indicate warnings).
+         * @property value Текущее значение.
+         * @property target Необязательное целевое или заданное значение.
+         * @property valueColor Необязательный цвет текста для значения (например, для индикации предупреждений).
          */
         @Immutable
         data class Numeric<T : Number>(
@@ -110,11 +110,11 @@ sealed interface StatsItem {
         ) : Content
 
         /**
-         * Content based on string resources (e.g., status codes, enums).
+         * Контент на основе строковых ресурсов (например, коды состояния, перечисления).
          *
-         * @property values A list of current values as string resources.
-         * @property targets A list of target values as string resources.
-         * @property valueColor Optional text color for the value.
+         * @property values Список текущих значений в виде строковых ресурсов.
+         * @property targets Список целевых значений в виде строковых ресурсов.
+         * @property valueColor Необязательный цвет текста для значения.
          */
         @Immutable
         data class TextResource(
@@ -124,11 +124,11 @@ sealed interface StatsItem {
         ) : Content
 
         /**
-         * Raw text content (e.g., dynamic strings).
+         * Обычный текстовый контент (например, динамические строки).
          *
-         * @property value The current text value.
-         * @property target An optional target text value.
-         * @property valueColor Optional text color for the value.
+         * @property value Текущее текстовое значение.
+         * @property target Необязательное целевое текстовое значение.
+         * @property valueColor Необязательный цвет текста для значения.
          */
         @Immutable
         data class TextRaw(

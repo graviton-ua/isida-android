@@ -3,12 +3,12 @@ package ua.graviton.isida.ui.home.stats
 import androidx.compose.ui.graphics.Color
 
 /**
- * Represents the immutable UI state for the Stats Screen.
- * This state is produced by [StatsViewModel] and consumed by [StatsScreen].
+ * Представляет собой неизменяемое состояние пользовательского интерфейса для экрана статистики.
+ * Это состояние создается [StatsViewModel] и потребляется [StatsScreen].
  *
- * @property titleDeviceId The unique identifier of the device (e.g., node ID) to display in the header.
- * @property titleDeviceBackgroundColor The background color for the device title header, typically used to indicate the device's connection or operational status (e.g., Green for OK, Red for Error).
- * @property items The list of [StatsItem] rows (headers and info items) to display in the list.
+ * @property titleDeviceId Уникальный идентификатор устройства (например, ID узла) для отображения в заголовке.
+ * @property titleDeviceBackgroundColor Фоновый цвет для заголовка с названием устройства, обычно используемый для индикации статуса подключения или работы устройства (например, зеленый для OK, красный для ошибки).
+ * @property items Список строк [StatsItem] (заголовки и информационные элементы) для отображения в списке.
  */
 data class StatsViewState(
     val titleDeviceId: Int?,
@@ -18,8 +18,8 @@ data class StatsViewState(
 ) {
     companion object {
         /**
-         * The initial empty state, used before any data is loaded.
-         * Contains placeholder items to define the list structure.
+         * Начальное пустое состояние, используемое до загрузки каких-либо данных.
+         * Содержит элементы-заполнители для определения структуры списка.
          */
         val Empty = StatsViewState(
             titleDeviceId = null,
@@ -28,7 +28,7 @@ data class StatsViewState(
         )
 
         /**
-         * A preview state populated with dummy data, suitable for UI tool previews.
+         * Состояние предварительного просмотра, заполненное фиктивными данными, подходящее для предварительного просмотра в инструментах UI.
          */
         val Preview = StatsViewState(
             titleDeviceId = 1,
