@@ -3,11 +3,12 @@ package ua.graviton.isida.ui.home.stats
 import androidx.compose.ui.graphics.Color
 
 /**
- * Represents the UI state for the Stats Screen.
+ * Represents the immutable UI state for the Stats Screen.
+ * This state is produced by [StatsViewModel] and consumed by [StatsScreen].
  *
- * @property titleDeviceId The ID of the device to display in the header (e.g., "Cell #1").
- * @property titleDeviceBackgroundColor The background color for the header, typically used to indicate status (Green/Red/Yellow).
- * @property items The list of data rows to display.
+ * @property titleDeviceId The unique identifier of the device (e.g., node ID) to display in the header.
+ * @property titleDeviceBackgroundColor The background color for the device title header, typically used to indicate the device's connection or operational status (e.g., Green for OK, Red for Error).
+ * @property items The list of [StatsItem] rows (headers and info items) to display in the list.
  */
 data class StatsViewState(
     val titleDeviceId: Int?,
@@ -17,7 +18,8 @@ data class StatsViewState(
 ) {
     companion object {
         /**
-         * Initial empty state.
+         * The initial empty state, used before any data is loaded.
+         * Contains placeholder items to define the list structure.
          */
         val Empty = StatsViewState(
             titleDeviceId = null,
@@ -26,7 +28,7 @@ data class StatsViewState(
         )
 
         /**
-         * Preview state for UI tooling.
+         * A preview state populated with dummy data, suitable for UI tool previews.
          */
         val Preview = StatsViewState(
             titleDeviceId = 1,

@@ -6,15 +6,36 @@ import org.jetbrains.compose.resources.StringResource
 /**
  * A builder class responsible for constructing a list of [StatsItem]s using a DSL.
  * It provides methods to easily add items with different content types and styling logic.
+ *
+ * **Example of usage:**
+ * ```kotlin
+ * val items = buildStats {
+ *     header(Res.string.section_sensors)
+ *     item(Res.string.temperature, currentTemp, targetTemp)
+ *     mapStringResource(Res.string.status, statusCode) { code -> ... }
+ * }
+ * ```
  */
 class StatsListBuilder {
     private val list = mutableListOf<StatsItem>()
 
+    /**
+     * Adds a header item with a raw string title.
+     *
+     * @param title The title text.
+     * @param backgroundColor Optional background color.
+     */
     fun header(
         title: String,
         backgroundColor: Color? = null,
     ) = list.add(StatsItem.Header(title = title, backgroundColor = backgroundColor))
 
+    /**
+     * Adds a header item with a resource ID title.
+     *
+     * @param title The title resource ID.
+     * @param backgroundColor Optional background color.
+     */
     fun header(
         title: StringResource,
         backgroundColor: Color? = null,
@@ -28,11 +49,11 @@ class StatsListBuilder {
      * @param title The label resource ID for the item.
      * @param value The primary numeric value (e.g., current temp).
      * @param target The target/setpoint numeric value (optional, e.g., target temp).
-     * @param backgroundColor Optional lambda to dynamically determine the row's background color based on [value].
+     * @param backgroundColor Optional lambda to dynamically determine the value's background color based on [value].
      * @param valueColor Optional lambda to dynamically determine the text color based on [value] and [target].
      *
-     * Example:
-     * ```
+     * **Example of usage:**
+     * ```kotlin
      * item(
      *     title = Res.string.temp_label,
      *     value = currentTemp,
@@ -58,18 +79,18 @@ class StatsListBuilder {
     }
 
     /**
-     * Adds an item that maps a value (usually an Enum or Int code) to a localized [StringResource].
-     * Use this for status codes, errors, or modes that have translation resources.
+     * Adds an item that maps a single value (usually an Enum or Int code) to a localized [StringResource].
+     * Use this for simple status codes or states.
      *
      * @param title The label resource ID.
      * @param value The source value to be mapped.
      * @param target An optional target value to be mapped.
      * @param backgroundColor Optional lambda for background color logic.
      * @param valueColor Optional lambda for text color logic.
-     * @param mapper A function that converts the [value] (of type T) into a [StringResource]?.
+     * @param mapper A function that converts the [value] (of type T) into a single [StringResource]?.
      *
-     * Example:
-     * ```
+     * **Example of usage:**
+     * ```kotlin
      * mapStringResource(
      *     title = Res.string.status,
      *     value = statusCode,
@@ -98,6 +119,31 @@ class StatsListBuilder {
         )
     }
 
+    /**
+     * Adds an item that maps a value to a **list** of [StringResource]s.
+     * Use this when a single value represents multiple states or flags (e.g., a bitmask).
+     *
+     * @param title The label resource ID.
+     * @param value The source value to be mapped.
+     * @param target An optional target value to be mapped.
+     * @param backgroundColor Optional lambda for background color logic.
+     * @param valueColor Optional lambda for text color logic.
+     * @param mapper A function that converts the [value] (of type T) into a [List] of [StringResource]s.
+     *
+     * **Example of usage:**
+     * ```kotlin
+     * mapStringResources(
+     *     title = Res.string.features,
+     *     value = featureFlags,
+     *     mapper = { flags ->
+     *         val list = mutableListOf<StringResource>()
+     *         if (flags has 1) list.add(Res.string.feature_1)
+     *         if (flags has 2) list.add(Res.string.feature_2)
+     *         list
+     *     }
+     * )
+     * ```
+     */
     fun <T> mapStringResources(
         title: StringResource,
         value: T?,
@@ -121,7 +167,7 @@ class StatsListBuilder {
 
     /**
      * Adds an item that maps a value to a raw String.
-     * Use this when the text is dynamic or comes from a source without Resource IDs.
+     * Use this when the text is dynamic or comes from a source without Resource IDs (e.g., formatted dates, names).
      *
      * @param title The label resource ID.
      * @param value The source value to be mapped.
@@ -130,8 +176,8 @@ class StatsListBuilder {
      * @param valueColor Optional lambda for text color logic.
      * @param mapper A function that converts the [value] (of type T) into a [String]?.
      *
-     * Example:
-     * ```
+     * **Example of usage:**
+     * ```kotlin
      * mapString(
      *     title = Res.string.mode,
      *     value = modeInt,
@@ -171,6 +217,14 @@ class StatsListBuilder {
  *
  * @param block The builder lambda where you define items using [StatsListBuilder.item], [StatsListBuilder.mapStringResource], etc.
  * @return A list of [StatsItem].
+ *
+ * **Example of usage:**
+ * ```kotlin
+ * val statsList = buildStats {
+ *    header(Res.string.group_1)
+ *    item(Res.string.sensor_1, 10)
+ * }
+ * ```
  */
 fun buildStats(block: StatsListBuilder.() -> Unit): List<StatsItem> {
     val builder = StatsListBuilder()

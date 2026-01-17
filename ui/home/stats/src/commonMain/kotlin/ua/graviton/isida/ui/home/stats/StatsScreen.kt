@@ -26,6 +26,9 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.ui.navigation.HomeTabScreen
 
+/**
+ * Defines the Stats screen route and metadata for navigation.
+ */
 @Serializable
 data object StatsScreen : HomeTabScreen {
     override val icon: ImageVector = Icons.Outlined.Analytics
@@ -33,8 +36,10 @@ data object StatsScreen : HomeTabScreen {
 }
 
 /**
- * The main screen for displaying device statistics.
- * Connects the [StatsViewModel] state to the UI.
+ * The main screen entry point for displaying device statistics.
+ * Connects the [StatsViewModel] state to the UI using [collectAsStateWithLifecycle].
+ *
+ * @param viewModel The ViewModel instance, injected by default.
  */
 @Composable
 internal fun StatsScreen(
@@ -50,6 +55,8 @@ internal fun StatsScreen(
 /**
  * Stateless implementation of the Stats Screen.
  * Renders a sticky header with the device ID and a scrollable list of [StatsItem]s.
+ *
+ * @param state The current UI state to render.
  */
 @Composable
 private fun StatsScreen(
@@ -79,6 +86,11 @@ private fun StatsScreen(
     }
 }
 
+/**
+ * Renders a sticky header item.
+ *
+ * @param item The header data item.
+ */
 @Composable
 private fun HeaderItem(item: StatsItem.Header) {
     Box(
@@ -94,6 +106,13 @@ private fun HeaderItem(item: StatsItem.Header) {
     }
 }
 
+/**
+ * Renders a single [StatsItem.Info] row.
+ * Handles different content types (Numeric, TextResource, TextRaw) and formatting.
+ * The background color is applied only to the value portion of the row.
+ *
+ * @param item The info data item.
+ */
 @Composable
 private fun InfoItem(
     item: StatsItem.Info

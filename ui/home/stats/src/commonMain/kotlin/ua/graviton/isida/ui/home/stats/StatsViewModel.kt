@@ -45,7 +45,7 @@ class StatsViewModel(
             else -> null
         }
 
-        // Создаём модель состояния экрана
+        // Creates the screen state model
         StatsViewState(
             titleDeviceId = data?.node,
             titleDeviceBackgroundColor = deviceBgColor,
