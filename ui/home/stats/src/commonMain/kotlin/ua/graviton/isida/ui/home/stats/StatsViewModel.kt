@@ -71,12 +71,12 @@ internal val PlaceholderStats = buildStats {
     item<Int>(Res.string.timer, null, null)
     item<Int>(Res.string.power, null)
     item<Int>(Res.string.flap, null)
-    mapStringResource<Int>(Res.string.fuses, null) { null }
-    mapStringResource<Int>(Res.string.errors, null) { null }
-    mapStringResource<Int>(Res.string.warnings, null) { null }
-    mapStringResource<Int>(Res.string.state, null) { null }
+    mapStringResource<Int>(Res.string.fuses, null)
+    mapStringResource<Int>(Res.string.errors, null)
+    mapStringResource<Int>(Res.string.warnings, null)
+    mapStringResource<Int>(Res.string.state, null)
     mapString<Int>(Res.string.extendMode, null) { null }
-    mapStringResource<Int>(Res.string.programm, null) { null }
+    mapStringResource<Int>(Res.string.programm, null)
 }
 
 /**
@@ -196,7 +196,7 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     mapStringResource(
         title = Res.string.state,
         value = state,
-        backgroundColor = { value ->
+        backgroundColor = { value, _ ->
             when (value) {
                 0 -> IsidaColor.BlueGrey100
                 1 -> IsidaColor.Green500

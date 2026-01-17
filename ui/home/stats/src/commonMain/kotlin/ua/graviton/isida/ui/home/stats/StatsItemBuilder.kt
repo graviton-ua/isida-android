@@ -10,6 +10,17 @@ import org.jetbrains.compose.resources.StringResource
 class StatsListBuilder {
     private val list = mutableListOf<StatsItem>()
 
+    fun header(
+        title: String,
+        backgroundColor: Color? = null,
+    ) = list.add(StatsItem.Header(title = title, backgroundColor = backgroundColor))
+
+    fun header(
+        title: StringResource,
+        backgroundColor: Color? = null,
+    ) = list.add(StatsItem.Header(title = title, backgroundColor = backgroundColor))
+
+
     /**
      * Adds a numeric item (Int, Float, etc.) to the list.
      * Use this for sensor readings like Temperature, Humidity, or Timer values.
@@ -38,8 +49,8 @@ class StatsListBuilder {
         valueColor: ((value: T?, target: T?) -> Color?)? = null
     ) {
         list.add(
-            StatsItem(
-                titleResId = title,
+            StatsItem.Info(
+                title = title,
                 content = StatsItem.Content.Numeric(value, target, valueColor?.invoke(value, target)),
                 backgroundColor = backgroundColor?.invoke(value)
             )
@@ -70,19 +81,40 @@ class StatsListBuilder {
         title: StringResource,
         value: T?,
         target: T? = null,
-        backgroundColor: ((value: T?) -> Color?)? = null,
-        valueColor: ((value: T?) -> Color?)? = null,
-        mapper: (T) -> StringResource?
+        backgroundColor: ((value: T?, target: T?) -> Color?)? = null,
+        valueColor: ((value: T?, target: T?) -> Color?)? = null,
+        mapper: ((T) -> StringResource?)? = null,
     ) {
         list.add(
-            StatsItem(
-                titleResId = title,
+            StatsItem.Info(
+                title = title,
                 content = StatsItem.Content.TextResource(
-                    value = if (value != null) mapper(value) else null,
-                    target = if (target != null) mapper(target) else null,
-                    valueColor = valueColor?.invoke(value),
+                    values = mapper?.let { if (value != null) listOfNotNull(it.invoke(value)) else null } ?: emptyList(),
+                    targets = mapper?.let { if (target != null) listOfNotNull(it.invoke(target)) else null } ?: emptyList(),
+                    valueColor = valueColor?.invoke(value, target),
                 ),
-                backgroundColor = backgroundColor?.invoke(value)
+                backgroundColor = backgroundColor?.invoke(value, target)
+            )
+        )
+    }
+
+    fun <T> mapStringResources(
+        title: StringResource,
+        value: T?,
+        target: T? = null,
+        backgroundColor: ((value: T?, target: T?) -> Color?)? = null,
+        valueColor: ((value: T?, target: T?) -> Color?)? = null,
+        mapper: (T) -> List<StringResource>,
+    ) {
+        list.add(
+            StatsItem.Info(
+                title = title,
+                content = StatsItem.Content.TextResource(
+                    values = if (value != null) mapper(value) else emptyList(),
+                    targets = if (target != null) mapper(target) else emptyList(),
+                    valueColor = valueColor?.invoke(value, target),
+                ),
+                backgroundColor = backgroundColor?.invoke(value, target)
             )
         )
     }
@@ -116,8 +148,8 @@ class StatsListBuilder {
         mapper: (T) -> String?
     ) {
         list.add(
-            StatsItem(
-                titleResId = title,
+            StatsItem.Info(
+                title = title,
                 content = StatsItem.Content.TextRaw(
                     value = if (value != null) mapper(value) else null,
                     target = if (target != null) mapper(target) else null,

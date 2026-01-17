@@ -3,7 +3,6 @@ package ua.graviton.isida.ui.home.stats
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Analytics
@@ -13,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -70,27 +70,39 @@ private fun StatsScreen(
             )
         }
 
-        items(state.items, { it.titleResId.key }) {
-            Item(item = it)
+        state.items.forEach { item ->
+            when (item) {
+                is StatsItem.Header -> stickyHeader(key = item.id) { HeaderItem(item) }
+                is StatsItem.Info -> item(key = item.id) { InfoItem(item) }
+            }
         }
     }
 }
 
-/**
- * Renders a single [StatsItem].
- * Handles different content types (Numeric, TextResource, TextRaw) and formatting.
- */
 @Composable
-private fun Item(
-    item: StatsItem
-) {
-    Row(
+private fun HeaderItem(item: StatsItem.Header) {
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = item.backgroundColor ?: Color.Transparent)
+            .background(item.backgroundColor ?: Color.LightGray) // Default header color if none provided
+            .padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
         Text(
-            text = stringResource(item.titleResId),
+            text = item.title.asString(),
+            fontWeight = FontWeight.Bold,
+        )
+    }
+}
+
+@Composable
+private fun InfoItem(
+    item: StatsItem.Info
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = item.title.asString(),
             color = (item.content as? StatsItem.Content.Numeric<*>)?.valueColor
                 ?: (item.content as? StatsItem.Content.TextResource)?.valueColor
                 ?: (item.content as? StatsItem.Content.TextRaw)?.valueColor
@@ -117,10 +129,10 @@ private fun Item(
             }
 
             is StatsItem.Content.TextResource -> {
-                val v = content.value?.let { stringResource(it) }
-                val t = content.target?.let { stringResource(it) }
-                if (v == null) "--"
-                else if (t != null) "$v  [$t]"
+                val v = content.values.map { stringResource(it) }.joinToString()
+                val t = content.targets.map { stringResource(it) }.joinToString()
+                if (v.isEmpty()) "--"
+                else if (t.isNotEmpty()) "$v  [$t]"
                 else v
             }
 
@@ -138,6 +150,7 @@ private fun Item(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
+                .background(color = item.backgroundColor ?: Color.Transparent)
         )
     }
 }
