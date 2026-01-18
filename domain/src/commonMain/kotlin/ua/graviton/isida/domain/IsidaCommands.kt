@@ -31,8 +31,14 @@ object IsidaCommands {
 
     enum class DeviceMode(val code: Int) {
         DISABLE(0x00),          // "ОТКЛЮЧИТЬ камеру"
-        ONLY_ROTATION(0x80),    // "только ПОВОРОТ"
         ENABLE(0x01),           // "ВКЛЮЧИТЬ камеру"
+        WAITING_COOLING(0x02),  // "подгототка к ОХЛАЖДЕНИЮ"
+        WAITING_ON(0x04),       // "подгототка к ВКЛЮЧЕНИЮ"
+        HORIZON_ON(0x08),       // "ВКЛЮЧЕН ГОРИЗОНТ"
+        HORIZON_SET(0x10),      // "ГОРИЗОНТ УСТАНОВЛЕН"
+        TRAY_ROTATION_ON(0x20), // "ВКЛЮЧЕН мониторинг поворота лотков"
+        FAN_MONITORING_ON(0x40),// "ВКЛЮЧЕН мониторинг тихоходного вентилятора"
+        ONLY_ROTATION(0x80),    // "только ПОВОРОТ"
     }
 
     enum class DeviceModeExtra(val code: Int) {

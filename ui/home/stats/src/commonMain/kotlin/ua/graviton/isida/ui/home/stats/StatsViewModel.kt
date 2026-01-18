@@ -86,8 +86,8 @@ internal val PlaceholderStats = buildStats {
  * Здесь происходит сопоставление сырых байтов с представлением в пользовательском интерфейсе.
  */
 private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
-    header(title = "Temperatura")
-    // T0
+    header(title = Res.string.titleSensor)
+    // *****--------------------------- T0 -------------------------------*****
     item(
         title = Res.string.pv_t0_label,
         value = if (pvT0 > 80) null else pvT0,
@@ -102,7 +102,7 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         },
     )
 
-    // T1 / RH
+    // *****--------------------------- T1 / RH -------------------------------*****
     item(
         title = if (pvRh != 0) Res.string.pv_rh_label else Res.string.pv_t1_label,
         value = if (pvT1 > 80) null else pvT1,
@@ -129,107 +129,29 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         value = if (pvCO2 < 400) null else pvCO2,
     )
 
-    // Timer
-    item(
-        title = Res.string.timer,
-        value = pvTimer,
-        target = timer0,
-    )
-
-    // Power
-    item(
-        title = Res.string.power,
-        value = power,
-        valueColor = { _, _ -> IsidaColor.Power },
-    )
-
-    // Flap
-    item(
-        title = Res.string.flap,
-        value = pvFlap,
-    )
-
-    header(title = "Temperatura 2")
-    // Fuses
-    mapStringResources(
-        title = Res.string.fuses,
-        value = fuses,
-        mapper = { value ->
-            val result = mutableListOf<StringResource>()
-
-            // Проверяем каждый предохранитель по его битовой маске
-            if (value and 1 != 0) result.add(Res.string.fuses_0)
-            if (value and 2 != 0) result.add(Res.string.fuses_1)
-            if (value and 4 != 0) result.add(Res.string.fuses_2)
-            if (value and 8 != 0) result.add(Res.string.fuses_3)
-
-            // Если ни один бит не поднят, возвращаем список с ресурсом "нет/норма"
-            if (result.isEmpty()) {
-                result.add(Res.string.no)
-            }
-
-            result
-        },
-    )
-
-    // Errors
-    mapStringResources(
-        title = Res.string.errors,
-        value = errors, // предполагаем, что это Int
-        mapper = { value ->
-            val result = mutableListOf<StringResource>()
-
-            // Проверка битовых флагов
-            if (value and 1 != 0) result.add(Res.string.error_01)
-            if (value and 2 != 0) result.add(Res.string.error_02)
-            if (value and 4 != 0) result.add(Res.string.error_04)
-            if (value and 8 != 0) result.add(Res.string.error_08)
-
-            // Если список пуст, можно добавить "Нет ошибок"
-            if (result.isEmpty()) result.add(Res.string.no)
-
-            result // Возвращаем список
-        },
-    )
-
-    // Warnings
-    mapStringResources(
-        title = Res.string.warnings,
-        value = warning,
-        mapper = { value ->
-            val result = mutableListOf<StringResource>()
-
-            // Используем битовое "И" (and), чтобы проверить каждый флаг независимо
-            if (value and 1 != 0) result.add(Res.string.warning_01)
-            if (value and 2 != 0) result.add(Res.string.warning_02)
-            if (value and 4 != 0) result.add(Res.string.warning_04)
-            if (value and 8 != 0) result.add(Res.string.warning_08)
-
-            // Если активных предупреждений нет, возвращаем "Нет"
-            if (result.isEmpty()) {
-                result.add(Res.string.no)
-            }
-
-            result // Возвращаем накопленный список
-        },
-    )
-
-    // State
+    header(title = Res.string.titleStstus)
+    // *****--------------------------- State -------------------------------*****
     mapStringResources(
         title = Res.string.state,
         value = state,
         backgroundColor = { value, _ ->
             when (value) {
-                0 -> IsidaColor.BlueGrey100
-                1 -> IsidaColor.Green500
-                2 -> IsidaColor.Yellow500
-                else -> null
+                IsidaCommands.DeviceMode.DISABLE.code -> IsidaColor.BlueGrey100
+                IsidaCommands.DeviceMode.ENABLE.code -> IsidaColor.Green500
+                IsidaCommands.DeviceMode.ONLY_ROTATION.code -> IsidaColor.Yellow500
+                else -> IsidaColor.Yellow500
             }
         },
         mapper = { value ->
             // 1. Определяем режим
             val mode = when (value) {
                 value or IsidaCommands.DeviceMode.ENABLE.code -> IsidaCommands.DeviceMode.ENABLE
+                value or IsidaCommands.DeviceMode.WAITING_COOLING.code -> IsidaCommands.DeviceMode.ENABLE
+                value or IsidaCommands.DeviceMode.WAITING_ON.code -> IsidaCommands.DeviceMode.ENABLE
+                value or IsidaCommands.DeviceMode.HORIZON_ON.code -> IsidaCommands.DeviceMode.ENABLE
+                value or IsidaCommands.DeviceMode.HORIZON_SET.code -> IsidaCommands.DeviceMode.ENABLE
+                value or IsidaCommands.DeviceMode.TRAY_ROTATION_ON.code -> IsidaCommands.DeviceMode.ENABLE
+                value or IsidaCommands.DeviceMode.FAN_MONITORING_ON.code -> IsidaCommands.DeviceMode.ENABLE
                 value or IsidaCommands.DeviceMode.ONLY_ROTATION.code -> IsidaCommands.DeviceMode.ONLY_ROTATION
                 else -> IsidaCommands.DeviceMode.DISABLE
             }
@@ -250,7 +172,7 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
             val resource = when (mode) {
                 IsidaCommands.DeviceMode.DISABLE -> Res.string.device_mode_disabled
                 IsidaCommands.DeviceMode.ONLY_ROTATION -> Res.string.device_mode_turn
-                IsidaCommands.DeviceMode.ENABLE -> when {
+                else -> when {
                     extras.contains(IsidaCommands.DeviceModeExtra.EXTRA_3) -> Res.string.device_mode_extra_3
                     extras.contains(IsidaCommands.DeviceModeExtra.EXTRA_4) -> Res.string.device_mode_extra_4
                     else -> Res.string.device_mode_enabled
@@ -262,24 +184,25 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         },
     )
 
-    // Extend Mode (Raw String)
-    mapString(
+    // *****--------------------------- Extend Mode (Raw String) -------------------------------*****
+    mapStringResources(
         title = Res.string.extendMode,
         value = extendMode,
         mapper = { value ->
-            when (value) {
-                0 -> "СИРЕНА"
-                1 -> "ВЕНТИЛЯЦИЯ"
-                2 -> "Форс.НАГРЕВ"
-                3 -> "Форс.ОХЛАЖД."
-                4 -> "Форс.ОСУШЕН."
-                5 -> "УВЛАЖНЕНИЕ"
+            val resource = when (value) {
+                0 -> Res.string.extendSiren
+                1 -> Res.string.extendVentilation
+                2 -> Res.string.extendForcedHeating
+                3 -> Res.string.extendForcedCooling
+                4 -> Res.string.extendForcedDehumid
+                5 -> Res.string.extendWetting
                 else -> null
             }
+            if (resource != null) listOf(resource) else emptyList()
         },
     )
 
-    // Program
+    // *****--------------------------- Program -------------------------------*****
     mapStringResources(
         title = Res.string.programm,
         value = programm,
@@ -298,4 +221,122 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
             if (resource != null) listOf(resource) else emptyList()
         },
     )
+
+    header(title = Res.string.titleControl)
+    // *****--------------------------- Timer -------------------------------*****
+    item(
+        title = Res.string.timer,
+        value = pvTimer,
+        target = timer0,
+    )
+
+    // *****--------------------------- Power -------------------------------*****
+    item(
+        title = Res.string.power,
+        value = power,
+        valueColor = { value, _ ->
+            if (value != null && value != 0) IsidaColor.Red900
+            else null
+        },
+    )
+
+    // *****--------------------------- Flap -------------------------------*****
+    item(
+        title = Res.string.flap,
+        value = pvFlap,
+    )
+
+    header(title = Res.string.titleErrors)
+
+    // *****--------------------------- Fuses -------------------------------*****
+    mapStringResources(
+        title = Res.string.fuses,
+        value = fuses,
+        backgroundColor = { value, _ ->
+            if (value != null && value != 0) IsidaColor.Red500
+            else null
+        },
+        valueColor = { value, _ ->
+            if (value != null && value != 0) IsidaColor.Yellow900
+            else null
+        },
+        mapper = { value ->
+            val result = mutableListOf<StringResource>()
+
+            // Проверяем каждый предохранитель по его битовой маске
+            if (value and 1 != 0) result.add(Res.string.fuses_0)
+            if (value and 2 != 0) result.add(Res.string.fuses_1)
+            if (value and 4 != 0) result.add(Res.string.fuses_2)
+            if (value and 8 != 0) result.add(Res.string.fuses_3)
+
+            // Если ни один бит не поднят, возвращаем список с ресурсом "нет/норма"
+            if (result.isEmpty()) {
+                result.add(Res.string.no)
+            }
+
+            result
+        },
+    )
+
+    // *****--------------------------- Errors -------------------------------*****
+    mapStringResources(
+        title = Res.string.errors,
+        value = errors, // предполагаем, что это Int
+        backgroundColor = { value, _ ->
+            if (value != null && value != 0) IsidaColor.Red500
+            else null
+        },
+        valueColor = { value, _ ->
+            if (value != null && value != 0) IsidaColor.Yellow900
+            else null
+        },
+        mapper = { value ->
+            val result = mutableListOf<StringResource>()
+
+            // Проверка битовых флагов
+            if (value and 1 != 0) result.add(Res.string.error_01)
+            if (value and 2 != 0) result.add(Res.string.error_02)
+            if (value and 4 != 0) result.add(Res.string.error_04)
+            if (value and 8 != 0) result.add(Res.string.error_08)
+
+            // Если список пуст, можно добавить "Нет ошибок"
+            if (result.isEmpty()) result.add(Res.string.no)
+
+            result // Возвращаем список
+        },
+    )
+
+    // *****--------------------------- Warnings -------------------------------*****
+    mapStringResources(
+        title = Res.string.warnings,
+        value = warning,
+        backgroundColor = { value, _ ->
+            if (value != null && value != 0) IsidaColor.Yellow500
+            else null
+        },
+        valueColor = { value, _ ->
+            if (value != null && value != 0) IsidaColor.Red900
+            else null
+        },
+        mapper = { value ->
+            val result = mutableListOf<StringResource>()
+
+            // Используем битовое "И" (and), чтобы проверить каждый флаг независимо
+            if (value and 1 != 0) result.add(Res.string.warning_01)
+            if (value and 2 != 0) result.add(Res.string.warning_02)
+            if (value and 4 != 0) result.add(Res.string.warning_04)
+            if (value and 8 != 0) result.add(Res.string.warning_08)
+
+            // Если активных предупреждений нет, возвращаем "Нет"
+            if (result.isEmpty()) {
+                result.add(Res.string.no)
+            }
+
+            result // Возвращаем накопленный список
+        },
+    )
+
+
+
+
 }
