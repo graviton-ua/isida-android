@@ -41,6 +41,13 @@ object IsidaCommands {
         ONLY_ROTATION(0x80),    // "только ПОВОРОТ"
     }
 
+    enum class OutputBit(val code: Int){
+        OUT_Wetting(0x02),  //УВЛАЖНИТЕЛЬ
+        OUT_Flap(0x04),     //Заслонка воздухообмена
+        OUT_Extend(0x08),   //Вспомогательный канал
+        OUT_Trays(0x10),    //Поворот лотков
+    }
+
     enum class DeviceModeExtra(val code: Int) {
         // TODO: There is 2 more states need to be added later
         EXTRA_1(0x40),   //"Мониторинг тихоход. вентилятора"    data = data | 0x40

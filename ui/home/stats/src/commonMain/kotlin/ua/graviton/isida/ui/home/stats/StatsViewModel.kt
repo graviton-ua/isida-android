@@ -246,6 +246,78 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         value = pvFlap,
     )
 
+    // *****--------------------------- Wetting -------------------------------*****
+    mapString(
+        title = Res.string.outWetting,
+        value = output and IsidaCommands.OutputBit.OUT_Wetting.code,
+
+        backgroundColor = { value -> // В mapString здесь один аргумент
+            if (value != null && value != 0) IsidaColor.Blue500 else null
+        },
+        valueColor = { value ->
+            if (value != null && value != 0) IsidaColor.Yellow900 else null
+        },
+
+        mapper = { value ->
+            // Здесь мы возвращаем обычный String?
+            if (value != 0) "ON" else "OFF"
+        }
+    )
+
+    // *****--------------------------- Flap -------------------------------*****
+    mapString(
+        title = Res.string.outFlap,
+        value = output and IsidaCommands.OutputBit.OUT_Flap.code,
+
+        backgroundColor = { value -> // В mapString здесь один аргумент
+            if (value != null && value != 0) IsidaColor.Blue100 else null
+        },
+        valueColor = { value ->
+            if (value != null && value != 0) IsidaColor.Yellow900 else null
+        },
+
+        mapper = { value ->
+            // Здесь мы возвращаем обычный String?
+            if (value != 0) "ON" else "OFF"
+        }
+    )
+
+    // *****--------------------------- Extend -------------------------------*****
+    mapString(
+        title = Res.string.outExtend,
+        value = output and IsidaCommands.OutputBit.OUT_Extend.code,
+
+        backgroundColor = { value -> // В mapString здесь один аргумент
+            if (value != null && value != 0) IsidaColor.Green500 else null
+        },
+        valueColor = { value ->
+            if (value != null && value != 0) IsidaColor.Yellow900 else null
+        },
+
+        mapper = { value ->
+            // Здесь мы возвращаем обычный String?
+            if (value != 0) "ON" else "OFF"
+        }
+    )
+
+    // *****--------------------------- Trays -------------------------------*****
+    mapString(
+        title = Res.string.outTrays,
+        value = output and IsidaCommands.OutputBit.OUT_Trays.code,
+
+        backgroundColor = { value -> // В mapString здесь один аргумент
+            if (value != null && value != 0) IsidaColor.Green500 else null
+        },
+        valueColor = { value ->
+            if (value != null && value != 0) IsidaColor.Yellow900 else null
+        },
+
+        mapper = { value ->
+            // Здесь мы возвращаем обычный String?
+            if (value != 0) "ON" else "OFF"
+        }
+    )
+
     header(title = Res.string.titleErrors)
 
     // *****--------------------------- Fuses -------------------------------*****

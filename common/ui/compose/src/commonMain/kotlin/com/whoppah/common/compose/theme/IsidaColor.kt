@@ -5,6 +5,8 @@ import androidx.compose.ui.graphics.Color
 
 object IsidaColor {
     @Stable val BlueGrey100 = Color(0xFFCFD8DC)
+    @Stable val Blue500 = Color(0xFF5085FC)
+    @Stable val Blue100 = Color(0xFF98B7FA)
 
     @Stable val Red500 = Color(0xFFF66F63)
     @Stable val Red900 = Color(0xFFB71C1C)

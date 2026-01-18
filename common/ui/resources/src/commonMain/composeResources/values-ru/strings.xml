@@ -36,6 +36,10 @@
     <string name="extendForcedCooling">Форс.ОХЛАЖД.</string>
     <string name="extendForcedDehumid">Форс.ОСУШЕН.</string>
     <string name="extendWetting">УВЛАЖНЕНИЕ</string>
+    <string name="outWetting">УВЛАЖНИТЕЛЬ</string>
+    <string name="outFlap">Заслонка воздухообмена</string>
+    <string name="outExtend">Вспомогательный канал</string>
+    <string name="outTrays">Поворот лотков</string>
 
     <string name="programm">Программа</string>
     <string name="incubation">Всего час.</string>

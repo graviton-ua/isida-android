@@ -19,7 +19,7 @@ data class DataPackageDto(
     val fuses: Int = 0,       // 1 байт ind=14 короткие замыкания
     val errors: Int = 0,      // 1 байт ind=15 ошибки
     val warning: Int = 0,     // 1 байт ind=16 предупреждения
-    val yearMonth: Int = 0,   // 1 байт ind=17 YYMM = 2405
+    val output: Int = 0,      // 1 байт ind=17 запись сигналов управления в микросхему 74HC595D
     val dayHour: Int = 0,     // 1 байт ind=18 DDHH = 2209
     val minSec: Int = 0,      // 1 байт ind=19 MMSS = 0728
     // ------------------ ИТОГО 20 bytes -------------------------------
@@ -74,7 +74,7 @@ data class DataPackageDto(
                 fuses = ubytes[14].toInt(),       // 1 байт ind=14 короткие замыкания
                 errors = ubytes[15].toInt(),      // 1 байт ind=15 ошибки
                 warning = ubytes[16].toInt(),     // 1 байт ind=16 предупреждения
-                yearMonth = ubytes[17].toInt(),   // 1 байт ind=17 YYMM = 2405
+                output = ubytes[17].toInt(),      // 1 байт ind=17 запись сигналов управления в микросхему 74HC595D
                 dayHour = ubytes[18].toInt(),     // 1 байт ind=18 DDHH = 2209
                 minSec = ubytes[19].toInt(),      // 1 байт ind=19 MMSS = 0728
                 spT0 = ubytes.read2BytesAsInt(20).toFloat() / 10,
