@@ -122,10 +122,6 @@ private fun InfoItem(
     ) {
         Text(
             text = item.title.asString(),
-            color = (item.content as? StatsItem.Content.Numeric<*>)?.valueColor
-                ?: (item.content as? StatsItem.Content.TextResource)?.valueColor
-                ?: (item.content as? StatsItem.Content.TextRaw)?.valueColor
-                ?: Color.Black,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
@@ -166,6 +162,10 @@ private fun InfoItem(
 
         Text(
             text = valueText,
+            color = (item.content as? StatsItem.Content.Numeric<*>)?.valueColor
+                ?: (item.content as? StatsItem.Content.TextResource)?.valueColor
+                ?: (item.content as? StatsItem.Content.TextRaw)?.valueColor
+                ?: Color.Black,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)

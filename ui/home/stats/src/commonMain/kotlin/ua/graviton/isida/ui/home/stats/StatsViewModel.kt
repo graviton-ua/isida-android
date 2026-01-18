@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.stateIn
 import ua.graviton.isida.data.models.DataPackageDto
 import ua.graviton.isida.domain.IsidaCommands
 import ua.graviton.isida.domain.observers.ObserveDeviceData
+import org.jetbrains.compose.resources.StringResource
 
 @Inject
 @ViewModelKey(StatsViewModel::class)
@@ -85,6 +86,7 @@ internal val PlaceholderStats = buildStats {
  * Здесь происходит сопоставление сырых байтов с представлением в пользовательском интерфейсе.
  */
 private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
+    header(title = "Temperatura")
     // T0
     item(
         title = Res.string.pv_t0_label,
@@ -147,53 +149,73 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         value = pvFlap,
     )
 
+    header(title = "Temperatura 2")
     // Fuses
-    mapStringResource(
+    mapStringResources(
         title = Res.string.fuses,
         value = fuses,
         mapper = { value ->
-            when (value) {
-                1 -> Res.string.fuses_0
-                2 -> Res.string.fuses_1
-                4 -> Res.string.fuses_2
-                8 -> Res.string.fuses_3
-                else -> Res.string.no
+            val result = mutableListOf<StringResource>()
+
+            // Проверяем каждый предохранитель по его битовой маске
+            if (value and 1 != 0) result.add(Res.string.fuses_0)
+            if (value and 2 != 0) result.add(Res.string.fuses_1)
+            if (value and 4 != 0) result.add(Res.string.fuses_2)
+            if (value and 8 != 0) result.add(Res.string.fuses_3)
+
+            // Если ни один бит не поднят, возвращаем список с ресурсом "нет/норма"
+            if (result.isEmpty()) {
+                result.add(Res.string.no)
             }
+
+            result
         },
     )
 
     // Errors
-    mapStringResource(
+    mapStringResources(
         title = Res.string.errors,
-        value = errors,
+        value = errors, // предполагаем, что это Int
         mapper = { value ->
-            when (value) {
-                1 -> Res.string.error_01
-                2 -> Res.string.error_02
-                4 -> Res.string.error_04
-                8 -> Res.string.error_08
-                else -> Res.string.no
-            }
+            val result = mutableListOf<StringResource>()
+
+            // Проверка битовых флагов
+            if (value and 1 != 0) result.add(Res.string.error_01)
+            if (value and 2 != 0) result.add(Res.string.error_02)
+            if (value and 4 != 0) result.add(Res.string.error_04)
+            if (value and 8 != 0) result.add(Res.string.error_08)
+
+            // Если список пуст, можно добавить "Нет ошибок"
+            if (result.isEmpty()) result.add(Res.string.no)
+
+            result // Возвращаем список
         },
     )
 
     // Warnings
-    mapStringResource(
+    mapStringResources(
         title = Res.string.warnings,
         value = warning,
         mapper = { value ->
-            when (value) {
-                1 -> Res.string.warning_01
-                2 -> Res.string.warning_02
-                4 -> Res.string.warning_04
-                8 -> Res.string.warning_08
-                else -> Res.string.no
+            val result = mutableListOf<StringResource>()
+
+            // Используем битовое "И" (and), чтобы проверить каждый флаг независимо
+            if (value and 1 != 0) result.add(Res.string.warning_01)
+            if (value and 2 != 0) result.add(Res.string.warning_02)
+            if (value and 4 != 0) result.add(Res.string.warning_04)
+            if (value and 8 != 0) result.add(Res.string.warning_08)
+
+            // Если активных предупреждений нет, возвращаем "Нет"
+            if (result.isEmpty()) {
+                result.add(Res.string.no)
             }
+
+            result // Возвращаем накопленный список
         },
     )
 
     // State
-    mapStringResource(
+    mapStringResources(
         title = Res.string.state,
         value = state,
         backgroundColor = { value, _ ->
@@ -205,11 +227,14 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
             }
         },
         mapper = { value ->
+            // 1. Определяем режим
             val mode = when (value) {
                 value or IsidaCommands.DeviceMode.ENABLE.code -> IsidaCommands.DeviceMode.ENABLE
                 value or IsidaCommands.DeviceMode.ONLY_ROTATION.code -> IsidaCommands.DeviceMode.ONLY_ROTATION
                 else -> IsidaCommands.DeviceMode.DISABLE
             }
+
+            // 2. Собираем экстра-флаги
             val extras = if (mode == IsidaCommands.DeviceMode.ENABLE) {
                 val result = mutableListOf<IsidaCommands.DeviceModeExtra>()
                 if (value == value or IsidaCommands.DeviceModeExtra.EXTRA_1.code) result.add(IsidaCommands.DeviceModeExtra.EXTRA_1)
@@ -221,7 +246,8 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
                 emptyList()
             }
 
-            when (mode) {
+            // 3. Выбираем ресурс (сохраняем в переменную)
+            val resource = when (mode) {
                 IsidaCommands.DeviceMode.DISABLE -> Res.string.device_mode_disabled
                 IsidaCommands.DeviceMode.ONLY_ROTATION -> Res.string.device_mode_turn
                 IsidaCommands.DeviceMode.ENABLE -> when {
@@ -230,6 +256,9 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
                     else -> Res.string.device_mode_enabled
                 }
             }
+
+            // 4. Оборачиваем в список для соответствия новой сигнатуре функции
+            listOf(resource)
         },
     )
 
@@ -251,11 +280,11 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     )
 
     // Program
-    mapStringResource(
+    mapStringResources(
         title = Res.string.programm,
         value = programm,
         mapper = { value ->
-            when (value) {
+            val resource = when (value) {
                 0 -> Res.string.no
                 1 -> Res.string.chickens
                 2 -> Res.string.ducklings
@@ -263,6 +292,10 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
                 4 -> Res.string.quail
                 else -> null
             }
+
+            // Оборачиваем найденный ресурс в список.
+            // Если ничего не найдено (null), возвращаем пустой список.
+            if (resource != null) listOf(resource) else emptyList()
         },
     )
 }
