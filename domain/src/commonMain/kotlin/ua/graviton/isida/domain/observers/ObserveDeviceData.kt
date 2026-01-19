@@ -2,7 +2,8 @@ package ua.graviton.isida.domain.observers
 
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
+import ua.graviton.isida.data.bluetooth.ConnectionState
 import ua.graviton.isida.data.models.DataPackageDto
 import ua.graviton.isida.domain.SubjectInteractor
 import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
@@ -17,7 +18,8 @@ class ObserveDeviceData(
     }
 
     override suspend fun createObservable(params: Unit): Flow<DataPackageDto?> {
-        return repo.dataStream.map { data ->
+        return combine(repo.dataStream, repo.connectionState) { data, state ->
+            if (state != ConnectionState.CONNECTED) return@combine null
             try {
                 DataPackageDto.parseData(data)
             } catch (_: Exception) {

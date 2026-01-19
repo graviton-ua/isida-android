@@ -24,7 +24,7 @@ data class StatsViewState(
         val Empty = StatsViewState(
             titleDeviceId = null,
             titleDeviceBackgroundColor = null,
-            items = PlaceholderStats,
+            items = emptyList(),
         )
 
         /**
