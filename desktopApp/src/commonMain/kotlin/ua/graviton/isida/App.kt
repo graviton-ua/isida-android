@@ -15,7 +15,7 @@ fun ApplicationScope.App(state: AppState) {
     ApplicationTray(state)
 
     Window(
-        state = rememberWindowState(width = 640.dp, height = 800.dp),
+        state = rememberWindowState(width = 450.dp, height = 800.dp),
         title = "Svg2Compose",
         icon = painterResource(Res.drawable.icon),
         onCloseRequest = state::exit,

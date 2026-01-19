@@ -48,7 +48,7 @@ class JvmBluetoothDriver(
 
             // 3. Open Port
             // TIMEOUT_READ_BLOCKING is crucial so our coroutine loop waits for data
-            port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 5000, 0)
+            port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 2000, 0)
 
             val opened = port.openPort()
             if (!opened) {
