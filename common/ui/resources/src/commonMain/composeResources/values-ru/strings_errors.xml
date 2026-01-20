@@ -10,30 +10,30 @@
     <string name="device_mode_extra_1">ВКЛЮЧЕН мониторинг тихоходного вентилятора</string>
     <string name="device_mode_turn">Только поворот лотков</string>
 
-    <string name="fuses_0">ОСТАНОВ вентилятора</string>
-    <string name="fuses_1">НЕТ ПОВОРОТА лотков</string>
-    <string name="fuses_2">короткое нагреватель</string>
-    <string name="fuses_3">короткое увлажнитель</string>
-    <string name="fuses_4">короткое канал III</string>
-    <string name="fuses_5">короткое канал IV</string>
-    <string name="fuses_6">короткое поворот</string>
-    <string name="fuses_7">Состояние дверей</string>
+    <string name="fuses_0">Увлажнитель</string>
+    <string name="fuses_1">Заслонка</string>
+    <string name="fuses_2">Вспомогательный</string>
+    <string name="fuses_3">Лотки</string>
+<!--    <string name="fuses_4">короткое канал III</string>-->
+<!--    <string name="fuses_5">короткое канал IV</string>-->
+<!--    <string name="fuses_6">короткое поворот</string>-->
+<!--    <string name="fuses_7">Состояние дверей</string>-->
 
-    <string name="error_01">ОШИБКА ДАТЧИКА температуры</string>
-    <string name="error_02">ОШИБКА ДАТЧИКА влажности</string>
+    <string name="error_01">Датчик температуры</string>
+    <string name="error_02">Датчик влажности</string>
     <string name="error_04">ПРОБОЙ СИМИСТОРА!</string>
-    <string name="error_08">Обрыв цепи НАГРЕВАТЕЛЯ</string>
-    <string name="error_10">!!</string>
-    <string name="error_20">ОШИБКА модуля СО2</string>
-    <string name="error_40">ОШИБКА дополнительного модуля</string>
-    <string name="error_80">ПЕРЕГРЕВ СИМИСТОРА!</string>
+    <string name="error_08">Обрыв НАГРЕВАТЕЛЯ</string>
+    <string name="error_10">ПЕРЕГРЕВ СИМИСТОРА!</string>
+    <string name="error_20">Модуль СО2/FLAP</string>
+    <string name="error_40">Модуль Холла/Поворотов</string>
+    <string name="error_80">!!</string>
 
-    <string name="warning_01">ОТКЛОНЕНИЕ по температуре</string>
-    <string name="warning_02">ОТКЛОНЕНИЕ по влажности</string>
-    <string name="warning_04">Подмена датчика</string>
-    <string name="warning_08">Большой перепад температур</string>
-    <string name="warning_10">!</string>
-    <string name="warning_20">Превышено время охлаждения</string>
-    <string name="warning_40">!!!</string>
-    <string name="warning_80">Нет обдува симистора!</string>
+    <string name="warning_01">Отклонение по температуре</string>
+    <string name="warning_02">Отклонение по влажности</string>
+    <string name="warning_04">Произведена подмена датчика</string>
+    <string name="warning_08">Большой перепад температуры</string>
+    <string name="warning_10">Неправильная конфигурация датчиков</string>
+    <string name="warning_20">ОСТАНОВ вентилятора</string>
+    <string name="warning_40">НЕТ поворота лотков</string>
+    <string name="warning_80">!!</string>
 </resources>

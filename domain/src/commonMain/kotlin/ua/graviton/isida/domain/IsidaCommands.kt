@@ -33,7 +33,7 @@ object IsidaCommands {
         DISABLE(0x00),          // "ОТКЛЮЧИТЬ камеру"
         ENABLE(0x01),           // "ВКЛЮЧИТЬ камеру"
         WAITING_COOLING(0x02),  // "подгототка к ОХЛАЖДЕНИЮ"
-        WAITING_ON(0x04),       // "подгототка к ВКЛЮЧЕНИЮ"
+        WAITING_ON(0x04),       // "подгототка к ЗАПУСКУ"
         HORIZON_ON(0x08),       // "ВКЛЮЧЕН ГОРИЗОНТ"
         HORIZON_SET(0x10),      // "ГОРИЗОНТ УСТАНОВЛЕН"
         TRAY_ROTATION_ON(0x20), // "ВКЛЮЧЕН мониторинг поворота лотков"
@@ -54,6 +54,16 @@ object IsidaCommands {
         EXTRA_2(0x20),   //"Мониторинг поворота лотков"         data = data | 0x20
         EXTRA_3(0x08),   //"Горизонтальное положение лотков"    data = data | 0x08
         EXTRA_4(0x02),   //"Режим подгототка к ОХЛАЖДЕНИЮ"      data = data | 0x02
+    }
+
+    enum class Errors(val code: Int) {
+        ERROR_01(code = 0x01),  //ОШИБКА ДАТЧИКА температуры
+        ERROR_02(code = 0x02),  //ОШИБКА ДАТЧИКА влажности
+        ERROR_04(code = 0x04),  //ПРОБОЙ СИМИСТОРА
+        ERROR_08(code = 0x08),  //НЕИСПРАВНА цепь НАГРЕВАТЕЛЯ
+        ERROR_10(code = 0x10),  //ПЕРЕГРЕВ СИМИСТОРА
+        ERROR_20(code = 0x20),  //ОШИБКА модуля СО2 или FLAP
+        ERROR_40(code = 0x40),  //ОШИБКА модуля Холла или Поворотов
     }
 
     fun updateProperties(
