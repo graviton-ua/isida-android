@@ -16,8 +16,13 @@ import org.jetbrains.compose.resources.StringResource
  * }
  * ```
  */
-class StatsListBuilder {
+internal class StatsListBuilder {
     private val list = mutableListOf<StatsItem>()
+
+    fun header(
+        title: StatsItem.Title,
+        backgroundColor: Color? = null,
+    ) = list.add(StatsItem.Header(title = title, backgroundColor = backgroundColor))
 
     /**
      * Добавляет элемент заголовка с заголовком в виде обычной строки.
@@ -45,7 +50,8 @@ class StatsListBuilder {
             // Создаем Title.Resource напрямую, преобразуя массив в список
             title = StatsItem.Title.Resource(title, args.toList()),
             backgroundColor = backgroundColor
-        ))
+        )
+    )
 
 
     /**
@@ -232,7 +238,7 @@ class StatsListBuilder {
  * }
  * ```
  */
-fun buildStats(block: StatsListBuilder.() -> Unit): List<StatsItem> {
+internal fun buildStats(block: StatsListBuilder.() -> Unit): List<StatsItem> {
     val builder = StatsListBuilder()
     builder.block()
     return builder.build()

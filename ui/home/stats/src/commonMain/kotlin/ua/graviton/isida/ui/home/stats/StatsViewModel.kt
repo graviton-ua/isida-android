@@ -13,10 +13,12 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.data.models.DataPackageDto
 import ua.graviton.isida.domain.IsidaCommands
 import ua.graviton.isida.domain.observers.ObserveDeviceData
-import org.jetbrains.compose.resources.StringResource
+import ua.graviton.isida.ui.home.stats.StatsItem.Title.ComposableString.Companion.composableString
 
 @Inject
 @ViewModelKey(StatsViewModel::class)
@@ -90,9 +92,12 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         title = "Камера № $node"
     )
     header(
+        title = composableString(node) { stringResource(Res.string.CellNum, node) }
+    )
+    header(
         title = Res.string.CellNum,
         node, // Передаем аргумент здесь
-        backgroundColor = if (state == 0x80) IsidaColor.Yellow500 else if(state > 0 ) IsidaColor.Green500 else null
+        backgroundColor = if (state == 0x80) IsidaColor.Yellow500 else if (state > 0) IsidaColor.Green500 else null
     )
     header(title = Res.string.titleSensor)
     // *****--------------------------- T0 -------------------------------*****
