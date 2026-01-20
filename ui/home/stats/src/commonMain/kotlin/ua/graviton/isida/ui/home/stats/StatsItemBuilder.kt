@@ -38,8 +38,14 @@ class StatsListBuilder {
      */
     fun header(
         title: StringResource,
+        vararg args: Any, // Принимаем аргументы
         backgroundColor: Color? = null,
-    ) = list.add(StatsItem.Header(title = title, backgroundColor = backgroundColor))
+    ) = list.add(
+        StatsItem.Header(
+            // Создаем Title.Resource напрямую, преобразуя массив в список
+            title = StatsItem.Title.Resource(title, args.toList()),
+            backgroundColor = backgroundColor
+        ))
 
 
     /**

@@ -68,14 +68,14 @@ private fun StatsScreen(
         contentPadding = WindowInsets.statusBars.add(WindowInsets(left = 12.dp, right = 12.dp)).asPaddingValues(),
         modifier = Modifier.fillMaxSize()
     ) {
-        stickyHeader {
-            Text(
-                text = stringResource(Res.string.CellNum, state.titleDeviceId?.toString() ?: "--"),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(state.titleDeviceBackgroundColor ?: Color.Transparent)
-            )
-        }
+        // stickyHeader {
+        //     Text(
+        //         text = stringResource(Res.string.CellNum, state.titleDeviceId?.toString() ?: "--"),
+        //         modifier = Modifier
+        //             .fillMaxWidth()
+        //             .background(state.titleDeviceBackgroundColor ?: Color.Transparent)
+        //     )
+        // }
 
         state.items.forEach { item ->
             when (item) {

@@ -25,7 +25,10 @@ sealed interface StatsItem {
     @Immutable
     sealed interface Title {
         /** Заголовок, определенный строковым ресурсом. */
-        data class Resource(val res: StringResource) : Title
+        data class Resource(
+            val res: StringResource,
+            val args: List<Any> = emptyList() // 1. Добавляем поле для аргументов
+        ) : Title
         /** Заголовок, определенный обычной строкой. */
         data class Raw(val text: String) : Title
 
@@ -35,7 +38,15 @@ sealed interface StatsItem {
         @Composable
         fun asString(): String {
             return when (this) {
-                is Resource -> stringResource(this.res)
+                is Resource -> {
+                    // 2. Используем версию stringResource, которая принимает аргументы
+                    if (args.isEmpty()) {
+                        stringResource(this.res)
+                    } else {
+                        // Используем spread operator (*), чтобы передать список как vararg
+                        stringResource(this.res, *args.toTypedArray())
+                    }
+                }
                 is Raw -> this.text
             }
         }
@@ -57,7 +68,11 @@ sealed interface StatsItem {
         override val title: Title,
         val backgroundColor: Color? = null,
     ) : StatsItem {
-        constructor(title: StringResource, backgroundColor: Color? = null) : this(Title.Resource(title), backgroundColor)
+        constructor(
+            title: StringResource,
+            vararg args: Any, // Добавляем vararg
+            backgroundColor: Color? = null
+        ) : this(Title.Resource(title, args.toList()), backgroundColor)
         constructor(title: String, backgroundColor: Color? = null) : this(Title.Raw(title), backgroundColor)
 
         override val id: Int get() = title.hashCode()

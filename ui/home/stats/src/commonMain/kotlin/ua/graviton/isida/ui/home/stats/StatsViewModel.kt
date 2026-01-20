@@ -50,7 +50,7 @@ class StatsViewModel(
         StatsViewState(
             titleDeviceId = data?.node,
             titleDeviceBackgroundColor = deviceBgColor,
-            items = data?.toItems() ?: PlaceholderStats,
+            items = data?.toItems() ?: emptyList(),
         )
     }.stateIn(
         scope = viewModelScope,
@@ -86,6 +86,14 @@ internal val PlaceholderStats = buildStats {
  * Здесь происходит сопоставление сырых байтов с представлением в пользовательском интерфейсе.
  */
 private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
+    header(
+        title = "Камера № $node"
+    )
+    header(
+        title = Res.string.CellNum,
+        node, // Передаем аргумент здесь
+        backgroundColor = if (state == 0x80) IsidaColor.Yellow500 else if(state > 0 ) IsidaColor.Green500 else null
+    )
     header(title = Res.string.titleSensor)
     // *****--------------------------- T0 -------------------------------*****
     item(
@@ -184,6 +192,23 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         },
     )
 
+    // *****--------------------------- Door -------------------------------*****
+    mapStringResource(
+        title = Res.string.door,
+        value = fuses and 0x04,
+
+        backgroundColor = { value, target ->
+            if (value != null && value != 0 && state > 0 && state < 0x80) IsidaColor.Yellow900 else null
+        },
+        valueColor = { value, target ->
+            if (value != null && value != 0 && state > 0 && state < 0x80) IsidaColor.Red900 else null
+        },
+
+        mapper = { value ->
+            if (value != 0) Res.string.doorOpen else Res.string.doorClose
+        }
+    )
+
     // *****--------------------------- Extend Mode (Raw String) -------------------------------*****
     mapStringResources(
         title = Res.string.extendMode,
@@ -223,27 +248,17 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     )
 
     header(title = Res.string.titleControl)
-    // *****--------------------------- Timer -------------------------------*****
-    item(
-        title = Res.string.timer,
-        value = pvTimer,
-        target = timer0,
-    )
-
     // *****--------------------------- Power -------------------------------*****
     item(
         title = Res.string.power,
         value = power,
+        // backgroundColor = { value -> // В mapString здесь один аргумент
+        //     if (value != null && value != 0) IsidaColor.Red500 else null
+        // },
         valueColor = { value, _ ->
             if (value != null && value != 0) IsidaColor.Red900
             else null
         },
-    )
-
-    // *****--------------------------- Flap -------------------------------*****
-    item(
-        title = Res.string.flap,
-        value = pvFlap,
     )
 
     // *****--------------------------- Wetting -------------------------------*****
@@ -254,9 +269,9 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         backgroundColor = { value -> // В mapString здесь один аргумент
             if (value != null && value != 0) IsidaColor.Blue500 else null
         },
-        valueColor = { value ->
-            if (value != null && value != 0) IsidaColor.Yellow900 else null
-        },
+        // valueColor = { value ->
+        //     if (value != null && value != 0) IsidaColor.Yellow900 else null
+        // },
 
         mapper = { value ->
             // Здесь мы возвращаем обычный String?
@@ -272,14 +287,18 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         backgroundColor = { value -> // В mapString здесь один аргумент
             if (value != null && value != 0) IsidaColor.Blue100 else null
         },
-        valueColor = { value ->
-            if (value != null && value != 0) IsidaColor.Yellow900 else null
-        },
+        // valueColor = { value ->
+        //     if (value != null && value != 0) IsidaColor.Yellow900 else null
+        // },
 
         mapper = { value ->
             // Здесь мы возвращаем обычный String?
             if (value != 0) "ON" else "OFF"
         }
+    )
+    item(
+        title = Res.string.flapAngle,
+        value = pvFlap,
     )
 
     // *****--------------------------- Extend -------------------------------*****
@@ -288,11 +307,11 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         value = output and IsidaCommands.OutputBit.OUT_Extend.code,
 
         backgroundColor = { value -> // В mapString здесь один аргумент
-            if (value != null && value != 0) IsidaColor.Green500 else null
+            if (value != null && value != 0) IsidaColor.Yellow500 else null
         },
-        valueColor = { value ->
-            if (value != null && value != 0) IsidaColor.Yellow900 else null
-        },
+        // valueColor = { value ->
+        //     if (value != null && value != 0) IsidaColor.Yellow900 else null
+        // },
 
         mapper = { value ->
             // Здесь мы возвращаем обычный String?
@@ -308,24 +327,29 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         backgroundColor = { value -> // В mapString здесь один аргумент
             if (value != null && value != 0) IsidaColor.Green500 else null
         },
-        valueColor = { value ->
-            if (value != null && value != 0) IsidaColor.Yellow900 else null
-        },
+        // valueColor = { value ->
+        //     if (value != null && value != 0) IsidaColor.Yellow900 else null
+        // },
 
         mapper = { value ->
             // Здесь мы возвращаем обычный String?
             if (value != 0) "ON" else "OFF"
         }
     )
+// *****--------------------------- Timer -------------------------------*****
+    item(
+        title = Res.string.timer,
+        value = pvTimer,
+        target = timer0,
+    )
 
     header(title = Res.string.titleErrors)
-
     // *****--------------------------- Fuses -------------------------------*****
     mapStringResources(
         title = Res.string.fuses,
-        value = fuses,
+        value = fuses and 0x0F,
         backgroundColor = { value, _ ->
-            if (value != null && value != 0) IsidaColor.Red500
+            if (value != null && value != 0) IsidaColor.Red900
             else null
         },
         valueColor = { value, _ ->
@@ -366,10 +390,13 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
             val result = mutableListOf<StringResource>()
 
             // Проверка битовых флагов
-            if (value and 1 != 0) result.add(Res.string.error_01)
-            if (value and 2 != 0) result.add(Res.string.error_02)
-            if (value and 4 != 0) result.add(Res.string.error_04)
-            if (value and 8 != 0) result.add(Res.string.error_08)
+            if (value and IsidaCommands.Errors.ERROR_01.code != 0) result.add(Res.string.error_01)
+            if (value and IsidaCommands.Errors.ERROR_02.code != 0) result.add(Res.string.error_02)
+            if (value and IsidaCommands.Errors.ERROR_04.code != 0) result.add(Res.string.error_04)
+            if (value and IsidaCommands.Errors.ERROR_08.code != 0) result.add(Res.string.error_08)
+            if (value and IsidaCommands.Errors.ERROR_10.code != 0) result.add(Res.string.error_10)
+            if (value and IsidaCommands.Errors.ERROR_20.code != 0) result.add(Res.string.error_20)
+            if (value and IsidaCommands.Errors.ERROR_40.code != 0) result.add(Res.string.error_40)
 
             // Если список пуст, можно добавить "Нет ошибок"
             if (result.isEmpty()) result.add(Res.string.no)
@@ -407,8 +434,4 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
             result // Возвращаем накопленный список
         },
     )
-
-
-
-
 }

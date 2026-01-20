@@ -4,7 +4,7 @@
     <string name="home_tab_prop">Опции</string>
     <string name="home_tab_report">Отчёт</string>
 
-    <string name="CellNum">КАМЕРА № %1$s</string>
+    <string name="CellNum">КАМЕРА № %s</string>
     <string name="btnStart">Старт</string>
     <string name="btnProp">Уст.</string>
     <string name="btnInfo">Инфо</string>
@@ -20,26 +20,30 @@
     <string name="pv_rh_label">Влажность</string>
     <string name="pv_t2_label">Контрольный</string>
     <string name="pv_t3_label">Скорлупа</string>
-    <string name="timer">Таймер до поворота</string>
+    <string name="timer">Осталось до поворота</string>
     <string name="cotwo">Модуль CO2</string>
     <string name="counter">Повороты</string>
-    <string name="flap">Воздушная заслонка</string>
-    <string name="power">Нагрев камеры</string>
+    <string name="power">Мощность нагревателя</string>
     <string name="fuses">Авария</string>
     <string name="errors">Ошибки</string>
     <string name="warnings">Предупреждения</string>
     <string name="state">Камера</string>
-    <string name="extendMode">Дополнительно</string>
+    <string name="door">Дверь</string>
+    <string name="doorClose">ЗАКРЫТА</string>
+    <string name="doorOpen">ОТКРЫТА</string>
+
+    <string name="extendMode">Вспомогательный канал</string>
     <string name="extendSiren">СИРЕНА</string>
     <string name="extendVentilation">ВЕНТИЛЯЦИЯ</string>
-    <string name="extendForcedHeating">Форс.НАГРЕВ</string>
-    <string name="extendForcedCooling">Форс.ОХЛАЖД.</string>
-    <string name="extendForcedDehumid">Форс.ОСУШЕН.</string>
+    <string name="extendForcedHeating">Форсированный НАГРЕВ</string>
+    <string name="extendForcedCooling">Форсированное ОХЛАЖДЕНИЕ</string>
+    <string name="extendForcedDehumid">Форсированное ОСУШЕНЕНИЕ</string>
     <string name="extendWetting">УВЛАЖНЕНИЕ</string>
     <string name="outWetting">УВЛАЖНИТЕЛЬ</string>
     <string name="outFlap">Заслонка воздухообмена</string>
+    <string name="flapAngle">Открытие заслонки %</string>
     <string name="outExtend">Вспомогательный канал</string>
-    <string name="outTrays">Поворот лотков</string>
+    <string name="outTrays">Таймер поворота лотков</string>
 
     <string name="programm">Программа</string>
     <string name="incubation">Всего час.</string>
