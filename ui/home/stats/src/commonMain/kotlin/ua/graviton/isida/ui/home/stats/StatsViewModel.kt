@@ -97,7 +97,9 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     header(
         title = Res.string.CellNum,
         node, // Передаем аргумент здесь
-        backgroundColor = if (state == 0x80) IsidaColor.Yellow500 else if (state > 0) IsidaColor.Green500 else null
+        style = {
+            backgroundColor = if (state == 0x80) IsidaColor.Yellow500 else if (state > 0) IsidaColor.Green500 else null
+        }
     )
     header(title = Res.string.titleSensor)
     // *****--------------------------- T0 -------------------------------*****
@@ -105,8 +107,8 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         title = Res.string.pv_t0_label,
         value = if (pvT0 > 80) null else pvT0,
         target = spT0,
-        valueColor = { value, target ->
-            when {
+        style = { value, target ->
+            valueColor = when {
                 value == null || target == null -> null
                 value > target -> IsidaColor.Red900
                 value < target -> IsidaColor.Indigo800
@@ -120,8 +122,8 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         title = if (pvRh != 0) Res.string.pv_rh_label else Res.string.pv_t1_label,
         value = if (pvT1 > 80) null else pvT1,
         target = spT1,
-        valueColor = { value, target ->
-            when {
+        style = { value, target ->
+            valueColor = when {
                 value == null || target == null -> null
                 value > target -> IsidaColor.Red900
                 value < target -> IsidaColor.Indigo800
@@ -147,8 +149,8 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     mapStringResources(
         title = Res.string.state,
         value = state,
-        backgroundColor = { value, _ ->
-            when (value) {
+        style = { value, _ ->
+            backgroundColor = when (value) {
                 IsidaCommands.DeviceMode.DISABLE.code -> IsidaColor.BlueGrey100
                 IsidaCommands.DeviceMode.ENABLE.code -> IsidaColor.Green500
                 IsidaCommands.DeviceMode.ONLY_ROTATION.code -> IsidaColor.Yellow500
@@ -202,11 +204,11 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         title = Res.string.door,
         value = fuses and 0x04,
 
-        backgroundColor = { value, target ->
-            if (value != null && value != 0 && state > 0 && state < 0x80) IsidaColor.Yellow900 else null
-        },
-        valueColor = { value, target ->
-            if (value != null && value != 0 && state > 0 && state < 0x80) IsidaColor.Red900 else null
+        style = { value, _ ->
+            if (value != null && value != 0 && state > 0 && state < 0x80) {
+                backgroundColor = IsidaColor.Yellow900
+                valueColor = IsidaColor.Red900
+            }
         },
 
         mapper = { value ->
@@ -257,12 +259,8 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     item(
         title = Res.string.power,
         value = power,
-        // backgroundColor = { value -> // В mapString здесь один аргумент
-        //     if (value != null && value != 0) IsidaColor.Red500 else null
-        // },
-        valueColor = { value, _ ->
-            if (value != null && value != 0) IsidaColor.Red900
-            else null
+        style = { value, _ ->
+            if (value != null && value != 0) valueColor = IsidaColor.Red900
         },
     )
 
@@ -271,12 +269,9 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         title = Res.string.outWetting,
         value = output and IsidaCommands.OutputBit.OUT_Wetting.code,
 
-        backgroundColor = { value -> // В mapString здесь один аргумент
-            if (value != null && value != 0) IsidaColor.Blue500 else null
+        style = { value ->
+            if (value != null && value != 0) backgroundColor = IsidaColor.Blue500
         },
-        // valueColor = { value ->
-        //     if (value != null && value != 0) IsidaColor.Yellow900 else null
-        // },
 
         mapper = { value ->
             // Здесь мы возвращаем обычный String?
@@ -289,12 +284,9 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         title = Res.string.outFlap,
         value = output and IsidaCommands.OutputBit.OUT_Flap.code,
 
-        backgroundColor = { value -> // В mapString здесь один аргумент
-            if (value != null && value != 0) IsidaColor.Blue100 else null
+        style = { value ->
+            if (value != null && value != 0) backgroundColor = IsidaColor.Blue100
         },
-        // valueColor = { value ->
-        //     if (value != null && value != 0) IsidaColor.Yellow900 else null
-        // },
 
         mapper = { value ->
             // Здесь мы возвращаем обычный String?
@@ -311,12 +303,9 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         title = Res.string.outExtend,
         value = output and IsidaCommands.OutputBit.OUT_Extend.code,
 
-        backgroundColor = { value -> // В mapString здесь один аргумент
-            if (value != null && value != 0) IsidaColor.Yellow500 else null
+        style = { value ->
+            if (value != null && value != 0) backgroundColor = IsidaColor.Yellow500
         },
-        // valueColor = { value ->
-        //     if (value != null && value != 0) IsidaColor.Yellow900 else null
-        // },
 
         mapper = { value ->
             // Здесь мы возвращаем обычный String?
@@ -329,12 +318,9 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         title = Res.string.outTrays,
         value = output and IsidaCommands.OutputBit.OUT_Trays.code,
 
-        backgroundColor = { value -> // В mapString здесь один аргумент
-            if (value != null && value != 0) IsidaColor.Green500 else null
+        style = { value ->
+            if (value != null && value != 0) backgroundColor = IsidaColor.Green500
         },
-        // valueColor = { value ->
-        //     if (value != null && value != 0) IsidaColor.Yellow900 else null
-        // },
 
         mapper = { value ->
             // Здесь мы возвращаем обычный String?
@@ -353,13 +339,11 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     mapStringResources(
         title = Res.string.fuses,
         value = fuses and 0x0F,
-        backgroundColor = { value, _ ->
-            if (value != null && value != 0) IsidaColor.Red900
-            else null
-        },
-        valueColor = { value, _ ->
-            if (value != null && value != 0) IsidaColor.Yellow900
-            else null
+        style = { value, _ ->
+            if (value != null && value != 0) {
+                backgroundColor = IsidaColor.Red900
+                valueColor = IsidaColor.Yellow900
+            }
         },
         mapper = { value ->
             val result = mutableListOf<StringResource>()
@@ -383,13 +367,11 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     mapStringResources(
         title = Res.string.errors,
         value = errors, // предполагаем, что это Int
-        backgroundColor = { value, _ ->
-            if (value != null && value != 0) IsidaColor.Red500
-            else null
-        },
-        valueColor = { value, _ ->
-            if (value != null && value != 0) IsidaColor.Yellow900
-            else null
+        style = { value, _ ->
+            if (value != null && value != 0) {
+                backgroundColor = IsidaColor.Red500
+                valueColor = IsidaColor.Yellow900
+            }
         },
         mapper = { value ->
             val result = mutableListOf<StringResource>()
@@ -414,13 +396,11 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     mapStringResources(
         title = Res.string.warnings,
         value = warning,
-        backgroundColor = { value, _ ->
-            if (value != null && value != 0) IsidaColor.Yellow500
-            else null
-        },
-        valueColor = { value, _ ->
-            if (value != null && value != 0) IsidaColor.Red900
-            else null
+        style = { value, _ ->
+            if (value != null && value != 0) {
+                backgroundColor = IsidaColor.Yellow500
+                valueColor = IsidaColor.Red900
+            }
         },
         mapper = { value ->
             val result = mutableListOf<StringResource>()

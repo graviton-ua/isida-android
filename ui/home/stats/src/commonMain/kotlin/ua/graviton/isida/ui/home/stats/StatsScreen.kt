@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Analytics
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.whoppah.common.compose.theme.WhoppahTheme
-import com.whoppah.common.resources.CellNum
 import com.whoppah.common.resources.Res
 import com.whoppah.common.resources.home_tab_stats
 import com.whoppah.metrox.viewmodel.injectedViewModel
@@ -68,19 +68,11 @@ private fun StatsScreen(
         contentPadding = WindowInsets.statusBars.add(WindowInsets(left = 12.dp, right = 12.dp)).asPaddingValues(),
         modifier = Modifier.fillMaxSize()
     ) {
-        // stickyHeader {
-        //     Text(
-        //         text = stringResource(Res.string.CellNum, state.titleDeviceId?.toString() ?: "--"),
-        //         modifier = Modifier
-        //             .fillMaxWidth()
-        //             .background(state.titleDeviceBackgroundColor ?: Color.Transparent)
-        //     )
-        // }
-
         state.items.forEach { item ->
             when (item) {
                 is StatsItem.Header -> stickyHeader(key = item.id) { HeaderItem(item) }
                 is StatsItem.Info -> item(key = item.id) { InfoItem(item) }
+                is StatsItem.InfoString -> item(key = item.id) { InfoStringItem(item) }
             }
         }
     }
@@ -96,12 +88,13 @@ private fun HeaderItem(item: StatsItem.Header) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(item.backgroundColor ?: Color.LightGray) // Цвет заголовка по умолчанию, если не указан
+            .background(item.style.backgroundColor ?: Color.LightGray) // Цвет заголовка по умолчанию, если не указан
             .padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
         Text(
             text = item.title.asString(),
             fontWeight = FontWeight.Bold,
+            color = item.style.titleColor ?: Color.Unspecified
         )
     }
 }
@@ -109,19 +102,20 @@ private fun HeaderItem(item: StatsItem.Header) {
 /**
  * Отрисовывает одну информационную строку [StatsItem.Info].
  * Обрабатывает различные типы контента (числовой, строковый ресурс, обычный текст) и форматирование.
- * Фоновый цвет применяется только к части строки со значением.
+ * Фоновый цвет применяется только к части строки со значением/контентом.
  *
  * @param item Элемент данных информации.
  */
 @Composable
 private fun InfoItem(
-    item: StatsItem.Info
+    item: StatsItem.Info,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
             text = item.title.asString(),
+            color = item.style.titleColor ?: Color.Unspecified,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
@@ -136,7 +130,7 @@ private fun InfoItem(
                     val vStr = if (v is Float) String.format("%.1f", v) else v.toString()
                     if (t != null) {
                         val tStr = if (t is Float) String.format("%.1f", t) else t.toString()
-                        "$vStr  [$tStr]"
+                        "$vStr  [$t]"
                     } else {
                         vStr
                     }
@@ -162,14 +156,37 @@ private fun InfoItem(
 
         Text(
             text = valueText,
-            color = (item.content as? StatsItem.Content.Numeric<*>)?.valueColor
-                ?: (item.content as? StatsItem.Content.TextResource)?.valueColor
-                ?: (item.content as? StatsItem.Content.TextRaw)?.valueColor
-                ?: Color.Black,
+            color = item.style.valueColor ?: Color.Black,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .background(color = item.backgroundColor ?: Color.Transparent)
+                .background(color = item.style.backgroundColor ?: Color.Transparent)
+        )
+    }
+}
+
+@Composable
+private fun InfoStringItem(
+    item: StatsItem.InfoString,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = item.title.asString(),
+            color = item.style.titleColor ?: LocalContentColor.current,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        )
+
+        Text(
+            text = item.content.asString(),
+            color = item.style.valueColor ?: LocalContentColor.current,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .background(color = item.style.backgroundColor ?: Color.Transparent)
         )
     }
 }

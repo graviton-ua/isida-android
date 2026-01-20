@@ -17,6 +17,14 @@ import org.jetbrains.compose.resources.stringResource
 internal sealed interface StatsItem {
     val id: Int
     val title: Title
+    val style: Style
+
+    @Immutable
+    data class Style(
+        val backgroundColor: Color? = null,
+        val titleColor: Color? = null,
+        val valueColor: Color? = null,
+    )
 
     /**
      * Представляет собой заголовок [StatsItem].
@@ -25,12 +33,23 @@ internal sealed interface StatsItem {
     @Immutable
     sealed interface Title {
         /** Заголовок, определенный строковым ресурсом. */
+        @Deprecated(
+            "Use Title.ComposableString instead",
+            ReplaceWith(
+                "Title.ComposableString.composableString(key = res to args) { stringResource(res, *args.toTypedArray()) }",
+                "org.jetbrains.compose.resources.stringResource"
+            )
+        )
         data class Resource(
             val res: StringResource,
             val args: List<Any> = emptyList() // 1. Добавляем поле для аргументов
         ) : Title
 
         /** Заголовок, определенный обычной строкой. */
+        @Deprecated(
+            "Use Title.ComposableString instead",
+            ReplaceWith("Title.ComposableString.composableString(key = text) { text }")
+        )
         data class Raw(val text: String) : Title
 
         @Immutable
@@ -79,25 +98,36 @@ internal sealed interface StatsItem {
      * Элемент закрепленного заголовка для группировки или маркировки разделов.
      *
      * @property title Заголовок заголовка.
-     * @property backgroundColor Необязательный фоновый цвет для заголовка.
+     * @property style Стилизация элемента.
      *
      * **Пример использования:**
      * ```kotlin
-     * StatsItem.Header(title = Res.string.section_title, backgroundColor = Color.LightGray)
+     * StatsItem.Header(title = Res.string.section_title, style = StatsItem.Style(backgroundColor = Color.LightGray))
      * ```
      */
     @Immutable
     data class Header(
         override val title: Title,
-        val backgroundColor: Color? = null,
+        override val style: Style = Style(),
     ) : StatsItem {
+        @Deprecated(
+            "Use primary constructor with Title.ComposableString",
+            ReplaceWith(
+                "Header(title = Title.ComposableString.composableString(key = title to args) { stringResource(title, *args.toTypedArray()) }, style = style)",
+                "org.jetbrains.compose.resources.stringResource"
+            )
+        )
         constructor(
             title: StringResource,
             vararg args: Any, // Добавляем vararg
-            backgroundColor: Color? = null
-        ) : this(Title.Resource(title, args.toList()), backgroundColor)
+            style: Style = Style()
+        ) : this(Title.Resource(title, args.toList()), style)
 
-        constructor(title: String, backgroundColor: Color? = null) : this(Title.Raw(title), backgroundColor)
+        @Deprecated(
+            "Use primary constructor with Title.ComposableString",
+            ReplaceWith("Header(title = Title.ComposableString.composableString(key = title) { title }, style = style)")
+        )
+        constructor(title: String, style: Style = Style()) : this(Title.Raw(title), style)
 
         override val id: Int get() = title.hashCode()
     }
@@ -107,7 +137,7 @@ internal sealed interface StatsItem {
      *
      * @property title Метка строки.
      * @property content Данные для отображения (числовые, строковый ресурс или обычный текст).
-     * @property backgroundColor Необязательный фоновый цвет для части строки со значением/контентом.
+     * @property style Стилизация элемента.
      *
      * **Пример использования:**
      * ```kotlin
@@ -121,12 +151,33 @@ internal sealed interface StatsItem {
     data class Info(
         override val title: Title,
         val content: Content,
-        val backgroundColor: Color? = null,
+        override val style: Style = Style(),
     ) : StatsItem {
-        constructor(title: StringResource, content: Content, backgroundColor: Color? = null) : this(Title.Resource(title), content, backgroundColor)
-        constructor(title: String, content: Content, backgroundColor: Color? = null) : this(Title.Raw(title), content, backgroundColor)
+        @Deprecated(
+            "Use primary constructor with Title.ComposableString",
+            ReplaceWith(
+                "Info(title = Title.ComposableString.composableString(key = title) { stringResource(title) }, content = content, style = style)",
+                "org.jetbrains.compose.resources.stringResource"
+            )
+        )
+        constructor(title: StringResource, content: Content, style: Style = Style()) : this(Title.Resource(title), content, style)
+
+        @Deprecated(
+            "Use primary constructor with Title.ComposableString",
+            ReplaceWith("Info(title = Title.ComposableString.composableString(key = title) { title }, content = content, style = style)")
+        )
+        constructor(title: String, content: Content, style: Style = Style()) : this(Title.Raw(title), content, style)
 
         override val id: Int get() = title.hashCode()
+    }
+
+    @Immutable
+    data class InfoString(
+        override val title: Title,
+        val content: Title.ComposableString,
+        override val style: Style = Style(),
+    ) : StatsItem {
+        override val id: Int = title.hashCode()
     }
 
     /**
@@ -139,13 +190,11 @@ internal sealed interface StatsItem {
          *
          * @property value Текущее значение.
          * @property target Необязательное целевое или заданное значение.
-         * @property valueColor Необязательный цвет текста для значения (например, для индикации предупреждений).
          */
         @Immutable
         data class Numeric<T : Number>(
             val value: T?,
             val target: T? = null,
-            val valueColor: Color? = null
         ) : Content
 
         /**
@@ -153,13 +202,11 @@ internal sealed interface StatsItem {
          *
          * @property values Список текущих значений в виде строковых ресурсов.
          * @property targets Список целевых значений в виде строковых ресурсов.
-         * @property valueColor Необязательный цвет текста для значения.
          */
         @Immutable
         data class TextResource(
             val values: List<StringResource>,
             val targets: List<StringResource> = emptyList(),
-            val valueColor: Color? = null
         ) : Content
 
         /**
@@ -167,13 +214,11 @@ internal sealed interface StatsItem {
          *
          * @property value Текущее текстовое значение.
          * @property target Необязательное целевое текстовое значение.
-         * @property valueColor Необязательный цвет текста для значения.
          */
         @Immutable
         data class TextRaw(
             val value: String?,
             val target: String? = null,
-            val valueColor: Color? = null
         ) : Content
     }
 }

@@ -16,42 +16,80 @@ import org.jetbrains.compose.resources.StringResource
  * }
  * ```
  */
+/**
+ * DSL builder for [StatsItem.Style].
+ */
+internal class StyleBuilder {
+    var backgroundColor: Color? = null
+    var titleColor: Color? = null
+    var valueColor: Color? = null
+
+    fun build() = StatsItem.Style(
+        backgroundColor = backgroundColor,
+        titleColor = titleColor,
+        valueColor = valueColor
+    )
+}
+
 internal class StatsListBuilder {
     private val list = mutableListOf<StatsItem>()
 
     fun header(
         title: StatsItem.Title,
-        backgroundColor: Color? = null,
-    ) = list.add(StatsItem.Header(title = title, backgroundColor = backgroundColor))
+        style: StyleBuilder.() -> Unit = {},
+    ) {
+        val builder = StyleBuilder()
+        builder.style()
+        list.add(StatsItem.Header(title = title, style = builder.build()))
+    }
 
     /**
      * Добавляет элемент заголовка с заголовком в виде обычной строки.
      *
      * @param title Текст заголовка.
-     * @param backgroundColor Необязательный фоновый цвет.
+     * @param style Лямбда для настройки стиля.
      */
+    @Deprecated(
+        "Use header(StatsItem.Title) instead",
+        ReplaceWith("header(title = StatsItem.Title.ComposableString.composableString(key = title) { title }, style = style)")
+    )
     fun header(
         title: String,
-        backgroundColor: Color? = null,
-    ) = list.add(StatsItem.Header(title = title, backgroundColor = backgroundColor))
+        style: StyleBuilder.() -> Unit = {},
+    ) {
+        val builder = StyleBuilder()
+        builder.style()
+        list.add(StatsItem.Header(title = title, style = builder.build()))
+    }
 
     /**
      * Добавляет элемент заголовка с заголовком в виде ID ресурса.
      *
      * @param title ID ресурса заголовка.
-     * @param backgroundColor Необязательный фоновый цвет.
+     * @param style Лямбда для настройки стиля.
      */
+    @Deprecated(
+        "Use header(StatsItem.Title) instead",
+        ReplaceWith(
+            "header(title = StatsItem.Title.ComposableString.composableString(key = title to args) { stringResource(title, *args) }, style = style)",
+            "org.jetbrains.compose.resources.stringResource"
+        )
+    )
     fun header(
         title: StringResource,
         vararg args: Any, // Принимаем аргументы
-        backgroundColor: Color? = null,
-    ) = list.add(
-        StatsItem.Header(
-            // Создаем Title.Resource напрямую, преобразуя массив в список
-            title = StatsItem.Title.Resource(title, args.toList()),
-            backgroundColor = backgroundColor
+        style: StyleBuilder.() -> Unit = {},
+    ) {
+        val builder = StyleBuilder()
+        builder.style()
+        list.add(
+            StatsItem.Header(
+                // Создаем Title.Resource напрямую, преобразуя массив в список
+                title = StatsItem.Title.Resource(title, args.toList()),
+                style = builder.build()
+            )
         )
-    )
+    }
 
 
     /**
@@ -61,34 +99,49 @@ internal class StatsListBuilder {
      * @param title ID ресурса метки для элемента.
      * @param value Основное числовое значение (например, текущая температура).
      * @param target Целевое/заданное числовое значение (необязательно, например, целевая температура).
-     * @param backgroundColor Необязательная лямбда для динамического определения фонового цвета значения на основе [value].
-     * @param valueColor Необязательная лямбда для динамического определения цвета текста на основе [value] и [target].
-     *
-     * **Пример использования:**
-     * ```kotlin
-     * item(
-     *     title = Res.string.temp_label,
-     *     value = currentTemp,
-     *     target = setPoint,
-     *     valueColor = { v, t -> if (v > t) Color.Red else Color.Green }
-     * )
-     * ```
+     * @param style Лямбда для настройки стиля на основе значений.
      */
+    @Deprecated("Use item(title = StatsItem.Title, content = StatsItem.Title.ComposableString) instead")
+    fun <T : Number> item(
+        title: StatsItem.Title,
+        value: T?,
+        target: T? = null,
+        style: (StyleBuilder.(value: T?, target: T?) -> Unit)? = null,
+    ) {
+        val builder = StyleBuilder()
+        style?.invoke(builder, value, target)
+        list.add(
+            StatsItem.Info(
+                title = title,
+                content = StatsItem.Content.Numeric(value, target),
+                style = builder.build()
+            )
+        )
+    }
+
+    fun item(
+        title: StatsItem.Title,
+        content: StatsItem.Title.ComposableString,
+        style: (StyleBuilder.() -> Unit)? = null,
+    ) {
+        val builder = StyleBuilder()
+        style?.invoke(builder)
+        list.add(
+            StatsItem.InfoString(
+                title = title,
+                content = content,
+                style = builder.build()
+            )
+        )
+    }
+
+    @Deprecated("Use item(title = StatsItem.Title, content = StatsItem.Title.ComposableString) instead")
     fun <T : Number> item(
         title: StringResource,
         value: T?,
         target: T? = null,
-        backgroundColor: ((value: T?) -> Color?)? = null,
-        valueColor: ((value: T?, target: T?) -> Color?)? = null
-    ) {
-        list.add(
-            StatsItem.Info(
-                title = title,
-                content = StatsItem.Content.Numeric(value, target, valueColor?.invoke(value, target)),
-                backgroundColor = backgroundColor?.invoke(value)
-            )
-        )
-    }
+        style: (StyleBuilder.(value: T?, target: T?) -> Unit)? = null,
+    ) = item(StatsItem.Title.Resource(title), value, target, style)
 
     /**
      * Добавляет элемент, который сопоставляет одно значение (обычно Enum или Int код) с локализованным [StringResource].
@@ -97,39 +150,39 @@ internal class StatsListBuilder {
      * @param title ID ресурса метки.
      * @param value Исходное значение для сопоставления.
      * @param target Необязательное целевое значение для сопоставления.
-     * @param backgroundColor Необязательная лямбда для логики фонового цвета.
-     * @param valueColor Необязательная лямбда для логики цвета текста.
+     * @param style Лямбда для настройки стиля.
      * @param mapper Функция, которая преобразует [value] (типа T) в один [StringResource]?.
-     *
-     * **Пример использования:**
-     * ```kotlin
-     * mapStringResource(
-     *     title = Res.string.status,
-     *     value = statusCode,
-     *     mapper = { code -> if (code == 1) Res.string.active else Res.string.inactive }
-     * )
-     * ```
      */
+    @Deprecated("Use item(title = StatsItem.Title, content = StatsItem.Title.ComposableString) instead")
     fun <T> mapStringResource(
-        title: StringResource,
+        title: StatsItem.Title,
         value: T?,
         target: T? = null,
-        backgroundColor: ((value: T?, target: T?) -> Color?)? = null,
-        valueColor: ((value: T?, target: T?) -> Color?)? = null,
+        style: (StyleBuilder.(value: T?, target: T?) -> Unit)? = null,
         mapper: ((T) -> StringResource?)? = null,
     ) {
+        val builder = StyleBuilder()
+        style?.invoke(builder, value, target)
         list.add(
             StatsItem.Info(
                 title = title,
                 content = StatsItem.Content.TextResource(
                     values = mapper?.let { if (value != null) listOfNotNull(it.invoke(value)) else null } ?: emptyList(),
                     targets = mapper?.let { if (target != null) listOfNotNull(it.invoke(target)) else null } ?: emptyList(),
-                    valueColor = valueColor?.invoke(value, target),
                 ),
-                backgroundColor = backgroundColor?.invoke(value, target)
+                style = builder.build()
             )
         )
     }
+
+    @Deprecated("Use item(title = StatsItem.Title, content = StatsItem.Title.ComposableString) instead")
+    fun <T> mapStringResource(
+        title: StringResource,
+        value: T?,
+        target: T? = null,
+        style: (StyleBuilder.(value: T?, target: T?) -> Unit)? = null,
+        mapper: ((T) -> StringResource?)? = null,
+    ) = mapStringResource(StatsItem.Title.Resource(title), value, target, style, mapper)
 
     /**
      * Добавляет элемент, который сопоставляет значение со **списком** [StringResource].
@@ -138,44 +191,39 @@ internal class StatsListBuilder {
      * @param title ID ресурса метки.
      * @param value Исходное значение для сопоставления.
      * @param target Необязательное целевое значение для сопоставления.
-     * @param backgroundColor Необязательная лямбда для логики фонового цвета.
-     * @param valueColor Необязательная лямбда для логики цвета текста.
+     * @param style Лямбда для настройки стиля.
      * @param mapper Функция, которая преобразует [value] (типа T) в [List] из [StringResource].
-     *
-     * **Пример использования:**
-     * ```kotlin
-     * mapStringResources(
-     *     title = Res.string.features,
-     *     value = featureFlags,
-     *     mapper = { flags ->
-     *         val list = mutableListOf<StringResource>()
-     *         if (flags has 1) list.add(Res.string.feature_1)
-     *         if (flags has 2) list.add(Res.string.feature_2)
-     *         list
-     *     }
-     * )
-     * ```
      */
+    @Deprecated("Use item(title = StatsItem.Title, content = StatsItem.Title.ComposableString) instead")
     fun <T> mapStringResources(
-        title: StringResource,
+        title: StatsItem.Title,
         value: T?,
         target: T? = null,
-        backgroundColor: ((value: T?, target: T?) -> Color?)? = null,
-        valueColor: ((value: T?, target: T?) -> Color?)? = null,
+        style: (StyleBuilder.(value: T?, target: T?) -> Unit)? = null,
         mapper: (T) -> List<StringResource>,
     ) {
+        val builder = StyleBuilder()
+        style?.invoke(builder, value, target)
         list.add(
             StatsItem.Info(
                 title = title,
                 content = StatsItem.Content.TextResource(
                     values = if (value != null) mapper(value) else emptyList(),
                     targets = if (target != null) mapper(target) else emptyList(),
-                    valueColor = valueColor?.invoke(value, target),
                 ),
-                backgroundColor = backgroundColor?.invoke(value, target)
+                style = builder.build()
             )
         )
     }
+
+    @Deprecated("Use item(title = StatsItem.Title, content = StatsItem.Title.ComposableString) instead")
+    fun <T> mapStringResources(
+        title: StringResource,
+        value: T?,
+        target: T? = null,
+        style: (StyleBuilder.(value: T?, target: T?) -> Unit)? = null,
+        mapper: (T) -> List<StringResource>,
+    ) = mapStringResources(StatsItem.Title.Resource(title), value, target, style, mapper)
 
     /**
      * Добавляет элемент, который сопоставляет значение с обычной строкой (Raw String).
@@ -184,39 +232,39 @@ internal class StatsListBuilder {
      * @param title ID ресурса метки.
      * @param value Исходное значение для сопоставления.
      * @param target Необязательное целевое значение для сопоставления.
-     * @param backgroundColor Необязательная лямбда для логики фонового цвета.
-     * @param valueColor Необязательная лямбда для логики цвета текста.
+     * @param style Лямбда для настройки стиля.
      * @param mapper Функция, которая преобразует [value] (типа T) в [String]?.
-     *
-     * **Пример использования:**
-     * ```kotlin
-     * mapString(
-     *     title = Res.string.mode,
-     *     value = modeInt,
-     *     mapper = { it -> "Mode #$it" }
-     * )
-     * ```
      */
+    @Deprecated("Use item(title = StatsItem.Title, content = StatsItem.Title.ComposableString) instead")
     fun <T> mapString(
-        title: StringResource,
+        title: StatsItem.Title,
         value: T?,
         target: T? = null,
-        backgroundColor: ((value: T?) -> Color?)? = null,
-        valueColor: ((value: T?) -> Color?)? = null,
+        style: (StyleBuilder.(value: T?) -> Unit)? = null,
         mapper: (T) -> String?
     ) {
+        val builder = StyleBuilder()
+        style?.invoke(builder, value)
         list.add(
             StatsItem.Info(
                 title = title,
                 content = StatsItem.Content.TextRaw(
                     value = if (value != null) mapper(value) else null,
                     target = if (target != null) mapper(target) else null,
-                    valueColor = valueColor?.invoke(value),
                 ),
-                backgroundColor = backgroundColor?.invoke(value)
+                style = builder.build()
             )
         )
     }
+
+    @Deprecated("Use item(title = StatsItem.Title, content = StatsItem.Title.ComposableString) instead")
+    fun <T> mapString(
+        title: StringResource,
+        value: T?,
+        target: T? = null,
+        style: (StyleBuilder.(value: T?) -> Unit)? = null,
+        mapper: (T) -> String?
+    ) = mapString(StatsItem.Title.Resource(title), value, target, style, mapper)
 
     /**
      * Завершает процесс сборки и возвращает неизменяемый список [StatsItem].
