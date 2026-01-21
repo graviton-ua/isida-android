@@ -6,7 +6,7 @@
     <string name="home_tab_prop">Properties</string>
     <string name="home_tab_report">Report</string>
 
-    <string name="CellNum">КАМЕРА № %1$s</string>
+    <string name="CellNum">КАМЕРА № %1$d</string>
     <string name="btnStart">Старт</string>
     <string name="btnProp">Уст.</string>
     <string name="btnInfo">Инфо</string>

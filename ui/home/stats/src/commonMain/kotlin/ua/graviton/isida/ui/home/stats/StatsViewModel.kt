@@ -89,27 +89,31 @@ internal val PlaceholderStats = buildStats {
  */
 private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     header(
-        title = "Камера № $node"
-    )
-    header(
-        title = composableString(node) { stringResource(Res.string.CellNum, node) }
-    )
-    header(
-        title = Res.string.CellNum,
-        node, // Передаем аргумент здесь
+        title = composableString(node) { stringResource(Res.string.CellNum, node) },
         style = {
             backgroundColor = if (state == 0x80) IsidaColor.Yellow500 else if (state > 0) IsidaColor.Green500 else null
         }
     )
-    header(title = Res.string.titleSensor)
+
+    header(
+        title = composableString { stringResource(Res.string.titleSensor) }
+    )
     // *****--------------------------- T0 -------------------------------*****
     item(
-        title = Res.string.pv_t0_label,
-        value = if (pvT0 > 80) null else pvT0,
-        target = spT0,
-        style = { value, target ->
+        title = composableString { stringResource(Res.string.pv_t0_label) },
+        // value = if (pvT0 > 80) null else pvT0,
+        // target = spT0,
+        content = composableString(pvT0, spT0) {
+            val value = if (pvT0 > 80) null else pvT0
+            val valueFormatted = String.format("$.1f", value)
+            val target = spT0
+            "$valueFormatted°C [$target°C]"
+        },
+        style = {
+            val value = if (pvT0 > 80) null else pvT0
+            val target = spT0
             valueColor = when {
-                value == null || target == null -> null
+                value == null -> null
                 value > target -> IsidaColor.Red900
                 value < target -> IsidaColor.Indigo800
                 else -> null
@@ -146,38 +150,29 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
 
     header(title = Res.string.titleStstus)
     // *****--------------------------- State -------------------------------*****
-    mapStringResources(
-        title = Res.string.state,
-        value = state,
-        style = { value, _ ->
-            backgroundColor = when (value) {
-                IsidaCommands.DeviceMode.DISABLE.code -> IsidaColor.BlueGrey100
-                IsidaCommands.DeviceMode.ENABLE.code -> IsidaColor.Green500
-                IsidaCommands.DeviceMode.ONLY_ROTATION.code -> IsidaColor.Yellow500
-                else -> IsidaColor.Yellow500
-            }
-        },
-        mapper = { value ->
+    item(
+        title = composableString { stringResource(Res.string.state) },
+        content = composableString(state) {
             // 1. Определяем режим
-            val mode = when (value) {
-                value or IsidaCommands.DeviceMode.ENABLE.code -> IsidaCommands.DeviceMode.ENABLE
-                value or IsidaCommands.DeviceMode.WAITING_COOLING.code -> IsidaCommands.DeviceMode.ENABLE
-                value or IsidaCommands.DeviceMode.WAITING_ON.code -> IsidaCommands.DeviceMode.ENABLE
-                value or IsidaCommands.DeviceMode.HORIZON_ON.code -> IsidaCommands.DeviceMode.ENABLE
-                value or IsidaCommands.DeviceMode.HORIZON_SET.code -> IsidaCommands.DeviceMode.ENABLE
-                value or IsidaCommands.DeviceMode.TRAY_ROTATION_ON.code -> IsidaCommands.DeviceMode.ENABLE
-                value or IsidaCommands.DeviceMode.FAN_MONITORING_ON.code -> IsidaCommands.DeviceMode.ENABLE
-                value or IsidaCommands.DeviceMode.ONLY_ROTATION.code -> IsidaCommands.DeviceMode.ONLY_ROTATION
+            val mode = when (state) {
+                state or IsidaCommands.DeviceMode.ENABLE.code -> IsidaCommands.DeviceMode.ENABLE
+                state or IsidaCommands.DeviceMode.WAITING_COOLING.code -> IsidaCommands.DeviceMode.ENABLE
+                state or IsidaCommands.DeviceMode.WAITING_ON.code -> IsidaCommands.DeviceMode.ENABLE
+                state or IsidaCommands.DeviceMode.HORIZON_ON.code -> IsidaCommands.DeviceMode.ENABLE
+                state or IsidaCommands.DeviceMode.HORIZON_SET.code -> IsidaCommands.DeviceMode.ENABLE
+                state or IsidaCommands.DeviceMode.TRAY_ROTATION_ON.code -> IsidaCommands.DeviceMode.ENABLE
+                state or IsidaCommands.DeviceMode.FAN_MONITORING_ON.code -> IsidaCommands.DeviceMode.ENABLE
+                state or IsidaCommands.DeviceMode.ONLY_ROTATION.code -> IsidaCommands.DeviceMode.ONLY_ROTATION
                 else -> IsidaCommands.DeviceMode.DISABLE
             }
 
             // 2. Собираем экстра-флаги
             val extras = if (mode == IsidaCommands.DeviceMode.ENABLE) {
                 val result = mutableListOf<IsidaCommands.DeviceModeExtra>()
-                if (value == value or IsidaCommands.DeviceModeExtra.EXTRA_1.code) result.add(IsidaCommands.DeviceModeExtra.EXTRA_1)
-                if (value == value or IsidaCommands.DeviceModeExtra.EXTRA_2.code) result.add(IsidaCommands.DeviceModeExtra.EXTRA_2)
-                if (value == value or IsidaCommands.DeviceModeExtra.EXTRA_3.code) result.add(IsidaCommands.DeviceModeExtra.EXTRA_3)
-                if (value == value or IsidaCommands.DeviceModeExtra.EXTRA_4.code) result.add(IsidaCommands.DeviceModeExtra.EXTRA_4)
+                if (state == (state or IsidaCommands.DeviceModeExtra.EXTRA_1.code)) result.add(IsidaCommands.DeviceModeExtra.EXTRA_1)
+                if (state == (state or IsidaCommands.DeviceModeExtra.EXTRA_2.code)) result.add(IsidaCommands.DeviceModeExtra.EXTRA_2)
+                if (state == (state or IsidaCommands.DeviceModeExtra.EXTRA_3.code)) result.add(IsidaCommands.DeviceModeExtra.EXTRA_3)
+                if (state == (state or IsidaCommands.DeviceModeExtra.EXTRA_4.code)) result.add(IsidaCommands.DeviceModeExtra.EXTRA_4)
                 result
             } else {
                 emptyList()
@@ -195,25 +190,40 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
             }
 
             // 4. Оборачиваем в список для соответствия новой сигнатуре функции
-            listOf(resource)
+            stringResource(resource)
+        },
+        style = {
+            backgroundColor = when (state) {
+                IsidaCommands.DeviceMode.DISABLE.code -> IsidaColor.BlueGrey100
+                IsidaCommands.DeviceMode.ENABLE.code -> IsidaColor.Green500
+                IsidaCommands.DeviceMode.ONLY_ROTATION.code -> IsidaColor.Yellow500
+                else -> IsidaColor.Yellow500
+            }
         },
     )
 
     // *****--------------------------- Door -------------------------------*****
-    mapStringResource(
-        title = Res.string.door,
-        value = fuses and 0x04,
+    item(
+        //title = Res.string.door,
+        title = composableString { stringResource(Res.string.door) },
 
-        style = { value, _ ->
-            if (value != null && value != 0 && state > 0 && state < 0x80) {
+        //value = fuses and 0x04,
+        // mapper = { value ->
+        //     if (value != 0) Res.string.doorOpen else Res.string.doorClose
+        // }
+        content = composableString(fuses) {
+            val value = fuses and 0x04
+            val resource = if (value != 0) Res.string.doorOpen else Res.string.doorClose
+            stringResource(resource)
+        },
+
+        style = {
+            val value = fuses and 0x04
+            if (value != 0 && state > 0 && state < 0x80) {
                 backgroundColor = IsidaColor.Yellow900
                 valueColor = IsidaColor.Red900
             }
         },
-
-        mapper = { value ->
-            if (value != 0) Res.string.doorOpen else Res.string.doorClose
-        }
     )
 
     // *****--------------------------- Extend Mode (Raw String) -------------------------------*****
