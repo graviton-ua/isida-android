@@ -1,3 +1,5 @@
+@file:Suppress("SimplifiableCallChain")
+
 package ua.graviton.isida.ui.home.stats
 
 import androidx.lifecycle.ViewModel
@@ -105,9 +107,9 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         // target = spT0,
         content = composableString(pvT0, spT0) {
             val value = if (pvT0 > 80) null else pvT0
-            val valueFormatted = String.format("$.1f", value)
+            val valueFormatted = String.format("%.1f", value)
             val target = spT0
-            "$valueFormatted°C [$target°C]"
+            "$valueFormatted °C [$target °C]"
         },
         style = {
             val value = if (pvT0 > 80) null else pvT0
@@ -123,10 +125,21 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
 
     // *****--------------------------- T1 / RH -------------------------------*****
     item(
-        title = if (pvRh != 0) Res.string.pv_rh_label else Res.string.pv_t1_label,
-        value = if (pvT1 > 80) null else pvT1,
-        target = spT1,
-        style = { value, target ->
+        // title = if (pvRh != 0) Res.string.pv_rh_label else Res.string.pv_t1_label,
+        title = composableString {
+            stringResource(if (pvRh != 0) Res.string.pv_rh_label else Res.string.pv_t1_label)
+        },
+        content = composableString(pvT1, spT1, pvRh) {
+            val value = if (pvT1 > 80) null else pvT1
+            val valueFormatted = String.format("%.1f", value)
+            val target = spT1
+            if (pvRh != 0) "$valueFormatted % [$target %]"
+            else "$valueFormatted °C [$target °C]"
+        },
+
+        style = {
+            val value = if (pvT1 > 80) null else pvT1
+            val target = spT1
             valueColor = when {
                 value == null || target == null -> null
                 value > target -> IsidaColor.Red900
@@ -136,19 +149,30 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         },
     )
 
-    // T2
+    // *****--------------------------- T2 -------------------------------*****
     item(
-        title = Res.string.pv_t2_label,
-        value = if (pvT2 > 80) null else pvT2,
+        title = composableString { stringResource(Res.string.pv_t2_label) },
+        content = composableString(pvT2) {
+            val value = if (pvT2 > 80) null else pvT2
+            if (value != null) {
+                val valueFormatted = String.format("%.1f", value)
+                "$valueFormatted °C"
+            } else ""
+        },
     )
 
-    // CO2
+    // *****--------------------------- CO2 -------------------------------*****
     item(
-        title = Res.string.cotwo,
-        value = if (pvCO2 < 400) null else pvCO2,
+        title = composableString { stringResource(Res.string.cotwo) },
+        content = composableString(pvCO2) {
+            val value = if (pvCO2 < 400) null else pvCO2
+            value?.let { "$it ppm" } ?: ""
+        }
     )
 
-    header(title = Res.string.titleStstus)
+    header(
+        title = composableString { stringResource(Res.string.titleStstus) }
+    )
     // *****--------------------------- State -------------------------------*****
     item(
         title = composableString { stringResource(Res.string.state) },
@@ -206,17 +230,11 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     item(
         //title = Res.string.door,
         title = composableString { stringResource(Res.string.door) },
-
-        //value = fuses and 0x04,
-        // mapper = { value ->
-        //     if (value != 0) Res.string.doorOpen else Res.string.doorClose
-        // }
         content = composableString(fuses) {
             val value = fuses and 0x04
             val resource = if (value != 0) Res.string.doorOpen else Res.string.doorClose
             stringResource(resource)
         },
-
         style = {
             val value = fuses and 0x04
             if (value != 0 && state > 0 && state < 0x80) {
@@ -227,11 +245,10 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     )
 
     // *****--------------------------- Extend Mode (Raw String) -------------------------------*****
-    mapStringResources(
-        title = Res.string.extendMode,
-        value = extendMode,
-        mapper = { value ->
-            val resource = when (value) {
+    item(
+        title = composableString { stringResource(Res.string.extendMode) },
+        content = composableString(extendMode) {
+            val resource = when (extendMode) {
                 0 -> Res.string.extendSiren
                 1 -> Res.string.extendVentilation
                 2 -> Res.string.extendForcedHeating
@@ -240,16 +257,15 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
                 5 -> Res.string.extendWetting
                 else -> null
             }
-            if (resource != null) listOf(resource) else emptyList()
-        },
+            resource?.let { stringResource(resource) } ?: ""
+        }
     )
 
     // *****--------------------------- Program -------------------------------*****
-    mapStringResources(
-        title = Res.string.programm,
-        value = programm,
-        mapper = { value ->
-            val resource = when (value) {
+    item(
+        title = composableString { stringResource(Res.string.programm) },
+        content = composableString(programm) {
+            val resource = when (programm) {
                 0 -> Res.string.no
                 1 -> Res.string.chickens
                 2 -> Res.string.ducklings
@@ -257,133 +273,121 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
                 4 -> Res.string.quail
                 else -> null
             }
-
-            // Оборачиваем найденный ресурс в список.
-            // Если ничего не найдено (null), возвращаем пустой список.
-            if (resource != null) listOf(resource) else emptyList()
-        },
+            resource?.let { stringResource(resource) } ?: ""
+        }
     )
 
-    header(title = Res.string.titleControl)
+    header(
+        title = composableString { stringResource(Res.string.titleControl) }
+    )
     // *****--------------------------- Power -------------------------------*****
     item(
-        title = Res.string.power,
-        value = power,
-        style = { value, _ ->
-            if (value != null && value != 0) valueColor = IsidaColor.Red900
+        title = composableString { stringResource(Res.string.power) },
+        content = composableString(power) { "$power %" },
+        style = {
+            if (power != 0) valueColor = IsidaColor.Red900
         },
     )
 
     // *****--------------------------- Wetting -------------------------------*****
-    mapString(
-        title = Res.string.outWetting,
-        value = output and IsidaCommands.OutputBit.OUT_Wetting.code,
-
-        style = { value ->
-            if (value != null && value != 0) backgroundColor = IsidaColor.Blue500
-        },
-
-        mapper = { value ->
-            // Здесь мы возвращаем обычный String?
+    item(
+        title = composableString { stringResource(Res.string.outWetting) },
+        content = composableString(output) {
+            val value = output and IsidaCommands.OutputBit.OUT_Wetting.code
             if (value != 0) "ON" else "OFF"
-        }
+        },
+        style = {
+            val value = output and IsidaCommands.OutputBit.OUT_Wetting.code
+            if (value != 0) backgroundColor = IsidaColor.Blue500
+        },
     )
 
     // *****--------------------------- Flap -------------------------------*****
-    mapString(
-        title = Res.string.outFlap,
-        value = output and IsidaCommands.OutputBit.OUT_Flap.code,
-
-        style = { value ->
-            if (value != null && value != 0) backgroundColor = IsidaColor.Blue100
-        },
-
-        mapper = { value ->
-            // Здесь мы возвращаем обычный String?
+    item(
+        title = composableString { stringResource(Res.string.outFlap) },
+        content = composableString(output) {
+            val value = output and IsidaCommands.OutputBit.OUT_Flap.code
             if (value != 0) "ON" else "OFF"
-        }
+        },
+        style = {
+            val value = output and IsidaCommands.OutputBit.OUT_Flap.code
+            if (value != 0) backgroundColor = IsidaColor.Blue100
+        },
     )
     item(
-        title = Res.string.flapAngle,
-        value = pvFlap,
+        title = composableString { stringResource(Res.string.flapAngle) },
+        content = composableString(pvFlap) {
+            "$pvFlap %"
+        }
     )
 
     // *****--------------------------- Extend -------------------------------*****
-    mapString(
-        title = Res.string.outExtend,
-        value = output and IsidaCommands.OutputBit.OUT_Extend.code,
-
-        style = { value ->
-            if (value != null && value != 0) backgroundColor = IsidaColor.Yellow500
-        },
-
-        mapper = { value ->
-            // Здесь мы возвращаем обычный String?
+    item(
+        title = composableString { stringResource(Res.string.outExtend) },
+        content = composableString(output) {
+            val value = output and IsidaCommands.OutputBit.OUT_Extend.code
             if (value != 0) "ON" else "OFF"
-        }
+        },
+        style = {
+            val value = output and IsidaCommands.OutputBit.OUT_Extend.code
+            if (value != 0) backgroundColor = IsidaColor.Yellow500
+        },
     )
 
     // *****--------------------------- Trays -------------------------------*****
-    mapString(
-        title = Res.string.outTrays,
-        value = output and IsidaCommands.OutputBit.OUT_Trays.code,
-
-        style = { value ->
-            if (value != null && value != 0) backgroundColor = IsidaColor.Green500
-        },
-
-        mapper = { value ->
-            // Здесь мы возвращаем обычный String?
+    item(
+        title = composableString { stringResource(Res.string.outTrays) },
+        content = composableString(output) {
+            val value = output and IsidaCommands.OutputBit.OUT_Trays.code
             if (value != 0) "ON" else "OFF"
-        }
+        },
+        style = {
+            val value = output and IsidaCommands.OutputBit.OUT_Trays.code
+            if (value != 0) backgroundColor = IsidaColor.Green500
+        },
     )
 // *****--------------------------- Timer -------------------------------*****
     item(
-        title = Res.string.timer,
-        value = pvTimer,
-        target = timer0,
+        title = composableString { stringResource(Res.string.timer) },
+        content = composableString(pvTimer, timer0) {
+            "$pvTimer min [$timer0]"
+        }
     )
 
-    header(title = Res.string.titleErrors)
+    header(
+        title = composableString { stringResource(Res.string.titleErrors) }
+    )
     // *****--------------------------- Fuses -------------------------------*****
-    mapStringResources(
-        title = Res.string.fuses,
-        value = fuses and 0x0F,
-        style = { value, _ ->
-            if (value != null && value != 0) {
-                backgroundColor = IsidaColor.Red900
-                valueColor = IsidaColor.Yellow900
-            }
-        },
-        mapper = { value ->
+    item(
+        title = composableString { stringResource(Res.string.fuses) },
+        content = composableString(fuses) {
+            val value = fuses and 0x0F
             val result = mutableListOf<StringResource>()
-
             // Проверяем каждый предохранитель по его битовой маске
             if (value and 1 != 0) result.add(Res.string.fuses_0)
             if (value and 2 != 0) result.add(Res.string.fuses_1)
             if (value and 4 != 0) result.add(Res.string.fuses_2)
             if (value and 8 != 0) result.add(Res.string.fuses_3)
-
             // Если ни один бит не поднят, возвращаем список с ресурсом "нет/норма"
             if (result.isEmpty()) {
                 result.add(Res.string.no)
             }
-
-            result
+            result.map { stringResource(it) }.joinToString(separator = "\n")
+        },
+        style = {
+            val value = fuses and 0x0F
+            if (value != 0) {
+                backgroundColor = IsidaColor.Red900
+                valueColor = IsidaColor.Yellow900
+            }
         },
     )
 
     // *****--------------------------- Errors -------------------------------*****
-    mapStringResources(
-        title = Res.string.errors,
-        value = errors, // предполагаем, что это Int
-        style = { value, _ ->
-            if (value != null && value != 0) {
-                backgroundColor = IsidaColor.Red500
-                valueColor = IsidaColor.Yellow900
-            }
-        },
-        mapper = { value ->
+    item(
+        title = composableString { stringResource(Res.string.errors) },
+        content = composableString(errors) {
+            val value = errors // предполагаем, что это Int
             val result = mutableListOf<StringResource>()
 
             // Проверка битовых флагов
@@ -394,25 +398,24 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
             if (value and IsidaCommands.Errors.ERROR_10.code != 0) result.add(Res.string.error_10)
             if (value and IsidaCommands.Errors.ERROR_20.code != 0) result.add(Res.string.error_20)
             if (value and IsidaCommands.Errors.ERROR_40.code != 0) result.add(Res.string.error_40)
-
             // Если список пуст, можно добавить "Нет ошибок"
             if (result.isEmpty()) result.add(Res.string.no)
-
-            result // Возвращаем список
+            result.map { stringResource(it) }.joinToString(separator = "\n")
+        },
+        style = {
+            val value = errors // предполагаем, что это Int
+            if (value != 0) {
+                backgroundColor = IsidaColor.Red500
+                valueColor = IsidaColor.Yellow900
+            }
         },
     )
 
     // *****--------------------------- Warnings -------------------------------*****
-    mapStringResources(
-        title = Res.string.warnings,
-        value = warning,
-        style = { value, _ ->
-            if (value != null && value != 0) {
-                backgroundColor = IsidaColor.Yellow500
-                valueColor = IsidaColor.Red900
-            }
-        },
-        mapper = { value ->
+    item(
+        title = composableString { stringResource(Res.string.warnings) },
+        content = composableString(warning) {
+            val value = warning
             val result = mutableListOf<StringResource>()
 
             // Используем битовое "И" (and), чтобы проверить каждый флаг независимо
@@ -425,8 +428,14 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
             if (result.isEmpty()) {
                 result.add(Res.string.no)
             }
-
-            result // Возвращаем накопленный список
+            result.map { stringResource(it) }.joinToString(separator = "\n")
+        },
+        style = {
+            val value = warning
+            if (value != 0) {
+                backgroundColor = IsidaColor.Yellow500
+                valueColor = IsidaColor.Red900
+            }
         },
     )
 }

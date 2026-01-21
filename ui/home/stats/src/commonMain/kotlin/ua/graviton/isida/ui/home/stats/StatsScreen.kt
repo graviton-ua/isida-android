@@ -70,9 +70,9 @@ private fun StatsScreen(
     ) {
         state.items.forEach { item ->
             when (item) {
-                is StatsItem.Header -> stickyHeader(key = item.id) { HeaderItem(item) }
-                is StatsItem.Info -> item(key = item.id) { InfoItem(item) }
-                is StatsItem.InfoString -> item(key = item.id) { InfoStringItem(item) }
+                is StatsItem.Header -> stickyHeader { HeaderItem(item) }
+                is StatsItem.Info -> item { InfoItem(item) }
+                is StatsItem.InfoString -> item { InfoStringItem(item) }
             }
         }
     }
