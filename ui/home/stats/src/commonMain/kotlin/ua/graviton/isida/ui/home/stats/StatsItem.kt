@@ -14,7 +14,7 @@ import org.jetbrains.compose.resources.stringResource
  * @property title Заголовок элемента, который может быть ресурсом или обычной строкой.
  */
 @Immutable
-internal sealed interface StatsItem {
+sealed interface StatsItem {
     val id: Int
     val title: Title
     val style: Style
