@@ -122,24 +122,20 @@ class JvmBluetoothDriver(
                         for (i in 0 until bytesRead) {
                             val byteInt = readBuffer[i].toInt() and 0xFF // Convert to unsigned int
 
-                            // Logic: Buffer until 0x0A (LF) and 0x0D (CR)
-                            if (byteInt == 0x0A) {
-                                // Check previous byte logic
-                                // Logic: 0x0D then 0x0A means end of message
-                                if (buffer.isNotEmpty() && buffer.last() == 0x0D) {
-                                    // Add the LF
-                                    buffer.add(byteInt)
-
-                                    // Emit packet
-                                    val packet = buffer.map { it.toByte() }.toByteArray()
-                                    _incomingData.emit(packet)
-
-                                    buffer.clear()
-                                } else {
+                            if (buffer.isEmpty()) {
+                                if (byteInt == 0x55) {
                                     buffer.add(byteInt)
                                 }
                             } else {
                                 buffer.add(byteInt)
+                                if (byteInt == 0x0A) {
+                                    val size = buffer.size
+                                    if (size >= 2 && buffer[size - 2] == 0x0D) {
+                                        val packet = buffer.map { it.toByte() }.toByteArray()
+                                        _incomingData.emit(packet)
+                                        buffer.clear()
+                                    }
+                                }
                             }
                         }
                     } else if (bytesRead == -1) {

@@ -140,26 +140,19 @@ class AndroidBluetoothClient(
                     for (i in 0 until bytesRead) {
                         val byteInt = readBuffer[i].toInt() and 0xFF
 
-                        when (byteInt) {
-                            0x0A -> { // LF
-                                // Check previous byte logic from your original code
-                                // Logic: 0x0D then 0x0A means end of message
-                                if (buffer.isNotEmpty() && buffer.last() == 0x0D) {
-                                    // Add the LF
-                                    buffer.add(byteInt)
-
-                                    // Emit packet
+                        if (buffer.isEmpty()) {
+                            if (byteInt == 0x55) {
+                                buffer.add(byteInt)
+                            }
+                        } else {
+                            buffer.add(byteInt)
+                            if (byteInt == 0x0A) {
+                                val size = buffer.size
+                                if (size >= 2 && buffer[size - 2] == 0x0D) {
                                     val packet = buffer.map { it.toByte() }.toByteArray()
                                     _incomingData.emit(packet)
-
                                     buffer.clear()
-                                } else {
-                                    buffer.add(byteInt)
                                 }
-                            }
-
-                            else -> {
-                                buffer.add(byteInt)
                             }
                         }
                     }
