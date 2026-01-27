@@ -11,7 +11,7 @@ abstract class PacketDecoder<T : IsidaPacket> {
 
     @OptIn(ExperimentalUnsignedTypes::class)
     open fun parse(data: ByteArray): Result<T> {
-        //TODO: Verify length of the packet before reading the commandId
+        if (data.size < 10) return Result.failure(IllegalStateException("Invalid packet size: ${data.size} | Packet size should be minimum 10 bytes (if body is 0 size)"))
 
         // Command ID is usually placed at index 4 and takes 2 bytes, [4,5]
         val commandId: Int = data.readU16LE(4)
@@ -21,6 +21,6 @@ abstract class PacketDecoder<T : IsidaPacket> {
         val validPacket = parser.canParse(data)
         if (!validPacket) return Result.failure(IllegalStateException("Invalid packet for commandId: $commandId | data: $data"))
 
-        return parser.parse(data)
+        return parser.parse(data.copyOfRange(fromIndex = 6, toIndex = data.size - 4))
     }
 }

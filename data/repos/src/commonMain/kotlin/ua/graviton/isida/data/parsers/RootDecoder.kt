@@ -6,7 +6,7 @@ import ua.graviton.isida.data.protocol.IsidaPacket
 
 object RootDecoder {
     private val decoders = mapOf<Int, PacketDecoder<out IsidaPacket>>(
-        0x01 to PacketDecoderV1,
+        1 to PacketDecoderV1,
     )
 
     fun parse(data: ByteArray): Result<IsidaPacket> {
