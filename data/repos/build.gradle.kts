@@ -16,8 +16,6 @@ kotlin {
             implementation(projects.core.preferences)
             implementation(projects.core.logging)
 
-            //api(projects.data.db)
-            //api(projects.data.web)
             implementation(projects.data.models)
 
             implementation(libs.kotlinx.coroutines.core)

@@ -3,6 +3,7 @@
 package ua.graviton.isida.domain.bluetooth
 
 import co.touchlab.kermit.Logger
+import com.whoppah.util.AppCoroutineDispatchers
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
@@ -10,6 +11,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 import ua.graviton.isida.data.bluetooth.BluetoothClient
 import ua.graviton.isida.data.bluetooth.ConnectionState
@@ -19,6 +22,7 @@ import ua.graviton.isida.data.bluetooth.asDeviceAddress
 @Inject
 @SingleIn(AppScope::class)
 class DeviceConnectionManager(
+    dispatchers: AppCoroutineDispatchers,
     private val client: BluetoothClient, // Platform implementation injected here
     private val appScope: CoroutineScope, // Scope that lives as long as the app
 ) {
@@ -29,6 +33,8 @@ class DeviceConnectionManager(
 
     // Expose data stream if UI needs raw data, or keep it internal
     val dataStream: SharedFlow<ByteArray> = client.incomingData
+        .map { it } // TODO: Probably should parse ByteArray into IsidaPacket and return it as Result<IsidaPacket> (not sure)
+        .flowOn(dispatchers.computation)
         .shareIn(appScope, SharingStarted.WhileSubscribed(), replay = 0)
 
     init {
