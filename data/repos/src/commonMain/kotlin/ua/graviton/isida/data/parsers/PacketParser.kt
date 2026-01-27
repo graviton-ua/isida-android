@@ -8,5 +8,6 @@ interface PacketParser<T : IsidaPacket> {
     val commandId: Int
 
     fun canParse(data: ByteArray): Boolean
-    fun parse(data: ByteArray): Result<T>
+    open fun parse(data: ByteArray): Result<T> = parse(PacketReader(data))
+    fun parse(reader: PacketReader): Result<T>
 }
