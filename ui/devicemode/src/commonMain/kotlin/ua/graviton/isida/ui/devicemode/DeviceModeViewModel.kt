@@ -9,17 +9,21 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import ua.graviton.isida.data.protocol.commands.v1.DeviceModeCommandV1
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.domain.IsidaCommands
 import ua.graviton.isida.domain.IsidaCommands.DeviceMode
 import ua.graviton.isida.domain.IsidaCommands.DeviceModeExtra
+import ua.graviton.isida.domain.interactors.SendCommand
 import ua.graviton.isida.domain.observers.ObserveStatus
+import kotlin.collections.map
 
 @Inject
 @ViewModelKey(DeviceModeViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 class DeviceModeViewModel(
-    observeStatus: ObserveStatus
+    observeStatus: ObserveStatus,
+    private val sendCommand: SendCommand,
 ) : ViewModel() {
     val events = MutableSharedFlow<DeviceModeEvent>()
     private val pendingActions = MutableSharedFlow<DeviceModeAction>()
@@ -118,10 +122,19 @@ class DeviceModeViewModel(
     private fun CoroutineScope.send() = launch {
         val device = deviceId.value ?: return@launch
         val mode = mode.value ?: return@launch
-        events.emit(
-            DeviceModeEvent.Send(
-                command = IsidaCommands.deviceMode(device, mode, *modeExtras.value.toTypedArray())
-            )
-        )
+        // events.emit(
+        //     DeviceModeEvent.Send(
+        //         command = IsidaCommands.deviceMode(device, mode, *modeExtras.value.toTypedArray())
+        //     )
+        // )
+
+        val extras = modeExtras.value
+
+        val commandValue = when (mode) {
+            DeviceMode.ENABLE -> extras.map { it.code }.foldRight(initial = mode.code) { left, right -> left or right }
+            else -> mode.code
+        }
+
+        sendCommand(DeviceModeCommandV1(mode = commandValue))
     }
 }
