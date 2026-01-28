@@ -15,17 +15,20 @@ abstract class CommandSerializerV1<T : IsidaCommand.V1> : CommandSerializer<T> {
         // 1. Prepare Payload (Currently in buffer)
         return serializePayload(command).mapCatching { payload ->
             // 2. Construct the "Core" packet (Start + Ver + Len + Cmd + Payload) for CRC calculation
-            // Frame: 55 01 [LenL LenH] [CmdL CmdH] [Payload...]
-            val coreBytes = ByteArray(1 + 1 + 2 + 2 + payload.size)
+            // Frame: 55 01 [LenL LenH] [CmdL] [Ver] [Payload...]
+            val coreBytes = ByteArray(2 + 2 + 1 + 1 + payload.size)
 
             coreBytes.writeU8(0, 0x55)          // Start
-            coreBytes.writeU8(1, version)       // Version
+            coreBytes.writeU8(1, 0x01)          // Start
 
             // Length (2 bytes LE)
             coreBytes.writeU16LE(2, length)
 
-            // Command ID (2 bytes LE)
-            coreBytes.writeU16LE(4, commandId)
+            // Command ID (1 byte)
+            coreBytes.writeU8(4, commandId)
+
+            // Version (1 byte)
+            coreBytes.writeU8(5, version)
 
             // Payload
             coreBytes.writeBytes(6, payload)

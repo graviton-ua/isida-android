@@ -1,6 +1,7 @@
 package ua.graviton.isida.data.parsers
 
 import com.whoppah.util.readU16LE
+import com.whoppah.util.readU8
 import ua.graviton.isida.data.protocol.packets.IsidaPacket
 
 abstract class PacketDecoder<T : IsidaPacket> {
@@ -13,8 +14,8 @@ abstract class PacketDecoder<T : IsidaPacket> {
     open fun parse(data: ByteArray): Result<T> {
         if (data.size < 10) return Result.failure(IllegalStateException("Invalid packet size: ${data.size} | Packet size should be minimum 10 bytes (if body is 0 size)"))
 
-        // Command ID is usually placed at index 4 and takes 2 bytes, [4,5]
-        val commandId: Int = data.readU16LE(4)
+        // Command ID is usually placed at index 4 and takes 1 byte
+        val commandId: Int = data.readU8(4)
         val parser = getParserByCommandId(commandId)
             ?: return Result.failure(IllegalStateException("Parser not found for commandId: $commandId | data: $data"))
 

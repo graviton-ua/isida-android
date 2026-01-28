@@ -11,7 +11,7 @@ interface PacketParser<T : IsidaPacket> {
     val commandId: Int
 
     fun canParse(data: ByteArray): Boolean {
-        // Start(1) + Ver(1) + Len(2) + Cmd(2) + Data($length) + CRC(2) + End(2)
+        // Start(2) + Len(2) + Cmd(1) + Ver(1) + Data($length) + CRC(2) + End(2)
         val dataOffset = 6
         val crcSize = 2
         val endSize = 2
@@ -19,16 +19,16 @@ interface PacketParser<T : IsidaPacket> {
 
         if (data.size < expectedSize) return false
 
-        // Check version of the packet
-        if (data.readU8(1) != version) return false
-
         // Check length of data (2 bytes)
         val packetLength = data.readU16LE(2)
         if (packetLength != length) return false
 
-        // Check command ID (2 bytes)
-        val packetCmdId = data.readU16LE(4)
+        // Check command ID (1 byte)
+        val packetCmdId = data.readU8(4)
         if (packetCmdId != commandId) return false
+
+        // Check version of the packet (1 byte)
+        if (data.readU8(5) != version) return false
 
         // 6. Check CRC
         // CRC covers [Start, Version, Length, CommandId, Data...]

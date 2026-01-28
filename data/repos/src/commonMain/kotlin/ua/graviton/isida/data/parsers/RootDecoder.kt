@@ -12,8 +12,8 @@ object RootDecoder {
     fun parse(data: ByteArray): Result<IsidaPacket> {
         //TODO: Verify length of the packet before reading the version
 
-        // Version is usually placed at index 1 and takes 1 byte1, data[1]
-        val version: Int = data.readU8(1)
+        // Version is usually placed at index 5 and takes 1 byte
+        val version: Int = data.readU8(5)
         val decoder = decoders[version]
             ?: return Result.failure(IllegalStateException("Decoder not found for version: $version | data: $data"))
 
