@@ -1,6 +1,6 @@
 package ua.graviton.isida.domain.models
 
-import ua.graviton.isida.data.models.DataPackageDto
+import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 
 sealed class DeviceProperty<T>(
     val id: String,
@@ -41,7 +41,7 @@ sealed class DeviceProperty<T>(
     data class TurnTime(private val _value: Int) : DeviceProperty<Int>(id = "turnTime", value = _value, info = DeviceCharacteristicInfo.Min1)
 }
 
-fun DataPackageDto.asProperties(): List<DeviceProperty<*>> = listOf(
+fun StatusPacketV1.asProperties(): List<DeviceProperty<*>> = listOf(
     DeviceProperty.SpT0(spT0),
     DeviceProperty.SpT1(spT1),
     DeviceProperty.SpRh0(spRh0),
@@ -73,4 +73,4 @@ fun DataPackageDto.asProperties(): List<DeviceProperty<*>> = listOf(
     DeviceProperty.TurnTime(turnTime),
 )
 
-fun DataPackageDto.getProperty(id: String): DeviceProperty<*> = asProperties().find { it.id == id } ?: DeviceProperty.Unknown
+fun StatusPacketV1.getProperty(id: String): DeviceProperty<*> = asProperties().find { it.id == id } ?: DeviceProperty.Unknown

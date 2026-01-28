@@ -9,16 +9,17 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.domain.IsidaCommands
 import ua.graviton.isida.domain.IsidaCommands.DeviceMode
 import ua.graviton.isida.domain.IsidaCommands.DeviceModeExtra
-import ua.graviton.isida.domain.observers.ObserveDeviceData
+import ua.graviton.isida.domain.observers.ObserveStatus
 
 @Inject
 @ViewModelKey(DeviceModeViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 class DeviceModeViewModel(
-    observeDeviceData: ObserveDeviceData
+    observeStatus: ObserveStatus
 ) : ViewModel() {
     val events = MutableSharedFlow<DeviceModeEvent>()
     private val pendingActions = MutableSharedFlow<DeviceModeAction>()
@@ -45,14 +46,24 @@ class DeviceModeViewModel(
     init {
         // Fetch device cell number
         viewModelScope.launch {
-            observeDeviceData.flow.mapNotNull { it?.node }.take(1).collect { deviceId.value = it }
+            observeStatus.flow.mapNotNull { packet ->
+                when (packet) {
+                    is StatusPacketV1 -> packet.node
+                    else -> null
+                }
+            }.take(1).collect { deviceId.value = it }
         }
 
         // Fetch device state/mode/extras
         viewModelScope.launch {
-            observeDeviceData.flow.filterNotNull().take(1)
-                .map {
-                    val state = it.state
+            observeStatus.flow.filterNotNull().take(1)
+                .mapNotNull { packet ->
+                    when (packet) {
+                        is StatusPacketV1 -> packet.state
+                        else -> null
+                    }
+                }
+                .map { state ->
                     val mode = when (state) {
                         state or DeviceMode.ENABLE.code -> DeviceMode.ENABLE
                         state or DeviceMode.ONLY_ROTATION.code -> DeviceMode.ONLY_ROTATION

@@ -14,15 +14,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ua.graviton.isida.domain.IsidaCommands
+import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.domain.models.DeviceProperty
 import ua.graviton.isida.domain.models.getProperty
-import ua.graviton.isida.domain.observers.ObserveDeviceData
+import ua.graviton.isida.domain.observers.ObserveStatus
 
 @AssistedInject
 class SetPropViewModel(
     @Assisted private val id: String,
-    observeDeviceData: ObserveDeviceData,
+    observeStatus: ObserveStatus,
 ) : ViewModel() {
 
     @AssistedFactory
@@ -38,12 +38,15 @@ class SetPropViewModel(
     val events = _events.asSharedFlow()
     private val pendingActions = MutableSharedFlow<SetPropAction>()
 
-    private val deviceData = observeDeviceData.flow.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = null,
+    private val packets = observeStatus.flow.stateIn(
+        scope = viewModelScope, started = SharingStarted.WhileSubscribed(0), initialValue = null,
     )
-    private val property = deviceData.mapNotNull { it?.getProperty(id) }.take(1).stateIn(
+    private val property = packets.mapNotNull { packet ->
+        when (packet) {
+            is StatusPacketV1 -> packet.getProperty(id)
+            else -> null
+        }
+    }.take(1).stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
         initialValue = null,
@@ -85,13 +88,16 @@ class SetPropViewModel(
 
     private fun CoroutineScope.send() = launch(Dispatchers.Default) {
         //Here we should build and send command to device
-        val dataSnapshot = deviceData.value ?: return@launch
-        val device = dataSnapshot.node
+        val dataSnapshot = packets.value ?: return@launch
+        val device = when (dataSnapshot) {
+            is StatusPacketV1 -> dataSnapshot.node
+            else -> return@launch
+        }
         val prop = updatedProperty.value ?: property.value ?: return@launch
-        _events.emit(
-            SetPropEvent.Send(
-                command = IsidaCommands.updateProperties(device, dataSnapshot, prop)
-            )
-        )
+        // _events.emit(
+        //     SetPropEvent.Send(
+        //         command = IsidaCommands.updateProperties(device, dataSnapshot, prop)
+        //     )
+        // )
     }
 }

@@ -11,15 +11,13 @@ import com.whoppah.metrox.viewmodel.ViewModelScope
 import com.whoppah.util.ObservableLoadingCounter
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-import ua.graviton.isida.data.models.DataPackageDto
+import ua.graviton.isida.data.protocol.packets.StatusPacket
+import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.domain.IsidaCommands
-import ua.graviton.isida.domain.observers.ObserveDeviceData
+import ua.graviton.isida.domain.observers.ObserveStatus
 import ua.graviton.isida.ui.home.stats.StatsItem.Title.ComposableString.Companion.composableString
 
 @Inject
@@ -31,9 +29,40 @@ import ua.graviton.isida.ui.home.stats.StatsItem.Title.ComposableString.Companio
  * с использованием DSL [buildStats].
  */
 class StatsViewModel(
-    observeDeviceData: ObserveDeviceData,
+    observeStatus: ObserveStatus,
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
+
+    private val packets = observeStatus.flow.stateIn(
+        scope = viewModelScope, started = SharingStarted.WhileSubscribed(0), initialValue = null,
+    )
+
+    private val deviceId = packets.map { packet ->
+        when (packet) {
+            is StatusPacketV1 -> packet.node
+            else -> null
+        }
+    }.onStart { emit(null) }
+
+    private val deviceBgColor = packets.map { packet ->
+        when (packet) {
+            is StatusPacketV1 -> when {
+                packet.fuses + packet.errors + packet.warning > 0 -> IsidaColor.Red500
+                packet.state == 1 -> IsidaColor.Green500
+                packet.state == 2 -> IsidaColor.Yellow500
+                else -> null
+            }
+
+            else -> null
+        }
+    }.onStart { emit(null) }
+
+    private val uiItems = packets.map { packet ->
+        when (packet) {
+            is StatusPacketV1 -> packet.toItems()
+            else -> null
+        }
+    }.onStart { emit(emptyList()) }
 
     /**
      * Поток состояния пользовательского интерфейса.
@@ -41,20 +70,13 @@ class StatsViewModel(
      * Если данные равны null (еще не получены), возвращается к [PlaceholderStats] для отображения структуры.
      */
     val state: StateFlow<StatsViewState> = combine(
-        observeDeviceData.flow, loadingState.observable
-    ) { data, loading ->
-        val deviceBgColor = when {
-            data != null && data.fuses + data.errors + data.warning > 0 -> IsidaColor.Red500
-            data != null && data.state == 1 -> IsidaColor.Green500
-            data != null && data.state == 2 -> IsidaColor.Yellow500
-            else -> null
-        }
-
+        deviceId, deviceBgColor, uiItems, loadingState.observable
+    ) { deviceId, deviceBgColor, items, loading ->
         // Создает модель состояния экрана
         StatsViewState(
-            titleDeviceId = data?.node,
+            titleDeviceId = deviceId,
             titleDeviceBackgroundColor = deviceBgColor,
-            items = data?.toItems() ?: emptyList(),
+            items = items ?: emptyList(),
         )
     }.stateIn(
         scope = viewModelScope,
@@ -85,11 +107,11 @@ internal val PlaceholderStats = buildStats {
 }
 
 /**
- * Преобразует [DataPackageDto] в список элементов [StatsItem].
+ * Преобразует [StatusPacket] в список элементов [StatsItem].
  * Использует DSL [buildStats] для определения макета и логики для каждой строки.
  * Здесь происходит сопоставление сырых байтов с представлением в пользовательском интерфейсе.
  */
-private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
+private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
     header(
         title = composableString(node) { stringResource(Res.string.CellNum, node) },
         style = {
@@ -134,7 +156,7 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         style = {
             val st = state and IsidaCommands.DeviceMode.ENABLE.code
             val value = if (pvT0 > 80) null else pvT0
-            if(st !=0) {
+            if (st != 0) {
                 backgroundColor = when {
                     value == null -> null
                     value >= spT0 + alarm0 -> IsidaColor.Red100
@@ -152,7 +174,7 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
             stringResource(if (pvRh != 0) Res.string.pv_rh_label else Res.string.pv_t1_label)
         },
         content = composableString(pvT1, spT1, pvRh) {
-            if (pvRh > 10){
+            if (pvRh > 10) {
                 val value = if (pvRh > 100) 100 else pvRh
                 "$value % [$spRh1 %]"
             } else {
@@ -163,7 +185,7 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         style = {
             val st = state and IsidaCommands.DeviceMode.ENABLE.code
             val value = if (pvT1 > 80) null else pvT1
-            if(st !=0) {
+            if (st != 0) {
                 backgroundColor = when {
                     value == null -> null
                     value >= spT1 + alarm1 -> IsidaColor.Red100
@@ -186,7 +208,7 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         },
         style = {
             val st = warning and IsidaCommands.Warning.WARNING_08.code
-            backgroundColor = if(st !=0) IsidaColor.Red100
+            backgroundColor = if (st != 0) IsidaColor.Red100
             else null
         },
     )
@@ -262,8 +284,8 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         style = {
             backgroundColor =
                 if (state == IsidaCommands.DeviceMode.DISABLE.code) IsidaColor.BlueGrey100
-                else if ((state and IsidaCommands.DeviceMode.ENABLE.code)==IsidaCommands.DeviceMode.ENABLE.code) IsidaColor.Green500
-                else if ((state and IsidaCommands.DeviceMode.ONLY_ROTATION.code)==IsidaCommands.DeviceMode.ONLY_ROTATION.code) IsidaColor.Yellow500
+                else if ((state and IsidaCommands.DeviceMode.ENABLE.code) == IsidaCommands.DeviceMode.ENABLE.code) IsidaColor.Green500
+                else if ((state and IsidaCommands.DeviceMode.ONLY_ROTATION.code) == IsidaCommands.DeviceMode.ONLY_ROTATION.code) IsidaColor.Yellow500
                 else IsidaColor.Red100
         },
     )

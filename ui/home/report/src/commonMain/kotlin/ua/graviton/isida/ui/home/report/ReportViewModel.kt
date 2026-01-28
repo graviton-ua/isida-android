@@ -10,14 +10,15 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ua.graviton.isida.domain.observers.ObserveDeviceData
+import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
+import ua.graviton.isida.domain.observers.ObserveStatus
 import java.util.UUID
 
 @Inject
 @ViewModelKey(ReportViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 class ReportViewModel(
-    observeDeviceData: ObserveDeviceData,
+    observeStatus: ObserveStatus,
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
     private val pendingActions = MutableSharedFlow<ReportAction>()
@@ -25,10 +26,16 @@ class ReportViewModel(
     private val itemsState = MutableStateFlow<List<String>>(emptyList())
 
     val state: StateFlow<ReportViewState> = combine(
-        observeDeviceData.flow, headerState, itemsState, loadingState.observable
-    ) { data, header, items, loading ->
+        observeStatus.flow.mapNotNull { packet ->
+            when (packet) {
+                is StatusPacketV1 -> packet.node
+                else -> null
+            }
+        }.onStart { emit(0) },
+        headerState, itemsState, loadingState.observable
+    ) { node, header, items, loading ->
         ReportViewState(
-            cellNumber = data?.node ?: 0,
+            cellNumber = node,
             header = header,
             items = items,
         )

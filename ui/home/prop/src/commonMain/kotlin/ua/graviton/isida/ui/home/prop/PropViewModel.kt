@@ -10,8 +10,8 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
-import ua.graviton.isida.data.models.DataPackageDto
-import ua.graviton.isida.domain.observers.ObserveDeviceData
+import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
+import ua.graviton.isida.domain.observers.ObserveStatus
 import ua.graviton.isida.ui.home.prop.PropItem.Title
 import ua.graviton.isida.ui.home.prop.PropItem.Value
 
@@ -19,13 +19,24 @@ import ua.graviton.isida.ui.home.prop.PropItem.Value
 @ViewModelKey(PropViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 class PropViewModel(
-    observeDeviceData: ObserveDeviceData,
+    observeStatus: ObserveStatus,
 ) : ViewModel() {
     private val pendingActions = MutableSharedFlow<PropAction>()
 
-    val state: StateFlow<PropViewState> = observeDeviceData.flow.map { data ->
+    private val packets = observeStatus.flow.stateIn(
+        scope = viewModelScope, started = SharingStarted.WhileSubscribed(0), initialValue = null,
+    )
+
+    private val uiItems = packets.mapNotNull { packet ->
+        when (packet) {
+            is StatusPacketV1 -> packet.toItems()
+            else -> null
+        }
+    }.onStart { emit(emptyList()) }
+
+    val state: StateFlow<PropViewState> = uiItems.map { items ->
         PropViewState(
-            items = data.toItems(),
+            items = items,
         )
     }.stateIn(
         scope = viewModelScope,
@@ -52,7 +63,7 @@ class PropViewModel(
 private fun Float.format(): String = String.format("%.1f", this)
 private const val EMPTY_PLACEHOLDER = "--"
 
-private fun DataPackageDto?.toItems(): List<PropItem> {
+private fun StatusPacketV1?.toItems(): List<PropItem> {
     return listOf(
         PropItem(
             id = "spT0",
