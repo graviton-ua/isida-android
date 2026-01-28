@@ -23,7 +23,6 @@ import com.whoppah.common.resources.home_tab_stats
 import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.ui.navigation.HomeTabScreen
 
 /**
@@ -71,7 +70,7 @@ private fun StatsScreen(
         state.items.forEach { item ->
             when (item) {
                 is StatsItem.Header -> stickyHeader { HeaderItem(item) }
-                is StatsItem.InfoString -> item { InfoStringItem(item) }
+                is StatsItem.Info -> item { InfoItem(item) }
             }
         }
     }
@@ -99,8 +98,8 @@ private fun HeaderItem(item: StatsItem.Header) {
 }
 
 @Composable
-private fun InfoStringItem(
-    item: StatsItem.InfoString,
+private fun InfoItem(
+    item: StatsItem.Info,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth()

@@ -50,7 +50,7 @@ internal class StatsListBuilder {
         val builder = StyleBuilder()
         style?.invoke(builder)
         list.add(
-            StatsItem.InfoString(
+            StatsItem.Info(
                 title = title,
                 content = content,
                 style = builder.build()

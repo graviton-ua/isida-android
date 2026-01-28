@@ -65,7 +65,7 @@ sealed interface StatsItem {
     }
 
     @Immutable
-    data class InfoString(
+    data class Info(
         override val title: ComposableString,
         val content: ComposableString,
         override val style: Style = Style(),
