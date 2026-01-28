@@ -6,8 +6,11 @@ import com.fazecast.jSerialComm.SerialPortEvent
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
 
 @Inject
@@ -25,11 +28,13 @@ class JvmBluetoothDriver(
     private val _state = MutableStateFlow(ConnectionState.DISCONNECTED)
     override val state: StateFlow<ConnectionState> = _state.asStateFlow()
 
-    private val _incomingData = MutableSharedFlow<ByteArray>(replay = 0)
+    private val _incomingData = MutableSharedFlow<ByteArray>(replay = 0, extraBufferCapacity = 64)
     override val incomingData: SharedFlow<ByteArray> = _incomingData.asSharedFlow()
 
     private var activePort: SerialPort? = null
-    private var readJob: Job? = null
+
+    // Buffer to hold incoming bytes between different events (since data might arrive split)
+    private val parsingBuffer = ArrayList<Int>()
 
     /**
      * Connects to the specified Serial Port.
@@ -37,6 +42,9 @@ class JvmBluetoothDriver(
      */
     override suspend fun connect(address: DeviceAddress) = withContext(Dispatchers.IO) {
         if (_state.value == ConnectionState.CONNECTED) return@withContext
+
+        // 1. Cleanup previous connection if any
+        disconnect()
 
         _state.value = ConnectionState.CONNECTING
 
@@ -48,18 +56,9 @@ class JvmBluetoothDriver(
             // but 9600 or 115200 is safe default. Set strictly if device requires it).
             port.baudRate = 9600
 
-            // 3. Open Port
-            // TIMEOUT_READ_BLOCKING is crucial so our coroutine loop waits for data
-            port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 2_000, 0)
-            // port.addDataListener(object : SerialPortDataListener{
-            //     override fun getListeningEvents(): Int {
-            //         TODO("Not yet implemented")
-            //     }
-            //
-            //     override fun serialEvent(event: SerialPortEvent?) {
-            //         TODO("Not yet implemented")
-            //     }
-            // })
+            // IMPORTANT: Set to NONBLOCKING. 
+            // We are relying on the Event Listener, not on inputStream.read() timeouts.
+            port.setComPortTimeouts(SerialPort.TIMEOUT_NONBLOCKING, 0, 0)
 
             val opened = port.openPort()
             if (!opened) {
@@ -69,12 +68,29 @@ class JvmBluetoothDriver(
                 return@withContext
             }
 
+            val listener = object : SerialPortDataListener {
+                override fun getListeningEvents(): Int {
+                    return SerialPort.LISTENING_EVENT_DATA_RECEIVED or SerialPort.LISTENING_EVENT_PORT_DISCONNECTED
+                }
+
+                override fun serialEvent(event: SerialPortEvent) {
+                    if (event.eventType == SerialPort.LISTENING_EVENT_PORT_DISCONNECTED) {
+                        scope.launch { disconnect() }
+                        return
+                    }
+
+                    if (event.eventType == SerialPort.LISTENING_EVENT_DATA_RECEIVED) {
+                        val newData = event.receivedData
+                        if (newData != null && newData.isNotEmpty()) {
+                            processIncomingData(newData)
+                        }
+                    }
+                }
+            }
+
+            port.addDataListener(listener)
             activePort = port
             _state.value = ConnectionState.CONNECTED
-
-            // 4. Start Reading Loop
-            startReading(port)
-
         } catch (e: Exception) {
             e.printStackTrace()
             closePort()
@@ -113,71 +129,53 @@ class JvmBluetoothDriver(
     }
 
     /**
-     * Starts a coroutine that continuously reads from the InputStream.
-     * It uses [Dispatchers.IO] to handle blocking calls efficiently.
+     * Processes raw bytes coming from the Event Listener.
+     * Maintains the Protocol State Machine (0x55 -> 0x01 ...).
      */
-    private fun startReading(port: SerialPort) {
-        readJob?.cancel()
-        readJob = scope.launch(Dispatchers.IO) {
-            val buffer = ArrayList<Int>() // Accumulation buffer
-            val readBuffer = ByteArray(1024) // Raw read buffer
-            val inputStream = port.inputStream
+    private fun processIncomingData(data: ByteArray) {
+        for (byte in data) {
+            val byteInt = byte.toInt() and 0xFF
 
-            try {
-                while (isActive && port.isOpen) {
-                    // This call blocks until at least 1 byte is available
-                    // or timeout (if set) occurs.
-                    val bytesRead = inputStream.read(readBuffer)
-
-                    if (bytesRead > 0) {
-                        for (i in 0 until bytesRead) {
-                            val byteInt = readBuffer[i].toInt() and 0xFF // Convert to unsigned int
-
-                            if (buffer.isEmpty()) {
-                                // Step 1: Wait for 0x55.
-                                if (byteInt == 0x55) buffer.add(byteInt)
-                            } else if (buffer.size == 1) {
-                                // Step 2: Check the next byte:
-                                //     - If 0x01: Accept as valid header. Continue reading.
-                                //     - If 0x55: Treat this as a new potential start byte (discard the previous one).
-                                //     - Anything else: Reset and wait for 0x55.
-                                if (byteInt == 0x01) buffer.add(byteInt) else if (byteInt != 0x55) buffer.clear()
-                            } else {
-                                buffer.add(byteInt)
-                                if (byteInt == 0x0A) {
-                                    val size = buffer.size
-                                    if (size >= 2 && buffer[size - 2] == 0x0D) {
-                                        val packet = buffer.map { it.toByte() }.toByteArray()
-                                        _incomingData.emit(packet)
-                                        buffer.clear()
-                                    }
-                                }
-                            }
-                        }
-                    } else if (bytesRead == -1) {
-                        // End of stream
-                        break
-                    }
+            if (parsingBuffer.isEmpty()) {
+                // Step 1: Wait for 0x55.
+                if (byteInt == 0x55) parsingBuffer.add(byteInt)
+            } else if (parsingBuffer.size == 1) {
+                // Step 2: Check header
+                if (byteInt == 0x01) {
+                    parsingBuffer.add(byteInt)
+                } else if (byteInt == 0x55) {
+                    // New start byte, keep just this one
+                    parsingBuffer.clear()
+                    parsingBuffer.add(byteInt)
+                } else {
+                    // Invalid, reset
+                    parsingBuffer.clear()
                 }
-            } catch (e: IOException) {
-                // Connection lost
-                e.printStackTrace()
-            } finally {
-                // If loop exits, ensure we clean up if we aren't already disconnected manually
-                if (_state.value == ConnectionState.CONNECTED) {
-                    withContext(Dispatchers.Main) { disconnect() }
+            } else {
+                parsingBuffer.add(byteInt)
+                // Step 3: Check for Footer (CR 0x0D, LF 0x0A)
+                if (byteInt == 0x0A) {
+                    val size = parsingBuffer.size
+                    if (size >= 2 && parsingBuffer[size - 2] == 0x0D) {
+                        // Full packet found
+                        val packet = parsingBuffer.map { it.toByte() }.toByteArray()
+
+                        // Emit to flow (Need to bridge to Coroutines)
+                        scope.launch { _incomingData.emit(packet) }
+
+                        parsingBuffer.clear()
+                    }
                 }
             }
         }
     }
 
     private fun closePort() {
-        readJob?.cancel()
-        readJob = null
-
         activePort?.let {
+            it.removeDataListener() // Stop receiving events
             if (it.isOpen) it.closePort()
         }
         activePort = null
+        parsingBuffer.clear() // Reset buffer on disconnect
     }
 }
