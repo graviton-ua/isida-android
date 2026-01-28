@@ -1,6 +1,8 @@
 package ua.graviton.isida.data.bluetooth
 
 import com.fazecast.jSerialComm.SerialPort
+import com.fazecast.jSerialComm.SerialPortDataListener
+import com.fazecast.jSerialComm.SerialPortEvent
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
@@ -48,7 +50,16 @@ class JvmBluetoothDriver(
 
             // 3. Open Port
             // TIMEOUT_READ_BLOCKING is crucial so our coroutine loop waits for data
-            port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 2000, 0)
+            port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 2_000, 0)
+            // port.addDataListener(object : SerialPortDataListener{
+            //     override fun getListeningEvents(): Int {
+            //         TODO("Not yet implemented")
+            //     }
+            //
+            //     override fun serialEvent(event: SerialPortEvent?) {
+            //         TODO("Not yet implemented")
+            //     }
+            // })
 
             val opened = port.openPort()
             if (!opened) {
