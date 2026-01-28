@@ -1,15 +1,20 @@
 package ua.graviton.isida.data.parsers
 
+import co.touchlab.kermit.Logger
+import com.whoppah.extensions.toHexString
 import com.whoppah.util.readU8
 import ua.graviton.isida.data.parsers.v1.PacketDecoderV1
 import ua.graviton.isida.data.protocol.packets.IsidaPacket
 
 object RootDecoder {
+    private val logger by lazy { Logger.withTag("RootDecoder") }
     private val decoders = mapOf<Int, PacketDecoder<out IsidaPacket>>(
         1 to PacketDecoderV1,
     )
 
     fun parse(data: ByteArray): Result<IsidaPacket> {
+        logger.d { "Received bytes: $data" }
+        logger.d { "Received bytes: [${data.toHexString(separator = ", ")}]" }
         //TODO: Verify length of the packet before reading the version
 
         // Version is usually placed at index 5 and takes 1 byte
