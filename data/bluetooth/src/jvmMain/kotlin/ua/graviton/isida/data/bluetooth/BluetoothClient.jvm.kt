@@ -123,9 +123,14 @@ class JvmBluetoothDriver(
                             val byteInt = readBuffer[i].toInt() and 0xFF // Convert to unsigned int
 
                             if (buffer.isEmpty()) {
-                                if (byteInt == 0x55) {
-                                    buffer.add(byteInt)
-                                }
+                                // Step 1: Wait for 0x55.
+                                if (byteInt == 0x55) buffer.add(byteInt)
+                            } else if (buffer.size == 1) {
+                                // Step 2: Check the next byte:
+                                //     - If 0x01: Accept as valid header. Continue reading.
+                                //     - If 0x55: Treat this as a new potential start byte (discard the previous one).
+                                //     - Anything else: Reset and wait for 0x55.
+                                if (byteInt == 0x01) buffer.add(byteInt) else if (byteInt != 0x55) buffer.clear()
                             } else {
                                 buffer.add(byteInt)
                                 if (byteInt == 0x0A) {
