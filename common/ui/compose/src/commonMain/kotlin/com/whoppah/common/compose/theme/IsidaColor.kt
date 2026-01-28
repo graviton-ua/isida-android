@@ -8,13 +8,16 @@ object IsidaColor {
     @Stable val Blue500 = Color(0xFF5085FC)
     @Stable val Blue100 = Color(0xFFB4CCFF)
 
+    @Stable val Red100 = Color(0xFFFFD7D5)
     @Stable val Red500 = Color(0xFFF66F63)
     @Stable val Red900 = Color(0xFFB71C1C)
+    @Stable val Green100 = Color(0xFFBEF8C2)
 
     @Stable val Green500 = Color(0xFF7AF880)
 
     @Stable val Yellow500 = Color(0xFFFFEB3B)
     @Stable val Yellow900 = Color(0xFFFCE704)
+    @Stable val Indigo100 = Color(0xFF737AA0)
 
     @Stable val Indigo800 = Color(0xFF283593)
 

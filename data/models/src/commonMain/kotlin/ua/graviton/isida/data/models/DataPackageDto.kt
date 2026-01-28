@@ -20,8 +20,8 @@ data class DataPackageDto(
     val errors: Int = 0,      // 1 байт ind=15 ошибки
     val warning: Int = 0,     // 1 байт ind=16 предупреждения
     val output: Int = 0,      // 1 байт ind=17 запись сигналов управления в микросхему 74HC595D
-    val dayHour: Int = 0,     // 1 байт ind=18 DDHH = 2209
-    val minSec: Int = 0,      // 1 байт ind=19 MMSS = 0728
+    val notused0: Int = 0,    // 1 байт ind=18        не используется
+    val notused1: Int = 0,    // 1 байт ind=19        не используется
     // ------------------ ИТОГО 20 bytes -------------------------------
     val spT0: Float = 0f,       // 2 байт ind=20,21 Уставка температуры sp[0].spT->Сухой датчик;
     val spT1: Float = 0f,       // 2 байт ind=22,23 Уставка температуры sp[1].spT->Влажный датчик
@@ -51,8 +51,8 @@ data class DataPackageDto(
     val ikoff1: Int = 0,        // 1 байт ind=52 интегральный коэфф.#1
     val identif: Int = 0,       // 1 байт ind=53 сетевой номер прибора
     val ip0: Int = 0, val ip1: Int = 0, val ip2: Int = 0, val ip3: Int = 0, // 4 байт ind=54;ind=55;ind=56;ind=57;
-    val nothing0: Int = 0,      // 1 байт ind=58;       не используется ! YYMM = 2405
-    val nothing1: Int = 0,      // 1 байт ind=59;       не используется ! DDHH = 2209
+    val nothing0: Int = 0,      // 1 байт ind=58;       не используется
+    val nothing1: Int = 0,      // 1 байт ind=59;       не используется
     // ------------------ ИТОГО 40 bytes -------------------------------
 ) {
     companion object {
@@ -75,8 +75,8 @@ data class DataPackageDto(
                 errors = ubytes[15].toInt(),      // 1 байт ind=15 ошибки
                 warning = ubytes[16].toInt(),     // 1 байт ind=16 предупреждения
                 output = ubytes[17].toInt(),      // 1 байт ind=17 запись сигналов управления в микросхему 74HC595D
-                dayHour = ubytes[18].toInt(),     // 1 байт ind=18 DDHH = 2209
-                minSec = ubytes[19].toInt(),      // 1 байт ind=19 MMSS = 0728
+                notused0 = ubytes[18].toInt(),    // 1 байт ind=18 не используется
+                notused1 = ubytes[19].toInt(),    // 1 байт ind=19 не используется
                 spT0 = ubytes.read2BytesAsInt(20).toFloat() / 10,
                 spT1 = ubytes.read2BytesAsInt(22).toFloat() / 10,
                 spRh0 = ubytes[24].toFloat() / 10,

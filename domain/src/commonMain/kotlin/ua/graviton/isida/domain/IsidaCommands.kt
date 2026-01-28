@@ -30,8 +30,8 @@ object IsidaCommands {
     }
 
     enum class DeviceMode(val code: Int) {
-        DISABLE(0x00),          // "ОТКЛЮЧИТЬ камеру"
-        ENABLE(0x01),           // "ВКЛЮЧИТЬ камеру"
+        DISABLE(0x00),          // "камера ОТКЛЮЧЕНА"
+        ENABLE(0x01),           // "камера ВКЛЮЧИНА"
         WAITING_COOLING(0x02),  // "подгототка к ОХЛАЖДЕНИЮ"
         WAITING_ON(0x04),       // "подгототка к ЗАПУСКУ"
         HORIZON_ON(0x08),       // "ВКЛЮЧЕН ГОРИЗОНТ"
@@ -64,6 +64,16 @@ object IsidaCommands {
         ERROR_10(code = 0x10),  //ПЕРЕГРЕВ СИМИСТОРА
         ERROR_20(code = 0x20),  //ОШИБКА модуля СО2 или FLAP
         ERROR_40(code = 0x40),  //ОШИБКА модуля Холла или Поворотов
+    }
+
+    enum class Warning(val code: Int) {
+        WARNING_01(code = 0x01),  //ОТКЛОНЕНИЕ по температуре
+        WARNING_02(code = 0x02),  //ОТКЛОНЕНИЕ по влажности
+        WARNING_04(code = 0x04),  //Произведена подмена датчика
+        WARNING_08(code = 0x08),  //Большой перепад температуры
+        WARNING_10(code = 0x10),  //Неправильная конфигурация датчиков
+        WARNING_20(code = 0x20),  //неиспользуется
+        WARNING_40(code = 0x40),  //неиспользуется
     }
 
     fun updateProperties(

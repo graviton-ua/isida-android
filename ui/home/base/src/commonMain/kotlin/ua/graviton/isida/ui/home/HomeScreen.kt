@@ -21,6 +21,7 @@ import com.whoppah.common.compose.ui.WhScaffold
 import com.whoppah.common.compose.ui.WhTopAppBar
 import com.whoppah.common.resources.Res
 import com.whoppah.common.resources.app_name
+import com.whoppah.common.resources.butPower
 import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
@@ -162,7 +163,7 @@ private fun HomeTopBar(
             if (deviceConnected)
                 TextButton(onClick = openPowerDialog) {
                     Icon(imageVector = Icons.Default.Flag, contentDescription = "Device menu")
-                    Text(text = "Power")
+                    Text(text = stringResource(Res.string.butPower))
                 }
             IconButton(onClick = { expanded = !expanded }) { Icon(imageVector = Icons.Default.MoreVert, contentDescription = "Device menu") }
             DropdownMenu(

@@ -4,12 +4,15 @@
     <string name="home_tab_prop">Опции</string>
     <string name="home_tab_report">Отчёт</string>
 
+    <string name="butPower">ПЕРЕКЛЮЧАТЕЛЬ</string>
+
     <string name="CellNum">КАМЕРА № %1$d</string>
     <string name="btnStart">Старт</string>
     <string name="btnProp">Уст.</string>
     <string name="btnInfo">Инфо</string>
     <string name="btnReport">Отчет</string>
     <string name="titleSensor">ДАТЧИКИ</string>
+    <string name="titleState">СТАТУС</string>
     <string name="titleControl">МЕХАНИЗМЫ</string>
     <string name="titleStstus">СОСТОЯНИЕ</string>
     <string name="titleErrors">ПРЕДУПРЕЖДЕНИЯ</string>
@@ -23,7 +26,8 @@
     <string name="timer">Осталось до поворота</string>
     <string name="cotwo">Модуль CO2</string>
     <string name="counter">Повороты</string>
-    <string name="power">Мощность нагревателя</string>
+    <string name="heater">НАГРЕВАТЕЛЬ</string>
+    <string name="power">мощность</string>
     <string name="fuses">Авария</string>
     <string name="errors">Ошибки</string>
     <string name="warnings">Предупреждения</string>
@@ -40,7 +44,11 @@
     <string name="extendForcedDehumid">Форсированное ОСУШЕНЕНИЕ</string>
     <string name="extendWetting">УВЛАЖНЕНИЕ</string>
     <string name="outWetting">УВЛАЖНИТЕЛЬ</string>
+    <string name="wetOff">отключен</string>
+    <string name="wetOn">ВКЛЮЧЕН</string>
     <string name="outFlap">Заслонка воздухообмена</string>
+    <string name="flapClose">закрыта</string>
+    <string name="flapOpen">открыта</string>
     <string name="flapAngle">Открытие заслонки %</string>
     <string name="outExtend">Вспомогательный канал</string>
     <string name="outTrays">Таймер поворота лотков</string>

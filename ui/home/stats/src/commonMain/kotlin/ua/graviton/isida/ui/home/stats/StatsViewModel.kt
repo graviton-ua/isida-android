@@ -100,25 +100,47 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     header(
         title = composableString { stringResource(Res.string.titleSensor) }
     )
+
+    // *****--------------------------- Status -------------------------------*****
+    item(
+        title = composableString { stringResource(Res.string.titleState) },
+        content = composableString(state) {
+            val value = state and 0x7E
+            val result = mutableListOf<StringResource>()
+            // Проверяем каждый предохранитель по его битовой маске
+            if (value and 0x02 != 0) result.add(Res.string.state_2)
+            if (value and 0x04 != 0) result.add(Res.string.state_4)
+            if (value and 0x08 != 0) result.add(Res.string.state_8)
+            if (value and 0x10 != 0) result.add(Res.string.state_10)
+            if (value and 0x20 != 0) result.add(Res.string.state_20)
+            if (value and 0x40 != 0) result.add(Res.string.state_40)
+            // Если ни один бит не поднят, возвращаем список с ресурсом "нет/норма"
+            // if (result.isEmpty()) {
+            //     result.add(Res.string.no)
+            // }
+            result.map { stringResource(it) }.joinToString(separator = "\n")
+        },
+    )
+
     // *****--------------------------- T0 -------------------------------*****
     item(
         title = composableString { stringResource(Res.string.pv_t0_label) },
         // value = if (pvT0 > 80) null else pvT0,
         // target = spT0,
         content = composableString(pvT0, spT0) {
-            val value = if (pvT0 > 80) null else pvT0
-            val valueFormatted = String.format("%.1f", value)
-            val target = spT0
-            "$valueFormatted °C [$target °C]"
+            val valueFormatted = if (pvT0 > 80) "--.-" else String.format("%.1f", pvT0)
+            "$valueFormatted °C [$spT0 °C]"
         },
         style = {
+            val st = state and IsidaCommands.DeviceMode.ENABLE.code
             val value = if (pvT0 > 80) null else pvT0
-            val target = spT0
-            valueColor = when {
-                value == null -> null
-                value > target -> IsidaColor.Red900
-                value < target -> IsidaColor.Indigo800
-                else -> null
+            if(st !=0) {
+                backgroundColor = when {
+                    value == null -> null
+                    value >= spT0 + alarm0 -> IsidaColor.Red100
+                    value <= spT0 - alarm0 -> IsidaColor.Blue100
+                    else -> IsidaColor.Green100
+                }
             }
         },
     )
@@ -130,21 +152,24 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
             stringResource(if (pvRh != 0) Res.string.pv_rh_label else Res.string.pv_t1_label)
         },
         content = composableString(pvT1, spT1, pvRh) {
-            val value = if (pvT1 > 80) null else pvT1
-            val valueFormatted = String.format("%.1f", value)
-            val target = spT1
-            if (pvRh != 0) "$valueFormatted % [$target %]"
-            else "$valueFormatted °C [$target °C]"
+            if (pvRh > 10){
+                val value = if (pvRh > 100) 100 else pvRh
+                "$value % [$spRh1 %]"
+            } else {
+                val valueFormatted = if (pvT0 > 80) "--.-" else String.format("%.1f", pvT1)
+                "$valueFormatted °C [$spT1 °C]"
+            }
         },
-
         style = {
+            val st = state and IsidaCommands.DeviceMode.ENABLE.code
             val value = if (pvT1 > 80) null else pvT1
-            val target = spT1
-            valueColor = when {
-                value == null || target == null -> null
-                value > target -> IsidaColor.Red900
-                value < target -> IsidaColor.Indigo800
-                else -> null
+            if(st !=0) {
+                backgroundColor = when {
+                    value == null -> null
+                    value >= spT1 + alarm1 -> IsidaColor.Red100
+                    value <= spT1 - alarm1 -> IsidaColor.Blue100
+                    else -> IsidaColor.Green100
+                }
             }
         },
     )
@@ -159,13 +184,18 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
                 "$valueFormatted °C"
             } else ""
         },
+        style = {
+            val st = warning and IsidaCommands.Warning.WARNING_08.code
+            backgroundColor = if(st !=0) IsidaColor.Red100
+            else null
+        },
     )
 
     // *****--------------------------- CO2 -------------------------------*****
     item(
         title = composableString { stringResource(Res.string.cotwo) },
         content = composableString(pvCO2) {
-            val value = if (pvCO2 < 400) null else pvCO2
+            val value = if (pvCO2 < 100) null else pvCO2
             value?.let { "$it ppm" } ?: ""
         }
     )
@@ -175,7 +205,20 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     )
     // *****--------------------------- State -------------------------------*****
     item(
-        title = composableString { stringResource(Res.string.state) },
+        title = composableString(state) {
+            // stringResource(Res.string.state)
+            val str = stringResource(Res.string.state)
+            // Настраиваем формат: префикс "0x" и минимальная длина 2 символа
+            val myFormat = HexFormat {
+                number {
+                    prefix = "0x"
+                    minLength = 2
+                    removeLeadingZeros = true
+                    upperCase = true // Чтобы получить 'D' вместо 'd'
+                }
+            }
+            "$str:  ${state.toHexString(myFormat)}"
+        },
         content = composableString(state) {
             // 1. Определяем режим
             val mode = when (state) {
@@ -207,8 +250,8 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
                 IsidaCommands.DeviceMode.DISABLE -> Res.string.device_mode_disabled
                 IsidaCommands.DeviceMode.ONLY_ROTATION -> Res.string.device_mode_turn
                 else -> when {
-                    extras.contains(IsidaCommands.DeviceModeExtra.EXTRA_3) -> Res.string.device_mode_extra_3
-                    extras.contains(IsidaCommands.DeviceModeExtra.EXTRA_4) -> Res.string.device_mode_extra_4
+                    extras.contains(IsidaCommands.DeviceModeExtra.EXTRA_3) -> Res.string.state_10
+                    extras.contains(IsidaCommands.DeviceModeExtra.EXTRA_4) -> Res.string.state_2
                     else -> Res.string.device_mode_enabled
                 }
             }
@@ -217,12 +260,11 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
             stringResource(resource)
         },
         style = {
-            backgroundColor = when (state) {
-                IsidaCommands.DeviceMode.DISABLE.code -> IsidaColor.BlueGrey100
-                IsidaCommands.DeviceMode.ENABLE.code -> IsidaColor.Green500
-                IsidaCommands.DeviceMode.ONLY_ROTATION.code -> IsidaColor.Yellow500
-                else -> IsidaColor.Yellow500
-            }
+            backgroundColor =
+                if (state == IsidaCommands.DeviceMode.DISABLE.code) IsidaColor.BlueGrey100
+                else if ((state and IsidaCommands.DeviceMode.ENABLE.code)==IsidaCommands.DeviceMode.ENABLE.code) IsidaColor.Green500
+                else if ((state and IsidaCommands.DeviceMode.ONLY_ROTATION.code)==IsidaCommands.DeviceMode.ONLY_ROTATION.code) IsidaColor.Yellow500
+                else IsidaColor.Red100
         },
     )
 
@@ -231,34 +273,17 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         //title = Res.string.door,
         title = composableString { stringResource(Res.string.door) },
         content = composableString(fuses) {
-            val value = fuses and 0x04
+            val value = fuses and 0x10
             val resource = if (value != 0) Res.string.doorOpen else Res.string.doorClose
             stringResource(resource)
         },
         style = {
-            val value = fuses and 0x04
+            val value = fuses and 0x10
             if (value != 0 && state > 0 && state < 0x80) {
                 backgroundColor = IsidaColor.Yellow900
                 valueColor = IsidaColor.Red900
             }
         },
-    )
-
-    // *****--------------------------- Extend Mode (Raw String) -------------------------------*****
-    item(
-        title = composableString { stringResource(Res.string.extendMode) },
-        content = composableString(extendMode) {
-            val resource = when (extendMode) {
-                0 -> Res.string.extendSiren
-                1 -> Res.string.extendVentilation
-                2 -> Res.string.extendForcedHeating
-                3 -> Res.string.extendForcedCooling
-                4 -> Res.string.extendForcedDehumid
-                5 -> Res.string.extendWetting
-                else -> null
-            }
-            resource?.let { stringResource(resource) } ?: ""
-        }
     )
 
     // *****--------------------------- Program -------------------------------*****
@@ -282,10 +307,16 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     )
     // *****--------------------------- Power -------------------------------*****
     item(
-        title = composableString { stringResource(Res.string.power) },
-        content = composableString(power) { "$power %" },
+        title = composableString { stringResource(Res.string.heater) },
+        content = composableString(power) {
+            val str = stringResource(Res.string.power)
+            "$str:  $power %"
+        },
         style = {
-            if (power != 0) valueColor = IsidaColor.Red900
+            if (power != 0) {
+                valueColor = IsidaColor.Red900
+                backgroundColor = IsidaColor.Yellow900
+            }
         },
     )
 
@@ -294,64 +325,60 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
         title = composableString { stringResource(Res.string.outWetting) },
         content = composableString(output) {
             val value = output and IsidaCommands.OutputBit.OUT_Wetting.code
-            if (value != 0) "ON" else "OFF"
+            if (value != 0) stringResource(Res.string.wetOn) else stringResource(Res.string.wetOff)
         },
         style = {
             val value = output and IsidaCommands.OutputBit.OUT_Wetting.code
-            if (value != 0) backgroundColor = IsidaColor.Blue500
+            if (value != 0) backgroundColor = IsidaColor.Blue100
         },
     )
 
     // *****--------------------------- Flap -------------------------------*****
     item(
         title = composableString { stringResource(Res.string.outFlap) },
-        content = composableString(output) {
+        content = composableString(output, pvFlap) {
             val value = output and IsidaCommands.OutputBit.OUT_Flap.code
-            if (value != 0) "ON" else "OFF"
+            val str = if (value != 0) stringResource(Res.string.flapOpen) else stringResource(Res.string.flapClose)
+            "$str  $pvFlap %"
         },
         style = {
             val value = output and IsidaCommands.OutputBit.OUT_Flap.code
-            if (value != 0) backgroundColor = IsidaColor.Blue100
+            if (value != 0) backgroundColor = IsidaColor.Green100
         },
-    )
-    item(
-        title = composableString { stringResource(Res.string.flapAngle) },
-        content = composableString(pvFlap) {
-            "$pvFlap %"
-        }
     )
 
     // *****--------------------------- Extend -------------------------------*****
     item(
         title = composableString { stringResource(Res.string.outExtend) },
-        content = composableString(output) {
-            val value = output and IsidaCommands.OutputBit.OUT_Extend.code
-            if (value != 0) "ON" else "OFF"
+        content = composableString(extendMode) {
+            val resource = when (extendMode) {
+                0 -> Res.string.extendSiren
+                1 -> Res.string.extendVentilation
+                2 -> Res.string.extendForcedHeating
+                3 -> Res.string.extendForcedCooling
+                4 -> Res.string.extendForcedDehumid
+                5 -> Res.string.extendWetting
+                else -> null
+            }
+            resource?.let { stringResource(resource) } ?: ""
         },
         style = {
             val value = output and IsidaCommands.OutputBit.OUT_Extend.code
-            if (value != 0) backgroundColor = IsidaColor.Yellow500
+            if (value != 0) backgroundColor = IsidaColor.Green500
         },
     )
 
     // *****--------------------------- Trays -------------------------------*****
     item(
         title = composableString { stringResource(Res.string.outTrays) },
-        content = composableString(output) {
+        content = composableString(output, pvTimer, timer0) {
             val value = output and IsidaCommands.OutputBit.OUT_Trays.code
-            if (value != 0) "ON" else "OFF"
+            "$pvTimer min [$timer0]"
         },
         style = {
             val value = output and IsidaCommands.OutputBit.OUT_Trays.code
             if (value != 0) backgroundColor = IsidaColor.Green500
         },
-    )
-// *****--------------------------- Timer -------------------------------*****
-    item(
-        title = composableString { stringResource(Res.string.timer) },
-        content = composableString(pvTimer, timer0) {
-            "$pvTimer min [$timer0]"
-        }
     )
 
     header(
@@ -359,15 +386,30 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
     )
     // *****--------------------------- Fuses -------------------------------*****
     item(
-        title = composableString { stringResource(Res.string.fuses) },
+        title = composableString(fuses) {
+            val str = stringResource(Res.string.fuses)
+            // Настраиваем формат: префикс "0x" и минимальная длина 2 символа
+            val myFormat = HexFormat {
+                number {
+                    prefix = "0x"
+                    minLength = 2
+                    removeLeadingZeros = true
+                    upperCase = true // Чтобы получить 'D' вместо 'd'
+                }
+            }
+            "$str:  ${fuses.toHexString(myFormat)}"
+        },
         content = composableString(fuses) {
-            val value = fuses and 0x0F
+            val value = fuses and 0x6F
             val result = mutableListOf<StringResource>()
             // Проверяем каждый предохранитель по его битовой маске
-            if (value and 1 != 0) result.add(Res.string.fuses_0)
-            if (value and 2 != 0) result.add(Res.string.fuses_1)
-            if (value and 4 != 0) result.add(Res.string.fuses_2)
-            if (value and 8 != 0) result.add(Res.string.fuses_3)
+            if (value and 0x01 != 0) result.add(Res.string.fuses_0)
+            if (value and 0x02 != 0) result.add(Res.string.fuses_1)
+            if (value and 0x04 != 0) result.add(Res.string.fuses_2)
+            if (value and 0x08 != 0) result.add(Res.string.fuses_3)
+            if (value and 0x20 != 0) result.add(Res.string.fuses_5)
+            if (value and 0x40 != 0) result.add(Res.string.fuses_6)
+
             // Если ни один бит не поднят, возвращаем список с ресурсом "нет/норма"
             if (result.isEmpty()) {
                 result.add(Res.string.no)
@@ -375,7 +417,7 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
             result.map { stringResource(it) }.joinToString(separator = "\n")
         },
         style = {
-            val value = fuses and 0x0F
+            val value = fuses and 0x6F
             if (value != 0) {
                 backgroundColor = IsidaColor.Red900
                 valueColor = IsidaColor.Yellow900
@@ -385,7 +427,19 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
 
     // *****--------------------------- Errors -------------------------------*****
     item(
-        title = composableString { stringResource(Res.string.errors) },
+        title = composableString(errors) {
+            val str = stringResource(Res.string.errors)
+            // Настраиваем формат: префикс "0x" и минимальная длина 2 символа
+            val myFormat = HexFormat {
+                number {
+                    prefix = "0x"
+                    minLength = 2
+                    removeLeadingZeros = true
+                    upperCase = true // Чтобы получить 'D' вместо 'd'
+                }
+            }
+            "$str:  ${errors.toHexString(myFormat)}"
+        },
         content = composableString(errors) {
             val value = errors // предполагаем, что это Int
             val result = mutableListOf<StringResource>()
@@ -413,16 +467,30 @@ private fun DataPackageDto.toItems(): List<StatsItem> = buildStats {
 
     // *****--------------------------- Warnings -------------------------------*****
     item(
-        title = composableString { stringResource(Res.string.warnings) },
+        title = composableString(warning) {
+            val str = stringResource(Res.string.warnings)
+            // Настраиваем формат: префикс "0x" и минимальная длина 2 символа
+            val myFormat = HexFormat {
+                number {
+                    prefix = "0x"
+                    minLength = 2
+                    removeLeadingZeros = true
+                    upperCase = true // Чтобы получить 'D' вместо 'd'
+                }
+            }
+            "$str:  ${warning.toHexString(myFormat)}"
+        },
         content = composableString(warning) {
             val value = warning
             val result = mutableListOf<StringResource>()
 
             // Используем битовое "И" (and), чтобы проверить каждый флаг независимо
-            if (value and 1 != 0) result.add(Res.string.warning_01)
-            if (value and 2 != 0) result.add(Res.string.warning_02)
-            if (value and 4 != 0) result.add(Res.string.warning_04)
-            if (value and 8 != 0) result.add(Res.string.warning_08)
+            if (value and IsidaCommands.Warning.WARNING_01.code != 0) result.add(Res.string.warning_01)
+            if (value and IsidaCommands.Warning.WARNING_02.code != 0) result.add(Res.string.warning_02)
+            if (value and IsidaCommands.Warning.WARNING_04.code != 0) result.add(Res.string.warning_04)
+            if (value and IsidaCommands.Warning.WARNING_08.code != 0) result.add(Res.string.warning_08)
+            if (value and IsidaCommands.Warning.WARNING_10.code != 0) result.add(Res.string.warning_10)
+            // if (value and IsidaCommands.Warning.WARNING_20.code != 0) result.add(Res.string.warning_20)
 
             // Если активных предупреждений нет, возвращаем "Нет"
             if (result.isEmpty()) {
