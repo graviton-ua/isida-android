@@ -35,7 +35,7 @@ abstract class CommandSerializerV1<T : IsidaCommand.V1> : CommandSerializer<T> {
 
             // 3. Calculate CRC
             // Ensure we mask strictly to 16 bits
-            val crc = CRC16.crcSimple(coreBytes) and 0xFFFF
+            val crc = CRC16.crcSimple(payload) and 0xFFFF
             val crcBytes = crc.toShort().asByteArray()
 
             // 4. Add Footer

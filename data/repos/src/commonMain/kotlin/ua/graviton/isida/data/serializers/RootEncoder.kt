@@ -1,9 +1,12 @@
 package ua.graviton.isida.data.serializers
 
+import co.touchlab.kermit.Logger
+import com.whoppah.extensions.toHexString
 import ua.graviton.isida.data.protocol.commands.IsidaCommand
 import ua.graviton.isida.data.serializers.v1.CommandEncoderV1
 
 object RootEncoder {
+    val logger by lazy { Logger.withTag("RootEncoder") }
 
     inline fun <reified T : IsidaCommand> serialize(command: T): Result<ByteArray> {
         val encoder = when (command) {
@@ -12,5 +15,8 @@ object RootEncoder {
         }
 
         return encoder.serialize(command)
+            .onSuccess {
+                logger.d { "Send bytes: [${it.toHexString(separator = ", ")}]" }
+            }
     }
 }
