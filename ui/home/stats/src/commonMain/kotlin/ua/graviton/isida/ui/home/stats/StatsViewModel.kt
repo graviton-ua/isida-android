@@ -18,7 +18,7 @@ import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.domain.IsidaCommands
 import ua.graviton.isida.domain.observers.ObserveStatus
-import ua.graviton.isida.ui.home.stats.StatsItem.Title.ComposableString.Companion.composableString
+import ua.graviton.isida.ui.home.stats.StatsItem.ComposableString.Companion.composableString
 
 @Inject
 @ViewModelKey(StatsViewModel::class)
@@ -83,27 +83,6 @@ class StatsViewModel(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = StatsViewState.Empty,
     )
-}
-
-/**
- * Статический список элементов, используемый, когда реальные данные недоступны.
- * Отражает структуру [toItems], но со всеми значениями, установленными в null.
- * Это гарантирует, что пользовательский интерфейс отображает правильные метки и макет еще до прибытия первого пакета данных.
- */
-internal val PlaceholderStats = buildStats {
-    item<Float>(Res.string.pv_t0_label, null, null)
-    item<Float>(Res.string.pv_t1_label, null, null)
-    item<Float>(Res.string.pv_t2_label, null)
-    item<Int>(Res.string.cotwo, null)
-    item<Int>(Res.string.timer, null, null)
-    item<Int>(Res.string.power, null)
-    item<Int>(Res.string.flap, null)
-    mapStringResource<Int>(Res.string.fuses, null)
-    mapStringResource<Int>(Res.string.errors, null)
-    mapStringResource<Int>(Res.string.warnings, null)
-    mapStringResource<Int>(Res.string.state, null)
-    mapString<Int>(Res.string.extendMode, null) { null }
-    mapStringResource<Int>(Res.string.programm, null)
 }
 
 /**

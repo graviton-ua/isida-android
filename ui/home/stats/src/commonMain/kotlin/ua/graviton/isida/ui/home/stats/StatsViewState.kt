@@ -33,7 +33,7 @@ data class StatsViewState(
         val Preview = StatsViewState(
             titleDeviceId = 1,
             titleDeviceBackgroundColor = null,
-            items = PlaceholderStats,
+            items = emptyList(),
         )
     }
 }

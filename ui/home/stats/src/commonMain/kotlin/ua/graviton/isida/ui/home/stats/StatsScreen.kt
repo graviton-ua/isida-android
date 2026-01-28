@@ -71,7 +71,6 @@ private fun StatsScreen(
         state.items.forEach { item ->
             when (item) {
                 is StatsItem.Header -> stickyHeader { HeaderItem(item) }
-                is StatsItem.Info -> item { InfoItem(item) }
                 is StatsItem.InfoString -> item { InfoStringItem(item) }
             }
         }
@@ -92,75 +91,9 @@ private fun HeaderItem(item: StatsItem.Header) {
             .padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
         Text(
-            text = item.title.asString(),
+            text = item.title.text(),
             fontWeight = FontWeight.Bold,
             color = item.style.titleColor ?: Color.Unspecified
-        )
-    }
-}
-
-/**
- * Отрисовывает одну информационную строку [StatsItem.Info].
- * Обрабатывает различные типы контента (числовой, строковый ресурс, обычный текст) и форматирование.
- * Фоновый цвет применяется только к части строки со значением/контентом.
- *
- * @param item Элемент данных информации.
- */
-@Composable
-private fun InfoItem(
-    item: StatsItem.Info,
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            text = item.title.asString(),
-            color = item.style.titleColor ?: Color.Unspecified,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-        )
-
-        val valueText = when (val content = item.content) {
-            is StatsItem.Content.Numeric<*> -> {
-                val v = content.value
-                val t = content.target
-                if (v == null) "--"
-                else {
-                    val vStr = if (v is Float) String.format("%.1f", v) else v.toString()
-                    if (t != null) {
-                        val tStr = if (t is Float) String.format("%.1f", t) else t.toString()
-                        "$vStr  [$t]"
-                    } else {
-                        vStr
-                    }
-                }
-            }
-
-            is StatsItem.Content.TextResource -> {
-                val v = content.values.map { stringResource(it) }.joinToString()
-                val t = content.targets.map { stringResource(it) }.joinToString()
-                if (v.isEmpty()) "--"
-                else if (t.isNotEmpty()) "$v  [$t]"
-                else v
-            }
-
-            is StatsItem.Content.TextRaw -> {
-                val v = content.value
-                val t = content.target
-                if (v == null) "--"
-                else if (t != null) "$v  [$t]"
-                else v
-            }
-        }
-
-        Text(
-            text = valueText,
-            color = item.style.valueColor ?: Color.Black,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .background(color = item.style.backgroundColor ?: Color.Transparent)
         )
     }
 }
@@ -173,7 +106,7 @@ private fun InfoStringItem(
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = item.title.asString(),
+            text = item.title.text(),
             color = item.style.titleColor ?: LocalContentColor.current,
             modifier = Modifier
                 .fillMaxWidth()
@@ -181,7 +114,7 @@ private fun InfoStringItem(
         )
 
         Text(
-            text = item.content.asString(),
+            text = item.content.text(),
             color = item.style.valueColor ?: LocalContentColor.current,
             modifier = Modifier
                 .fillMaxWidth()
