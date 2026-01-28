@@ -1,7 +1,7 @@
 package ua.graviton.isida.data.parsers
 
 import com.whoppah.util.readU16LE
-import ua.graviton.isida.data.protocol.IsidaPacket
+import ua.graviton.isida.data.protocol.packets.IsidaPacket
 
 abstract class PacketDecoder<T : IsidaPacket> {
     abstract val parsers: List<PacketParser<out T>>
@@ -21,6 +21,6 @@ abstract class PacketDecoder<T : IsidaPacket> {
         val validPacket = parser.canParse(data)
         if (!validPacket) return Result.failure(IllegalStateException("Invalid packet for commandId: $commandId | data: $data"))
 
-        return parser.parse(data.copyOfRange(fromIndex = 6, toIndex = data.size - 4))
+        return parser.parsePayload(data.copyOfRange(fromIndex = 6, toIndex = data.size - 4))
     }
 }

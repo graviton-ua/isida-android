@@ -2,14 +2,14 @@ package ua.graviton.isida.data.parsers.v1
 
 import ua.graviton.isida.data.parsers.PacketParser
 import ua.graviton.isida.data.parsers.PacketReader
-import ua.graviton.isida.data.protocol.v1.StatusPacketV1
+import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 
 object StatusPacketV1Parser : PacketParser<StatusPacketV1> {
     override val version: Int = 1       // [0x01]
     override val length: Int = 60       // [0x3C, 0x00]
     override val commandId: Int = 77    // [0x4D, 0x00]
 
-    override fun parse(reader: PacketReader): Result<StatusPacketV1> = Result.runCatching {
+    override fun parsePayload(reader: PacketReader): Result<StatusPacketV1> = Result.runCatching {
         require(reader.data.size == length) { "Data size must be $length but was ${reader.data.size}" }
         StatusPacketV1(
             model = reader.u8(),

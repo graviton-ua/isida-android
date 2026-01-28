@@ -1,4 +1,4 @@
-package ua.graviton.isida.data.protocol
+package ua.graviton.isida.data.protocol.packets
 
 /**
  * Common marker for any data received from the device.

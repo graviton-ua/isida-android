@@ -14,7 +14,7 @@ import ua.graviton.isida.data.bluetooth.ConnectionState
 import ua.graviton.isida.data.bluetooth.DeviceAddress
 import ua.graviton.isida.data.bluetooth.asDeviceAddress
 import ua.graviton.isida.data.parsers.RootDecoder
-import ua.graviton.isida.data.protocol.IsidaPacket
+import ua.graviton.isida.data.protocol.packets.IsidaPacket
 
 @Inject
 @SingleIn(AppScope::class)

@@ -1,6 +1,6 @@
-package ua.graviton.isida.data.protocol.v1
+package ua.graviton.isida.data.protocol.packets.v1
 
-import ua.graviton.isida.data.protocol.IsidaPacket
+import ua.graviton.isida.data.protocol.packets.IsidaPacket
 
 data class TablePacketV1(
     val ss: Int = 0, // TODO: Define structure for table of incubation

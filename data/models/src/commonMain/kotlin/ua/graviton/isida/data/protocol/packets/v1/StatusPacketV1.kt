@@ -1,7 +1,7 @@
-package ua.graviton.isida.data.protocol.v1
+package ua.graviton.isida.data.protocol.packets.v1
 
-import ua.graviton.isida.data.protocol.IsidaPacket
-import ua.graviton.isida.data.protocol.StatusPacket
+import ua.graviton.isida.data.protocol.packets.IsidaPacket
+import ua.graviton.isida.data.protocol.packets.StatusPacket
 
 data class StatusPacketV1(
     val model: Int = 0,       // 1 байт ind=0  модель прибора

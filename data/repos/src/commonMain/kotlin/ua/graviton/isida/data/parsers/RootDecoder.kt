@@ -2,7 +2,7 @@ package ua.graviton.isida.data.parsers
 
 import com.whoppah.util.readU8
 import ua.graviton.isida.data.parsers.v1.PacketDecoderV1
-import ua.graviton.isida.data.protocol.IsidaPacket
+import ua.graviton.isida.data.protocol.packets.IsidaPacket
 
 object RootDecoder {
     private val decoders = mapOf<Int, PacketDecoder<out IsidaPacket>>(

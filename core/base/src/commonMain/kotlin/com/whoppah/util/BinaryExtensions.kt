@@ -67,6 +67,10 @@ fun ByteArray.writeFloatAsU16LE(index: Int, value: Float) {
     writeU16LE(index, intValue)
 }
 
+fun ByteArray.writeBytes(index: Int, bytes: ByteArray) {
+    bytes.copyInto(this, index)
+}
+
 /**
  * Converts an Int to a 2-byte array (Little Endian).
  * Useful for 0-65535 values.

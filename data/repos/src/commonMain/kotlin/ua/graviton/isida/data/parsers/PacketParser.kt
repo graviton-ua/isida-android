@@ -3,7 +3,7 @@ package ua.graviton.isida.data.parsers
 import com.whoppah.util.CRC16
 import com.whoppah.util.readU16LE
 import com.whoppah.util.readU8
-import ua.graviton.isida.data.protocol.IsidaPacket
+import ua.graviton.isida.data.protocol.packets.IsidaPacket
 
 interface PacketParser<T : IsidaPacket> {
     val version: Int
@@ -43,6 +43,6 @@ interface PacketParser<T : IsidaPacket> {
         return (calculatedCrc and 0xFFFF) == packetCrc
     }
 
-    fun parse(data: ByteArray): Result<T> = parse(PacketReader(data))
-    fun parse(reader: PacketReader): Result<T>
+    fun parsePayload(data: ByteArray): Result<T> = parsePayload(PacketReader(data))
+    fun parsePayload(reader: PacketReader): Result<T>
 }
