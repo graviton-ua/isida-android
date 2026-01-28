@@ -16,6 +16,7 @@ abstract class CommandEncoder<T : IsidaCommand> {
         val serializer = getSerializerByType(command)
             ?: return Result.failure(IllegalStateException("Serializer not found for command: ${command::class}"))
 
-        return serializer.buildFrame(command)
+        @Suppress("UNCHECKED_CAST")
+        return (serializer as CommandSerializer<T>).buildFrame(command)
     }
 }
