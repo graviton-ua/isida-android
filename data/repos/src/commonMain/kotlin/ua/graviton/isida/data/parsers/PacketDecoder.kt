@@ -6,7 +6,7 @@ import ua.graviton.isida.data.protocol.packets.IsidaPacket
 
 abstract class PacketDecoder<T : IsidaPacket> {
     abstract val parsers: List<PacketParser<out T>>
-    private val map: Map<Int, PacketParser<out T>> = parsers.associateBy { it.commandId }
+    private val map: Map<Int, PacketParser<out T>> by lazy { parsers.associateBy { it.commandId } }
 
     private fun getParserByCommandId(commandId: Int): PacketParser<out T>? = map[commandId]
 
