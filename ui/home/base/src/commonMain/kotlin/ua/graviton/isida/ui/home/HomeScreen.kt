@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -38,29 +37,6 @@ import ua.graviton.isida.ui.navigation.*
 @Serializable
 data object HomeScreen : NavKey
 
-// @Composable
-// fun HomeScreen(
-//     openPowerDialog: () -> Unit,
-//     openSetPropDialog: (String) -> Unit,
-// ) {
-//     LaunchedEffect(Unit) { SystemBarColorManager.darkIcons.value = true }
-//
-//     val context = LocalContext.current
-//
-//     val scanForDevice = rememberLauncherForActivityResult(ScanForDeviceResultContract()) { address ->
-//         Timber.d("Selected device: $address | start service")
-//         if (address != null) with(context) { startService(intentBLServiceConnectDevice(address)) }
-//     }
-//
-//     HomeScreen(
-//         viewModel = hiltViewModel(),
-//         connectDevice = { scanForDevice.launch(Unit) },
-//         disconnectDevice = { with(context) { startService(intentBLServiceDisconnectDevice()) } },
-//         openPowerDialog = openPowerDialog,
-//         openSetPropDialog = openSetPropDialog,
-//     )
-// }
-
 private val TOP_LEVEL_ROUTES: List<HomeTabScreen> = listOf(
     StatsScreen, PropScreen, ReportScreen,
 )
@@ -72,13 +48,14 @@ internal fun HomeScreen(
     openPowerDialog: () -> Unit,
     openSetPropDialog: (String) -> Unit,
 ) {
-    val viewState by viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     HomeScreen(
-        state = viewState,
+        state = state,
         disconnectDevice = viewModel::disconnect,
         openPowerDialog = openPowerDialog,
         openSetPropDialog = openSetPropDialog,
+        sendTestCommand = viewModel::sendTest,
     ) { action ->
         when (action) {
             //is ShopCartAction.Close -> navigateUp()
@@ -94,6 +71,7 @@ private fun HomeScreen(
     disconnectDevice: () -> Unit,
     openPowerDialog: () -> Unit,
     openSetPropDialog: (String) -> Unit,
+    sendTestCommand: () -> Unit,
     actioner: (HomeAction) -> Unit,
 ) {
     val navigationState = rememberNavigationState(
@@ -118,6 +96,7 @@ private fun HomeScreen(
                 connectDevice = { actioner(HomeAction.ConnectDevice) },
                 disconnectDevice = disconnectDevice,
                 openPowerDialog = openPowerDialog,
+                sendTestCommand = sendTestCommand,
             )
         },
         bottomBar = {
@@ -155,21 +134,26 @@ private fun HomeTopBar(
     connectDevice: () -> Unit,
     disconnectDevice: () -> Unit,
     openPowerDialog: () -> Unit,
+    sendTestCommand: () -> Unit,
 ) {
     WhTopAppBar(
         title = { Text(text = stringResource(Res.string.app_name)) },
         actions = {
-            var expanded by remember { mutableStateOf(false) }
             if (deviceConnected)
-                TextButton(onClick = openPowerDialog) {
-                    Icon(imageVector = Icons.Default.Flag, contentDescription = "Device menu")
-                    Text(text = stringResource(Res.string.butPower))
-                }
+                TextButton(onClick = sendTestCommand) { Text(text = "Send test") }
+
+            var expanded by remember { mutableStateOf(false) }
             IconButton(onClick = { expanded = !expanded }) { Icon(imageVector = Icons.Default.MoreVert, contentDescription = "Device menu") }
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
+                if (deviceConnected)
+                    DropdownMenuItem(
+                        text = { Text(text = stringResource(Res.string.butPower)) },
+                        onClick = openPowerDialog,
+                    )
+
                 when (deviceConnected) {
                     false -> DropdownMenuItem(
                         text = { Text(text = "Connect") },
@@ -251,6 +235,7 @@ private fun Preview() {
             disconnectDevice = {},
             openPowerDialog = {},
             openSetPropDialog = {},
+            sendTestCommand = {},
             actioner = {},
         )
     }
