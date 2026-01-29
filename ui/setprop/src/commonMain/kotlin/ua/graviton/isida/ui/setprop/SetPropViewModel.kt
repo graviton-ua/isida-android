@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
+import ua.graviton.isida.domain.interactors.SendUpdateSettingsCommand
 import ua.graviton.isida.domain.models.DeviceProperty
 import ua.graviton.isida.domain.models.getProperty
 import ua.graviton.isida.domain.observers.ObserveStatus
@@ -23,6 +24,7 @@ import ua.graviton.isida.domain.observers.ObserveStatus
 class SetPropViewModel(
     @Assisted private val id: String,
     observeStatus: ObserveStatus,
+    private val sendUpdateSettingsCommand: SendUpdateSettingsCommand,
 ) : ViewModel() {
 
     @AssistedFactory

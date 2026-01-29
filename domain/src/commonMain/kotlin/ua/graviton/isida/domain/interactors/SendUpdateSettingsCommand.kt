@@ -61,19 +61,16 @@ class SendUpdateSettingsCommand(
     }
 
     suspend operator fun invoke(
-        deviceNumber: Int,
         deviceDataSnapshot: StatusPacket,
         props: List<DeviceProperty<*>>,
-    ) = executeSync(Params(deviceNumber, deviceDataSnapshot, props))
+    ) = executeSync(Params(deviceDataSnapshot, props))
 
     suspend operator fun invoke(
-        deviceNumber: Int,
         deviceDataSnapshot: StatusPacket,
         vararg props: DeviceProperty<*>,
-    ) = executeSync(Params(deviceNumber, deviceDataSnapshot, props.toList()))
+    ) = executeSync(Params(deviceDataSnapshot, props.toList()))
 
     data class Params(
-        val deviceNumber: Int,
         val deviceDataSnapshot: StatusPacket,
         val props: List<DeviceProperty<*>>,
     )
