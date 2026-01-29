@@ -15,6 +15,7 @@ import ua.graviton.isida.data.bluetooth.DeviceAddress
 import ua.graviton.isida.data.bluetooth.asDeviceAddress
 import ua.graviton.isida.data.parsers.RootDecoder
 import ua.graviton.isida.data.protocol.packets.IsidaPacket
+import ua.graviton.isida.data.protocol.packets.StatusPacket
 
 @Inject
 @SingleIn(AppScope::class)
@@ -27,8 +28,8 @@ class DeviceConnectionManager(
 
     val connectionState: StateFlow<ConnectionState> = client.state
 
-    val dataStream: SharedFlow<ByteArray> = client.incomingData
-        .shareIn(appScope, SharingStarted.WhileSubscribed(), replay = 0)
+    // val dataStream: SharedFlow<ByteArray> = client.incomingData
+    //     .shareIn(appScope, SharingStarted.WhileSubscribed(), replay = 0)
 
     val packetStream: SharedFlow<IsidaPacket> = client.incomingData
         .mapNotNull { data ->
@@ -43,15 +44,10 @@ class DeviceConnectionManager(
         .flowOn(dispatchers.computation)
         .shareIn(appScope, SharingStarted.WhileSubscribed(), replay = 0)
 
-    init {
-        appScope.observerPacketStream()
-    }
+    val statusStream: StateFlow<StatusPacket?> = packetStream.filterIsInstance<StatusPacket>()
+        .flowOn(dispatchers.computation)
+        .stateIn(appScope, SharingStarted.WhileSubscribed(), null)
 
-    private fun CoroutineScope.observerPacketStream() {
-        // packetStream
-        //     .onEach { packet -> logger.d { "Received packet: $packet" } }
-        //     .launchIn(this)
-    }
 
     suspend fun connect(address: DeviceAddress) = client.connect(address)
     suspend fun connect(address: String) = connect(address.asDeviceAddress())

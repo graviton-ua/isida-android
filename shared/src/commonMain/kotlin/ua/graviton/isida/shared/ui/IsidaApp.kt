@@ -57,6 +57,9 @@ private class NavigatorImpl(
     val backStack: NavBackStack<NavKey>,
 ) : Navigator {
     override fun navigateUp() {
+        // If backstack contains only one destination, we shouldn't allow to go back
+        if (backStack.size == 1) return
+
         backStack.removeLastOrNull()
     }
 
