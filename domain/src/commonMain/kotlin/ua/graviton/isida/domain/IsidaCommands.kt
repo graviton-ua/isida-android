@@ -106,7 +106,7 @@ object IsidaCommands {
         val air0 = (props.findIsInstance<DeviceProperty.Air0>()?.value ?: deviceDataSnapshot.air0).toByte()
         val air1 = (props.findIsInstance<DeviceProperty.Air1>()?.value ?: deviceDataSnapshot.air1).toByte()
         val spCO2 = (props.findIsInstance<DeviceProperty.SpCO2>()?.value ?: deviceDataSnapshot.spCO2).toByte()
-        val newDeviceNumber = (props.findIsInstance<DeviceProperty.DeviceNumber>()?.value ?: deviceDataSnapshot.node).toByte()
+        val newIdentif = (props.findIsInstance<DeviceProperty.Identif>()?.value ?: deviceDataSnapshot.node).toByte()
         val state = (props.findIsInstance<DeviceProperty.State>()?.value ?: deviceDataSnapshot.state).toByte()
         val extendMode = (props.findIsInstance<DeviceProperty.ExtendMode>()?.value ?: deviceDataSnapshot.extendMode).toByte()
         val relayMode = (props.findIsInstance<DeviceProperty.RelayMode>()?.value ?: deviceDataSnapshot.relayMode).toByte()
@@ -118,7 +118,7 @@ object IsidaCommands {
                 spT0 + spT1 + spRh0 + spRh1 + pkoff0 + pkoff1 + ikoff0 + ikoff1 + minRun + maxRun + period +
                 byteArrayOf(
                     timer0, timer1, alarm0, alarm1, extOn0, extOn1, extOff0, extOff1, air0, air1,
-                    spCO2, newDeviceNumber, state, extendMode, relayMode, programm, hysteresis, turnTime,
+                    spCO2, newIdentif, state, extendMode, relayMode, programm, hysteresis, turnTime,
                 )
         require(data.size == 44) { "Wrong data size" }
 

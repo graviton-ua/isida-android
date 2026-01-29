@@ -32,7 +32,7 @@ sealed class DeviceProperty<T>(
     data class Air0(private val _value: Int) : DeviceProperty<Int>(id = "air0", value = _value, info = DeviceCharacteristicInfo.Min1)
     data class Air1(private val _value: Int) : DeviceProperty<Int>(id = "air1", value = _value, info = DeviceCharacteristicInfo.Min0)
     data class SpCO2(private val _value: Int) : DeviceProperty<Int>(id = "spCO2", value = _value, info = DeviceCharacteristicInfo.Min1000)
-    data class DeviceNumber(private val _value: Int) : DeviceProperty<Int>(id = "deviceNumber", value = _value, info = DeviceCharacteristicInfo.Id)
+    data class Identif(private val _value: Int) : DeviceProperty<Int>(id = "Identif", value = _value, info = DeviceCharacteristicInfo.Id)
     data class State(private val _value: Int) : DeviceProperty<Int>(id = "state", value = _value, info = DeviceCharacteristicInfo.Min0)
     data class ExtendMode(private val _value: Int) : DeviceProperty<Int>(id = "extendMode", value = _value, info = DeviceCharacteristicInfo.Max5)
     data class RelayMode(private val _value: Int) : DeviceProperty<Int>(id = "relayMode", value = _value, info = DeviceCharacteristicInfo.Max3)
@@ -64,7 +64,7 @@ fun StatusPacketV1.asProperties(): List<DeviceProperty<*>> = listOf(
     DeviceProperty.Air0(air0),
     DeviceProperty.Air1(air1),
     DeviceProperty.SpCO2(spCO2),
-    DeviceProperty.DeviceNumber(node),
+    DeviceProperty.Identif(node),
     DeviceProperty.State(state),
     DeviceProperty.ExtendMode(extendMode),
     DeviceProperty.RelayMode(relayMode),

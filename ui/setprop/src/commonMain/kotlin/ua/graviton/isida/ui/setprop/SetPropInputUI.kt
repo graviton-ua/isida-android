@@ -79,7 +79,7 @@ fun SetPropInput(
     //     modifier = modifier,
     // )
 
-    is DeviceProperty.DeviceNumber -> DefaultIntInput(
+    is DeviceProperty.Identif -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
