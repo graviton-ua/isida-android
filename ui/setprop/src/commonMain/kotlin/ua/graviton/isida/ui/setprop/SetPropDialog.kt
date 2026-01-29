@@ -22,21 +22,10 @@ internal fun SetPropDialog(
     viewModel: SetPropViewModel,
     navigateUp: () -> Unit,
 ) {
-    LaunchedEffect(viewModel.events) {
-        viewModel.events.collect { event ->
-            when (event) {
-                is SetPropEvent.Send -> {
-                    //with(context) { startService(intentBLServiceSendCommand(event.command)) }
-                    //navigateUp()
-                }
-            }
-        }
-    }
-
-    val viewState by viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     SetPropDialog(
-        state = viewState,
+        state = state,
         actioner = { action ->
             when (action) {
                 is SetPropAction.NavigateUp -> navigateUp()

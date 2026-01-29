@@ -13,7 +13,7 @@ object RootDecoder {
     )
 
     fun parse(data: ByteArray): Result<IsidaPacket> {
-        logger.d { "Received bytes: [${data.toHexString(separator = ", ")}]" }
+        //logger.d { "Received bytes: [${data.toHexString(separator = ", ")}]" }
         //TODO: Verify length of the packet before reading the version
 
         // Version is usually placed at index 5 and takes 1 byte

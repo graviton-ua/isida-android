@@ -48,9 +48,9 @@ class DeviceConnectionManager(
     }
 
     private fun CoroutineScope.observerPacketStream() {
-        packetStream
-            .onEach { packet -> logger.d { "Received packet: $packet" } }
-            .launchIn(this)
+        // packetStream
+        //     .onEach { packet -> logger.d { "Received packet: $packet" } }
+        //     .launchIn(this)
     }
 
     suspend fun connect(address: DeviceAddress) = client.connect(address)

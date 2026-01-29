@@ -33,17 +33,6 @@ internal fun DeviceModeDialog(
     viewModel: DeviceModeViewModel = injectedViewModel(),
     navigateUp: () -> Unit,
 ) {
-    LaunchedEffect(viewModel.events) {
-        viewModel.events.collect { event ->
-            when (event) {
-                is DeviceModeEvent.Send -> {
-                    //with(context) { startService(intentBLServiceSendCommand(event.command)) }
-                    //navigateUp()
-                }
-            }
-        }
-    }
-
     val viewState by viewModel.state.collectAsStateWithLifecycle()
 
     DeviceModeDialog(

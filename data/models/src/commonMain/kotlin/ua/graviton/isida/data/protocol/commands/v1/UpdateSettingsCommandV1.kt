@@ -1,6 +1,7 @@
 package ua.graviton.isida.data.protocol.commands.v1
 
 import ua.graviton.isida.data.protocol.commands.IsidaCommand
+import ua.graviton.isida.data.protocol.commands.UpdateSettingCommand
 
 data class UpdateSettingsCommandV1(
     // We can duplicate the fields from DataPackageDto here,
@@ -34,4 +35,4 @@ data class UpdateSettingsCommandV1(
     val programm: Int,
     val hysteresis: Int,
     val turnTime: Int
-) : IsidaCommand.V1
+) : IsidaCommand.V1, UpdateSettingCommand

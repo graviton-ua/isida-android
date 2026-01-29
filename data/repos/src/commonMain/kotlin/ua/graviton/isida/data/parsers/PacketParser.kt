@@ -51,7 +51,7 @@ interface PacketParser<T : IsidaPacket> {
         val dataForCrc = data.copyOfRange(6, dataOffset + length)
         val calculatedCrc = CRC16.crcSimple(dataForCrc)
         val packetCrc = data.readU16LE(dataOffset + length)
-        logger.d { "CRC | calculated: $calculatedCrc | received: ${packetCrc}" }
+        //logger.d { "CRC | calculated: $calculatedCrc | received: ${packetCrc}" }
 
         // crcSimple returns an Int which might use more than 16 bits.
         // SendPackageDto uses .toShort() which truncates to lower 16 bits.
