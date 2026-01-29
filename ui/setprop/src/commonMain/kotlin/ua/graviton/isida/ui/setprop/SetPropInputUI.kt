@@ -159,7 +159,7 @@ fun SetPropInput(
         modifier = modifier,
     )
 
-    is DeviceProperty.K0 -> DefaultIntInput(
+    is DeviceProperty.Pkoff0 -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
@@ -167,7 +167,7 @@ fun SetPropInput(
         modifier = modifier,
     )
 
-    is DeviceProperty.K1 -> DefaultIntInput(
+    is DeviceProperty.Pkoff1 -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
@@ -271,7 +271,7 @@ fun SetPropInput(
         modifier = modifier,
     )
 
-    is DeviceProperty.Ti0 -> DefaultIntInput(
+    is DeviceProperty.Ikoff0 -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
@@ -279,7 +279,7 @@ fun SetPropInput(
         modifier = modifier,
     )
 
-    is DeviceProperty.Ti1 -> DefaultIntInput(
+    is DeviceProperty.Ikoff1 -> DefaultIntInput(
         init = property.value,
         onChanged = { value -> onPropertyChanged(value?.let { property.copy(_value = it) }) },
         info = property.info,
@@ -495,7 +495,7 @@ private fun PreviewUnknown() {
 private fun PreviewNumber() {
     WhoppahTheme {
         SetPropInput(
-            property = DeviceProperty.K1(29),
+            property = DeviceProperty.Pkoff1(29),
             onPropertyChanged = {},
             validState = remember { mutableStateOf(false) },
         )

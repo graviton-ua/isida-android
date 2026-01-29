@@ -87,10 +87,10 @@ object IsidaCommands {
         val spT1 = ((props.findIsInstance<DeviceProperty.SpT1>()?.value ?: deviceDataSnapshot.spT1) * 10).toInt().toShort().asByteArray()
         val spRh0 = ((props.findIsInstance<DeviceProperty.SpRh0>()?.value ?: deviceDataSnapshot.spRh0) * 10).toInt().toShort().asByteArray()
         val spRh1 = ((props.findIsInstance<DeviceProperty.SpRh1>()?.value ?: deviceDataSnapshot.spRh1) * 10).toInt().toShort().asByteArray()
-        val k0 = (props.findIsInstance<DeviceProperty.K0>()?.value ?: deviceDataSnapshot.pkoff0).toShort().asByteArray()
-        val k1 = (props.findIsInstance<DeviceProperty.K1>()?.value ?: deviceDataSnapshot.pkoff1).toShort().asByteArray()
-        val ti0 = (props.findIsInstance<DeviceProperty.Ti0>()?.value ?: deviceDataSnapshot.ikoff0).toShort().asByteArray()
-        val ti1 = (props.findIsInstance<DeviceProperty.Ti1>()?.value ?: deviceDataSnapshot.ikoff1).toShort().asByteArray()
+        val pkoff0 = (props.findIsInstance<DeviceProperty.Pkoff0>()?.value ?: deviceDataSnapshot.pkoff0).toShort().asByteArray()
+        val pkoff1 = (props.findIsInstance<DeviceProperty.Pkoff1>()?.value ?: deviceDataSnapshot.pkoff1).toShort().asByteArray()
+        val ikoff0 = (props.findIsInstance<DeviceProperty.Ikoff0>()?.value ?: deviceDataSnapshot.ikoff0).toShort().asByteArray()
+        val ikoff1 = (props.findIsInstance<DeviceProperty.Ikoff1>()?.value ?: deviceDataSnapshot.ikoff1).toShort().asByteArray()
         val minRun = (props.findIsInstance<DeviceProperty.MinRun>()?.value ?: deviceDataSnapshot.minRun).toShort().asByteArray()
         val maxRun = (props.findIsInstance<DeviceProperty.MaxRun>()?.value ?: deviceDataSnapshot.maxRun).toShort().asByteArray()
         val period = (props.findIsInstance<DeviceProperty.Period>()?.value ?: deviceDataSnapshot.period).toShort().asByteArray()
@@ -115,7 +115,7 @@ object IsidaCommands {
         val turnTime = (props.findIsInstance<DeviceProperty.TurnTime>()?.value ?: deviceDataSnapshot.turnTime).toByte()
 
         val data = commandId.toShort().asByteArray() +
-                spT0 + spT1 + spRh0 + spRh1 + k0 + k1 + ti0 + ti1 + minRun + maxRun + period +
+                spT0 + spT1 + spRh0 + spRh1 + pkoff0 + pkoff1 + ikoff0 + ikoff1 + minRun + maxRun + period +
                 byteArrayOf(
                     timer0, timer1, alarm0, alarm1, extOn0, extOn1, extOff0, extOff1, air0, air1,
                     spCO2, newDeviceNumber, state, extendMode, relayMode, programm, hysteresis, turnTime,

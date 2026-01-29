@@ -14,10 +14,10 @@ sealed class DeviceProperty<T>(
     data class SpT1(private val _value: Float) : DeviceProperty<Float>(id = "spT1", value = _value, info = DeviceCharacteristicInfo.SpT)
     data class SpRh0(private val _value: Float) : DeviceProperty<Float>(id = "spRh0", value = _value, info = DeviceCharacteristicInfo.SpRh)
     data class SpRh1(private val _value: Float) : DeviceProperty<Float>(id = "spRh1", value = _value, info = DeviceCharacteristicInfo.SpRh)
-    data class K0(private val _value: Int) : DeviceProperty<Int>(id = "K0", value = _value, info = DeviceCharacteristicInfo.Min1)
-    data class K1(private val _value: Int) : DeviceProperty<Int>(id = "K1", value = _value, info = DeviceCharacteristicInfo.Min1)
-    data class Ti0(private val _value: Int) : DeviceProperty<Int>(id = "Ti0", value = _value, info = DeviceCharacteristicInfo.Min100)
-    data class Ti1(private val _value: Int) : DeviceProperty<Int>(id = "Ti1", value = _value, info = DeviceCharacteristicInfo.Min100)
+    data class Pkoff0(private val _value: Int) : DeviceProperty<Int>(id = "Pkoff0", value = _value, info = DeviceCharacteristicInfo.Min1)
+    data class Pkoff1(private val _value: Int) : DeviceProperty<Int>(id = "Pkoff1", value = _value, info = DeviceCharacteristicInfo.Min1)
+    data class Ikoff0(private val _value: Int) : DeviceProperty<Int>(id = "Ikoff0", value = _value, info = DeviceCharacteristicInfo.Min100)
+    data class Ikoff1(private val _value: Int) : DeviceProperty<Int>(id = "Ikoff1", value = _value, info = DeviceCharacteristicInfo.Min100)
     data class MinRun(private val _value: Int) : DeviceProperty<Int>(id = "minRun", value = _value, info = DeviceCharacteristicInfo.Min100)
     data class MaxRun(private val _value: Int) : DeviceProperty<Int>(id = "maxRun", value = _value, info = DeviceCharacteristicInfo.Min1)
     data class Period(private val _value: Int) : DeviceProperty<Int>(id = "period", value = _value, info = DeviceCharacteristicInfo.Min10)
@@ -46,10 +46,10 @@ fun StatusPacketV1.asProperties(): List<DeviceProperty<*>> = listOf(
     DeviceProperty.SpT1(spT1),
     DeviceProperty.SpRh0(spRh0),
     DeviceProperty.SpRh1(spRh1),
-    DeviceProperty.K0(pkoff0),
-    DeviceProperty.K1(pkoff1),
-    DeviceProperty.Ti0(ikoff0),
-    DeviceProperty.Ti1(ikoff1),
+    DeviceProperty.Pkoff0(pkoff0),
+    DeviceProperty.Pkoff1(pkoff1),
+    DeviceProperty.Ikoff0(ikoff0),
+    DeviceProperty.Ikoff1(ikoff1),
     DeviceProperty.MinRun(minRun),
     DeviceProperty.MaxRun(maxRun),
     DeviceProperty.Period(period),
