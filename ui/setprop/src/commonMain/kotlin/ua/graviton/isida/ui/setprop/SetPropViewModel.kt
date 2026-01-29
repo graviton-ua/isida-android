@@ -90,16 +90,11 @@ class SetPropViewModel(
 
     private fun CoroutineScope.send() = launch(Dispatchers.Default) {
         //Here we should build and send command to device
-        val dataSnapshot = packets.value ?: return@launch
-        val device = when (dataSnapshot) {
-            is StatusPacketV1 -> dataSnapshot.node
-            else -> return@launch
-        }
+        val snapshot = packets.value ?: return@launch
         val prop = updatedProperty.value ?: property.value ?: return@launch
-        // _events.emit(
-        //     SetPropEvent.Send(
-        //         command = IsidaCommands.updateProperties(device, dataSnapshot, prop)
-        //     )
-        // )
+
+        sendUpdateSettingsCommand(snapshot, prop)
+            .onSuccess { logger.d { "Command sent" } }
+            .onFailure { logger.e(it) { "Command failed" } }
     }
 }
