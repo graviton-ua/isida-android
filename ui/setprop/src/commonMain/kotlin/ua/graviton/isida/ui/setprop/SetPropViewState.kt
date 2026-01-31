@@ -1,6 +1,6 @@
 package ua.graviton.isida.ui.setprop
 
-import ua.graviton.isida.domain.models.DeviceProperty
+import ua.graviton.isida.ui.setprop.models.DeviceProperty
 
 sealed class SetPropViewState(val id: String) {
     /**

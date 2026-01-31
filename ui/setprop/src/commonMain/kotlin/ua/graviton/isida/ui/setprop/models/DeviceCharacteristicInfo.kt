@@ -1,4 +1,4 @@
-package ua.graviton.isida.domain.models
+package ua.graviton.isida.ui.setprop.models
 
 sealed class DeviceCharacteristicInfo<T>(
     val limits: List<Limit<T>> = emptyList(),

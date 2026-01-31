@@ -20,12 +20,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.whoppah.common.compose.theme.WhoppahTheme
 import com.whoppah.common.resources.*
 import org.jetbrains.compose.resources.stringResource
-import ua.graviton.isida.domain.models.DeviceCharacteristicInfo
-import ua.graviton.isida.domain.models.DeviceProperty
+import ua.graviton.isida.ui.setprop.models.DeviceCharacteristicInfo
+import ua.graviton.isida.ui.setprop.models.DeviceProperty
 import java.util.Locale
 
 @Composable
-fun SetPropInput(
+internal fun SetPropInput(
     property: DeviceProperty<*>,
     onPropertyChanged: (DeviceProperty<*>?) -> Unit,
     validState: MutableState<Boolean>,

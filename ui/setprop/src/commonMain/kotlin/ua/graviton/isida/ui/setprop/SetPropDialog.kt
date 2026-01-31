@@ -12,7 +12,7 @@ import androidx.navigation3.runtime.NavKey
 import com.whoppah.common.compose.theme.WhoppahTheme
 import com.whoppah.common.compose.ui.Crossfade
 import kotlinx.serialization.Serializable
-import ua.graviton.isida.domain.models.DeviceProperty
+import ua.graviton.isida.ui.setprop.models.DeviceProperty
 
 @Serializable
 data class SetPropDialog(val id: String) : NavKey
