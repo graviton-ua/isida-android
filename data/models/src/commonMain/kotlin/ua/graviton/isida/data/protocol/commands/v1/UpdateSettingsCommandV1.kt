@@ -3,6 +3,49 @@ package ua.graviton.isida.data.protocol.commands.v1
 import ua.graviton.isida.data.protocol.commands.IsidaCommand
 import ua.graviton.isida.data.protocol.commands.UpdateSettingCommand
 
+/**
+ * Command to update various settings on the device.
+ * This includes temperature setpoints, humidity, alarm thresholds, timer configurations, and more.
+ *
+ * @property spT0 Temperature setpoint for sensor #0 (Dry sensor).
+ * @property spT1 Temperature setpoint for sensor #1 (Wet sensor).
+ * @property spRh0 Adjustment/Calibration for HIH-5030.
+ * @property spRh1 Humidity setpoint for HIH-5030 sensor.
+ * @property state Device state (OFF, ON, COOLING, etc.).
+ * @property extendMode Extended operation mode (0: Siren, 1: Fan, 2: Force Heat, 3: Force Cool, 4: Force Dry, 5: Duplicate Wetting).
+ * @property relayMode Relay operation mode (0: None, 1: Ch[0], 2: Ch[1], 3: Ch[0]&[1]).
+ * @property programm Program operation mode.
+ * @property minRun Min run time for humidifier pump (pulse control).
+ * @property maxRun Max run time for humidifier pump (pulse control).
+ * @property period Period for humidifier pump (pulse control).
+ * @property timer0 Timer ON state duration (or OFF state, depending on specific logic).
+ * @property timer1 Timer OFF state duration (or ON state, depending on specific logic).
+ * @property alarm0 Alarm threshold delta 0.
+ * @property alarm1 Alarm threshold delta 1.
+ * @property extOn0 Offset for turning ON the auxiliary channel (0).
+ * @property extOn1 Offset for turning ON the auxiliary channel (1).
+ * @property extOff0 Offset for turning OFF the auxiliary channel (0).
+ * @property extOff1 Offset for turning OFF the auxiliary channel (1).
+ * @property air0 Ventilation pause timer.
+ * @property air1 Ventilation work timer (if 0, ventilation is OFF).
+ * @property spCO2 Setpoint for CO2 concentration control.
+ * @property koffCurr Scale coefficient for triac current (e.g., 150 for AC1010).
+ * @property hysteresis Humidifier channel hysteresis (mask 0x03); Enable HIH-5030 (mask 0x40); Enable AM2301 (mask 0x80).
+ * @property zonaFlap Zone threshold for flap control.
+ * @property turnTime Wait time for tray rotation (in seconds).
+ * @property waitCooling Wait time before starting cooling mode.
+ * @property pkoff0 Proportional coefficient #0.
+ * @property pkoff1 Proportional coefficient #1.
+ * @property ikoff0 Integral coefficient #0.
+ * @property ikoff1 Integral coefficient #1.
+ * @property identif Network identifier/number of the device.
+ * @property ip0 IP address byte 0.
+ * @property ip1 IP address byte 1.
+ * @property ip2 IP address byte 2.
+ * @property ip3 IP address byte 3.
+ * @property nothing0 Unused/Reserved field.
+ * @property nothing1 Unused/Reserved field.
+ */
 data class UpdateSettingsCommandV1(
     // We can duplicate the fields from DataPackageDto here,
     // or pass the entire DataPackageDto if the device expects the full snapshot back.

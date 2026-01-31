@@ -3,6 +3,67 @@ package ua.graviton.isida.data.protocol.packets.v2
 import ua.graviton.isida.data.protocol.packets.IsidaPacket
 import ua.graviton.isida.data.protocol.packets.StatusPacket
 
+/**
+ * Represents the status packet (Version 2) received from the device.
+ * Structure is currently similar to V1 but defined separately for future extensibility.
+ * Contains both sensor data (PV) and device settings (SP).
+ *
+ * @property model Device model identifier.
+ * @property node Device network number.
+ * @property pvT0 Current temperature reading from sensor #0.
+ * @property pvT1 Current temperature reading from sensor #1.
+ * @property pvT2 Current temperature reading from sensor #2.
+ * @property pvRh Current relative humidity reading.
+ * @property pvCO2 Current CO2 concentration reading.
+ * @property pvTimer Current value of the tray rotation timer.
+ * @property pvFan Current low-speed fan rotation speed.
+ * @property pvFlap Current flap position.
+ * @property power Current power supplied to heaters.
+ * @property fuses Short circuit flags.
+ * @property errors Error flags.
+ * @property warning Warning flags.
+ * @property output Output control signals.
+ * @property dayHour Current Day and Hour.
+ * @property minSec Current Minute and Second.
+ * @property spT0 Temperature setpoint for sensor #0.
+ * @property spT1 Temperature setpoint for sensor #1.
+ * @property spRh0 Adjustment/Calibration for HIH-5030.
+ * @property spRh1 Humidity setpoint.
+ * @property state Device operating state.
+ * @property extendMode Extended mode settings.
+ * @property relayMode Relay mode settings.
+ * @property programm Program mode status.
+ * @property minRun Min run time for humidifier pump.
+ * @property maxRun Max run time for humidifier pump.
+ * @property period Pulse period for humidifier pump.
+ * @property timer0 Timer ON state duration.
+ * @property timer1 Timer OFF state duration.
+ * @property alarm0 Alarm delta 0.
+ * @property alarm1 Alarm delta 1.
+ * @property extOn0 Aux channel ON offset 0.
+ * @property extOn1 Aux channel ON offset 1.
+ * @property extOff0 Aux channel OFF offset 0.
+ * @property extOff1 Aux channel OFF offset 1.
+ * @property air0 Ventilation pause duration.
+ * @property air1 Ventilation active duration.
+ * @property spCO2 CO2 setpoint.
+ * @property koffCurr Current scale coefficient.
+ * @property hysteresis Humidifier hysteresis and sensor flags.
+ * @property zonaFlap Flap zone threshold.
+ * @property turnTime Tray rotation wait time.
+ * @property waitCooling Cooling wait time.
+ * @property pkoff0 Proportional coeff #0.
+ * @property pkoff1 Proportional coeff #1.
+ * @property ikoff0 Integral coeff #0.
+ * @property ikoff1 Integral coeff #1.
+ * @property identif Network ID.
+ * @property ip0 IP address byte 0.
+ * @property ip1 IP address byte 1.
+ * @property ip2 IP address byte 2.
+ * @property ip3 IP address byte 3.
+ * @property nothing0 Unused.
+ * @property nothing1 Unused.
+ */
 data class StatusPacketV2(
     val model: Int = 0,       // 1 байт ind=0  модель прибора
     val node: Int = 0,        // 1 байт ind=1  сетевой номер прибора
