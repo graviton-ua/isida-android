@@ -27,7 +27,7 @@ import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
  */
 @Stable
 interface DeviceProperty {
-    val title: @Composable () -> Unit
+    val title: @Composable () -> String
 
     @Composable
     fun Content(modifier: Modifier)
@@ -47,7 +47,7 @@ interface DeviceProperty {
 abstract class SingleSelectionListDeviceProperty<T>(
     preSelected: T? = null,
     val list: List<T>,
-    override val title: @Composable () -> Unit,
+    override val title: @Composable () -> String,
 ) : DeviceProperty {
     protected val inputHelper = DefaultInputStateHelper(initValue = preSelected)
 
@@ -89,7 +89,7 @@ abstract class SingleSelectionListDeviceProperty<T>(
 @Stable
 abstract class NumberInputTextFieldDeviceProperty<T : Number>(
     initValue: T? = null,
-    override val title: @Composable () -> Unit,
+    override val title: @Composable () -> String,
     private val allowDecimals: Boolean = false,
     private val onValidate: (String) -> NumberInputTextFieldState.Error? = { null },
 ) : DeviceProperty {
@@ -120,7 +120,7 @@ abstract class NumberInputTextFieldDeviceProperty<T : Number>(
 @Stable
 internal class SpT0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { Text(text = "SpT0") },
+    title = { "SpT0" },
     onValidate = { value ->
         val floatValue = value.toFloatOrNull()
         when {
@@ -148,7 +148,7 @@ internal class SpT0(value: Float? = null) : NumberInputTextFieldDeviceProperty<F
 @Stable
 internal class SpT1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { Text(text = "SpT1") },
+    title = { "SpT1" },
     onValidate = { value ->
         val floatValue = value.toFloatOrNull()
         when {
@@ -176,7 +176,7 @@ internal class SpT1(value: Float? = null) : NumberInputTextFieldDeviceProperty<F
 @Stable
 internal class SpRh0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { Text(text = "SpRh0") },
+    title = { "SpRh0" },
     onValidate = { value ->
         val floatValue = value.toFloatOrNull()
         when {
@@ -204,7 +204,7 @@ internal class SpRh0(value: Float? = null) : NumberInputTextFieldDeviceProperty<
 @Stable
 internal class SpRh1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { Text(text = "SpRh1") },
+    title = { "SpRh1" },
     onValidate = { value ->
         val floatValue = value.toFloatOrNull()
         when {
@@ -232,7 +232,7 @@ internal class SpRh1(value: Float? = null) : NumberInputTextFieldDeviceProperty<
 @Stable
 internal class Pkoff0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "Pkoff0") },
+    title = { "Pkoff0" },
     onValidate = {
         val intValue = it.toIntOrNull()
         when {
@@ -259,7 +259,7 @@ internal class Pkoff0(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 @Stable
 internal class Pkoff1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "Pkoff1") },
+    title = { "Pkoff1" },
     onValidate = {
         val intValue = it.toIntOrNull()
         when {
@@ -286,7 +286,7 @@ internal class Pkoff1(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 @Stable
 internal class Ikoff0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "Ikoff0") },
+    title = { "Ikoff0" },
     onValidate = {
         val intValue = it.toIntOrNull()
         when {
@@ -313,7 +313,7 @@ internal class Ikoff0(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 @Stable
 internal class Ikoff1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "Ikoff1") },
+    title = { "Ikoff1" },
     onValidate = {
         val intValue = it.toIntOrNull()
         when {
@@ -340,7 +340,7 @@ internal class Ikoff1(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 @Stable
 internal class MinRun(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "MinRun") },
+    title = { "MinRun" },
     onValidate = {
         val intValue = it.toIntOrNull()
         when {
@@ -367,7 +367,7 @@ internal class MinRun(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 @Stable
 internal class MaxRun(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "MaxRun") },
+    title = { "MaxRun" },
     onValidate = {
         val intValue = it.toIntOrNull()
         when {
@@ -394,7 +394,7 @@ internal class MaxRun(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 @Stable
 internal class Period(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "Period") },
+    title = { "Period" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -413,7 +413,7 @@ internal class Period(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 @Stable
 internal class Timer0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "Timer0") },
+    title = { "Timer0" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -432,7 +432,7 @@ internal class Timer0(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 @Stable
 internal class Timer1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "Timer1") },
+    title = { "Timer1" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -451,7 +451,7 @@ internal class Timer1(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 @Stable
 internal class Alarm0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value,
-    title = { Text(text = "Alarm0") },
+    title = { "Alarm0" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -470,7 +470,7 @@ internal class Alarm0(value: Float? = null) : NumberInputTextFieldDeviceProperty
 @Stable
 internal class Alarm1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value,
-    title = { Text(text = "Alarm1") },
+    title = { "Alarm1" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -489,7 +489,7 @@ internal class Alarm1(value: Float? = null) : NumberInputTextFieldDeviceProperty
 @Stable
 internal class ExtOn0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value,
-    title = { Text(text = "ExtOn0") },
+    title = { "ExtOn0" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -508,7 +508,7 @@ internal class ExtOn0(value: Float? = null) : NumberInputTextFieldDeviceProperty
 @Stable
 internal class ExtOn1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value,
-    title = { Text(text = "ExtOn1") },
+    title = { "ExtOn1" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -527,7 +527,7 @@ internal class ExtOn1(value: Float? = null) : NumberInputTextFieldDeviceProperty
 @Stable
 internal class ExtOff0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value,
-    title = { Text(text = "ExtOff0") },
+    title = { "ExtOff0" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -546,7 +546,7 @@ internal class ExtOff0(value: Float? = null) : NumberInputTextFieldDevicePropert
 @Stable
 internal class ExtOff1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value,
-    title = { Text(text = "ExtOff1") },
+    title = { "ExtOff1" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -565,7 +565,7 @@ internal class ExtOff1(value: Float? = null) : NumberInputTextFieldDevicePropert
 @Stable
 internal class Air0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "Air0") },
+    title = { "Air0" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -584,7 +584,7 @@ internal class Air0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int
 @Stable
 internal class Air1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "Air1") },
+    title = { "Air1" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -603,7 +603,7 @@ internal class Air1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int
 @Stable
 internal class SpCO2(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "SpCO2") },
+    title = { "SpCO2" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -622,7 +622,7 @@ internal class SpCO2(value: Int? = null) : NumberInputTextFieldDeviceProperty<In
 @Stable
 internal class Identif(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "Identif") },
+    title = { "Identif" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -641,7 +641,7 @@ internal class Identif(value: Int? = null) : NumberInputTextFieldDeviceProperty<
 @Stable
 internal class State(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "State") },
+    title = { "State" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -660,7 +660,7 @@ internal class State(value: Int? = null) : NumberInputTextFieldDeviceProperty<In
 @Stable
 internal class ExtendMode(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "ExtendMode") },
+    title = { "ExtendMode" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -679,7 +679,7 @@ internal class ExtendMode(value: Int? = null) : NumberInputTextFieldDeviceProper
 @Stable
 internal class RelayMode(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "RelayMode") },
+    title = { "RelayMode" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -698,7 +698,7 @@ internal class RelayMode(value: Int? = null) : NumberInputTextFieldDevicePropert
 @Stable
 internal class Program(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "Program") },
+    title = { "Program" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -717,7 +717,7 @@ internal class Program(value: Int? = null) : NumberInputTextFieldDeviceProperty<
 @Stable
 internal class Hysteresis(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "Hysteresis") },
+    title = { "Hysteresis" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -736,7 +736,7 @@ internal class Hysteresis(value: Int? = null) : NumberInputTextFieldDeviceProper
 @Stable
 internal class TurnTime(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { Text(text = "TurnTime") },
+    title = { "TurnTime" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {

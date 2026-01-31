@@ -104,7 +104,7 @@ private fun StateSuccess(
             .defaultMinSize(minHeight = 72.dp)
             .padding(8.dp)
     ) {
-        state.property.title()
+        Text(text = state.property.title())
 
         state.property.Content(
             modifier = Modifier.fillMaxWidth()
