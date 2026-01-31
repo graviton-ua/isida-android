@@ -16,7 +16,11 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
-import ua.graviton.isida.domain.IsidaCommands
+import ua.graviton.isida.domain.DeviceMode
+import ua.graviton.isida.domain.DeviceModeExtra
+import ua.graviton.isida.domain.Errors
+import ua.graviton.isida.domain.OutputBit
+import ua.graviton.isida.domain.Warning
 import ua.graviton.isida.domain.observers.ObserveStatus
 import ua.graviton.isida.ui.home.stats.StatsItem.ComposableString.Companion.composableString
 
@@ -133,7 +137,7 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             "$valueFormatted °C [$spT0 °C]"
         },
         style = {
-            val st = state and IsidaCommands.DeviceMode.ENABLE.code
+            val st = state and DeviceMode.ENABLE.code
             val value = if (pvT0 > 80) null else pvT0
             if (st != 0) {
                 backgroundColor = when {
@@ -162,7 +166,7 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             }
         },
         style = {
-            val st = state and IsidaCommands.DeviceMode.ENABLE.code
+            val st = state and DeviceMode.ENABLE.code
             val value = if (pvT1 > 80) null else pvT1
             if (st != 0) {
                 backgroundColor = when {
@@ -186,7 +190,7 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             } else ""
         },
         style = {
-            val st = warning and IsidaCommands.Warning.WARNING_08.code
+            val st = warning and Warning.WARNING_08.code
             backgroundColor = if (st != 0) IsidaColor.Red100
             else null
         },
@@ -223,24 +227,24 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
         content = composableString(state) {
             // 1. Определяем режим
             val mode = when (state) {
-                state or IsidaCommands.DeviceMode.ENABLE.code -> IsidaCommands.DeviceMode.ENABLE
-                state or IsidaCommands.DeviceMode.WAITING_COOLING.code -> IsidaCommands.DeviceMode.ENABLE
-                state or IsidaCommands.DeviceMode.WAITING_ON.code -> IsidaCommands.DeviceMode.ENABLE
-                state or IsidaCommands.DeviceMode.HORIZON_ON.code -> IsidaCommands.DeviceMode.ENABLE
-                state or IsidaCommands.DeviceMode.HORIZON_SET.code -> IsidaCommands.DeviceMode.ENABLE
-                state or IsidaCommands.DeviceMode.TRAY_ROTATION_ON.code -> IsidaCommands.DeviceMode.ENABLE
-                state or IsidaCommands.DeviceMode.FAN_MONITORING_ON.code -> IsidaCommands.DeviceMode.ENABLE
-                state or IsidaCommands.DeviceMode.ONLY_ROTATION.code -> IsidaCommands.DeviceMode.ONLY_ROTATION
-                else -> IsidaCommands.DeviceMode.DISABLE
+                state or DeviceMode.ENABLE.code -> DeviceMode.ENABLE
+                state or DeviceMode.WAITING_COOLING.code -> DeviceMode.ENABLE
+                state or DeviceMode.WAITING_ON.code -> DeviceMode.ENABLE
+                state or DeviceMode.HORIZON_ON.code -> DeviceMode.ENABLE
+                state or DeviceMode.HORIZON_SET.code -> DeviceMode.ENABLE
+                state or DeviceMode.TRAY_ROTATION_ON.code -> DeviceMode.ENABLE
+                state or DeviceMode.FAN_MONITORING_ON.code -> DeviceMode.ENABLE
+                state or DeviceMode.ONLY_ROTATION.code -> DeviceMode.ONLY_ROTATION
+                else -> DeviceMode.DISABLE
             }
 
             // 2. Собираем экстра-флаги
-            val extras = if (mode == IsidaCommands.DeviceMode.ENABLE) {
-                val result = mutableListOf<IsidaCommands.DeviceModeExtra>()
-                if (state == (state or IsidaCommands.DeviceModeExtra.EXTRA_1.code)) result.add(IsidaCommands.DeviceModeExtra.EXTRA_1)
-                if (state == (state or IsidaCommands.DeviceModeExtra.EXTRA_2.code)) result.add(IsidaCommands.DeviceModeExtra.EXTRA_2)
-                if (state == (state or IsidaCommands.DeviceModeExtra.EXTRA_3.code)) result.add(IsidaCommands.DeviceModeExtra.EXTRA_3)
-                if (state == (state or IsidaCommands.DeviceModeExtra.EXTRA_4.code)) result.add(IsidaCommands.DeviceModeExtra.EXTRA_4)
+            val extras = if (mode == DeviceMode.ENABLE) {
+                val result = mutableListOf<DeviceModeExtra>()
+                if (state == (state or DeviceModeExtra.EXTRA_1.code)) result.add(DeviceModeExtra.EXTRA_1)
+                if (state == (state or DeviceModeExtra.EXTRA_2.code)) result.add(DeviceModeExtra.EXTRA_2)
+                if (state == (state or DeviceModeExtra.EXTRA_3.code)) result.add(DeviceModeExtra.EXTRA_3)
+                if (state == (state or DeviceModeExtra.EXTRA_4.code)) result.add(DeviceModeExtra.EXTRA_4)
                 result
             } else {
                 emptyList()
@@ -248,11 +252,11 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
 
             // 3. Выбираем ресурс (сохраняем в переменную)
             val resource = when (mode) {
-                IsidaCommands.DeviceMode.DISABLE -> Res.string.device_mode_disabled
-                IsidaCommands.DeviceMode.ONLY_ROTATION -> Res.string.device_mode_turn
+                DeviceMode.DISABLE -> Res.string.device_mode_disabled
+                DeviceMode.ONLY_ROTATION -> Res.string.device_mode_turn
                 else -> when {
-                    extras.contains(IsidaCommands.DeviceModeExtra.EXTRA_3) -> Res.string.state_10
-                    extras.contains(IsidaCommands.DeviceModeExtra.EXTRA_4) -> Res.string.state_2
+                    extras.contains(DeviceModeExtra.EXTRA_3) -> Res.string.state_10
+                    extras.contains(DeviceModeExtra.EXTRA_4) -> Res.string.state_2
                     else -> Res.string.device_mode_enabled
                 }
             }
@@ -262,9 +266,9 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
         },
         style = {
             backgroundColor =
-                if (state == IsidaCommands.DeviceMode.DISABLE.code) IsidaColor.BlueGrey100
-                else if ((state and IsidaCommands.DeviceMode.ENABLE.code) == IsidaCommands.DeviceMode.ENABLE.code) IsidaColor.Green500
-                else if ((state and IsidaCommands.DeviceMode.ONLY_ROTATION.code) == IsidaCommands.DeviceMode.ONLY_ROTATION.code) IsidaColor.Yellow500
+                if (state == DeviceMode.DISABLE.code) IsidaColor.BlueGrey100
+                else if ((state and DeviceMode.ENABLE.code) == DeviceMode.ENABLE.code) IsidaColor.Green500
+                else if ((state and DeviceMode.ONLY_ROTATION.code) == DeviceMode.ONLY_ROTATION.code) IsidaColor.Yellow500
                 else IsidaColor.Red100
         },
     )
@@ -325,11 +329,11 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
     item(
         title = composableString { stringResource(Res.string.outWetting) },
         content = composableString(output) {
-            val value = output and IsidaCommands.OutputBit.OUT_Wetting.code
+            val value = output and OutputBit.OUT_Wetting.code
             if (value != 0) stringResource(Res.string.wetOn) else stringResource(Res.string.wetOff)
         },
         style = {
-            val value = output and IsidaCommands.OutputBit.OUT_Wetting.code
+            val value = output and OutputBit.OUT_Wetting.code
             if (value != 0) backgroundColor = IsidaColor.Blue100
         },
     )
@@ -338,12 +342,12 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
     item(
         title = composableString { stringResource(Res.string.outFlap) },
         content = composableString(output, pvFlap) {
-            val value = output and IsidaCommands.OutputBit.OUT_Flap.code
+            val value = output and OutputBit.OUT_Flap.code
             val str = if (value != 0) stringResource(Res.string.flapOpen) else stringResource(Res.string.flapClose)
             "$str  $pvFlap %"
         },
         style = {
-            val value = output and IsidaCommands.OutputBit.OUT_Flap.code
+            val value = output and OutputBit.OUT_Flap.code
             if (value != 0) backgroundColor = IsidaColor.Green100
         },
     )
@@ -364,7 +368,7 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             resource?.let { stringResource(resource) } ?: ""
         },
         style = {
-            val value = output and IsidaCommands.OutputBit.OUT_Extend.code
+            val value = output and OutputBit.OUT_Extend.code
             if (value != 0) backgroundColor = IsidaColor.Green500
         },
     )
@@ -373,11 +377,11 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
     item(
         title = composableString { stringResource(Res.string.outTrays) },
         content = composableString(output, pvTimer, timer0) {
-            val value = output and IsidaCommands.OutputBit.OUT_Trays.code
+            val value = output and OutputBit.OUT_Trays.code
             "$pvTimer min [$timer0]"
         },
         style = {
-            val value = output and IsidaCommands.OutputBit.OUT_Trays.code
+            val value = output and OutputBit.OUT_Trays.code
             if (value != 0) backgroundColor = IsidaColor.Green500
         },
     )
@@ -446,13 +450,13 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             val result = mutableListOf<StringResource>()
 
             // Проверка битовых флагов
-            if (value and IsidaCommands.Errors.ERROR_01.code != 0) result.add(Res.string.error_01)
-            if (value and IsidaCommands.Errors.ERROR_02.code != 0) result.add(Res.string.error_02)
-            if (value and IsidaCommands.Errors.ERROR_04.code != 0) result.add(Res.string.error_04)
-            if (value and IsidaCommands.Errors.ERROR_08.code != 0) result.add(Res.string.error_08)
-            if (value and IsidaCommands.Errors.ERROR_10.code != 0) result.add(Res.string.error_10)
-            if (value and IsidaCommands.Errors.ERROR_20.code != 0) result.add(Res.string.error_20)
-            if (value and IsidaCommands.Errors.ERROR_40.code != 0) result.add(Res.string.error_40)
+            if (value and Errors.ERROR_01.code != 0) result.add(Res.string.error_01)
+            if (value and Errors.ERROR_02.code != 0) result.add(Res.string.error_02)
+            if (value and Errors.ERROR_04.code != 0) result.add(Res.string.error_04)
+            if (value and Errors.ERROR_08.code != 0) result.add(Res.string.error_08)
+            if (value and Errors.ERROR_10.code != 0) result.add(Res.string.error_10)
+            if (value and Errors.ERROR_20.code != 0) result.add(Res.string.error_20)
+            if (value and Errors.ERROR_40.code != 0) result.add(Res.string.error_40)
             // Если список пуст, можно добавить "Нет ошибок"
             if (result.isEmpty()) result.add(Res.string.no)
             result.map { stringResource(it) }.joinToString(separator = "\n")
@@ -486,12 +490,12 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             val result = mutableListOf<StringResource>()
 
             // Используем битовое "И" (and), чтобы проверить каждый флаг независимо
-            if (value and IsidaCommands.Warning.WARNING_01.code != 0) result.add(Res.string.warning_01)
-            if (value and IsidaCommands.Warning.WARNING_02.code != 0) result.add(Res.string.warning_02)
-            if (value and IsidaCommands.Warning.WARNING_04.code != 0) result.add(Res.string.warning_04)
-            if (value and IsidaCommands.Warning.WARNING_08.code != 0) result.add(Res.string.warning_08)
-            if (value and IsidaCommands.Warning.WARNING_10.code != 0) result.add(Res.string.warning_10)
-            // if (value and IsidaCommands.Warning.WARNING_20.code != 0) result.add(Res.string.warning_20)
+            if (value and Warning.WARNING_01.code != 0) result.add(Res.string.warning_01)
+            if (value and Warning.WARNING_02.code != 0) result.add(Res.string.warning_02)
+            if (value and Warning.WARNING_04.code != 0) result.add(Res.string.warning_04)
+            if (value and Warning.WARNING_08.code != 0) result.add(Res.string.warning_08)
+            if (value and Warning.WARNING_10.code != 0) result.add(Res.string.warning_10)
+            // if (value and Warning.WARNING_20.code != 0) result.add(Res.string.warning_20)
 
             // Если активных предупреждений нет, возвращаем "Нет"
             if (result.isEmpty()) {

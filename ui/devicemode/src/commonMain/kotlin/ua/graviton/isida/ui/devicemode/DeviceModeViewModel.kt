@@ -11,12 +11,10 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.graviton.isida.data.protocol.commands.v1.DeviceModeCommandV1
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
-import ua.graviton.isida.domain.IsidaCommands
-import ua.graviton.isida.domain.IsidaCommands.DeviceMode
-import ua.graviton.isida.domain.IsidaCommands.DeviceModeExtra
+import ua.graviton.isida.domain.DeviceMode
+import ua.graviton.isida.domain.DeviceModeExtra
 import ua.graviton.isida.domain.interactors.SendCommand
 import ua.graviton.isida.domain.observers.ObserveStatus
-import kotlin.collections.map
 
 @Inject
 @ViewModelKey(DeviceModeViewModel::class)
@@ -25,7 +23,6 @@ class DeviceModeViewModel(
     observeStatus: ObserveStatus,
     private val sendCommand: SendCommand,
 ) : ViewModel() {
-    val events = MutableSharedFlow<DeviceModeEvent>()
     private val pendingActions = MutableSharedFlow<DeviceModeAction>()
 
     private val deviceId = MutableStateFlow<Int?>(null)
@@ -124,7 +121,7 @@ class DeviceModeViewModel(
         val mode = mode.value ?: return@launch
         // events.emit(
         //     DeviceModeEvent.Send(
-        //         command = IsidaCommands.deviceMode(device, mode, *modeExtras.value.toTypedArray())
+        //         command = deviceMode(device, mode, *modeExtras.value.toTypedArray())
         //     )
         // )
 

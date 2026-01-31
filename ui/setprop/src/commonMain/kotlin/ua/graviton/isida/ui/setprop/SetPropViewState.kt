@@ -1,6 +1,5 @@
 package ua.graviton.isida.ui.setprop
 
-import ua.graviton.isida.data.models.SendPackageDto
 import ua.graviton.isida.domain.models.DeviceProperty
 
 sealed class SetPropViewState(val id: String) {
@@ -40,8 +39,4 @@ sealed class SetPropAction {
     object Send : SetPropAction()
 
     data class UpdateProperty(val property: DeviceProperty<*>?) : SetPropAction()
-}
-
-sealed class SetPropEvent {
-    data class Send(val command: SendPackageDto) : SetPropEvent()
 }

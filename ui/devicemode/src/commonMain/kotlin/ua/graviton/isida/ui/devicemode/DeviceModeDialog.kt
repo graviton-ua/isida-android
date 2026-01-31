@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +22,8 @@ import com.whoppah.common.resources.*
 import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.stringResource
-import ua.graviton.isida.domain.IsidaCommands
+import ua.graviton.isida.domain.DeviceMode
+import ua.graviton.isida.domain.DeviceModeExtra
 
 @Serializable
 data object DeviceModeDialog : NavKey
@@ -64,11 +64,11 @@ private fun DeviceModeDialog(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            if (state.mode == IsidaCommands.DeviceMode.ENABLE)
+            if (state.mode == DeviceMode.ENABLE)
                 CheckItemGroup(
                     extras = state.extras,
                     toggleExtra = { actioner(DeviceModeAction.ToggleExtra(it)) },
-                    enabled = state.mode == IsidaCommands.DeviceMode.ENABLE,
+                    enabled = state.mode == DeviceMode.ENABLE,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -96,29 +96,29 @@ private fun DeviceModeDialog(
 
 @Composable
 private fun RadioItemGroup(
-    mode: IsidaCommands.DeviceMode?,
-    onModeSelect: (IsidaCommands.DeviceMode) -> Unit,
+    mode: DeviceMode?,
+    onModeSelect: (DeviceMode) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         RadioItem(
             text = stringResource(Res.string.radioButOFF),
             textColor = IsidaColor.Red500,
-            selected = IsidaCommands.DeviceMode.DISABLE == mode,
-            onClicked = { onModeSelect(IsidaCommands.DeviceMode.DISABLE) },
+            selected = DeviceMode.DISABLE == mode,
+            onClicked = { onModeSelect(DeviceMode.DISABLE) },
             modifier = Modifier.fillMaxWidth()
         )
         RadioItem(
             text = stringResource(Res.string.radioButON),
             textColor = IsidaColor.Green500,
-            selected = IsidaCommands.DeviceMode.ENABLE == mode,
-            onClicked = { onModeSelect(IsidaCommands.DeviceMode.ENABLE) },
+            selected = DeviceMode.ENABLE == mode,
+            onClicked = { onModeSelect(DeviceMode.ENABLE) },
             modifier = Modifier.fillMaxWidth()
         )
         RadioItem(
             text = stringResource(Res.string.radioButTURN),
-            selected = IsidaCommands.DeviceMode.ONLY_ROTATION == mode,
-            onClicked = { onModeSelect(IsidaCommands.DeviceMode.ONLY_ROTATION) },
+            selected = DeviceMode.ONLY_ROTATION == mode,
+            onClicked = { onModeSelect(DeviceMode.ONLY_ROTATION) },
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -156,8 +156,8 @@ private fun RadioItem(
 
 @Composable
 private fun CheckItemGroup(
-    extras: List<IsidaCommands.DeviceModeExtra>,
-    toggleExtra: (IsidaCommands.DeviceModeExtra) -> Unit,
+    extras: List<DeviceModeExtra>,
+    toggleExtra: (DeviceModeExtra) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
@@ -167,29 +167,29 @@ private fun CheckItemGroup(
     ) {
         CheckItem(
             text = stringResource(Res.string.txtChip1),
-            checked = extras.contains(IsidaCommands.DeviceModeExtra.EXTRA_1),
-            onClicked = { toggleExtra(IsidaCommands.DeviceModeExtra.EXTRA_1) },
+            checked = extras.contains(DeviceModeExtra.EXTRA_1),
+            onClicked = { toggleExtra(DeviceModeExtra.EXTRA_1) },
             enabled = enabled,
             modifier = Modifier.fillMaxWidth()
         )
         CheckItem(
             text = stringResource(Res.string.txtChip2),
-            checked = extras.contains(IsidaCommands.DeviceModeExtra.EXTRA_2),
-            onClicked = { toggleExtra(IsidaCommands.DeviceModeExtra.EXTRA_2) },
+            checked = extras.contains(DeviceModeExtra.EXTRA_2),
+            onClicked = { toggleExtra(DeviceModeExtra.EXTRA_2) },
             enabled = enabled,
             modifier = Modifier.fillMaxWidth()
         )
         CheckItem(
             text = stringResource(Res.string.txtChip3),
-            checked = extras.contains(IsidaCommands.DeviceModeExtra.EXTRA_3),
-            onClicked = { toggleExtra(IsidaCommands.DeviceModeExtra.EXTRA_3) },
+            checked = extras.contains(DeviceModeExtra.EXTRA_3),
+            onClicked = { toggleExtra(DeviceModeExtra.EXTRA_3) },
             enabled = enabled,
             modifier = Modifier.fillMaxWidth()
         )
         CheckItem(
             text = stringResource(Res.string.txtChip4),
-            checked = extras.contains(IsidaCommands.DeviceModeExtra.EXTRA_4),
-            onClicked = { toggleExtra(IsidaCommands.DeviceModeExtra.EXTRA_4) },
+            checked = extras.contains(DeviceModeExtra.EXTRA_4),
+            onClicked = { toggleExtra(DeviceModeExtra.EXTRA_4) },
             enabled = enabled,
             modifier = Modifier.fillMaxWidth()
         )
@@ -246,7 +246,7 @@ private fun Preview1() {
 private fun Preview2() {
     WhoppahTheme {
         DeviceModeDialog(
-            state = DeviceModeViewState(mode = IsidaCommands.DeviceMode.ENABLE),
+            state = DeviceModeViewState(mode = DeviceMode.ENABLE),
             actioner = {}
         )
     }

@@ -1,12 +1,13 @@
 package ua.graviton.isida.ui.devicemode
 
-import ua.graviton.isida.data.models.SendPackageDto
-import ua.graviton.isida.domain.IsidaCommands
+import ua.graviton.isida.domain.DeviceMode
+import ua.graviton.isida.domain.DeviceModeExtra
+
 
 data class DeviceModeViewState(
     val deviceId: Int? = null,
-    val mode: IsidaCommands.DeviceMode? = null,
-    val extras: List<IsidaCommands.DeviceModeExtra> = emptyList(),
+    val mode: DeviceMode? = null,
+    val extras: List<DeviceModeExtra> = emptyList(),
 
     val applyEnabled: Boolean = false
 ) {
@@ -19,12 +20,8 @@ data class DeviceModeViewState(
 sealed class DeviceModeAction {
     object NavigateUp : DeviceModeAction()
 
-    data class SelectMode(val mode: IsidaCommands.DeviceMode) : DeviceModeAction()
-    data class ToggleExtra(val extra: IsidaCommands.DeviceModeExtra) : DeviceModeAction()
+    data class SelectMode(val mode: DeviceMode) : DeviceModeAction()
+    data class ToggleExtra(val extra: DeviceModeExtra) : DeviceModeAction()
 
     object ApplyMode : DeviceModeAction()
-}
-
-sealed class DeviceModeEvent {
-    data class Send(val command: SendPackageDto) : DeviceModeEvent()
 }

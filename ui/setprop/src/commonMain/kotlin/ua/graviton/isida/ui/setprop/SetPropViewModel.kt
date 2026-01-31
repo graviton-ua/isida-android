@@ -36,8 +36,6 @@ class SetPropViewModel(
 
     private val logger by lazy { Logger.withTag("SetPropViewModel") }
 
-    private val _events = MutableSharedFlow<SetPropEvent>()
-    val events = _events.asSharedFlow()
     private val pendingActions = MutableSharedFlow<SetPropAction>()
 
     private val packets = observeStatus.flow.stateIn(
