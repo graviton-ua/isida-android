@@ -67,7 +67,7 @@ internal class SpT1(value: Float? = null) : NumberInputTextFieldDeviceProperty<F
 @Stable
 internal class SpRh0(value: Float? = null) : RangeSliderDeviceProperty<Float>(
     initValue = value,
-    min = 20f, max = 80f,
+    min = 20f, max = 80f, steps = 59,
     title = { "SpRh0" },
 ) {
     override fun readValue(packet: StatusPacket) {

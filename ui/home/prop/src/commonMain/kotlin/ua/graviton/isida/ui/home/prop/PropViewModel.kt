@@ -45,6 +45,11 @@ class PropViewModel(
                 value = Value.Data(10f) { it?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
             ),
             PropItem(
+                id = "spRh0",
+                title = Title.Text("[TEST] spRh0"),
+                value = Value.Data(10f) { it?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
+            ),
+            PropItem(
                 id = "minRun",
                 title = Title.Text("[TEST] Min Run"),
                 value = Value.Data(10f) { it?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
