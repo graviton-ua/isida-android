@@ -8,9 +8,9 @@ import org.jetbrains.compose.resources.stringResource
 import com.whoppah.common.resources.Res as R
 
 @Stable
-interface TextInputState : InputState<TextInputState.Error> {
+interface TextInputTextFieldState : InputTextFieldState<TextInputTextFieldState.Error> {
     @Immutable
-    interface Error : InputState.Error {
+    interface Error : InputTextFieldState.Error {
         data object Required : Error {
             @Composable
             override fun asLabel(): String = stringResource(R.string.common_error_price_required)
@@ -28,7 +28,7 @@ interface TextInputState : InputState<TextInputState.Error> {
     }
 
     companion object {
-        val Preview = DefaultTextInputState(
+        val Preview = DefaultTextInputTextFieldState(
             fieldState = TextFieldState(initialText = "Some text"),
             errorState = mutableStateOf(null)
         )
@@ -36,14 +36,14 @@ interface TextInputState : InputState<TextInputState.Error> {
 }
 
 @Stable
-interface TextInputStateHelper : InputStateHelper<TextInputState, TextInputState.Error> {
-    fun validate(onValidate: ((String) -> TextInputState.Error?)? = null): TextInputState.Error?
-    suspend fun validateSuspend(onValidate: (suspend (String) -> TextInputState.Error?)? = null): TextInputState.Error?
+interface TextInputTextFieldStateHelper : InputTextFieldStateHelper<TextInputTextFieldState, TextInputTextFieldState.Error> {
+    fun validate(onValidate: ((String) -> TextInputTextFieldState.Error?)? = null): TextInputTextFieldState.Error?
+    suspend fun validateSuspend(onValidate: (suspend (String) -> TextInputTextFieldState.Error?)? = null): TextInputTextFieldState.Error?
 
     companion object {
-        val Required: (String) -> TextInputState.Error? = {
+        val Required: (String) -> TextInputTextFieldState.Error? = {
             when {
-                it.isBlank() -> TextInputState.Error.Required
+                it.isBlank() -> TextInputTextFieldState.Error.Required
                 else -> null
             }
         }
@@ -51,15 +51,15 @@ interface TextInputStateHelper : InputStateHelper<TextInputState, TextInputState
 }
 
 @Stable
-data class DefaultTextInputState(
+data class DefaultTextInputTextFieldState(
     override val fieldState: TextFieldState,
-    override val errorState: MutableState<TextInputState.Error?> = mutableStateOf(null),
+    override val errorState: MutableState<TextInputTextFieldState.Error?> = mutableStateOf(null),
     override val enabledState: MutableState<Boolean> = mutableStateOf(true),
-) : TextInputState {
+) : TextInputTextFieldState {
 
     constructor(
         initialText: String = "",
-        initialError: TextInputState.Error? = null,
+        initialError: TextInputTextFieldState.Error? = null,
         initialEnabled: Boolean = true,
     ) : this(
         fieldState = TextFieldState(initialText = initialText),
@@ -69,15 +69,15 @@ data class DefaultTextInputState(
 
     companion object {
         /**
-         * A Saver for [DefaultTextInputState] that handles process death and configuration changes.
+         * A Saver for [DefaultTextInputTextFieldState] that handles process death and configuration changes.
          * Note: Validation error state is not saved/restored as it should be re-validated.
          */
-        fun Saver(): Saver<DefaultTextInputState, Any> = Saver(
+        fun Saver(): Saver<DefaultTextInputTextFieldState, Any> = Saver(
             save = {
                 with(TextFieldState.Saver) { save(it.fieldState) }
             },
             restore = {
-                DefaultTextInputState(
+                DefaultTextInputTextFieldState(
                     fieldState = TextFieldState.Saver.restore(it)!!,
                     errorState = mutableStateOf(null)
                 )
@@ -87,65 +87,65 @@ data class DefaultTextInputState(
 }
 
 @Stable
-class DefaultTextInputStateHelper(
+class DefaultTextInputTextFieldStateHelper(
     initialText: String = "",
-    private val onValidate: (String) -> TextInputState.Error? = { null }
-) : TextInputStateHelper {
+    private val onValidate: (String) -> TextInputTextFieldState.Error? = { null }
+) : TextInputTextFieldStateHelper {
     /**
      * The UI-facing state object. Pass this to your `ViewState` data class.
      */
-    override val state: TextInputState = DefaultTextInputState(initialText = initialText)
+    override val state: TextInputTextFieldState = DefaultTextInputTextFieldState(initialText = initialText)
 
     /**
      * Runs the validation logic against the current text and updates the error state.
      *
      * @return `true` if the input is valid, `false` otherwise.
      */
-    override fun validate(onValidate: ((String) -> TextInputState.Error?)?): TextInputState.Error? = when (onValidate) {
+    override fun validate(onValidate: ((String) -> TextInputTextFieldState.Error?)?): TextInputTextFieldState.Error? = when (onValidate) {
         null -> onValidate(text)
         else -> onValidate(text)
     }.also(::setError)
 
-    override suspend fun validateSuspend(onValidate: (suspend (String) -> TextInputState.Error?)?): TextInputState.Error? = when (onValidate) {
+    override suspend fun validateSuspend(onValidate: (suspend (String) -> TextInputTextFieldState.Error?)?): TextInputTextFieldState.Error? = when (onValidate) {
         null -> onValidate(text)
         else -> onValidate(text)
     }.also(::setError)
 }
 
 @Stable
-class UserNameInputStateHelper(
+class UserNameInputTextFieldStateHelper(
     initialText: String = "",
-    private val onValidate: (String) -> TextInputState.Error? = {
+    private val onValidate: (String) -> TextInputTextFieldState.Error? = {
         when {
-            it.isBlank() -> TextInputState.Error.Required
+            it.isBlank() -> TextInputTextFieldState.Error.Required
             it.containWhoppah() -> Error.ContainWhoppah
             it.containEmail() -> Error.ContainEmail
             else -> null
         }
     }
-) : TextInputStateHelper {
+) : TextInputTextFieldStateHelper {
     /**
      * The UI-facing state object. Pass this to your `ViewState` data class.
      */
-    override val state: TextInputState = DefaultTextInputState(initialText = initialText)
+    override val state: TextInputTextFieldState = DefaultTextInputTextFieldState(initialText = initialText)
 
     /**
      * Runs the validation logic against the current text and updates the error state.
      *
      * @return `true` if the input is valid, `false` otherwise.
      */
-    override fun validate(onValidate: ((String) -> TextInputState.Error?)?): TextInputState.Error? = when (onValidate) {
+    override fun validate(onValidate: ((String) -> TextInputTextFieldState.Error?)?): TextInputTextFieldState.Error? = when (onValidate) {
         null -> onValidate(text)
         else -> onValidate(text)
     }.also(::setError)
 
-    override suspend fun validateSuspend(onValidate: (suspend (String) -> TextInputState.Error?)?): TextInputState.Error? = when (onValidate) {
+    override suspend fun validateSuspend(onValidate: (suspend (String) -> TextInputTextFieldState.Error?)?): TextInputTextFieldState.Error? = when (onValidate) {
         null -> onValidate(text)
         else -> onValidate(text)
     }.also(::setError)
 
 
-    private sealed interface Error : TextInputState.Error {
+    private sealed interface Error : TextInputTextFieldState.Error {
         data object ContainWhoppah : Error {
             @Composable
             override fun asLabel(): String = stringResource(R.string.register_block_whoppah)

@@ -36,7 +36,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
-import com.whoppah.common.compose.input.InputState
+import com.whoppah.common.compose.input.InputTextFieldState
 import com.whoppah.common.compose.theme.WhoppahTheme
 import com.whoppah.common.compose.ui.textfield.CommonDecorationBox
 import com.whoppah.common.compose.ui.textfield.minimizedLabelHalfHeight
@@ -161,7 +161,7 @@ fun WhTextFieldLegacy(
 
 @Composable
 fun WhTextField(
-    state: InputState<*>,
+    state: InputTextFieldState<*>,
     modifier: Modifier = Modifier,
     enabled: Boolean? = null,
     readOnly: Boolean = false,

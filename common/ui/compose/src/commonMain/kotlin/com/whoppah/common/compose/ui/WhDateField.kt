@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import com.whoppah.common.compose.icons.WhIcons
 import com.whoppah.common.compose.icons.action.EditCalendar
-import com.whoppah.common.compose.input.DateInputState
+import com.whoppah.common.compose.input.DateInputTextFieldState
 import com.whoppah.common.compose.input.DefaultDateInputTransformation
 import com.whoppah.common.compose.input.MaskedOutputTransformation
 import com.whoppah.common.compose.theme.WhoppahTheme
@@ -45,7 +45,7 @@ import kotlin.time.ExperimentalTime
 @OptIn(ExperimentalMaterial3Api::class, FlowPreview::class, ExperimentalTime::class)
 @Composable
 fun WhDateField(
-    state: DateInputState,
+    state: DateInputTextFieldState,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     readOnly: Boolean = false,

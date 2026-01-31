@@ -13,8 +13,8 @@ import org.jetbrains.compose.resources.stringResource
 import com.whoppah.common.resources.Res as R
 
 @Stable
-interface PassInputState : InputState<PassInputState.Error> {
-    sealed interface Error : InputState.Error {
+interface PassInputTextFieldState : InputTextFieldState<PassInputTextFieldState.Error> {
+    sealed interface Error : InputTextFieldState.Error {
         data object Required : Error {
             @Composable
             override fun asLabel(): String = stringResource(R.string.common_required)
@@ -37,7 +37,7 @@ interface PassInputState : InputState<PassInputState.Error> {
     }
 
     companion object {
-        val Preview = DefaultPassInputState(
+        val Preview = DefaultPassInputTextFieldState(
             fieldState = TextFieldState(),
             errorState = mutableStateOf(null)
         )
@@ -45,20 +45,20 @@ interface PassInputState : InputState<PassInputState.Error> {
 }
 
 @Stable
-interface PassInputStateHelper : InputStateHelper<PassInputState, PassInputState.Error> {
-    fun validate(onValidate: ((String) -> PassInputState.Error?)? = null): PassInputState.Error?
+interface PassInputTextFieldStateHelper : InputTextFieldStateHelper<PassInputTextFieldState, PassInputTextFieldState.Error> {
+    fun validate(onValidate: ((String) -> PassInputTextFieldState.Error?)? = null): PassInputTextFieldState.Error?
 }
 
 @Stable
-data class DefaultPassInputState(
+data class DefaultPassInputTextFieldState(
     override val fieldState: TextFieldState = TextFieldState(),
-    override val errorState: MutableState<PassInputState.Error?> = mutableStateOf(null),
+    override val errorState: MutableState<PassInputTextFieldState.Error?> = mutableStateOf(null),
     override val enabledState: MutableState<Boolean> = mutableStateOf(true),
-) : PassInputState {
+) : PassInputTextFieldState {
 
     constructor(
         initialText: String = "",
-        initialError: PassInputState.Error? = null,
+        initialError: PassInputTextFieldState.Error? = null,
         initialEnabled: Boolean = true,
     ) : this(
         fieldState = TextFieldState(initialText = initialText),
@@ -67,12 +67,12 @@ data class DefaultPassInputState(
     )
 
     companion object {
-        fun Saver(): Saver<DefaultPassInputState, Any> = Saver(
+        fun Saver(): Saver<DefaultPassInputTextFieldState, Any> = Saver(
             save = {
                 with(TextFieldState.Saver) { save(it.fieldState) }
             },
             restore = {
-                DefaultPassInputState(
+                DefaultPassInputTextFieldState(
                     fieldState = TextFieldState.Saver.restore(it)!!,
                     errorState = mutableStateOf(null)
                 )
@@ -82,21 +82,21 @@ data class DefaultPassInputState(
 }
 
 @Stable
-class DefaultPassInputStateHelper(
+class DefaultPassInputTextFieldStateHelper(
     initialText: String = "",
-    private val onValidate: (String) -> PassInputState.Error? = { null }
-) : PassInputStateHelper {
+    private val onValidate: (String) -> PassInputTextFieldState.Error? = { null }
+) : PassInputTextFieldStateHelper {
     /**
      * The UI-facing state object. Pass this to your `ViewState` data class.
      */
-    override val state: PassInputState = DefaultPassInputState(initialText = initialText)
+    override val state: PassInputTextFieldState = DefaultPassInputTextFieldState(initialText = initialText)
 
     /**
      * Runs the validation logic against the current text and updates the error state.
      *
      * @return `true` if the input is valid, `false` otherwise.
      */
-    override fun validate(onValidate: ((String) -> PassInputState.Error?)?): PassInputState.Error? = when (onValidate) {
+    override fun validate(onValidate: ((String) -> PassInputTextFieldState.Error?)?): PassInputTextFieldState.Error? = when (onValidate) {
         null -> onValidate(text)
         else -> onValidate(text)
     }.also(::setError)

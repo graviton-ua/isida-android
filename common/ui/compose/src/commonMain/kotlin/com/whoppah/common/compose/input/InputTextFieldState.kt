@@ -1,13 +1,16 @@
 package com.whoppah.common.compose.input
 
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Stable
-interface InputState<T, E : InputState.Error> {
-    val inputState: MutableState<T>
+interface InputTextFieldState<E : InputTextFieldState.Error> {
+    val fieldState: TextFieldState
     val errorState: MutableState<E?>
     val enabledState: MutableState<Boolean>
 
@@ -21,13 +24,13 @@ interface InputState<T, E : InputState.Error> {
 }
 
 @Stable
-interface InputStateHelper<T, S : InputState<T, E>, E : InputState.Error> {
+interface InputTextFieldStateHelper<S : InputTextFieldState<E>, E : InputTextFieldState.Error> {
     val state: S
 
-    val value: T
-        get() = state.inputState.value
-    val valueAsFlow: Flow<T>
-        get() = snapshotFlow { state.inputState.value }
+    val text: String
+        get() = state.fieldState.text.toString()
+    val textFlow: Flow<String>
+        get() = snapshotFlow { state.fieldState.text.toString() }
 
     val error: E?
         get() = state.errorState.value
@@ -35,16 +38,20 @@ interface InputStateHelper<T, S : InputState<T, E>, E : InputState.Error> {
         get() = snapshotFlow { state.errorState.value }
 
 
-    fun setValue(value: T) = with(state) { inputState.value = value; errorState.value = null }
-    fun setError(error: E?) = with(state) { errorState.value = error }
+    fun setText(text: String) = with(state) { fieldState.setTextAndPlaceCursorAtEnd(text); errorState.value = null }
+
+    fun setError(error: E?) = with(state.errorState) { value = error }
     fun clearError() = setError(null)
 
     fun setEnabled(enabled: Boolean) = with(state.enabledState) { value = enabled }
 
+    fun clear() = with(state) { fieldState.clearText(); clearError() }
+
     open suspend fun validateOnInputUpdate() = Unit
 
     suspend fun clearErrorOnInputUpdate() {
-        valueAsFlow.distinctUntilChanged()
+        snapshotFlow { state.fieldState.text }
+            .distinctUntilChanged()
             .collectLatest { state.errorState.value = null }
     }
 }

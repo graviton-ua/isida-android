@@ -2,7 +2,9 @@ package ua.graviton.isida.ui.setprop
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -10,9 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
 import com.whoppah.common.compose.theme.WhoppahTheme
-import com.whoppah.common.compose.ui.Crossfade
 import kotlinx.serialization.Serializable
-import ua.graviton.isida.ui.setprop.models.DeviceProperty
 
 @Serializable
 data class SetPropDialog(val id: String) : NavKey
@@ -26,45 +26,27 @@ internal fun SetPropDialog(
 
     SetPropDialog(
         state = state,
-        actioner = { action ->
-            when (action) {
-                is SetPropAction.NavigateUp -> navigateUp()
-                else -> viewModel.submitAction(action)
-            }
-        },
+        navigateUp = navigateUp,
+        send = viewModel::send,
     )
 }
 
 @Composable
 private fun SetPropDialog(
     state: SetPropViewState,
-    actioner: (SetPropAction) -> Unit,
+    navigateUp: () -> Unit,
+    send: () -> Unit,
 ) {
     Surface(
         color = WhoppahTheme.colors.background,
         shape = WhoppahTheme.shapes.medium,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Max)
-            .padding(horizontal = 16.dp)
+        modifier = Modifier.padding(horizontal = 16.dp)
     ) {
-        Crossfade(
-            targetState = state,
-            contentKey = { it.id },
-        ) { localState ->
-            when (localState) {
-                is SetPropViewState.Empty -> StateEmpty(modifier = Modifier.fillMaxWidth())
-                is SetPropViewState.NoData -> StateNoData(modifier = Modifier.fillMaxWidth())
-                is SetPropViewState.NotFound -> StateNotFound(modifier = Modifier.fillMaxWidth())
-                is SetPropViewState.Success -> StateSuccess(
-                    state = localState,
-                    onPropertyChanged = { actioner(SetPropAction.UpdateProperty(it)) },
-                    onSend = { actioner(SetPropAction.Send) },
-                    onCancel = { actioner(SetPropAction.NavigateUp) },
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
-        }
+        StateSuccess(
+            state = state,
+            onSend = send,
+            onCancel = navigateUp,
+        )
     }
 }
 
@@ -112,8 +94,7 @@ private fun StateNotFound(
 
 @Composable
 private fun StateSuccess(
-    state: SetPropViewState.Success,
-    onPropertyChanged: (DeviceProperty<*>?) -> Unit,
+    state: SetPropViewState,
     onSend: () -> Unit,
     onCancel: () -> Unit,
     modifier: Modifier = Modifier,
@@ -123,23 +104,28 @@ private fun StateSuccess(
             .defaultMinSize(minHeight = 72.dp)
             .padding(8.dp)
     ) {
-        Text(text = state.property.id)
-        val validState = remember { mutableStateOf(true) }
-        SetPropInput(
-            property = state.property,
-            onPropertyChanged = onPropertyChanged,
-            validState = validState,
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(1f),
+        state.property.title()
+
+        state.property.Content(
+            modifier = Modifier.fillMaxWidth()
         )
+
+        val valid = state.property.isValid.collectAsStateWithLifecycle(initialValue = true)
         DialogButtons(
             onSend = onSend,
             onCancel = onCancel,
-            validState = validState,
+            validState = valid,
             modifier = Modifier.fillMaxWidth(),
         )
     }
+}
+
+@Composable
+private fun SetPropInput(
+    property: DeviceProperty,
+    modifier: Modifier = Modifier,
+) {
+    property.Content(modifier = modifier)
 }
 
 @Composable
@@ -172,46 +158,14 @@ private fun DialogButtons(
 }
 
 
-@Preview(name = "Success state")
+@Preview
 @Composable
-private fun PreviewSuccess() {
+private fun Preview() {
     WhoppahTheme {
         SetPropDialog(
-            state = SetPropViewState.PreviewSuccess,
-            actioner = {},
-        )
-    }
-}
-
-@Preview(name = "Not Found state")
-@Composable
-private fun PreviewNotFound() {
-    WhoppahTheme {
-        SetPropDialog(
-            state = SetPropViewState.NotFound,
-            actioner = {},
-        )
-    }
-}
-
-@Preview(name = "No Data state")
-@Composable
-private fun PreviewNoData() {
-    WhoppahTheme {
-        SetPropDialog(
-            state = SetPropViewState.NoData,
-            actioner = {},
-        )
-    }
-}
-
-@Preview(name = "Empty state")
-@Composable
-private fun PreviewEmpty() {
-    WhoppahTheme {
-        SetPropDialog(
-            state = SetPropViewState.Empty,
-            actioner = {},
+            state = SetPropViewState(property = SpT0(value = null)),
+            navigateUp = {},
+            send = {},
         )
     }
 }

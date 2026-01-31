@@ -21,12 +21,12 @@ import androidx.compose.ui.unit.Dp
 import com.whoppah.common.compose.icons.WhIcons
 import com.whoppah.common.compose.icons.state.Euro
 import com.whoppah.common.compose.input.DefaultPriceInputTransformation
-import com.whoppah.common.compose.input.NumberInputState
+import com.whoppah.common.compose.input.NumberInputTextFieldState
 import com.whoppah.common.compose.theme.WhoppahTheme
 
 @Composable
 fun WhPriceField(
-    state: NumberInputState,
+    state: NumberInputTextFieldState,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     readOnly: Boolean = false,

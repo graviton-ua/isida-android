@@ -32,7 +32,21 @@ class PropViewModel(
             is StatusPacketV1 -> packet.toItems()
             else -> null
         }
-    }.onStart { emit(emptyList()) }
+    }.onStart {
+        val testItems = listOf(
+            PropItem(
+                id = "spT0",
+                title = Title.ResId(Res.string.prop_dry_sensor_label),
+                value = Value.Data(10f) { it?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
+            ),
+            PropItem(
+                id = "minRun",
+                title = Title.ResId(Res.string.prop_dry_sensor_label),
+                value = Value.Data(10f) { it?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
+            )
+        )
+        emit(testItems)//emptyList())
+    }
 
     val state: StateFlow<PropViewState> = uiItems.map { items ->
         PropViewState(
