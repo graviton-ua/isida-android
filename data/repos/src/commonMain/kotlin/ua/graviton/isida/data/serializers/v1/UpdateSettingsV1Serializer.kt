@@ -6,7 +6,7 @@ import kotlin.reflect.KClass
 
 object UpdateSettingsV1Serializer : CommandSerializerV1<UpdateSettingsCommandV1>() {
     override val length: Int = 40       // [0x28, 0x00]
-    override val commandId: Int = 51    // [0x33, 0x00]
+    override val commandId: Int = 51    // [0x33]
 
     override fun serializePayload(
         command: UpdateSettingsCommandV1,
