@@ -79,7 +79,7 @@ internal abstract class SingleSelectionListDeviceProperty<T>(
     override suspend fun validateOnInputUpdate() = inputHelper.validateOnInputUpdate()
     override suspend fun clearErrorOnInputUpdate() = inputHelper.clearErrorOnInputUpdate()
 
-    sealed interface SingleSelectionListError : InputState.Error {
+    interface SingleSelectionListError : InputState.Error {
         object Required : SingleSelectionListError {
             @Composable
             override fun asLabel(): String = "Required"

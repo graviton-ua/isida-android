@@ -5,6 +5,7 @@ import com.whoppah.common.compose.input.NumberInputTextFieldState
 import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.ui.setprop.models.types.NumberInputTextFieldDeviceProperty
+import ua.graviton.isida.ui.setprop.models.types.RangeSliderDeviceProperty
 import ua.graviton.isida.ui.setprop.models.types.SingleSelectionListDeviceProperty
 
 @Stable
@@ -64,18 +65,10 @@ internal class SpT1(value: Float? = null) : NumberInputTextFieldDeviceProperty<F
 }
 
 @Stable
-internal class SpRh0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
-    initValue = value, allowDecimals = true,
+internal class SpRh0(value: Float? = null) : RangeSliderDeviceProperty<Float>(
+    initValue = value,
+    min = 20f, max = 80f,
     title = { "SpRh0" },
-    onValidate = { value ->
-        val floatValue = value.toFloatOrNull()
-        when {
-            floatValue == null -> NumberInputTextFieldState.Error.Invalid
-            floatValue < 20f -> NumberInputTextFieldState.Error.CantBeLessThen("20")
-            floatValue > 80f -> NumberInputTextFieldState.Error.CantBeMoreThen("80")
-            else -> null
-        }
-    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -86,7 +79,7 @@ internal class SpRh0(value: Float? = null) : NumberInputTextFieldDeviceProperty<
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.state.valueAsFloat?.let { packet.copy(spRh0 = it) } ?: packet
+        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(spRh0 = it) } ?: packet
         else -> packet
     }
 }
