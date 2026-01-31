@@ -16,11 +16,11 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
-import ua.graviton.isida.domain.DeviceMode
-import ua.graviton.isida.domain.DeviceModeExtra
-import ua.graviton.isida.domain.Errors
-import ua.graviton.isida.domain.OutputBit
-import ua.graviton.isida.domain.Warning
+import ua.graviton.isida.data.models.DeviceMode
+import ua.graviton.isida.data.models.DeviceModeExtra
+import ua.graviton.isida.data.models.DeviceError
+import ua.graviton.isida.data.models.OutputBit
+import ua.graviton.isida.data.models.DeviceWarning
 import ua.graviton.isida.domain.observers.ObserveStatus
 import ua.graviton.isida.ui.home.stats.StatsItem.ComposableString.Companion.composableString
 
@@ -190,7 +190,7 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             } else ""
         },
         style = {
-            val st = warning and Warning.WARNING_08.code
+            val st = warning and DeviceWarning.WARNING_08.code
             backgroundColor = if (st != 0) IsidaColor.Red100
             else null
         },
@@ -450,13 +450,13 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             val result = mutableListOf<StringResource>()
 
             // Проверка битовых флагов
-            if (value and Errors.ERROR_01.code != 0) result.add(Res.string.error_01)
-            if (value and Errors.ERROR_02.code != 0) result.add(Res.string.error_02)
-            if (value and Errors.ERROR_04.code != 0) result.add(Res.string.error_04)
-            if (value and Errors.ERROR_08.code != 0) result.add(Res.string.error_08)
-            if (value and Errors.ERROR_10.code != 0) result.add(Res.string.error_10)
-            if (value and Errors.ERROR_20.code != 0) result.add(Res.string.error_20)
-            if (value and Errors.ERROR_40.code != 0) result.add(Res.string.error_40)
+            if (value and DeviceError.ERROR_01.code != 0) result.add(Res.string.error_01)
+            if (value and DeviceError.ERROR_02.code != 0) result.add(Res.string.error_02)
+            if (value and DeviceError.ERROR_04.code != 0) result.add(Res.string.error_04)
+            if (value and DeviceError.ERROR_08.code != 0) result.add(Res.string.error_08)
+            if (value and DeviceError.ERROR_10.code != 0) result.add(Res.string.error_10)
+            if (value and DeviceError.ERROR_20.code != 0) result.add(Res.string.error_20)
+            if (value and DeviceError.ERROR_40.code != 0) result.add(Res.string.error_40)
             // Если список пуст, можно добавить "Нет ошибок"
             if (result.isEmpty()) result.add(Res.string.no)
             result.map { stringResource(it) }.joinToString(separator = "\n")
@@ -490,11 +490,11 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             val result = mutableListOf<StringResource>()
 
             // Используем битовое "И" (and), чтобы проверить каждый флаг независимо
-            if (value and Warning.WARNING_01.code != 0) result.add(Res.string.warning_01)
-            if (value and Warning.WARNING_02.code != 0) result.add(Res.string.warning_02)
-            if (value and Warning.WARNING_04.code != 0) result.add(Res.string.warning_04)
-            if (value and Warning.WARNING_08.code != 0) result.add(Res.string.warning_08)
-            if (value and Warning.WARNING_10.code != 0) result.add(Res.string.warning_10)
+            if (value and DeviceWarning.WARNING_01.code != 0) result.add(Res.string.warning_01)
+            if (value and DeviceWarning.WARNING_02.code != 0) result.add(Res.string.warning_02)
+            if (value and DeviceWarning.WARNING_04.code != 0) result.add(Res.string.warning_04)
+            if (value and DeviceWarning.WARNING_08.code != 0) result.add(Res.string.warning_08)
+            if (value and DeviceWarning.WARNING_10.code != 0) result.add(Res.string.warning_10)
             // if (value and Warning.WARNING_20.code != 0) result.add(Res.string.warning_20)
 
             // Если активных предупреждений нет, возвращаем "Нет"

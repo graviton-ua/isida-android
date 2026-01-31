@@ -1,4 +1,4 @@
-package ua.graviton.isida.domain
+package ua.graviton.isida.data.models
 
 enum class DeviceMode(val code: Int) {
     DISABLE(0x00),          // "камера ОТКЛЮЧЕНА"
@@ -27,7 +27,7 @@ enum class DeviceModeExtra(val code: Int) {
     EXTRA_4(0x02),   //"Режим подгототка к ОХЛАЖДЕНИЮ"      data = data | 0x02
 }
 
-enum class Errors(val code: Int) {
+enum class DeviceError(val code: Int) {
     ERROR_01(code = 0x01),  //ОШИБКА ДАТЧИКА температуры
     ERROR_02(code = 0x02),  //ОШИБКА ДАТЧИКА влажности
     ERROR_04(code = 0x04),  //ПРОБОЙ СИМИСТОРА
@@ -37,7 +37,7 @@ enum class Errors(val code: Int) {
     ERROR_40(code = 0x40),  //ОШИБКА модуля Холла или Поворотов
 }
 
-enum class Warning(val code: Int) {
+enum class DeviceWarning(val code: Int) {
     WARNING_01(code = 0x01),  //ОТКЛОНЕНИЕ по температуре
     WARNING_02(code = 0x02),  //ОТКЛОНЕНИЕ по влажности
     WARNING_04(code = 0x04),  //Произведена подмена датчика

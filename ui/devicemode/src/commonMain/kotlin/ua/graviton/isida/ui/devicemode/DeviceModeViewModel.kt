@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.graviton.isida.data.protocol.commands.v1.DeviceModeCommandV1
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
-import ua.graviton.isida.domain.DeviceMode
-import ua.graviton.isida.domain.DeviceModeExtra
+import ua.graviton.isida.data.models.DeviceMode
+import ua.graviton.isida.data.models.DeviceModeExtra
 import ua.graviton.isida.domain.interactors.SendCommand
 import ua.graviton.isida.domain.observers.ObserveStatus
 

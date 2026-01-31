@@ -22,8 +22,8 @@ import com.whoppah.common.resources.*
 import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.stringResource
-import ua.graviton.isida.domain.DeviceMode
-import ua.graviton.isida.domain.DeviceModeExtra
+import ua.graviton.isida.data.models.DeviceMode
+import ua.graviton.isida.data.models.DeviceModeExtra
 
 @Serializable
 data object DeviceModeDialog : NavKey

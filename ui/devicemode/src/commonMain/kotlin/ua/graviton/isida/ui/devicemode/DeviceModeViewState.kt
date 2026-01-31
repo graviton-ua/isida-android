@@ -1,7 +1,7 @@
 package ua.graviton.isida.ui.devicemode
 
-import ua.graviton.isida.domain.DeviceMode
-import ua.graviton.isida.domain.DeviceModeExtra
+import ua.graviton.isida.data.models.DeviceMode
+import ua.graviton.isida.data.models.DeviceModeExtra
 
 
 data class DeviceModeViewState(
