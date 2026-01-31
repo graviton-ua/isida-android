@@ -1,121 +1,11 @@
-package ua.graviton.isida.ui.setprop
+package ua.graviton.isida.ui.setprop.models
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
-import com.whoppah.common.compose.input.DefaultInputStateHelper
-import com.whoppah.common.compose.input.DefaultNumberInputTextFieldStateHelper
 import com.whoppah.common.compose.input.NumberInputTextFieldState
-import com.whoppah.common.compose.input.PriceInputTransformation
-import com.whoppah.common.compose.ui.WhRadioButton
-import com.whoppah.common.compose.ui.WhTextField
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
-
-/**
- * A "Smart" property interface that encapsulates:
- * 1. UI State (InputState)
- * 2. Presentation Data (Title, etc.)
- * 3. Business Logic (Validation & Command Mapping)
- */
-@Stable
-interface DeviceProperty {
-    val title: @Composable () -> String
-
-    @Composable
-    fun Content(modifier: Modifier)
-
-    val isValid: Flow<Boolean>
-    fun validate(): Boolean
-
-    suspend fun validateOnInputUpdate()
-
-    suspend fun clearErrorOnInputUpdate()
-
-    fun readValue(packet: StatusPacket)
-    fun copyAndUpdate(packet: StatusPacket): StatusPacket
-}
-
-@Stable
-abstract class SingleSelectionListDeviceProperty<T>(
-    preSelected: T? = null,
-    val list: List<T>,
-    override val title: @Composable () -> String,
-) : DeviceProperty {
-    protected val inputHelper = DefaultInputStateHelper(initValue = preSelected)
-
-    @Composable
-    override fun Content(modifier: Modifier) {
-        Column {
-            list.forEach { item ->
-                ItemList(
-                    item = item,
-                    isSelected = inputHelper.value == item,
-                    onClick = { inputHelper.setValue(item) },
-                    modifier = modifier
-                )
-            }
-        }
-    }
-
-    @Composable
-    open fun ItemList(
-        item: T,
-        isSelected: Boolean,
-        onClick: () -> Unit,
-        modifier: Modifier,
-    ) {
-        WhRadioButton(
-            selected = isSelected,
-            onClick = onClick,
-            modifier = modifier,
-        ) { Text(text = "Item: $item") }
-    }
-
-    override val isValid: Flow<Boolean> = flowOf(true)
-    override fun validate(): Boolean = true
-
-    override suspend fun validateOnInputUpdate() = inputHelper.validateOnInputUpdate()
-    override suspend fun clearErrorOnInputUpdate() = inputHelper.clearErrorOnInputUpdate()
-}
-
-@Stable
-abstract class NumberInputTextFieldDeviceProperty<T : Number>(
-    initValue: T? = null,
-    override val title: @Composable () -> String,
-    private val allowDecimals: Boolean = false,
-    private val onValidate: (String) -> NumberInputTextFieldState.Error? = { null },
-) : DeviceProperty {
-    protected val inputHelper = DefaultNumberInputTextFieldStateHelper(
-        initValue = initValue,
-        onValidate = onValidate,
-    )
-
-    @Composable
-    override fun Content(modifier: Modifier) {
-        WhTextField(
-            state = inputHelper.state,
-            inputTransformation = PriceInputTransformation(allowDecimals = allowDecimals),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = modifier,
-        )
-    }
-
-    override val isValid: Flow<Boolean> = inputHelper.errorFlow.map { it == null }
-    override fun validate(): Boolean = inputHelper.validate()?.let { false } ?: true
-
-    override suspend fun validateOnInputUpdate() = inputHelper.validateOnInputUpdate()
-    override suspend fun clearErrorOnInputUpdate() = inputHelper.clearErrorOnInputUpdate()
-}
-
-// ===================================================
+import ua.graviton.isida.ui.setprop.models.types.NumberInputTextFieldDeviceProperty
+import ua.graviton.isida.ui.setprop.models.types.SingleSelectionListDeviceProperty
 
 @Stable
 internal class SpT0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
@@ -677,9 +567,11 @@ internal class ExtendMode(value: Int? = null) : NumberInputTextFieldDeviceProper
 }
 
 @Stable
-internal class RelayMode(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+internal class RelayMode(value: Int? = null) : SingleSelectionListDeviceProperty<Int>(
     initValue = value,
     title = { "RelayMode" },
+    list = listOf(1, 2, 3, 4, 5),
+    listItemTitleMap = { "Example of item title $it" },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -690,7 +582,7 @@ internal class RelayMode(value: Int? = null) : NumberInputTextFieldDevicePropert
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(relayMode = it) } ?: packet
+        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(relayMode = it) } ?: packet
         else -> packet
     }
 }

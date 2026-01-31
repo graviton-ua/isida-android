@@ -5,21 +5,29 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
 
 @Stable
-class DefaultInputState<T>(
+class DefaultInputState<T, E : InputState.Error>(
     initValue: T,
-    initError: InputState.Error? = null,
+    initError: E? = null,
     initEnabled: Boolean = true,
-) : InputState<T, InputState.Error> {
+) : InputState<T, E> {
+
     override val inputState: MutableState<T> = mutableStateOf(initValue)
-    override val errorState: MutableState<InputState.Error?> = mutableStateOf(initError)
+    override val errorState: MutableState<E?> = mutableStateOf(initError)
     override val enabledState: MutableState<Boolean> = mutableStateOf(initEnabled)
 }
 
 @Stable
-class DefaultInputStateHelper<T>(
+class DefaultInputStateHelper<T, E : InputState.Error>(
     initValue: T,
-    initError: InputState.Error? = null,
+    initError: E? = null,
     initEnabled: Boolean = true,
-) : InputStateHelper<T, InputState<T, InputState.Error>, InputState.Error> {
-    override val state: InputState<T, InputState.Error> = DefaultInputState(initValue, initError, initEnabled)
+    private val onValidate: (T) -> E? = { null }
+) : InputStateHelper<T, InputState<T, E>, E> {
+
+    override val state: InputState<T, E> = DefaultInputState(initValue, initError, initEnabled)
+
+    override fun validate(onValidate: ((T) -> E?)?): E? = when (onValidate) {
+        null -> onValidate(value)
+        else -> onValidate(value)
+    }.also(::setError)
 }

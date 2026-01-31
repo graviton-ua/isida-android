@@ -41,6 +41,8 @@ interface InputStateHelper<T, S : InputState<T, E>, E : InputState.Error> {
 
     fun setEnabled(enabled: Boolean) = with(state.enabledState) { value = enabled }
 
+    fun validate(onValidate: ((T) -> E?)? = null): E?
+
     open suspend fun validateOnInputUpdate() = Unit
 
     suspend fun clearErrorOnInputUpdate() {

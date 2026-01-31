@@ -20,6 +20,36 @@ import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.domain.interactors.SendCommand
 import ua.graviton.isida.domain.observers.ObserveStatus
+import ua.graviton.isida.ui.setprop.models.Air0
+import ua.graviton.isida.ui.setprop.models.Air1
+import ua.graviton.isida.ui.setprop.models.Alarm0
+import ua.graviton.isida.ui.setprop.models.Alarm1
+import ua.graviton.isida.ui.setprop.models.DeviceProperty
+import ua.graviton.isida.ui.setprop.models.ExtOff0
+import ua.graviton.isida.ui.setprop.models.ExtOff1
+import ua.graviton.isida.ui.setprop.models.ExtOn0
+import ua.graviton.isida.ui.setprop.models.ExtOn1
+import ua.graviton.isida.ui.setprop.models.ExtendMode
+import ua.graviton.isida.ui.setprop.models.Hysteresis
+import ua.graviton.isida.ui.setprop.models.Identif
+import ua.graviton.isida.ui.setprop.models.Ikoff0
+import ua.graviton.isida.ui.setprop.models.Ikoff1
+import ua.graviton.isida.ui.setprop.models.MaxRun
+import ua.graviton.isida.ui.setprop.models.MinRun
+import ua.graviton.isida.ui.setprop.models.Period
+import ua.graviton.isida.ui.setprop.models.Pkoff0
+import ua.graviton.isida.ui.setprop.models.Pkoff1
+import ua.graviton.isida.ui.setprop.models.Program
+import ua.graviton.isida.ui.setprop.models.RelayMode
+import ua.graviton.isida.ui.setprop.models.SpCO2
+import ua.graviton.isida.ui.setprop.models.SpRh0
+import ua.graviton.isida.ui.setprop.models.SpRh1
+import ua.graviton.isida.ui.setprop.models.SpT0
+import ua.graviton.isida.ui.setprop.models.SpT1
+import ua.graviton.isida.ui.setprop.models.State
+import ua.graviton.isida.ui.setprop.models.Timer0
+import ua.graviton.isida.ui.setprop.models.Timer1
+import ua.graviton.isida.ui.setprop.models.TurnTime
 
 @AssistedInject
 class SetPropViewModel(

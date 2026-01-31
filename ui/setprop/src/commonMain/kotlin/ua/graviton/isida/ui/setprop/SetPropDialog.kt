@@ -19,6 +19,7 @@ import androidx.navigation3.runtime.NavKey
 import com.whoppah.common.compose.theme.WhoppahTheme
 import com.whoppah.common.compose.ui.WhDialog
 import kotlinx.serialization.Serializable
+import ua.graviton.isida.ui.setprop.models.*
 
 @Serializable
 data class SetPropDialog(val id: String) : NavKey
@@ -38,7 +39,7 @@ internal fun SetPropDialog(
 }
 
 @Composable
-private fun SetPropDialog(
+internal fun SetPropDialog(
     state: SetPropViewState,
     navigateUp: () -> Unit,
     send: () -> Unit,
@@ -50,11 +51,17 @@ private fun SetPropDialog(
                 .defaultMinSize(minHeight = 72.dp)
                 .padding(8.dp)
         ) {
-            Text(text = state.property.title())
+            Text(
+                text = state.property.title(),
+                style = WhoppahTheme.typography.h4,
+            )
 
             state.property.Content(
                 modifier = Modifier.fillMaxWidth()
             )
+
+            val description = state.property.description
+            if (description != null) Text(text = description())
 
             val valid = state.property.isValid.collectAsStateWithLifecycle(initialValue = true)
             DialogButtons(

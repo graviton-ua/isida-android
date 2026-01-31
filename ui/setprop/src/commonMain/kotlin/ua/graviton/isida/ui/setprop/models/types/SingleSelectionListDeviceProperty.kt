@@ -1,0 +1,134 @@
+package ua.graviton.isida.ui.setprop.models.types
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.dp
+import com.whoppah.common.compose.input.DefaultInputStateHelper
+import com.whoppah.common.compose.input.InputState
+import com.whoppah.common.compose.theme.WhoppahTheme
+import com.whoppah.common.compose.ui.WhRadioButton
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import ua.graviton.isida.data.protocol.packets.StatusPacket
+import ua.graviton.isida.ui.setprop.SetPropDialog
+import ua.graviton.isida.ui.setprop.SetPropViewState
+import ua.graviton.isida.ui.setprop.models.DeviceProperty
+
+@Stable
+internal abstract class SingleSelectionListDeviceProperty<T>(
+    initValue: T? = null,
+    val list: List<T>,
+    override val title: @Composable () -> String,
+    override val description: (@Composable () -> String)? = null,
+    val listItemTitleMap: @Composable (T) -> String = { "Item $it" },
+    private val onValidate: (T?) -> SingleSelectionListError? = { if (it == null) SingleSelectionListError.Required else null },
+) : DeviceProperty {
+    protected val inputHelper = DefaultInputStateHelper(initValue = initValue, onValidate = onValidate)
+
+    @Composable
+    override fun Content(modifier: Modifier) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = modifier.width(IntrinsicSize.Min)
+        ) {
+            list.forEach { item ->
+                ItemList(
+                    item = item,
+                    title = listItemTitleMap(item),
+                    isSelected = inputHelper.value == item,
+                    onClick = { inputHelper.setValue(item) },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+        }
+
+        if (inputHelper.state.isError)
+            Text(
+                text = inputHelper.state.errorState.value?.asLabel() ?: "",
+                style = WhoppahTheme.typography.helper,
+                color = WhoppahTheme.colors.error,
+            )
+    }
+
+    @Composable
+    open fun ItemList(
+        item: T,
+        title: String,
+        isSelected: Boolean,
+        onClick: () -> Unit,
+        modifier: Modifier = Modifier,
+    ) {
+        WhRadioButton(
+            selected = isSelected,
+            onClick = onClick,
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = modifier,
+        ) { Text(text = title) }
+    }
+
+    override val isValid: Flow<Boolean> = inputHelper.errorFlow.map { it == null }
+    override fun validate(): Boolean = inputHelper.validate()?.let { false } ?: true
+
+    override suspend fun validateOnInputUpdate() = inputHelper.validateOnInputUpdate()
+    override suspend fun clearErrorOnInputUpdate() = inputHelper.clearErrorOnInputUpdate()
+
+    sealed interface SingleSelectionListError : InputState.Error {
+        object Required : SingleSelectionListError {
+            @Composable
+            override fun asLabel(): String = "Required"
+        }
+    }
+}
+
+
+private class SingleSelListPreviewParameterProvider : PreviewParameterProvider<DeviceProperty> {
+
+    @Stable
+    private object TestEmpty : SingleSelectionListDeviceProperty<Int>(
+        initValue = null,
+        title = { "RelayMode" },
+        list = listOf(1, 2, 3, 4, 5),
+        listItemTitleMap = { "Example of item title $it" },
+    ) {
+        override fun readValue(packet: StatusPacket) = Unit
+        override fun copyAndUpdate(packet: StatusPacket): StatusPacket = packet
+    }
+
+    @Stable
+    private object TestHasValue : SingleSelectionListDeviceProperty<Int>(
+        initValue = 3,
+        title = { "RelayMode" },
+        list = listOf(1, 2, 3, 4, 5),
+        listItemTitleMap = { "Example of item title $it" },
+    ) {
+        override fun readValue(packet: StatusPacket) = Unit
+        override fun copyAndUpdate(packet: StatusPacket): StatusPacket = packet
+    }
+
+    val properties = listOf<DeviceProperty>(
+        TestEmpty, TestHasValue,
+    )
+    override val values = properties.asSequence()
+}
+
+@Preview
+@Composable
+private fun Preview(
+    @PreviewParameter(SingleSelListPreviewParameterProvider::class) property: DeviceProperty,
+) {
+    WhoppahTheme {
+        LaunchedEffect(Unit) { property.validate() }
+        SetPropDialog(
+            state = SetPropViewState(property = property),
+            navigateUp = {},
+            send = {},
+        )
+    }
+}
