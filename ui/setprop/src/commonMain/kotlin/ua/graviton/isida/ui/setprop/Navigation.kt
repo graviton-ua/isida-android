@@ -11,7 +11,7 @@ fun EntryProviderScope<NavKey>.addSetPropDialog(
     navigator: Navigator,
 ) {
     entry<SetPropDialog>(
-        metadata = DialogSceneStrategy.dialog(DialogProperties(usePlatformDefaultWidth = false))
+        metadata = DialogSceneStrategy.dialog(DialogProperties(usePlatformDefaultWidth = true))
     ) { key ->
         SetPropDialog(
             viewModel = injectedViewModel<SetPropViewModel, SetPropViewModel.Factory> { it.create(id = key.id) },
