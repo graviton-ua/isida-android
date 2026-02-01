@@ -1,5 +1,6 @@
 package ua.graviton.isida.ui.setprop.models.types
 
+import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,6 +35,21 @@ internal abstract class SliderDeviceProperty<T : Number>(
     override val description: (@Composable () -> String)? = null,
     private val onValidate: (T?) -> Error? = { if (it == null) Error.Required else null },
 ) : DeviceProperty {
+
+    constructor(
+        initValue: T? = null,
+        min: T, max: T,
+        @FloatRange(from = 0.0) increment: Float,
+        title: @Composable () -> String,
+        description: (@Composable () -> String)? = null,
+        onValidate: (T?) -> Error? = { if (it == null) Error.Required else null },
+    ) : this(
+        initValue = initValue, min = min, max = max,
+        steps = (((max.toFloat() - min.toFloat()) / increment).toInt() - 1).coerceAtLeast(0),
+        title = title, description = description,
+        onValidate = onValidate,
+    )
+
     protected val inputHelper = DefaultInputStateHelper(initValue = initValue, onValidate = onValidate)
 
     @Suppress("UNCHECKED_CAST")
@@ -84,6 +100,7 @@ internal abstract class SliderDeviceProperty<T : Number>(
             @Composable
             override fun asLabel(): String = "Required"
         }
+
         object Invalid : Error {
             @Composable
             override fun asLabel(): String = "Invalid"
@@ -124,8 +141,18 @@ private class SliderPreviewParameterProvider : PreviewParameterProvider<DevicePr
         override fun copyAndUpdate(packet: StatusPacket): StatusPacket = packet
     }
 
+    @Stable
+    private object TestFloatIncrement : SliderDeviceProperty<Float>(
+        initValue = 3f,
+        title = { "Test Float" },
+        min = 1f, max = 5f, increment = 0.1f,
+    ) {
+        override fun readValue(packet: StatusPacket) = Unit
+        override fun copyAndUpdate(packet: StatusPacket): StatusPacket = packet
+    }
+
     val properties = listOf<DeviceProperty>(
-        TestIntNull, TestInt, TestFloat,
+        TestIntNull, TestInt, TestFloat, TestFloatIncrement,
     )
     override val values = properties.asSequence()
 }
