@@ -33,34 +33,35 @@ class PropViewModel(
             else -> null
         }
     }.onStart {
-        val testItems = listOf(
-            PropItem(
-                id = "spT0",
-                title = Title.Text("[TEST] SpT0"),
-                value = Value.Data(10f) { it?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
-            ),
-            PropItem(
-                id = "spT1",
-                title = Title.Text("[TEST] SpT1"),
-                value = Value.Data(10f) { it?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
-            ),
-            PropItem(
-                id = "spRh0",
-                title = Title.Text("[TEST] spRh0"),
-                value = Value.Data(10f) { it?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
-            ),
-            PropItem(
-                id = "minRun",
-                title = Title.Text("[TEST] Min Run"),
-                value = Value.Data(10f) { it?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
-            ),
-            PropItem(
-                id = "relayMode",
-                title = Title.Text("[TEST] relayMode"),
-                value = Value.Data(10f) { it?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
-            ),
-        )
-        emit(testItems)//emptyList())
+        // val testItems = listOf(
+        //     PropItem(
+        //         id = "spT0",
+        //         title = Title.Text("[TEST] SpT0"),
+        //         value = Value.Data(10f) { it?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
+        //     ),
+        //     PropItem(
+        //         id = "spT1",
+        //         title = Title.Text("[TEST] SpT1"),
+        //         value = Value.Data(10f) { it?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
+        //     ),
+        //     PropItem(
+        //         id = "spRh0",
+        //         title = Title.Text("[TEST] spRh0"),
+        //         value = Value.Data(10f) { it?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
+        //     ),
+        //     PropItem(
+        //         id = "minRun",
+        //         title = Title.Text("[TEST] Min Run"),
+        //         value = Value.Data(10f) { it?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
+        //     ),
+        //     PropItem(
+        //         id = "relayMode",
+        //         title = Title.Text("[TEST] relayMode"),
+        //         value = Value.Data(10f) { it?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
+        //     ),
+        // )
+        // emit(testItems)//emptyList())
+        emit(emptyList())
     }
 
     val state: StateFlow<PropViewState> = uiItems.map { items ->

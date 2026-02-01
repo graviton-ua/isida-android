@@ -104,8 +104,7 @@ private class SliderPreviewParameterProvider : PreviewParameterProvider<DevicePr
     private object TestInt : SliderDeviceProperty<Int>(
         initValue = 4,
         title = { "Test Int" },
-        min = 1, max = 5,
-        steps = 3,
+        min = 1, max = 5, steps = 3,
     ) {
         override fun readValue(packet: StatusPacket) = Unit
         override fun copyAndUpdate(packet: StatusPacket): StatusPacket = packet

@@ -44,7 +44,8 @@ internal fun propertyFromId(id: String): DeviceProperty = when (id) {
 @Stable
 internal class SpT0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { "SpT0" },
+    title = { "Andrew hello SpT0" },
+    description = { "A little bit of descirption for this fantastic property" },
     onValidate = { value ->
         val floatValue = value.toFloatOrNull()
         when {
