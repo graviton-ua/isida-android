@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="home_tab_stats">Статистика</string>
+    <string name="home_tab_stats">Монитор</string>
     <string name="home_tab_prop">Опции</string>
     <string name="home_tab_report">Отчёт</string>
 
-    <string name="butPower">ПЕРЕКЛЮЧАТЕЛЬ</string>
+    <string name="butPower">Управление</string>
 
     <string name="CellNum">КАМЕРА № %1$d</string>
     <string name="btnStart">Старт</string>
