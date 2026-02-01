@@ -1,0 +1,126 @@
+name: Build and Release Desktop App
+
+on:
+  push:
+    tags: 
+        - 'v?[0-9]+.[0-9]+.[0-9]+'
+    branches: 
+        - 'release/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v5
+      with:
+        java-version: 21
+        distribution: 'temurin'
+
+    - name: Set up Gradle
+      uses: gradle/actions/setup-gradle@v5
+      with:
+        gradle-version: wrapper
+        cache-read-only: false
+
+    - name: Configure Build Environment
+      shell: bash
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+           echo "GRADLE_TASK=:desktopApp:packageReleaseMsi" >> $GITHUB_ENV
+           echo "ARTIFACT_PATTERN=*.msi" >> $GITHUB_ENV
+        elif [ "$RUNNER_OS" == "macOS" ]; then
+           echo "GRADLE_TASK=:desktopApp:packageReleaseDmg" >> $GITHUB_ENV
+           echo "ARTIFACT_PATTERN=*.dmg" >> $GITHUB_ENV
+        fi
+
+    - name: Build Application
+      run: ./gradlew ${{ env.GRADLE_TASK }}
+
+    - name: Upload Installer Artifact
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-artifact@v4
+      with:
+        name: installer-${{ matrix.os }}
+        path: desktopApp/build/compose/binaries/**/${{ env.ARTIFACT_PATTERN }}
+        if-no-files-found: error
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6
+
+    - name: Download All Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: release_assets
+        merge-multiple: true
+
+    - name: Publish Release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        TAG_NAME="${{ github.ref_name }}"
+        
+        # Find all files in the artifacts directory
+        FILES=$(find release_assets -type f) 
+        
+        echo "Processing release for tag: $TAG_NAME"
+        echo "Files to upload:"
+        echo "$FILES"
+        
+        # Check if release already exists
+        if gh release view "$TAG_NAME" > /dev/null 2>&1; then
+          echo "Release $TAG_NAME already exists. Uploading assets..."
+          gh release upload "$TAG_NAME" $FILES --clobber
+        else
+          echo "Release $TAG_NAME does not exist. Creating new release..."
+          gh release create "$TAG_NAME" \
+            --title "$TAG_NAME" \
+            --generate-notes \
+            $FILES
+        fi
+
+    - name: Cleanup Old Release Artifacts
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo "Cleaning up artifacts from old releases (keeping last 3)..."
+        
+        # Get releases sorted by date (newest first), skip first 3, get tags
+        TAGS_TO_CLEAN=$(gh release list --json tagName,createdAt --limit 50 | 
+          jq -r 'sort_by(.createdAt) | reverse | .[3:] | .[].tagName')
+        
+        for TAG in $TAGS_TO_CLEAN; do
+          if [ -z "$TAG" ]; then continue; fi
+          echo "Processing release: $TAG"
+          
+          # List assets for the release
+          ASSETS=$(gh release view "$TAG" --json assets -q '.assets[].name')
+          
+          for ASSET in $ASSETS; do
+            echo "  - Deleting asset: $ASSET"
+            gh release delete-asset "$TAG" "$ASSET" --yes
+          done
+        done
+        
+        echo "Cleanup completed."

@@ -26,7 +26,7 @@ kotlin {
 }
 
 group = "isida"
-version = "1.0.0"//gitDescribe(project.providers).get()
+version = gitDescribe(project.providers).get()
 
 compose.desktop {
     application {
@@ -34,19 +34,19 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Rpm)
             packageName = "Isida"
-            packageVersion = "1.0.0"//gitDescribe(project.providers).get()
+            packageVersion = gitDescribe(project.providers).get()
             windows {
-                iconFile.set(File("../icon.ico"))
+                iconFile.set(File("icon.ico"))
                 menu = true
                 perUserInstall = true
                 upgradeUuid = "0DFB0005-59B7-4702-BD47-CED700CEB37C"
                 includeAllModules = true
             }
             linux {
-                iconFile.set(File("../icon.png"))
+                iconFile.set(File("icon.png"))
             }
             macOS {
-                iconFile.set(File("../icon.icns"))
+                iconFile.set(File("icon.icns"))
             }
         }
 

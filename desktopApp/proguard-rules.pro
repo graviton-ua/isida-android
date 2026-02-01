@@ -4,3 +4,18 @@
 -dontwarn org.codehaus.commons.compiler.**
 
 -keep class ch.qos.logback.** { *; }
+
+# Fix for "duplicate definition of program class [module-info]"
+-dontnote module-info
+-dontwarn module-info
+
+# Fix for Logback warnings
+-dontwarn org.tukaani.xz.**
+
+# Fix for androidx.navigation3 and navigationevent
+-keep class androidx.navigation3.** { *; }
+-keep class androidx.navigationevent.** { *; }
+
+# Fix for jSerialComm (references Android classes on Desktop)
+-dontwarn com.fazecast.jSerialComm.**
+-dontwarn android.**
