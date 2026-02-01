@@ -8,6 +8,39 @@ import ua.graviton.isida.ui.setprop.models.types.NumberInputTextFieldDevicePrope
 import ua.graviton.isida.ui.setprop.models.types.RangeSliderDeviceProperty
 import ua.graviton.isida.ui.setprop.models.types.SingleSelectionListDeviceProperty
 
+internal fun propertyFromId(id: String): DeviceProperty = when (id) {
+    "spT0" -> SpT0()
+    "spT1" -> SpT1()
+    "spRh0" -> SpRh0()
+    "spRh1" -> SpRh1()
+    "pkoff0" -> Pkoff0()
+    "pkoff1" -> Pkoff1()
+    "ikoff0" -> Ikoff0()
+    "ikoff1" -> Ikoff1()
+    "minRun" -> MinRun()
+    "maxRun" -> MaxRun()
+    "period" -> Period()
+    "timer0" -> Timer0()
+    "timer1" -> Timer1()
+    "alarm0" -> Alarm0()
+    "alarm1" -> Alarm1()
+    "extOn0" -> ExtOn0()
+    "extOn1" -> ExtOn1()
+    "extOff0" -> ExtOff0()
+    "extOff1" -> ExtOff1()
+    "air0" -> Air0()
+    "air1" -> Air1()
+    "spCO2" -> SpCO2()
+    "identif" -> Identif()
+    "state" -> State()
+    "extendMode" -> ExtendMode()
+    "relayMode" -> RelayMode()
+    "program" -> Program()
+    "hysteresis" -> Hysteresis()
+    "turnTime" -> TurnTime()
+    else -> throw IllegalStateException("Unknown property id: $id")
+}
+
 @Stable
 internal class SpT0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,

@@ -20,36 +20,7 @@ import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.domain.interactors.SendCommand
 import ua.graviton.isida.domain.observers.ObserveStatus
-import ua.graviton.isida.ui.setprop.models.Air0
-import ua.graviton.isida.ui.setprop.models.Air1
-import ua.graviton.isida.ui.setprop.models.Alarm0
-import ua.graviton.isida.ui.setprop.models.Alarm1
-import ua.graviton.isida.ui.setprop.models.DeviceProperty
-import ua.graviton.isida.ui.setprop.models.ExtOff0
-import ua.graviton.isida.ui.setprop.models.ExtOff1
-import ua.graviton.isida.ui.setprop.models.ExtOn0
-import ua.graviton.isida.ui.setprop.models.ExtOn1
-import ua.graviton.isida.ui.setprop.models.ExtendMode
-import ua.graviton.isida.ui.setprop.models.Hysteresis
-import ua.graviton.isida.ui.setprop.models.Identif
-import ua.graviton.isida.ui.setprop.models.Ikoff0
-import ua.graviton.isida.ui.setprop.models.Ikoff1
-import ua.graviton.isida.ui.setprop.models.MaxRun
-import ua.graviton.isida.ui.setprop.models.MinRun
-import ua.graviton.isida.ui.setprop.models.Period
-import ua.graviton.isida.ui.setprop.models.Pkoff0
-import ua.graviton.isida.ui.setprop.models.Pkoff1
-import ua.graviton.isida.ui.setprop.models.Program
-import ua.graviton.isida.ui.setprop.models.RelayMode
-import ua.graviton.isida.ui.setprop.models.SpCO2
-import ua.graviton.isida.ui.setprop.models.SpRh0
-import ua.graviton.isida.ui.setprop.models.SpRh1
-import ua.graviton.isida.ui.setprop.models.SpT0
-import ua.graviton.isida.ui.setprop.models.SpT1
-import ua.graviton.isida.ui.setprop.models.State
-import ua.graviton.isida.ui.setprop.models.Timer0
-import ua.graviton.isida.ui.setprop.models.Timer1
-import ua.graviton.isida.ui.setprop.models.TurnTime
+import ua.graviton.isida.ui.setprop.models.propertyFromId
 
 @AssistedInject
 class SetPropViewModel(
@@ -154,38 +125,5 @@ class SetPropViewModel(
         )
 
         else -> Result.failure(IllegalArgumentException("Unsupported packet type"))
-    }
-
-    private fun propertyFromId(id: String): DeviceProperty = when (id) {
-        "spT0" -> SpT0()
-        "spT1" -> SpT1()
-        "spRh0" -> SpRh0()
-        "spRh1" -> SpRh1()
-        "pkoff0" -> Pkoff0()
-        "pkoff1" -> Pkoff1()
-        "ikoff0" -> Ikoff0()
-        "ikoff1" -> Ikoff1()
-        "minRun" -> MinRun()
-        "maxRun" -> MaxRun()
-        "period" -> Period()
-        "timer0" -> Timer0()
-        "timer1" -> Timer1()
-        "alarm0" -> Alarm0()
-        "alarm1" -> Alarm1()
-        "extOn0" -> ExtOn0()
-        "extOn1" -> ExtOn1()
-        "extOff0" -> ExtOff0()
-        "extOff1" -> ExtOff1()
-        "air0" -> Air0()
-        "air1" -> Air1()
-        "spCO2" -> SpCO2()
-        "identif" -> Identif()
-        "state" -> State()
-        "extendMode" -> ExtendMode()
-        "relayMode" -> RelayMode()
-        "program" -> Program()
-        "hysteresis" -> Hysteresis()
-        "turnTime" -> TurnTime()
-        else -> throw IllegalStateException("Unknown property id: $id")
     }
 }
