@@ -84,6 +84,10 @@ internal abstract class SliderDeviceProperty<T : Number>(
             @Composable
             override fun asLabel(): String = "Required"
         }
+        object Invalid : Error {
+            @Composable
+            override fun asLabel(): String = "Invalid"
+        }
     }
 }
 

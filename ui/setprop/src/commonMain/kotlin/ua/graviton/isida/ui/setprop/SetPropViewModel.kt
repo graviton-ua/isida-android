@@ -62,7 +62,7 @@ class SetPropViewModel(
         viewModelScope.launch {
             packets.filterNotNull().take(1)
                 .collect { packet ->
-                    //property.updateValue(packet)
+                    property.readValue(packet)
                     waitingForData.value = false
                 }
         }
@@ -77,7 +77,7 @@ class SetPropViewModel(
         val isValid = property.validate()
 
         // If it's not valid error already been shown on the UI, we can silently return
-        if (isValid) return@launch
+        if (!isValid) return@launch
 
         //Here we should build and send command to device
         val snapshot = packets.value ?: return@launch
