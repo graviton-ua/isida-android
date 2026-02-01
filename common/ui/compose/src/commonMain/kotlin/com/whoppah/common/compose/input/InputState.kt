@@ -20,6 +20,10 @@ interface InputState<T, E : InputState.Error> {
     }
 }
 
+interface InputStateErrorScope<E> {
+    fun error(onMessage: @Composable () -> String): E
+}
+
 @Stable
 interface InputStateHelper<T, S : InputState<T, E>, E : InputState.Error> {
     val state: S
@@ -41,7 +45,7 @@ interface InputStateHelper<T, S : InputState<T, E>, E : InputState.Error> {
 
     fun setEnabled(enabled: Boolean) = with(state.enabledState) { value = enabled }
 
-    fun validate(onValidate: ((T) -> E?)? = null): E?
+    fun validate(onValidate: (InputStateErrorScope<E>.(T) -> E?)? = null): E?
 
     open suspend fun validateOnInputUpdate() = Unit
 

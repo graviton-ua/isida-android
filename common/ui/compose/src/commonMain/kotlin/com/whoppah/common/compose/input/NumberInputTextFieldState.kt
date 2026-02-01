@@ -5,6 +5,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
+import com.whoppah.common.compose.input.NumberInputTextFieldState.Error
 import com.whoppah.common.resources.common_error_price_invalid
 import com.whoppah.common.resources.common_error_price_less_than
 import com.whoppah.common.resources.common_error_price_more_than
@@ -16,7 +17,7 @@ import org.jetbrains.compose.resources.stringResource
 import com.whoppah.common.resources.Res as R
 
 @Stable
-interface NumberInputTextFieldState : InputTextFieldState<NumberInputTextFieldState.Error> {
+interface NumberInputTextFieldState : InputTextFieldState<Error> {
 
     val valueAsInt: Int?
     val valueAsFloat: Float?
@@ -43,9 +44,11 @@ interface NumberInputTextFieldState : InputTextFieldState<NumberInputTextFieldSt
             override fun asLabel(): String = stringResource(R.string.common_error_price_more_than, value)
         }
 
-        data class Custom(val message: String) : Error {
+        data class Custom(private val onMessage: @Composable () -> String) : Error {
+            constructor(message: String) : this(onMessage = { message })
+
             @Composable
-            override fun asLabel(): String = message
+            override fun asLabel(): String = onMessage()
         }
     }
 
@@ -67,16 +70,14 @@ interface NumberInputTextFieldState : InputTextFieldState<NumberInputTextFieldSt
 }
 
 @Stable
-interface NumberInputTextFieldStateHelper : InputTextFieldStateHelper<NumberInputTextFieldState, NumberInputTextFieldState.Error> {
+interface NumberInputTextFieldStateHelper : InputTextFieldStateHelper<NumberInputTextFieldState, Error> {
     fun <T : Number> setValue(value: T?)
-
-    fun validate(onValidate: ((String) -> NumberInputTextFieldState.Error?)? = null): NumberInputTextFieldState.Error?
 }
 
 @Stable
 data class DefaultNumberInputTextFieldState(
     override val fieldState: TextFieldState,
-    override val errorState: MutableState<NumberInputTextFieldState.Error?>,
+    override val errorState: MutableState<Error?>,
     override val enabledState: MutableState<Boolean> = mutableStateOf(true),
 ) : NumberInputTextFieldState {
 
@@ -87,7 +88,7 @@ data class DefaultNumberInputTextFieldState(
 
     constructor(
         initialText: String = "",
-        initialError: NumberInputTextFieldState.Error? = null,
+        initialError: Error? = null,
         initialEnabled: Boolean = true,
     ) : this(
         fieldState = TextFieldState(initialText = initialText),
@@ -113,13 +114,15 @@ data class DefaultNumberInputTextFieldState(
 @Stable
 class DefaultNumberInputTextFieldStateHelper(
     initialText: String = "",
-    private val onValidate: (String) -> NumberInputTextFieldState.Error? = { null }
+    private val onValidate: InputTextFieldStateErrorScope<Error>.(String) -> Error? = { null },
+    private val errorScope: InputTextFieldStateErrorScope<Error> = DefaultErrorScope,
 ) : NumberInputTextFieldStateHelper {
 
     constructor(
         initValue: Number?,
-        onValidate: (String) -> NumberInputTextFieldState.Error? = { null },
-    ) : this(initialText = initValue?.toString() ?: "", onValidate = onValidate)
+        onValidate: InputTextFieldStateErrorScope<Error>.(String) -> Error? = { null },
+        errorScope: InputTextFieldStateErrorScope<Error> = DefaultErrorScope,
+    ) : this(initialText = initValue?.toString() ?: "", onValidate = onValidate, errorScope = errorScope)
 
 
     override val state: NumberInputTextFieldState = DefaultNumberInputTextFieldState(initialText = initialText)
@@ -135,15 +138,23 @@ class DefaultNumberInputTextFieldStateHelper(
      *
      * @return `true` if the input is valid, `false` otherwise.
      */
-    override fun validate(onValidate: ((String) -> NumberInputTextFieldState.Error?)?): NumberInputTextFieldState.Error? = when (onValidate) {
-        null -> onValidate(text)
-        else -> onValidate(text)
-    }.also(::setError)
+    override fun validate(
+        onValidate: (InputTextFieldStateErrorScope<Error>.(String) -> Error?)?
+    ): Error? = with(errorScope) {
+        when (onValidate) {
+            null -> onValidate(text)
+            else -> onValidate(text)
+        }.also(::setError)
+    }
 
     override suspend fun validateOnInputUpdate() {
         snapshotFlow { state.fieldState.text }
             .distinctUntilChanged()
-            .map { text -> onValidate(text.toString()) }
+            .map { text -> with(errorScope) { onValidate(text.toString()) } }
             .collectLatest { state.errorState.value = null }
+    }
+
+    object DefaultErrorScope : InputTextFieldStateErrorScope<Error> {
+        override fun error(onMessage: @Composable (() -> String)): Error = Error.Custom(onMessage)
     }
 }

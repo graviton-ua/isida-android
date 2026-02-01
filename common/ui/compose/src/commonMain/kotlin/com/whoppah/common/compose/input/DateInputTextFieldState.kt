@@ -4,6 +4,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
+import com.whoppah.common.compose.input.DateInputTextFieldState.Error
 import com.whoppah.common.compose.ui.DateFieldDefaults
 import com.whoppah.common.resources.common_error_price_invalid
 import com.whoppah.common.resources.common_required
@@ -23,7 +24,7 @@ import kotlin.time.Instant
 import com.whoppah.common.resources.Res as R
 
 @Stable
-interface DateInputTextFieldState : InputTextFieldState<DateInputTextFieldState.Error> {
+interface DateInputTextFieldState : InputTextFieldState<Error> {
     val dateFormatter: DateTimeFormat<LocalDate>
     val date: Result<LocalDate>
         get() = runCatching { LocalDate.parse(fieldState.text.toString(), dateFormatter) }
@@ -51,9 +52,11 @@ interface DateInputTextFieldState : InputTextFieldState<DateInputTextFieldState.
             override fun asLabel(): String = stringResource(R.string.common_error_price_invalid)
         }
 
-        data class Custom(val message: String) : Error {
+        data class Custom(private val onMessage: @Composable () -> String) : Error {
+            constructor(message: String) : this(onMessage = { message })
+
             @Composable
-            override fun asLabel(): String = message
+            override fun asLabel(): String = onMessage()
         }
     }
 
@@ -66,14 +69,12 @@ interface DateInputTextFieldState : InputTextFieldState<DateInputTextFieldState.
 }
 
 @Stable
-interface DateInputTextFieldStateHelper : InputTextFieldStateHelper<DateInputTextFieldState, DateInputTextFieldState.Error> {
+interface DateInputTextFieldStateHelper : InputTextFieldStateHelper<DateInputTextFieldState, Error> {
     fun setDate(date: LocalDate?) = state.setDate(date)
-
-    fun validate(onValidate: ((String) -> DateInputTextFieldState.Error?)?): DateInputTextFieldState.Error?
 
     suspend fun validateOnFly(
         debounce: Long = 500L,
-        onValidate: ((String, DateTimeFormat<LocalDate>) -> DateInputTextFieldState.Error?)? = null,
+        onValidate: (InputTextFieldStateErrorScope<Error>.(String, DateTimeFormat<LocalDate>) -> Error?)? = null,
     )
 
     override fun clear() {
@@ -85,14 +86,14 @@ interface DateInputTextFieldStateHelper : InputTextFieldStateHelper<DateInputTex
 @Stable
 data class DefaultDateInputTextFieldState(
     override val fieldState: TextFieldState,
-    override val errorState: MutableState<DateInputTextFieldState.Error?>,
+    override val errorState: MutableState<Error?>,
     override val enabledState: MutableState<Boolean> = mutableStateOf(true),
     override val dateFormatter: DateTimeFormat<LocalDate> = DateFieldDefaults.dateFormatter,
 ) : DateInputTextFieldState {
 
     constructor(
         initialDate: LocalDate? = null,
-        initialError: DateInputTextFieldState.Error? = null,
+        initialError: Error? = null,
         initialEnabled: Boolean = true,
         dateFormatter: DateTimeFormat<LocalDate> = DateFieldDefaults.dateFormatter,
     ) : this(
@@ -120,7 +121,8 @@ data class DefaultDateInputTextFieldState(
 @Stable
 class DefaultDateInputTextFieldStateHelper(
     initialDate: LocalDate? = null,
-    private val onValidate: (String, DateTimeFormat<LocalDate>) -> DateInputTextFieldState.Error? = { text, formatter -> null }
+    private val onValidate: InputTextFieldStateErrorScope<Error>.(String, DateTimeFormat<LocalDate>) -> Error? = { text, formatter -> null },
+    private val errorScope: InputTextFieldStateErrorScope<Error> = DefaultErrorScope,
 ) : DateInputTextFieldStateHelper {
     override val state: DateInputTextFieldState = DefaultDateInputTextFieldState(initialDate = initialDate)
 
@@ -130,25 +132,33 @@ class DefaultDateInputTextFieldStateHelper(
      *
      * @return `true` if the input is valid, `false` otherwise.
      */
-    override fun validate(onValidate: ((String) -> DateInputTextFieldState.Error?)?): DateInputTextFieldState.Error? = when (onValidate) {
-        null -> onValidate(text, state.dateFormatter)
-        else -> onValidate(text)
-    }.also(::setError)
+    override fun validate(onValidate: (InputTextFieldStateErrorScope<Error>.(String) -> Error?)?): Error? = with(errorScope) {
+        when (onValidate) {
+            null -> onValidate(text, state.dateFormatter)
+            else -> onValidate(text)
+        }.also(::setError)
+    }
 
     @OptIn(FlowPreview::class)
     override suspend fun validateOnFly(
         debounce: Long,
-        onValidate: ((String, DateTimeFormat<LocalDate>) -> DateInputTextFieldState.Error?)?,
+        onValidate: (InputTextFieldStateErrorScope<Error>.(String, DateTimeFormat<LocalDate>) -> Error?)?,
     ) = with(state) {
         snapshotFlow { fieldState.text.toString() }
             .debounce(debounce)
             .distinctUntilChanged()
             .map { text ->
-                when (onValidate) {
-                    null -> onValidate(text, dateFormatter)
-                    else -> onValidate(text, dateFormatter)
+                with(errorScope) {
+                    when (onValidate) {
+                        null -> onValidate(text, dateFormatter)
+                        else -> onValidate(text, dateFormatter)
+                    }
                 }
             }
             .collectLatest(::setError)
+    }
+
+    object DefaultErrorScope : InputTextFieldStateErrorScope<Error> {
+        override fun error(onMessage: @Composable (() -> String)): Error = Error.Custom(onMessage)
     }
 }

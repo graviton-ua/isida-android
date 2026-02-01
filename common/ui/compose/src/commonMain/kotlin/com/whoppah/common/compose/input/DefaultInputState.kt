@@ -1,5 +1,6 @@
 package com.whoppah.common.compose.input
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
@@ -21,13 +22,18 @@ class DefaultInputStateHelper<T, E : InputState.Error>(
     initValue: T,
     initError: E? = null,
     initEnabled: Boolean = true,
-    private val onValidate: (T) -> E? = { null }
+    private val onValidate: InputStateErrorScope<E>.(T) -> E? = { null },
+    private val errorScope: InputStateErrorScope<E> = object : InputStateErrorScope<E> {
+        override fun error(onMessage: @Composable (() -> String)): E = error("InputStateErrorScope is not provided for DefaultInputStateHelper")
+    },
 ) : InputStateHelper<T, InputState<T, E>, E> {
 
     override val state: InputState<T, E> = DefaultInputState(initValue, initError, initEnabled)
 
-    override fun validate(onValidate: ((T) -> E?)?): E? = when (onValidate) {
-        null -> onValidate(value)
-        else -> onValidate(value)
-    }.also(::setError)
+    override fun validate(onValidate: (InputStateErrorScope<E>.(T) -> E?)?): E? = with(errorScope) {
+        when (onValidate) {
+            null -> onValidate(value)
+            else -> onValidate(value)
+        }.also(::setError)
+    }
 }
