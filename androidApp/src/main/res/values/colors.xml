@@ -2,7 +2,7 @@
 <resources>
     <color name="neutral085">#FFDADADA</color>
 
-    <color name="ic_launcher_background">@color/brand500</color>
+    <color name="ic_launcher_background">#fafafa</color>
     <color name="ic_launcher_foreground">@color/white</color>
 
     <color name="brand500">#005D33</color>

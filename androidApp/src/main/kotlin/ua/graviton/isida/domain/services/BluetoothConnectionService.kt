@@ -48,7 +48,7 @@ class BluetoothConnectionService : BluetoothStateService() {
         return NotificationCompat.Builder(this, BuildConfig.NOTIFICATION_CHANNEL_ID_GENERAL)
             .setContentTitle("ISIDA Connected")
             .setContentText("We successfully connected to: $name")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_notification)
             .setContentIntent(pendingIntentOpenApp)
             .addAction(R.drawable.ic_stop, "Stop", pendingIntentDisconnect)
             .setOnlyAlertOnce(true)
