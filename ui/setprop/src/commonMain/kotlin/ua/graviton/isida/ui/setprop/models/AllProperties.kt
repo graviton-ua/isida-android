@@ -44,7 +44,7 @@ internal fun propertyFromId(id: String): DeviceProperty = when (id) {
 @Stable
 internal class SpT0(value: Float? = null) : SliderDeviceProperty<Float>(
     initValue = value, //allowDecimals = true,
-    min = 25f, max = 40f,
+    min = 35f, max = 40f, increment = 0.1f,
     title = { "Andrew hello SpT0" },
     description = { "A little bit of descirption\n for this fantastic property" },
     onValidate = { floatValue ->
