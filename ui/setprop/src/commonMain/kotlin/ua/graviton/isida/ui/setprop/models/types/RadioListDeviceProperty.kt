@@ -22,13 +22,13 @@ import ua.graviton.isida.ui.setprop.SetPropViewState
 import ua.graviton.isida.ui.setprop.models.DeviceProperty
 
 @Stable
-internal abstract class SingleSelectionListDeviceProperty<T>(
+internal abstract class RadioListDeviceProperty<T>(
     initValue: T? = null,
     val list: List<T>,
     override val title: @Composable () -> String,
     override val description: (@Composable () -> String)? = null,
     val listItemTitleMap: @Composable (T) -> String = { "Item $it" },
-    private val onValidate: (T?) -> SingleSelectionListError? = { if (it == null) SingleSelectionListError.Required else null },
+    private val onValidate: (T?) -> Error? = { if (it == null) Error.Required else null },
 ) : DeviceProperty {
     protected val inputHelper = DefaultInputStateHelper(initValue = initValue, onValidate = onValidate)
 
@@ -79,8 +79,8 @@ internal abstract class SingleSelectionListDeviceProperty<T>(
     override suspend fun validateOnInputUpdate() = inputHelper.validateOnInputUpdate()
     override suspend fun clearErrorOnInputUpdate() = inputHelper.clearErrorOnInputUpdate()
 
-    interface SingleSelectionListError : InputState.Error {
-        object Required : SingleSelectionListError {
+    interface Error : InputState.Error {
+        object Required : Error {
             @Composable
             override fun asLabel(): String = "Required"
         }
@@ -88,10 +88,10 @@ internal abstract class SingleSelectionListDeviceProperty<T>(
 }
 
 
-private class SingleSelListPreviewParameterProvider : PreviewParameterProvider<DeviceProperty> {
+private class RadioListPreviewParameterProvider : PreviewParameterProvider<DeviceProperty> {
 
     @Stable
-    private object TestEmpty : SingleSelectionListDeviceProperty<Int>(
+    private object TestEmpty : RadioListDeviceProperty<Int>(
         initValue = null,
         title = { "RelayMode" },
         list = listOf(1, 2, 3, 4, 5),
@@ -102,7 +102,7 @@ private class SingleSelListPreviewParameterProvider : PreviewParameterProvider<D
     }
 
     @Stable
-    private object TestHasValue : SingleSelectionListDeviceProperty<Int>(
+    private object TestHasValue : RadioListDeviceProperty<Int>(
         initValue = 3,
         title = { "RelayMode" },
         list = listOf(1, 2, 3, 4, 5),
@@ -121,7 +121,7 @@ private class SingleSelListPreviewParameterProvider : PreviewParameterProvider<D
 @Preview
 @Composable
 private fun Preview(
-    @PreviewParameter(SingleSelListPreviewParameterProvider::class) property: DeviceProperty,
+    @PreviewParameter(RadioListPreviewParameterProvider::class) property: DeviceProperty,
 ) {
     WhoppahTheme {
         LaunchedEffect(Unit) { property.validate() }

@@ -26,16 +26,17 @@ import ua.graviton.isida.ui.setprop.SetPropViewState
 import ua.graviton.isida.ui.setprop.models.DeviceProperty
 
 @Stable
-internal abstract class RangeSliderDeviceProperty<T : Number>(
+internal abstract class SliderDeviceProperty<T : Number>(
     initValue: T? = null,
     val min: T, val max: T,
     @param:IntRange(from = 0) private val steps: Int = 0,
     override val title: @Composable () -> String,
     override val description: (@Composable () -> String)? = null,
-    private val onValidate: (T?) -> RangeSliderError? = { if (it == null) RangeSliderError.Required else null },
+    private val onValidate: (T?) -> Error? = { if (it == null) Error.Required else null },
 ) : DeviceProperty {
     protected val inputHelper = DefaultInputStateHelper(initValue = initValue, onValidate = onValidate)
 
+    @Suppress("UNCHECKED_CAST")
     @Composable
     override fun Content(modifier: Modifier) {
         Column(
@@ -78,8 +79,8 @@ internal abstract class RangeSliderDeviceProperty<T : Number>(
     override suspend fun validateOnInputUpdate() = inputHelper.validateOnInputUpdate()
     override suspend fun clearErrorOnInputUpdate() = inputHelper.clearErrorOnInputUpdate()
 
-    interface RangeSliderError : InputState.Error {
-        object Required : RangeSliderError {
+    interface Error : InputState.Error {
+        object Required : Error {
             @Composable
             override fun asLabel(): String = "Required"
         }
@@ -87,10 +88,10 @@ internal abstract class RangeSliderDeviceProperty<T : Number>(
 }
 
 
-private class RangeSliderPreviewParameterProvider : PreviewParameterProvider<DeviceProperty> {
+private class SliderPreviewParameterProvider : PreviewParameterProvider<DeviceProperty> {
 
     @Stable
-    private object TestIntNull : RangeSliderDeviceProperty<Int>(
+    private object TestIntNull : SliderDeviceProperty<Int>(
         initValue = null,
         title = { "Test Int" },
         min = 1, max = 5,
@@ -100,7 +101,7 @@ private class RangeSliderPreviewParameterProvider : PreviewParameterProvider<Dev
     }
 
     @Stable
-    private object TestInt : RangeSliderDeviceProperty<Int>(
+    private object TestInt : SliderDeviceProperty<Int>(
         initValue = 4,
         title = { "Test Int" },
         min = 1, max = 5,
@@ -111,7 +112,7 @@ private class RangeSliderPreviewParameterProvider : PreviewParameterProvider<Dev
     }
 
     @Stable
-    private object TestFloat : RangeSliderDeviceProperty<Float>(
+    private object TestFloat : SliderDeviceProperty<Float>(
         initValue = 3f,
         title = { "Test Float" },
         min = 1f, max = 5f,
@@ -129,7 +130,7 @@ private class RangeSliderPreviewParameterProvider : PreviewParameterProvider<Dev
 @Preview
 @Composable
 private fun Preview(
-    @PreviewParameter(RangeSliderPreviewParameterProvider::class) property: DeviceProperty,
+    @PreviewParameter(SliderPreviewParameterProvider::class) property: DeviceProperty,
 ) {
     WhoppahTheme {
         LaunchedEffect(Unit) { property.validate() }

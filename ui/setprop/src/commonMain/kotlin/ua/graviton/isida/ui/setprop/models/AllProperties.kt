@@ -5,8 +5,8 @@ import com.whoppah.common.compose.input.NumberInputTextFieldState
 import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.ui.setprop.models.types.NumberInputTextFieldDeviceProperty
-import ua.graviton.isida.ui.setprop.models.types.RangeSliderDeviceProperty
-import ua.graviton.isida.ui.setprop.models.types.SingleSelectionListDeviceProperty
+import ua.graviton.isida.ui.setprop.models.types.SliderDeviceProperty
+import ua.graviton.isida.ui.setprop.models.types.RadioListDeviceProperty
 
 internal fun propertyFromId(id: String): DeviceProperty = when (id) {
     "spT0" -> SpT0()
@@ -98,7 +98,7 @@ internal class SpT1(value: Float? = null) : NumberInputTextFieldDeviceProperty<F
 }
 
 @Stable
-internal class SpRh0(value: Float? = null) : RangeSliderDeviceProperty<Float>(
+internal class SpRh0(value: Float? = null) : SliderDeviceProperty<Float>(
     initValue = value,
     min = 20f, max = 80f, steps = 59,
     title = { "SpRh0" },
@@ -593,7 +593,7 @@ internal class ExtendMode(value: Int? = null) : NumberInputTextFieldDeviceProper
 }
 
 @Stable
-internal class RelayMode(value: Int? = null) : SingleSelectionListDeviceProperty<Int>(
+internal class RelayMode(value: Int? = null) : RadioListDeviceProperty<Int>(
     initValue = value,
     title = { "RelayMode" },
     list = listOf(1, 2, 3, 4, 5),
