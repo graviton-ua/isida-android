@@ -42,16 +42,18 @@ internal fun propertyFromId(id: String): DeviceProperty = when (id) {
 }
 
 @Stable
-internal class SpT0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
-    initValue = value, allowDecimals = true,
+internal class SpT0(value: Float? = null) : SliderDeviceProperty<Float>(
+    initValue = value, //allowDecimals = true,
+    min = 25f, max = 40f,
     title = { "Andrew hello SpT0" },
-    description = { "A little bit of descirption for this fantastic property" },
-    onValidate = { value ->
-        val floatValue = value.toFloatOrNull()
+    description = { "A little bit of descirption\n for this fantastic property" },
+    onValidate = { floatValue ->
+        //val floatValue = value.toFloatOrNull()
         when {
-            floatValue == null -> NumberInputTextFieldState.Error.Invalid
-            floatValue < 25f -> NumberInputTextFieldState.Error.CantBeLessThen("25")
-            floatValue > 40f -> NumberInputTextFieldState.Error.CantBeMoreThen("40")
+            floatValue == null -> SliderDeviceProperty.Error.Invalid
+            // floatValue == 56f -> SliderDeviceProperty.Error.Custom("Пример своей собственной ошибки")
+            // floatValue < 25f -> SliderDeviceProperty.Error.CantBeLessThen("25")
+            // floatValue > 40f -> SliderDeviceProperty.Error.CantBeMoreThen("40")
             else -> null
         }
     },
@@ -65,7 +67,7 @@ internal class SpT0(value: Float? = null) : NumberInputTextFieldDeviceProperty<F
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.state.valueAsFloat?.let { packet.copy(spT0 = it) } ?: packet
+        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(spT0 = it) } ?: packet
         else -> packet
     }
 }

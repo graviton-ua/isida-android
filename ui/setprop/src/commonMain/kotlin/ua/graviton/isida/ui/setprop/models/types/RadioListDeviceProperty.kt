@@ -14,8 +14,11 @@ import com.whoppah.common.compose.input.DefaultInputStateHelper
 import com.whoppah.common.compose.input.InputState
 import com.whoppah.common.compose.theme.WhoppahTheme
 import com.whoppah.common.compose.ui.WhRadioButton
+import com.whoppah.common.resources.Res
+import com.whoppah.common.resources.programm
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.ui.setprop.SetPropDialog
 import ua.graviton.isida.ui.setprop.SetPropViewState
@@ -106,7 +109,13 @@ private class RadioListPreviewParameterProvider : PreviewParameterProvider<Devic
         initValue = 3,
         title = { "RelayMode" },
         list = listOf(1, 2, 3, 4, 5),
-        listItemTitleMap = { "Example of item title $it" },
+        listItemTitleMap = { it ->
+            when (it) {
+                1 -> "Title asdasd"
+                2 -> "asdasd"
+                else -> stringResource(Res.string.programm) + " asdasd "
+            }
+        },
     ) {
         override fun readValue(packet: StatusPacket) = Unit
         override fun copyAndUpdate(packet: StatusPacket): StatusPacket = packet
