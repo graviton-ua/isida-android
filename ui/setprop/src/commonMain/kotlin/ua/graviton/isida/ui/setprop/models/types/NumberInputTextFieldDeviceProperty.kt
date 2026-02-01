@@ -6,7 +6,8 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import com.whoppah.common.compose.input.DefaultNumberInputTextFieldStateHelper
-import com.whoppah.common.compose.input.NumberInputTextFieldState
+import com.whoppah.common.compose.input.InputTextFieldStateErrorScope
+import com.whoppah.common.compose.input.NumberInputTextFieldState.Error
 import com.whoppah.common.compose.input.PriceInputTransformation
 import com.whoppah.common.compose.ui.WhTextField
 import kotlinx.coroutines.flow.Flow
@@ -19,12 +20,9 @@ internal abstract class NumberInputTextFieldDeviceProperty<T : Number>(
     override val title: @Composable () -> String,
     override val description: (@Composable () -> String)? = null,
     private val allowDecimals: Boolean = false,
-    private val onValidate: (String) -> NumberInputTextFieldState.Error? = { null },
+    onValidate: InputTextFieldStateErrorScope<Error>.(String) -> Error? = { null },
 ) : DeviceProperty {
-    protected val inputHelper = DefaultNumberInputTextFieldStateHelper(
-        initValue = initValue,
-        onValidate = onValidate,
-    )
+    protected val inputHelper = DefaultNumberInputTextFieldStateHelper(initValue = initValue, onValidate = onValidate)
 
     @Composable
     override fun Content(modifier: Modifier) {

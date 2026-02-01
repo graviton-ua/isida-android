@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.whoppah.common.compose.input.DefaultInputStateHelper
 import com.whoppah.common.compose.input.InputState
+import com.whoppah.common.compose.input.InputStateErrorScope
 import com.whoppah.common.compose.theme.WhoppahTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -33,7 +34,7 @@ internal abstract class SliderDeviceProperty<T : Number>(
     @param:IntRange(from = 0) private val steps: Int = 0,
     override val title: @Composable () -> String,
     override val description: (@Composable () -> String)? = null,
-    private val onValidate: (T?) -> Error? = { if (it == null) Error.Required else null },
+    onValidate: InputStateErrorScope<Error>.(T?) -> Error? = { if (it == null) Error.Required else null },
 ) : DeviceProperty {
 
     constructor(
@@ -42,7 +43,7 @@ internal abstract class SliderDeviceProperty<T : Number>(
         @FloatRange(from = 0.0) increment: Float,
         title: @Composable () -> String,
         description: (@Composable () -> String)? = null,
-        onValidate: (T?) -> Error? = { if (it == null) Error.Required else null },
+        onValidate: InputStateErrorScope<Error>.(T?) -> Error? = { if (it == null) Error.Required else null },
     ) : this(
         initValue = initValue, min = min, max = max,
         steps = (((max.toFloat() - min.toFloat()) / increment).toInt() - 1).coerceAtLeast(0),
@@ -50,7 +51,11 @@ internal abstract class SliderDeviceProperty<T : Number>(
         onValidate = onValidate,
     )
 
-    protected val inputHelper = DefaultInputStateHelper(initValue = initValue, onValidate = onValidate)
+    protected val inputHelper = DefaultInputStateHelper(
+        initValue = initValue,
+        onValidate = onValidate,
+        errorScope = SliderErrorScope,
+    )
 
     @Suppress("UNCHECKED_CAST")
     @Composable
@@ -105,6 +110,15 @@ internal abstract class SliderDeviceProperty<T : Number>(
             @Composable
             override fun asLabel(): String = "Invalid"
         }
+
+        data class Custom(private val onMessage: @Composable () -> String) : Error {
+            @Composable
+            override fun asLabel(): String = onMessage()
+        }
+    }
+
+    object SliderErrorScope : InputStateErrorScope<Error> {
+        override fun error(onMessage: @Composable (() -> String)): Error = Error.Custom(onMessage)
     }
 }
 
@@ -116,6 +130,9 @@ private class SliderPreviewParameterProvider : PreviewParameterProvider<DevicePr
         initValue = null,
         title = { "Test Int" },
         min = 1, max = 5,
+        onValidate = {
+            if (it == null) error { "Custom required error" } else null
+        },
     ) {
         override fun readValue(packet: StatusPacket) = Unit
         override fun copyAndUpdate(packet: StatusPacket): StatusPacket = packet

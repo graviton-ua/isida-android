@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.whoppah.common.compose.input.DefaultInputStateHelper
 import com.whoppah.common.compose.input.InputState
+import com.whoppah.common.compose.input.InputStateErrorScope
 import com.whoppah.common.compose.theme.WhoppahTheme
 import com.whoppah.common.compose.ui.WhRadioButton
 import com.whoppah.common.resources.Res
@@ -31,9 +32,13 @@ internal abstract class RadioListDeviceProperty<T>(
     override val title: @Composable () -> String,
     override val description: (@Composable () -> String)? = null,
     val listItemTitleMap: @Composable (T) -> String = { "Item $it" },
-    private val onValidate: (T?) -> Error? = { if (it == null) Error.Required else null },
+    onValidate: InputStateErrorScope<Error>.(T?) -> Error? = { if (it == null) Error.Required else null },
 ) : DeviceProperty {
-    protected val inputHelper = DefaultInputStateHelper(initValue = initValue, onValidate = onValidate)
+    protected val inputHelper = DefaultInputStateHelper(
+        initValue = initValue,
+        onValidate = onValidate,
+        errorScope = RadioErrorScope,
+    )
 
     @Composable
     override fun Content(modifier: Modifier) {
@@ -87,6 +92,17 @@ internal abstract class RadioListDeviceProperty<T>(
             @Composable
             override fun asLabel(): String = "Required"
         }
+
+        data class Custom(private val onMessage: @Composable () -> String) : Error {
+            constructor(message: String) : this(onMessage = { message })
+
+            @Composable
+            override fun asLabel(): String = onMessage()
+        }
+    }
+
+    object RadioErrorScope : InputStateErrorScope<Error> {
+        override fun error(onMessage: @Composable () -> String): Error = Error.Custom(onMessage)
     }
 }
 
@@ -99,6 +115,9 @@ private class RadioListPreviewParameterProvider : PreviewParameterProvider<Devic
         title = { "RelayMode" },
         list = listOf(1, 2, 3, 4, 5),
         listItemTitleMap = { "Example of item title $it" },
+        onValidate = {
+            if (it == null) error { "Custom required error" } else null
+        },
     ) {
         override fun readValue(packet: StatusPacket) = Unit
         override fun copyAndUpdate(packet: StatusPacket): StatusPacket = packet

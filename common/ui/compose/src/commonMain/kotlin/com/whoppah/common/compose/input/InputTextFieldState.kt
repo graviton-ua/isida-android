@@ -23,6 +23,10 @@ interface InputTextFieldState<E : InputTextFieldState.Error> {
     }
 }
 
+interface InputTextFieldStateErrorScope<E> {
+    fun error(onMessage: @Composable () -> String): E
+}
+
 @Stable
 interface InputTextFieldStateHelper<S : InputTextFieldState<E>, E : InputTextFieldState.Error> {
     val state: S
@@ -46,6 +50,8 @@ interface InputTextFieldStateHelper<S : InputTextFieldState<E>, E : InputTextFie
     fun setEnabled(enabled: Boolean) = with(state.enabledState) { value = enabled }
 
     fun clear() = with(state) { fieldState.clearText(); clearError() }
+
+    fun validate(onValidate: (InputTextFieldStateErrorScope<E>.(String) -> E?)? = null): E?
 
     open suspend fun validateOnInputUpdate() = Unit
 
