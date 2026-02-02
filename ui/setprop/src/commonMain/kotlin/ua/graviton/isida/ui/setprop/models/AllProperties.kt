@@ -2,6 +2,57 @@ package ua.graviton.isida.ui.setprop.models
 
 import androidx.compose.runtime.Stable
 import com.whoppah.common.compose.input.NumberInputTextFieldState
+import com.whoppah.common.resources.Res
+import com.whoppah.common.resources.error_01
+import com.whoppah.common.resources.prop_CO2_lb
+import com.whoppah.common.resources.prop_Hysteresis_lb
+import com.whoppah.common.resources.prop_air0_lb
+import com.whoppah.common.resources.prop_air1_lb
+import com.whoppah.common.resources.prop_alarm0_lb
+import com.whoppah.common.resources.prop_alarm1_lb
+import com.whoppah.common.resources.dimen_celsius
+import com.whoppah.common.resources.dimen_min
+import com.whoppah.common.resources.dimen_percent
+import com.whoppah.common.resources.dimen_ppm
+import com.whoppah.common.resources.dimen_sec
+import com.whoppah.common.resources.prop_extMode0
+import com.whoppah.common.resources.prop_extMode1
+import com.whoppah.common.resources.prop_extMode2
+import com.whoppah.common.resources.prop_extMode3
+import com.whoppah.common.resources.prop_extMode4
+import com.whoppah.common.resources.prop_extMode5
+import com.whoppah.common.resources.prop_extMode_lb
+import com.whoppah.common.resources.prop_extOff0_lb
+import com.whoppah.common.resources.prop_extOff1_lb
+import com.whoppah.common.resources.prop_extOn0_lb
+import com.whoppah.common.resources.prop_extOn1_lb
+import com.whoppah.common.resources.prop_identif_lb
+import com.whoppah.common.resources.prop_ikoff0_lb
+import com.whoppah.common.resources.prop_ikoff1_lb
+import com.whoppah.common.resources.prop_koffCurr_lb
+import com.whoppah.common.resources.prop_maxImpulse_lb
+import com.whoppah.common.resources.prop_minImpulse_lb
+import com.whoppah.common.resources.prop_pkoff0_lb
+import com.whoppah.common.resources.prop_pkoff1_lb
+import com.whoppah.common.resources.prop_program_lb
+import com.whoppah.common.resources.prop_relMode0
+import com.whoppah.common.resources.prop_relMode1
+import com.whoppah.common.resources.prop_relMode2
+import com.whoppah.common.resources.prop_relMode3
+import com.whoppah.common.resources.prop_relMode4
+import com.whoppah.common.resources.prop_relMode_lb
+import com.whoppah.common.resources.prop_repeatTime_lb
+import com.whoppah.common.resources.prop_spRh0_lb
+import com.whoppah.common.resources.prop_spRh1_lb
+import com.whoppah.common.resources.prop_spT0_lb
+import com.whoppah.common.resources.prop_spT1_lb
+import com.whoppah.common.resources.prop_state_lb
+import com.whoppah.common.resources.prop_turnOff_lb
+import com.whoppah.common.resources.prop_turnOn_lb
+import com.whoppah.common.resources.prop_turnTime_lb
+import com.whoppah.common.resources.prop_waitCooling_lb
+import com.whoppah.common.resources.prop_zoneFlap_lb
+import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.ui.setprop.models.types.NumberInputTextFieldDeviceProperty
@@ -13,15 +64,14 @@ internal fun propertyFromId(id: String): DeviceProperty = when (id) {
     "spT1" -> SpT1()
     "spRh0" -> SpRh0()
     "spRh1" -> SpRh1()
-    "pkoff0" -> Pkoff0()
-    "pkoff1" -> Pkoff1()
-    "ikoff0" -> Ikoff0()
-    "ikoff1" -> Ikoff1()
+    "extendMode" -> ExtendMode()
+    "relayMode" -> RelayMode()
+    "program" -> Program()
     "minRun" -> MinRun()
     "maxRun" -> MaxRun()
     "period" -> Period()
-    "timer0" -> Timer0()
-    "timer1" -> Timer1()
+    "turnOff" -> TurnOff()
+    "turnOn" -> TurnOn()
     "alarm0" -> Alarm0()
     "alarm1" -> Alarm1()
     "extOn0" -> ExtOn0()
@@ -31,26 +81,32 @@ internal fun propertyFromId(id: String): DeviceProperty = when (id) {
     "air0" -> Air0()
     "air1" -> Air1()
     "spCO2" -> SpCO2()
+    "koffCurr" -> KoffCurr()
+    "hysteresis" -> Hysteresis()
+    "zonaFlap" -> ZonaFlap()
+    "turnTime" -> TurnTime()
+    "waitCooling" -> WaitCooling()
+    "pkoff0" -> Pkoff0()
+    "pkoff1" -> Pkoff1()
+    "ikoff0" -> Ikoff0()
+    "ikoff1" -> Ikoff1()
     "identif" -> Identif()
     "state" -> State()
-    "extendMode" -> ExtendMode()
-    "relayMode" -> RelayMode()
-    "program" -> Program()
-    "hysteresis" -> Hysteresis()
-    "turnTime" -> TurnTime()
+
     else -> throw IllegalStateException("Unknown property id: $id")
 }
 
+//-------------------------- spT0 ------------------------------
 @Stable
 internal class SpT0(value: Float? = null) : SliderDeviceProperty<Float>(
     initValue = value, //allowDecimals = true,
     min = 35f, max = 40f, increment = 0.1f,
-    title = { "Andrew hello SpT0" },
-    description = { "A little bit of descirption\n for this fantastic property" },
+    title = { stringResource(Res.string.prop_spT0_lb)+ stringResource(Res.string.dimen_celsius) },
+    // description = { "A little bit of descirption\n for this fantastic property" },
     onValidate = { floatValue ->
         //val floatValue = value.toFloatOrNull()
         when {
-            floatValue == null -> SliderDeviceProperty.Error.Invalid
+            floatValue == null -> error { "Some error message here + resource" + stringResource(Res.string.error_01) }
             // floatValue == 56f -> SliderDeviceProperty.Error.Custom("Пример своей собственной ошибки")
             // floatValue < 25f -> SliderDeviceProperty.Error.CantBeLessThen("25")
             // floatValue > 40f -> SliderDeviceProperty.Error.CantBeMoreThen("40")
@@ -72,10 +128,11 @@ internal class SpT0(value: Float? = null) : SliderDeviceProperty<Float>(
     }
 }
 
+//-------------------------- spT1 ------------------------------
 @Stable
 internal class SpT1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { "SpT1" },
+    title = { stringResource(Res.string.prop_spT1_lb)+ stringResource(Res.string.dimen_celsius)},
     onValidate = { value ->
         val floatValue = value.toFloatOrNull()
         when {
@@ -100,11 +157,12 @@ internal class SpT1(value: Float? = null) : NumberInputTextFieldDeviceProperty<F
     }
 }
 
+//-------------------------- spRh0 ------------------------------
 @Stable
 internal class SpRh0(value: Float? = null) : SliderDeviceProperty<Float>(
     initValue = value,
     min = 20f, max = 80f, steps = 59,
-    title = { "SpRh0" },
+    title = { stringResource(Res.string.prop_spRh0_lb)+ stringResource(Res.string.dimen_percent) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -120,10 +178,11 @@ internal class SpRh0(value: Float? = null) : SliderDeviceProperty<Float>(
     }
 }
 
+//-------------------------- spRh1 ------------------------------
 @Stable
 internal class SpRh1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { "SpRh1" },
+    title = { stringResource(Res.string.prop_spRh1_lb)+ stringResource(Res.string.dimen_percent) },
     onValidate = { value ->
         val floatValue = value.toFloatOrNull()
         when {
@@ -148,118 +207,97 @@ internal class SpRh1(value: Float? = null) : NumberInputTextFieldDeviceProperty<
     }
 }
 
+//-------------------------- ExtendMode ------------------------------
 @Stable
-internal class Pkoff0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+internal class ExtendMode(value: Int? = null) : RadioListDeviceProperty<Int>(
     initValue = value,
-    title = { "Pkoff0" },
-    onValidate = {
-        val intValue = it.toIntOrNull()
-        when {
-            intValue == null -> NumberInputTextFieldState.Error.Invalid
-            intValue < 1 -> NumberInputTextFieldState.Error.CantBeLessThen("1")
-            else -> null
-        }
-    }
+    title = { stringResource(Res.string.prop_extMode_lb) },
+    list = listOf(0, 1, 2, 3, 4, 5),
+    listItemTitleMap = { modeIndex ->
+            val id = when (modeIndex) {
+                0 -> Res.string.prop_extMode0
+                1 -> Res.string.prop_extMode1
+                2 -> Res.string.prop_extMode2
+                3 -> Res.string.prop_extMode3
+                4 -> Res.string.prop_extMode4
+                5 -> Res.string.prop_extMode5
+                else -> null
+            }
+            if (id != null) stringResource(id) else "Unknown"
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
-            is StatusPacketV1 -> packet.pkoff0
+            is StatusPacketV1 -> packet.extendMode
             else -> null
         }
         inputHelper.setValue(value)
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(pkoff0 = it) } ?: packet
+        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(extendMode = it) } ?: packet
         else -> packet
     }
 }
 
+//-------------------------- RelayMode ------------------------------
 @Stable
-internal class Pkoff1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+internal class RelayMode(value: Int? = null) : RadioListDeviceProperty<Int>(
     initValue = value,
-    title = { "Pkoff1" },
-    onValidate = {
-        val intValue = it.toIntOrNull()
-        when {
-            intValue == null -> NumberInputTextFieldState.Error.Invalid
-            intValue < 1 -> NumberInputTextFieldState.Error.CantBeLessThen("1")
-            else -> null
-        }
-    }
+    title = { stringResource(Res.string.prop_relMode_lb) },
+    list = listOf(0, 1, 2, 3, 4),
+    listItemTitleMap = { modeIndex ->
+            val id = when (modeIndex) {
+                0 -> Res.string.prop_relMode0
+                1 -> Res.string.prop_relMode1
+                2 -> Res.string.prop_relMode2
+                3 -> Res.string.prop_relMode3
+                4 -> Res.string.prop_relMode4
+                else -> null
+            }
+        if (id != null) stringResource(id) else "Unknown"
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
-            is StatusPacketV1 -> packet.pkoff1
+            is StatusPacketV1 -> packet.relayMode
             else -> null
         }
         inputHelper.setValue(value)
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(pkoff1 = it) } ?: packet
+        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(relayMode = it) } ?: packet
         else -> packet
     }
 }
 
+//-------------------------- Program ------------------------------
 @Stable
-internal class Ikoff0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+internal class Program(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { "Ikoff0" },
-    onValidate = {
-        val intValue = it.toIntOrNull()
-        when {
-            intValue == null -> NumberInputTextFieldState.Error.Invalid
-            intValue < 100 -> NumberInputTextFieldState.Error.CantBeLessThen("100")
-            else -> null
-        }
-    }
+    title = { stringResource(Res.string.prop_program_lb) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
-            is StatusPacketV1 -> packet.ikoff0
+            is StatusPacketV1 -> packet.programm
             else -> null
         }
         inputHelper.setValue(value)
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(ikoff0 = it) } ?: packet
+        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(programm = it) } ?: packet
         else -> packet
     }
 }
 
-@Stable
-internal class Ikoff1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
-    initValue = value,
-    title = { "Ikoff1" },
-    onValidate = {
-        val intValue = it.toIntOrNull()
-        when {
-            intValue == null -> NumberInputTextFieldState.Error.Invalid
-            intValue < 100 -> NumberInputTextFieldState.Error.CantBeLessThen("100")
-            else -> null
-        }
-    }
-) {
-    override fun readValue(packet: StatusPacket) {
-        val value = when (packet) {
-            is StatusPacketV1 -> packet.ikoff1
-            else -> null
-        }
-        inputHelper.setValue(value)
-    }
 
-    override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(ikoff1 = it) } ?: packet
-        else -> packet
-    }
-}
-
+//-------------------------- MinRun ------------------------------
 @Stable
 internal class MinRun(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { "MinRun" },
+    title = { stringResource(Res.string.prop_minImpulse_lb)+ stringResource(Res.string.dimen_sec) },
     onValidate = {
         val intValue = it.toIntOrNull()
         when {
@@ -283,10 +321,11 @@ internal class MinRun(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
     }
 }
 
+//-------------------------- MaxRun ------------------------------
 @Stable
 internal class MaxRun(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { "MaxRun" },
+    title = { stringResource(Res.string.prop_maxImpulse_lb)+ stringResource(Res.string.dimen_sec) },
     onValidate = {
         val intValue = it.toIntOrNull()
         when {
@@ -310,10 +349,11 @@ internal class MaxRun(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
     }
 }
 
+//-------------------------- Period ------------------------------
 @Stable
 internal class Period(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { "Period" },
+    title = { stringResource(Res.string.prop_repeatTime_lb)+ stringResource(Res.string.dimen_min) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -329,10 +369,11 @@ internal class Period(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
     }
 }
 
+//-------------------------- TurnOff ------------------------------
 @Stable
-internal class Timer0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+internal class TurnOff(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { "Timer0" },
+    title = { stringResource(Res.string.prop_turnOff_lb)+ stringResource(Res.string.dimen_min) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -348,10 +389,11 @@ internal class Timer0(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
     }
 }
 
+//-------------------------- TurnOn ------------------------------
 @Stable
-internal class Timer1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+internal class TurnOn(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { "Timer1" },
+    title = { stringResource(Res.string.prop_turnOn_lb)+ stringResource(Res.string.dimen_min) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -367,10 +409,11 @@ internal class Timer1(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
     }
 }
 
+//-------------------------- Alarm0 ------------------------------
 @Stable
 internal class Alarm0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value,
-    title = { "Alarm0" },
+    title = { stringResource(Res.string.prop_alarm0_lb)+ stringResource(Res.string.dimen_celsius) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -386,10 +429,11 @@ internal class Alarm0(value: Float? = null) : NumberInputTextFieldDeviceProperty
     }
 }
 
+//-------------------------- Alarm1 ------------------------------
 @Stable
 internal class Alarm1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value,
-    title = { "Alarm1" },
+    title = { stringResource(Res.string.prop_alarm1_lb)+ stringResource(Res.string.dimen_celsius) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -405,10 +449,11 @@ internal class Alarm1(value: Float? = null) : NumberInputTextFieldDeviceProperty
     }
 }
 
+//-------------------------- ExtOn0 ------------------------------
 @Stable
 internal class ExtOn0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value,
-    title = { "ExtOn0" },
+    title = { stringResource(Res.string.prop_extOn0_lb)+ stringResource(Res.string.dimen_celsius) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -424,10 +469,11 @@ internal class ExtOn0(value: Float? = null) : NumberInputTextFieldDeviceProperty
     }
 }
 
+//-------------------------- ExtOn1 ------------------------------
 @Stable
 internal class ExtOn1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value,
-    title = { "ExtOn1" },
+    title = { stringResource(Res.string.prop_extOn1_lb)+ stringResource(Res.string.dimen_celsius) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -443,10 +489,11 @@ internal class ExtOn1(value: Float? = null) : NumberInputTextFieldDeviceProperty
     }
 }
 
+//-------------------------- ExtOff0 ------------------------------
 @Stable
 internal class ExtOff0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value,
-    title = { "ExtOff0" },
+    title = { stringResource(Res.string.prop_extOff0_lb)+ stringResource(Res.string.dimen_celsius) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -462,10 +509,11 @@ internal class ExtOff0(value: Float? = null) : NumberInputTextFieldDevicePropert
     }
 }
 
+//-------------------------- ExtOff0 ------------------------------
 @Stable
 internal class ExtOff1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value,
-    title = { "ExtOff1" },
+    title = { stringResource(Res.string.prop_extOff1_lb)+ stringResource(Res.string.dimen_celsius) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -481,10 +529,11 @@ internal class ExtOff1(value: Float? = null) : NumberInputTextFieldDevicePropert
     }
 }
 
+//-------------------------- Air0 ------------------------------
 @Stable
 internal class Air0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { "Air0" },
+    title = { stringResource(Res.string.prop_air0_lb)+ stringResource(Res.string.dimen_celsius) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -500,10 +549,11 @@ internal class Air0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int
     }
 }
 
+//-------------------------- Air1 ------------------------------
 @Stable
 internal class Air1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { "Air1" },
+    title = { stringResource(Res.string.prop_air1_lb)+ stringResource(Res.string.dimen_celsius) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -519,48 +569,51 @@ internal class Air1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int
     }
 }
 
+//-------------------------- SpCO2 ------------------------------
 @Stable
-internal class SpCO2(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
-    initValue = value,
-    title = { "SpCO2" },
+internal class SpCO2(value: Float? = null) : SliderDeviceProperty<Float>(
+    initValue = (value ?: 0f) * 20f,
+    min = 400f, max = 5000f, increment = 100f,
+    title = { stringResource(Res.string.prop_CO2_lb)+ stringResource(Res.string.dimen_ppm) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
-            is StatusPacketV1 -> packet.spCO2
+            is StatusPacketV1 -> packet.spCO2 * 20f
             else -> null
         }
         inputHelper.setValue(value)
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(spCO2 = it) } ?: packet
+        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(spCO2 = (it / 20f).toInt()) } ?: packet
         else -> packet
     }
 }
 
+//-------------------------- KoffCurr ------------------------------
 @Stable
-internal class Identif(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+internal class KoffCurr(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { "Identif" },
+    title = { stringResource(Res.string.prop_koffCurr_lb) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
-            is StatusPacketV1 -> packet.identif
+            is StatusPacketV1 -> packet.koffCurr
             else -> null
         }
         inputHelper.setValue(value)
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(identif = it) } ?: packet
+        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(koffCurr = it) } ?: packet
         else -> packet
     }
 }
-
+//-------------------------- State ------------------------------
 @Stable
 internal class State(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { "State" },
+    title = { stringResource(Res.string.prop_state_lb) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -576,88 +629,32 @@ internal class State(value: Int? = null) : NumberInputTextFieldDeviceProperty<In
     }
 }
 
+//-------------------------- Hysteresis ------------------------------
 @Stable
-internal class ExtendMode(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
-    initValue = value,
-    title = { "ExtendMode" },
+internal class Hysteresis(value: Float? = null) : SliderDeviceProperty<Float>(
+    initValue = (value ?: 1f) / 10f,
+    min = 0.1f, max = 10.0f, increment = 0.1f,
+    title = { stringResource(Res.string.prop_Hysteresis_lb)+ stringResource(Res.string.dimen_celsius) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
-            is StatusPacketV1 -> packet.extendMode
+            is StatusPacketV1 -> packet.hysteresis / 10f
             else -> null
         }
         inputHelper.setValue(value)
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(extendMode = it) } ?: packet
+        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(hysteresis = (it * 10f).toInt()) } ?: packet
         else -> packet
     }
 }
 
-@Stable
-internal class RelayMode(value: Int? = null) : RadioListDeviceProperty<Int>(
-    initValue = value,
-    title = { "RelayMode" },
-    list = listOf(1, 2, 3, 4, 5),
-    listItemTitleMap = { "Example of item title $it" },
-) {
-    override fun readValue(packet: StatusPacket) {
-        val value = when (packet) {
-            is StatusPacketV1 -> packet.relayMode
-            else -> null
-        }
-        inputHelper.setValue(value)
-    }
-
-    override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(relayMode = it) } ?: packet
-        else -> packet
-    }
-}
-
-@Stable
-internal class Program(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
-    initValue = value,
-    title = { "Program" },
-) {
-    override fun readValue(packet: StatusPacket) {
-        val value = when (packet) {
-            is StatusPacketV1 -> packet.programm
-            else -> null
-        }
-        inputHelper.setValue(value)
-    }
-
-    override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(programm = it) } ?: packet
-        else -> packet
-    }
-}
-
-@Stable
-internal class Hysteresis(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
-    initValue = value,
-    title = { "Hysteresis" },
-) {
-    override fun readValue(packet: StatusPacket) {
-        val value = when (packet) {
-            is StatusPacketV1 -> packet.hysteresis
-            else -> null
-        }
-        inputHelper.setValue(value)
-    }
-
-    override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(hysteresis = it) } ?: packet
-        else -> packet
-    }
-}
-
+//-------------------------- TurnTime ------------------------------
 @Stable
 internal class TurnTime(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { "TurnTime" },
+    title = { stringResource(Res.string.prop_turnTime_lb)+ stringResource(Res.string.dimen_sec) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -669,6 +666,178 @@ internal class TurnTime(value: Int? = null) : NumberInputTextFieldDeviceProperty
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(turnTime = it) } ?: packet
+        else -> packet
+    }
+}
+
+//-------------------------- ZonaFlap ----------------------------
+@Stable
+internal class ZonaFlap(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+    initValue = value,
+    title = { stringResource(Res.string.prop_zoneFlap_lb)+ stringResource(Res.string.dimen_celsius) },
+) {
+    override fun readValue(packet: StatusPacket) {
+        val value = when (packet) {
+            is StatusPacketV1 -> packet.zonaFlap
+            else -> null
+        }
+        inputHelper.setValue(value)
+    }
+
+    override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
+        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(zonaFlap = it) } ?: packet
+        else -> packet
+    }
+}
+
+//-------------------------- WaitCooling -------------------------
+@Stable
+internal class WaitCooling(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+    initValue = value,
+    title = { stringResource(Res.string.prop_waitCooling_lb)+ stringResource(Res.string.dimen_sec) },
+) {
+    override fun readValue(packet: StatusPacket) {
+        val value = when (packet) {
+            is StatusPacketV1 -> packet.waitCooling
+            else -> null
+        }
+        inputHelper.setValue(value)
+    }
+
+    override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
+        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(waitCooling = it) } ?: packet
+        else -> packet
+    }
+}
+
+//-------------------------- Pkoff0 ------------------------------
+@Stable
+internal class Pkoff0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+    initValue = value,
+    title = { stringResource(Res.string.prop_pkoff0_lb) },
+    onValidate = {
+        val intValue = it.toIntOrNull()
+        when {
+            intValue == null -> NumberInputTextFieldState.Error.Invalid
+            intValue < 1 -> NumberInputTextFieldState.Error.CantBeLessThen("1")
+            else -> null
+        }
+    }
+) {
+    override fun readValue(packet: StatusPacket) {
+        val value = when (packet) {
+            is StatusPacketV1 -> packet.pkoff0
+            else -> null
+        }
+        inputHelper.setValue(value)
+    }
+
+    override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
+        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(pkoff0 = it) } ?: packet
+        else -> packet
+    }
+}
+
+//-------------------------- Pkoff1 ------------------------------
+@Stable
+internal class Pkoff1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+    initValue = value,
+    title = { stringResource(Res.string.prop_pkoff1_lb) },
+    onValidate = {
+        val intValue = it.toIntOrNull()
+        when {
+            intValue == null -> NumberInputTextFieldState.Error.Invalid
+            intValue < 1 -> NumberInputTextFieldState.Error.CantBeLessThen("1")
+            else -> null
+        }
+    }
+) {
+    override fun readValue(packet: StatusPacket) {
+        val value = when (packet) {
+            is StatusPacketV1 -> packet.pkoff1
+            else -> null
+        }
+        inputHelper.setValue(value)
+    }
+
+    override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
+        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(pkoff1 = it) } ?: packet
+        else -> packet
+    }
+}
+
+//-------------------------- Ikoff0 ------------------------------
+@Stable
+internal class Ikoff0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+    initValue = value,
+    title = { stringResource(Res.string.prop_ikoff0_lb) },
+    onValidate = {
+        val intValue = it.toIntOrNull()
+        when {
+            intValue == null -> NumberInputTextFieldState.Error.Invalid
+            intValue < 100 -> NumberInputTextFieldState.Error.CantBeLessThen("100")
+            else -> null
+        }
+    }
+) {
+    override fun readValue(packet: StatusPacket) {
+        val value = when (packet) {
+            is StatusPacketV1 -> packet.ikoff0
+            else -> null
+        }
+        inputHelper.setValue(value)
+    }
+
+    override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
+        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(ikoff0 = it) } ?: packet
+        else -> packet
+    }
+}
+
+//-------------------------- Ikoff1 ------------------------------
+@Stable
+internal class Ikoff1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+    initValue = value,
+    title = { stringResource(Res.string.prop_ikoff1_lb) },
+    onValidate = {
+        val intValue = it.toIntOrNull()
+        when {
+            intValue == null -> NumberInputTextFieldState.Error.Invalid
+            intValue < 100 -> NumberInputTextFieldState.Error.CantBeLessThen("100")
+            else -> null
+        }
+    }
+) {
+    override fun readValue(packet: StatusPacket) {
+        val value = when (packet) {
+            is StatusPacketV1 -> packet.ikoff1
+            else -> null
+        }
+        inputHelper.setValue(value)
+    }
+
+    override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
+        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(ikoff1 = it) } ?: packet
+        else -> packet
+    }
+}
+
+//-------------------------- Identif ------------------------------
+@Stable
+internal class Identif(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+    initValue = value,
+    title = { stringResource(Res.string.prop_identif_lb) },
+) {
+    override fun readValue(packet: StatusPacket) {
+        val value = when (packet) {
+            is StatusPacketV1 -> packet.identif
+            else -> null
+        }
+        inputHelper.setValue(value)
+    }
+
+    override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
+        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(identif = it) } ?: packet
         else -> packet
     }
 }

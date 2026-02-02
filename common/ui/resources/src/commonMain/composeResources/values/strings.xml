@@ -83,10 +83,15 @@
     <string name="quail">Перепел</string>
 
     <string name="prop_dimen_celsius" translatable="false">%1$s °C</string>
-    <string name="prop_dimen_percent" translatable="false">%1$s %%</string>
+    <string name="dimen_celsius" translatable="false"> °C</string>
+    <string name="prop_dimen_percent" translatable="false">%1$s %</string>
+    <string name="dimen_percent" translatable="false"> %</string>
     <string name="prop_dimen_ppm" translatable="false">%1$s ppm.</string>
+    <string name="dimen_ppm" translatable="false"> ppm.</string>
     <string name="prop_dimen_sec">%1$s sec.</string>
+    <string name="dimen_sec"> sec.</string>
     <string name="prop_dimen_min">%1$s min.</string>
+    <string name="dimen_min"> min.</string>
     <string name="prop_dimen_kwt">%1$s kWt/h.</string>
 
     <string name="prop_dry_sensor_label">Dry sensor</string>
