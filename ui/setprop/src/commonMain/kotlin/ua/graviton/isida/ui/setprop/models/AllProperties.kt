@@ -317,16 +317,14 @@ internal class Program(value: Int? = null) : RadioListDeviceProperty<Int>(
     initValue = value,
     title = { stringResource(Res.string.prop_program_lb) },
     list = listOf(0, 1, 2, 3, 4),
-    listItemTitleMap = { modeIndex ->
-        val id = when (modeIndex) {
-            0 -> Res.string.no
-            1 -> Res.string.chickens
-            2 -> Res.string.ducklings
-            3 -> Res.string.goose
-            4 -> Res.string.quail
-            else -> null
+    listItemTitleMap = {
+        when(it) {
+            0-> stringResource(Res.string.no)
+            else-> {
+                val label = stringResource(Res.string.prop_program_lb)
+                "$label $it"
+            }
         }
-        if (id != null) stringResource(id) else "Unknown"
     },
 ) {
     override fun readValue(packet: StatusPacket) {
