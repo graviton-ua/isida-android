@@ -21,7 +21,7 @@ object UpdateSettingsV1Serializer : CommandSerializerV1<UpdateSettingsCommandV1>
         writer.u8(command.extendMode)
         writer.u8(command.relayMode)
         writer.u8(command.programm)
-        writer.u8(command.minRun)
+        writer.u8((command.minRun * 10).toInt())
         writer.u8(command.maxRun)
         writer.u8(command.period)
         writer.u8(command.timer0)
@@ -34,9 +34,11 @@ object UpdateSettingsV1Serializer : CommandSerializerV1<UpdateSettingsCommandV1>
         writer.u8((command.extOff1 * 10).toInt())
         writer.u8(command.air0)
         writer.u8(command.air1)
-        writer.u8(command.spCO2)
+        writer.u8((command.spCO2 / 20f).toInt())
         writer.u8(command.koffCurr)
-        writer.u8(command.hysteresis)
+        val rawHysteresis = (command.hysteresis * 10).toInt() and 0x3F
+        val rawPermission = (command.permission shl 6) and 0xC0
+        writer.u8(rawPermission or rawHysteresis)
         writer.u8(command.zonaFlap)
         writer.u8(command.turnTime)
         writer.u8(command.waitCooling)

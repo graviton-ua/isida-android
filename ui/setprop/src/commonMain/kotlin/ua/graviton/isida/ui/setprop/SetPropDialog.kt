@@ -108,11 +108,13 @@ private fun DialogButtons(
 private class DevicePropertyPreviewParameterProvider : PreviewParameterProvider<DeviceProperty> {
     val properties = listOf(
         SpT0(value = 10f), SpT1(value = 25f), SpRh0(value = 24f), SpRh1(),
-        Pkoff0(value = 1), Pkoff1(value = 99), Ikoff0(), Ikoff1(),
-        MinRun(), MaxRun(), Period(), Timer0(), Timer1(),
+        ExtendMode(), RelayMode(), Program(),
+        MinRun(), MaxRun(), Period(), TurnOff(), TurnOn(),
         Alarm0(), Alarm1(), ExtOn0(), ExtOn1(), ExtOff0(), ExtOff1(),
-        Air0(), Air1(), SpCO2(), Identif(), State(),
-        ExtendMode(), RelayMode(), Program(), Hysteresis(), TurnTime(),
+        Air0(), Air1(), SpCO2(), KoffCurr(), Hysteresis(), ZonaFlap(),
+        TurnTime(), WaitCooling(), Permission(),
+        Pkoff0(value = 1), Pkoff1(value = 99), Ikoff0(), Ikoff1(),
+        Identif(),
     )
     override val values = properties.asSequence()
 }
