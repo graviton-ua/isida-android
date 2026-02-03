@@ -106,6 +106,11 @@ private fun StatusPacketV1?.toItems(): List<PropItem> {
             value = Value.Data(this?.spT1) { it?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER },
         ),
         PropItem(
+            id = "permission",
+            title = Title.ResId(Res.string.prop_Rh_lb),
+            value = Value.Data(this?.permission) { it?.toString() ?: EMPTY_PLACEHOLDER  },
+        ),
+        PropItem(
             id = "spRh1",
             title = Title.ResId(Res.string.prop_spRh1_lb),
             value = Value.Data(this?.spRh1) { it?.format()?.let { stringResource(Res.string.prop_dimen_percent, it) } ?: EMPTY_PLACEHOLDER },

@@ -111,6 +111,7 @@ class SetPropViewModel(
                 spCO2 = snapshot.spCO2,
                 koffCurr = snapshot.koffCurr,
                 hysteresis = snapshot.hysteresis,
+                permission = snapshot.permission,
                 zonaFlap = snapshot.zonaFlap,
                 turnTime = snapshot.turnTime,
                 waitCooling = snapshot.waitCooling,

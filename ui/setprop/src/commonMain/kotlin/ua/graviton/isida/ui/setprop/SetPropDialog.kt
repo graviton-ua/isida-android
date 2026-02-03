@@ -112,9 +112,9 @@ private class DevicePropertyPreviewParameterProvider : PreviewParameterProvider<
         MinRun(), MaxRun(), Period(), TurnOff(), TurnOn(),
         Alarm0(), Alarm1(), ExtOn0(), ExtOn1(), ExtOff0(), ExtOff1(),
         Air0(), Air1(), SpCO2(), KoffCurr(), Hysteresis(), ZonaFlap(),
-        TurnTime(), WaitCooling(),
+        TurnTime(), WaitCooling(), Permission(),
         Pkoff0(value = 1), Pkoff1(value = 99), Ikoff0(), Ikoff1(),
-        Identif(), State(),
+        Identif(),
     )
     override val values = properties.asSequence()
 }

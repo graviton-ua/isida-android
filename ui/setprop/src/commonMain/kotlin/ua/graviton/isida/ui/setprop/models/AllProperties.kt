@@ -3,6 +3,7 @@ package ua.graviton.isida.ui.setprop.models
 import androidx.compose.runtime.Stable
 import com.whoppah.common.compose.input.NumberInputTextFieldState
 import com.whoppah.common.resources.Res
+import com.whoppah.common.resources.chickens
 import com.whoppah.common.resources.error_01
 import com.whoppah.common.resources.prop_CO2_lb
 import com.whoppah.common.resources.prop_Hysteresis_lb
@@ -15,6 +16,12 @@ import com.whoppah.common.resources.dimen_min
 import com.whoppah.common.resources.dimen_percent
 import com.whoppah.common.resources.dimen_ppm
 import com.whoppah.common.resources.dimen_sec
+import com.whoppah.common.resources.ducklings
+import com.whoppah.common.resources.goose
+import com.whoppah.common.resources.no
+import com.whoppah.common.resources.prop_Rh1_lb
+import com.whoppah.common.resources.prop_Rh2_lb
+import com.whoppah.common.resources.prop_Rh_lb
 import com.whoppah.common.resources.prop_extMode0
 import com.whoppah.common.resources.prop_extMode1
 import com.whoppah.common.resources.prop_extMode2
@@ -52,6 +59,7 @@ import com.whoppah.common.resources.prop_turnOn_lb
 import com.whoppah.common.resources.prop_turnTime_lb
 import com.whoppah.common.resources.prop_waitCooling_lb
 import com.whoppah.common.resources.prop_zoneFlap_lb
+import com.whoppah.common.resources.quail
 import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
@@ -62,6 +70,7 @@ import ua.graviton.isida.ui.setprop.models.types.RadioListDeviceProperty
 internal fun propertyFromId(id: String): DeviceProperty = when (id) {
     "spT0" -> SpT0()
     "spT1" -> SpT1()
+    "permission" -> Permission()
     "spRh0" -> SpRh0()
     "spRh1" -> SpRh1()
     "extendMode" -> ExtendMode()
@@ -91,7 +100,6 @@ internal fun propertyFromId(id: String): DeviceProperty = when (id) {
     "ikoff0" -> Ikoff0()
     "ikoff1" -> Ikoff1()
     "identif" -> Identif()
-    "state" -> State()
 
     else -> throw IllegalStateException("Unknown property id: $id")
 }
@@ -156,6 +164,37 @@ internal class SpT1(value: Float? = null) : NumberInputTextFieldDeviceProperty<F
         else -> packet
     }
 }
+
+//-------------------------- Permission (маска 0xC0) ------------------------------
+@Stable
+internal class Permission(value: Int? = null) : RadioListDeviceProperty<Int>(
+    initValue = value,        // нужно применить маску 0xC0 !!!!!!!!!!
+    title = { stringResource(Res.string.prop_Rh_lb) },
+    list = listOf(0, 1, 2),
+    listItemTitleMap = { modeIndex ->
+        val id = when (modeIndex) {
+            0 -> Res.string.no
+            1 -> Res.string.prop_Rh1_lb
+            2 -> Res.string.prop_Rh2_lb
+            else -> null
+        }
+        if (id != null) stringResource(id) else "Unknown"
+    },
+) {
+        override fun readValue(packet: StatusPacket) {
+            val value = when (packet) {
+                is StatusPacketV1 -> packet.permission
+                else -> null
+            }
+            inputHelper.setValue(value)
+        }
+
+        override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
+            is StatusPacketV1 -> inputHelper.value?.let {
+                packet.copy(permission = it) } ?: packet
+            else -> packet
+        }
+    }
 
 //-------------------------- spRh0 ------------------------------
 @Stable
@@ -274,9 +313,21 @@ internal class RelayMode(value: Int? = null) : RadioListDeviceProperty<Int>(
 
 //-------------------------- Program ------------------------------
 @Stable
-internal class Program(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+internal class Program(value: Int? = null) : RadioListDeviceProperty<Int>(
     initValue = value,
     title = { stringResource(Res.string.prop_program_lb) },
+    list = listOf(0, 1, 2, 3, 4),
+    listItemTitleMap = { modeIndex ->
+        val id = when (modeIndex) {
+            0 -> Res.string.no
+            1 -> Res.string.chickens
+            2 -> Res.string.ducklings
+            3 -> Res.string.goose
+            4 -> Res.string.quail
+            else -> null
+        }
+        if (id != null) stringResource(id) else "Unknown"
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -287,7 +338,7 @@ internal class Program(value: Int? = null) : NumberInputTextFieldDeviceProperty<
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(programm = it) } ?: packet
+        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(programm = it) } ?: packet
         else -> packet
     }
 }
@@ -295,14 +346,14 @@ internal class Program(value: Int? = null) : NumberInputTextFieldDeviceProperty<
 
 //-------------------------- MinRun ------------------------------
 @Stable
-internal class MinRun(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+internal class MinRun(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value,
     title = { stringResource(Res.string.prop_minImpulse_lb)+ stringResource(Res.string.dimen_sec) },
     onValidate = {
         val intValue = it.toIntOrNull()
         when {
             intValue == null -> NumberInputTextFieldState.Error.Invalid
-            intValue < 100 -> NumberInputTextFieldState.Error.CantBeLessThen("100")
+            // intValue < 100 -> NumberInputTextFieldState.Error.CantBeLessThen("100")
             else -> null
         }
     }
@@ -316,7 +367,7 @@ internal class MinRun(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(minRun = it) } ?: packet
+        is StatusPacketV1 -> inputHelper.state.valueAsFloat?.let { packet.copy(minRun = it) } ?: packet
         else -> packet
     }
 }
@@ -509,7 +560,7 @@ internal class ExtOff0(value: Float? = null) : NumberInputTextFieldDevicePropert
     }
 }
 
-//-------------------------- ExtOff0 ------------------------------
+//-------------------------- ExtOff1 ------------------------------
 @Stable
 internal class ExtOff1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value,
@@ -572,7 +623,7 @@ internal class Air1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int
 //-------------------------- SpCO2 ------------------------------
 @Stable
 internal class SpCO2(value: Float? = null) : SliderDeviceProperty<Float>(
-    initValue = (value ?: 0f) * 20f,
+    initValue = (value ?: 20f),
     min = 400f, max = 5000f, increment = 100f,
     title = { stringResource(Res.string.prop_CO2_lb)+ stringResource(Res.string.dimen_ppm) },
 ) {
@@ -585,67 +636,49 @@ internal class SpCO2(value: Float? = null) : SliderDeviceProperty<Float>(
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(spCO2 = (it / 20f).toInt()) } ?: packet
+        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(spCO2 = it) } ?: packet
         else -> packet
     }
 }
 
 //-------------------------- KoffCurr ------------------------------
 @Stable
-internal class KoffCurr(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+internal class KoffCurr(value: Float? = null) : SliderDeviceProperty<Float>(
     initValue = value,
+    min = 0f, max = 200f, increment = 10f,
     title = { stringResource(Res.string.prop_koffCurr_lb) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
-            is StatusPacketV1 -> packet.koffCurr
+            is StatusPacketV1 -> packet.koffCurr.toFloat()
             else -> null
         }
         inputHelper.setValue(value)
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(koffCurr = it) } ?: packet
-        else -> packet
-    }
-}
-//-------------------------- State ------------------------------
-@Stable
-internal class State(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
-    initValue = value,
-    title = { stringResource(Res.string.prop_state_lb) },
-) {
-    override fun readValue(packet: StatusPacket) {
-        val value = when (packet) {
-            is StatusPacketV1 -> packet.state
-            else -> null
-        }
-        inputHelper.setValue(value)
-    }
-
-    override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(state = it) } ?: packet
+        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(koffCurr = it.toInt()) } ?: packet
         else -> packet
     }
 }
 
-//-------------------------- Hysteresis ------------------------------
+//-------------------------- Hysteresis (маска 0x3F) ------------------------------
 @Stable
 internal class Hysteresis(value: Float? = null) : SliderDeviceProperty<Float>(
-    initValue = (value ?: 1f) / 10f,
-    min = 0.1f, max = 10.0f, increment = 0.1f,
+    initValue = (value ?: 0.2f),        // нужно применить маску 0x3F !!!!!!!!!!
+    min = 0.2f, max = 6.0f, increment = 0.2f,
     title = { stringResource(Res.string.prop_Hysteresis_lb)+ stringResource(Res.string.dimen_celsius) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
-            is StatusPacketV1 -> packet.hysteresis / 10f
+            is StatusPacketV1 -> (packet.hysteresis)
             else -> null
         }
         inputHelper.setValue(value)
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(hysteresis = (it * 10f).toInt()) } ?: packet
+        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(hysteresis = it) } ?: packet
         else -> packet
     }
 }

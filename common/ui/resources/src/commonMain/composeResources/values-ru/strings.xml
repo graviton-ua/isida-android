@@ -60,7 +60,6 @@
     <string name="load">Загружен</string>
     <string name="datetime">05.12.21</string>
     <string name="time">05ч.12мин.</string>
-    <string name="prognum">НЕТ</string>
     <!--    <string name="fraction">**.*</string>-->
     <!--    <string name="fractionU">[**.*]</string>-->
     <!--    <string name="integer">***</string>-->
@@ -110,6 +109,10 @@
 
     <string name="prop_spT0_lb">Сухой датчик</string>
     <string name="prop_spT1_lb">Влажный датчик</string>
+    <string name="prop_Rh_lb">Разрешение на использование</string>
+    <string name="prop_Rh1_lb">HIH-5030</string>
+    <string name="prop_Rh2_lb">DHT-21</string>
+
     <string name="prop_spRh1_lb">Датчик влажности (RH)</string>
     <string name="prop_spRh0_lb">Коррекция датчика (RH)</string>
     <string name="prop_state_lb">Состояние камеры</string>
@@ -128,7 +131,7 @@
     <string name="prop_relMode3">по обоим кананалам</string>
     <string name="prop_relMode4">импульсный режим УВЛАЖНЕНИЯ</string>
 
-    <string name="prop_program_lb">Номер выполняемой программы</string>
+    <string name="prop_program_lb">Выполняемая программа</string>
     <string name="prop_minImpulse_lb">Минимальный импульс</string>
     <string name="prop_maxImpulse_lb">Максимальный импульс</string>
     <string name="prop_repeatTime_lb">Период повторения импульсов</string>
