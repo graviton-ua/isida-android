@@ -1,6 +1,5 @@
 package ua.graviton.isida.ui.home.stats
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -17,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.whoppah.common.compose.backgroundNotNull
 import com.whoppah.common.compose.theme.WhoppahTheme
 import com.whoppah.common.resources.Res
 import com.whoppah.common.resources.home_tab_stats
@@ -86,13 +86,13 @@ private fun HeaderItem(item: StatsItem.Header) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(item.style.backgroundColor ?: Color.LightGray) // Цвет заголовка по умолчанию, если не указан
+            .backgroundNotNull(color = item.style.backgroundColor ?: Color.LightGray) // Цвет заголовка по умолчанию, если не указан
             .padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
         Text(
             text = item.title.text(),
             fontWeight = FontWeight.Bold,
-            color = item.style.titleColor ?: Color.Unspecified
+            color = item.style.titleColor ?: LocalContentColor.current
         )
     }
 }
@@ -118,7 +118,7 @@ private fun InfoItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .background(color = item.style.backgroundColor ?: Color.Transparent)
+                .backgroundNotNull(color = item.style.backgroundColor)
         )
     }
 }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.SettingsApplications
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,6 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.whoppah.common.compose.backgroundNotNull
 import com.whoppah.common.compose.icons.WhIcons
 import com.whoppah.common.compose.icons.action.Edit
 import com.whoppah.common.compose.theme.WhoppahTheme
@@ -85,20 +87,25 @@ private fun Item(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         modifier = modifier
             .clickable(onClick = onClick)
+            .backgroundNotNull(color = item.style.backgroundColor)
             .defaultMinSize(minHeight = 42.dp)
-            .padding(horizontal = 12.dp)
+            .padding(horizontal = 12.dp),
     ) {
         Text(
             text = item.title.text(),
+            color = item.style.titleColor ?: LocalContentColor.current,
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(2f),
+                .weight(2f)
+                .backgroundNotNull(color = item.style.titleBackgroundColor),
         )
         Text(
             text = item.value.text(),
+            color = item.style.valueColor ?: LocalContentColor.current,
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
+                .weight(1f)
+                .backgroundNotNull(color = item.style.valueBackgroundColor),
         )
         Icon(
             imageVector = WhIcons.Action.Edit,
