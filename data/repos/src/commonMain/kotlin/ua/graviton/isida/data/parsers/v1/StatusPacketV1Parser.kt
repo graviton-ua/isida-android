@@ -54,11 +54,14 @@ object StatusPacketV1Parser : PacketParser<StatusPacketV1> {
 
         val rawHysteresis = reader.u8()
         val hysteresis = (rawHysteresis and 0x3F) / 10f
-        val permission = (rawHysteresis and 0xC0) / 64
+        val permission = (rawHysteresis and 0xC0) shr 6
 
         val zonaFlap = reader.u8()
+        val flapRestrictions = (zonaFlap and 0x3F) + 37
+        val zonality = (zonaFlap and 0xC0) shr 6
+
         val turnTime = reader.u8()
-        val waitCooling = reader.u8()
+        val waitCooling = reader.u8() * 4
         val pkoff0 = reader.u8()
         val pkoff1 = reader.u8()
         val ikoff0 = reader.u8()
@@ -114,7 +117,8 @@ object StatusPacketV1Parser : PacketParser<StatusPacketV1> {
             koffCurr = koffCurr,
             hysteresis = hysteresis,
             permission = permission,
-            zonaFlap = zonaFlap,
+            zonality = zonality,
+            flapRestrictions = flapRestrictions,
             turnTime = turnTime,
             waitCooling = waitCooling,
             pkoff0 = pkoff0,

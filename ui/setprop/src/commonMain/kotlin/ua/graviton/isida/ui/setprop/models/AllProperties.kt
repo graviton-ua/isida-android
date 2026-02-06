@@ -3,8 +3,6 @@ package ua.graviton.isida.ui.setprop.models
 import androidx.compose.runtime.Stable
 import com.whoppah.common.compose.input.NumberInputTextFieldState
 import com.whoppah.common.resources.Res
-import com.whoppah.common.resources.chickens
-import com.whoppah.common.resources.error_01
 import com.whoppah.common.resources.prop_CO2_lb
 import com.whoppah.common.resources.prop_Hysteresis_lb
 import com.whoppah.common.resources.prop_air0_lb
@@ -16,8 +14,7 @@ import com.whoppah.common.resources.dimen_min
 import com.whoppah.common.resources.dimen_percent
 import com.whoppah.common.resources.dimen_ppm
 import com.whoppah.common.resources.dimen_sec
-import com.whoppah.common.resources.ducklings
-import com.whoppah.common.resources.goose
+import com.whoppah.common.resources.input_info_limit_min_max
 import com.whoppah.common.resources.no
 import com.whoppah.common.resources.prop_Rh1_lb
 import com.whoppah.common.resources.prop_Rh2_lb
@@ -33,6 +30,7 @@ import com.whoppah.common.resources.prop_extOff0_lb
 import com.whoppah.common.resources.prop_extOff1_lb
 import com.whoppah.common.resources.prop_extOn0_lb
 import com.whoppah.common.resources.prop_extOn1_lb
+import com.whoppah.common.resources.prop_flapRestr_lb
 import com.whoppah.common.resources.prop_identif_lb
 import com.whoppah.common.resources.prop_ikoff0_lb
 import com.whoppah.common.resources.prop_ikoff1_lb
@@ -53,13 +51,11 @@ import com.whoppah.common.resources.prop_spRh0_lb
 import com.whoppah.common.resources.prop_spRh1_lb
 import com.whoppah.common.resources.prop_spT0_lb
 import com.whoppah.common.resources.prop_spT1_lb
-import com.whoppah.common.resources.prop_state_lb
 import com.whoppah.common.resources.prop_turnOff_lb
 import com.whoppah.common.resources.prop_turnOn_lb
 import com.whoppah.common.resources.prop_turnTime_lb
 import com.whoppah.common.resources.prop_waitCooling_lb
-import com.whoppah.common.resources.prop_zoneFlap_lb
-import com.whoppah.common.resources.quail
+import com.whoppah.common.resources.prop_zonelity_lb
 import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
@@ -92,7 +88,8 @@ internal fun propertyFromId(id: String): DeviceProperty = when (id) {
     "spCO2" -> SpCO2()
     "koffCurr" -> KoffCurr()
     "hysteresis" -> Hysteresis()
-    "zonaFlap" -> ZonaFlap()
+    "zonality" -> Zonality()
+    "flapRestrictions" -> FlapRestrictions()
     "turnTime" -> TurnTime()
     "waitCooling" -> WaitCooling()
     "pkoff0" -> Pkoff0()
@@ -106,18 +103,21 @@ internal fun propertyFromId(id: String): DeviceProperty = when (id) {
 
 //-------------------------- spT0 ------------------------------
 @Stable
-internal class SpT0(value: Float? = null) : SliderDeviceProperty<Float>(
-    initValue = value, //allowDecimals = true,
-    min = 35f, max = 40f, increment = 0.1f,
+internal class SpT0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
+    initValue = value, allowDecimals = true,
     title = { stringResource(Res.string.prop_spT0_lb)+ stringResource(Res.string.dimen_celsius) },
-    // description = { "A little bit of descirption\n for this fantastic property" },
-    onValidate = { floatValue ->
-        //val floatValue = value.toFloatOrNull()
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "30.0", "45.0"
+        )
+    },
+    onValidate = { value ->
+        val floatValue = value.toFloatOrNull()
         when {
-            floatValue == null -> error { "Some error message here + resource" + stringResource(Res.string.error_01) }
-            // floatValue == 56f -> SliderDeviceProperty.Error.Custom("Пример своей собственной ошибки")
-            // floatValue < 25f -> SliderDeviceProperty.Error.CantBeLessThen("25")
-            // floatValue > 40f -> SliderDeviceProperty.Error.CantBeMoreThen("40")
+            floatValue == null -> NumberInputTextFieldState.Error.Invalid
+            floatValue < 30f -> NumberInputTextFieldState.Error.CantBeLessThen("30.0")
+            floatValue > 45f -> NumberInputTextFieldState.Error.CantBeMoreThen("45.0")
             else -> null
         }
     },
@@ -131,7 +131,7 @@ internal class SpT0(value: Float? = null) : SliderDeviceProperty<Float>(
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(spT0 = it) } ?: packet
+        is StatusPacketV1 -> inputHelper.state.valueAsFloat?.let { packet.copy(spT0 = it) } ?: packet
         else -> packet
     }
 }
@@ -141,12 +141,18 @@ internal class SpT0(value: Float? = null) : SliderDeviceProperty<Float>(
 internal class SpT1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
     title = { stringResource(Res.string.prop_spT1_lb)+ stringResource(Res.string.dimen_celsius)},
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "25.0", "40.0"
+        )
+    },
     onValidate = { value ->
         val floatValue = value.toFloatOrNull()
         when {
             floatValue == null -> NumberInputTextFieldState.Error.Invalid
-            floatValue < 25f -> NumberInputTextFieldState.Error.CantBeLessThen("25")
-            floatValue > 40f -> NumberInputTextFieldState.Error.CantBeMoreThen("40")
+            floatValue < 25f -> NumberInputTextFieldState.Error.CantBeLessThen("25.0")
+            floatValue > 40f -> NumberInputTextFieldState.Error.CantBeMoreThen("40.0")
             else -> null
         }
     },
@@ -198,10 +204,24 @@ internal class Permission(value: Int? = null) : RadioListDeviceProperty<Int>(
 
 //-------------------------- spRh0 ------------------------------
 @Stable
-internal class SpRh0(value: Float? = null) : SliderDeviceProperty<Float>(
+internal class SpRh0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value,
-    min = 20f, max = 80f, steps = 59,
     title = { stringResource(Res.string.prop_spRh0_lb)+ stringResource(Res.string.dimen_percent) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "-10.0", "10.0"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toFloatOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < -10f -> NumberInputTextFieldState.Error.CantBeLessThen("-10.0")
+            numericValue > 10f -> NumberInputTextFieldState.Error.CantBeMoreThen("10.0")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -212,7 +232,7 @@ internal class SpRh0(value: Float? = null) : SliderDeviceProperty<Float>(
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(spRh0 = it) } ?: packet
+        is StatusPacketV1 -> inputHelper.state.valueAsFloat?.let { packet.copy(spRh0 = it) } ?: packet
         else -> packet
     }
 }
@@ -222,13 +242,19 @@ internal class SpRh0(value: Float? = null) : SliderDeviceProperty<Float>(
 internal class SpRh1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
     title = { stringResource(Res.string.prop_spRh1_lb)+ stringResource(Res.string.dimen_percent) },
-    onValidate = { value ->
-        val floatValue = value.toFloatOrNull()
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "10.0", "80.0"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toFloatOrNull()
         when {
-            floatValue == null -> NumberInputTextFieldState.Error.Invalid
-            floatValue < 20f -> NumberInputTextFieldState.Error.CantBeLessThen("20")
-            floatValue > 80f -> NumberInputTextFieldState.Error.CantBeMoreThen("80")
-            else -> null
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 10f -> NumberInputTextFieldState.Error.CantBeLessThen("10.0")
+            numericValue > 80f -> NumberInputTextFieldState.Error.CantBeMoreThen("80.0")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
 ) {
@@ -345,16 +371,23 @@ internal class Program(value: Int? = null) : RadioListDeviceProperty<Int>(
 //-------------------------- MinRun ------------------------------
 @Stable
 internal class MinRun(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
-    initValue = value,
+    initValue = value, allowDecimals = true,
     title = { stringResource(Res.string.prop_minImpulse_lb)+ stringResource(Res.string.dimen_sec) },
-    onValidate = {
-        val intValue = it.toIntOrNull()
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "0.1", "10.0"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toFloatOrNull()
         when {
-            intValue == null -> NumberInputTextFieldState.Error.Invalid
-            // intValue < 100 -> NumberInputTextFieldState.Error.CantBeLessThen("100")
-            else -> null
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 0.1 -> NumberInputTextFieldState.Error.CantBeLessThen("0.1")
+            numericValue > 10f -> NumberInputTextFieldState.Error.CantBeMoreThen("10.0")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
-    }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -375,14 +408,21 @@ internal class MinRun(value: Float? = null) : NumberInputTextFieldDeviceProperty
 internal class MaxRun(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
     title = { stringResource(Res.string.prop_maxImpulse_lb)+ stringResource(Res.string.dimen_sec) },
-    onValidate = {
-        val intValue = it.toIntOrNull()
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "1", "100"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toIntOrNull()
         when {
-            intValue == null -> NumberInputTextFieldState.Error.Invalid
-            intValue < 1 -> NumberInputTextFieldState.Error.CantBeLessThen("1")
-            else -> null
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 1 -> NumberInputTextFieldState.Error.CantBeLessThen("1")
+            numericValue > 100 -> NumberInputTextFieldState.Error.CantBeMoreThen("100")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
-    }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -402,7 +442,22 @@ internal class MaxRun(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 @Stable
 internal class Period(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { stringResource(Res.string.prop_repeatTime_lb)+ stringResource(Res.string.dimen_min) },
+    title = { stringResource(Res.string.prop_repeatTime_lb)+ stringResource(Res.string.dimen_sec) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "30", "255"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toIntOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 30 -> NumberInputTextFieldState.Error.CantBeLessThen("30")
+            numericValue > 255 -> NumberInputTextFieldState.Error.CantBeMoreThen("255")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -423,6 +478,21 @@ internal class Period(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 internal class TurnOff(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
     title = { stringResource(Res.string.prop_turnOff_lb)+ stringResource(Res.string.dimen_min) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "10", "255"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toIntOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 10 -> NumberInputTextFieldState.Error.CantBeLessThen("10")
+            numericValue > 255 -> NumberInputTextFieldState.Error.CantBeMoreThen("255")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -443,6 +513,21 @@ internal class TurnOff(value: Int? = null) : NumberInputTextFieldDeviceProperty<
 internal class TurnOn(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
     title = { stringResource(Res.string.prop_turnOn_lb)+ stringResource(Res.string.dimen_min) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "0", "255"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toIntOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 0 -> NumberInputTextFieldState.Error.CantBeLessThen("0")
+            numericValue > 255 -> NumberInputTextFieldState.Error.CantBeMoreThen("255")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -461,8 +546,23 @@ internal class TurnOn(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 //-------------------------- Alarm0 ------------------------------
 @Stable
 internal class Alarm0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
-    initValue = value,
+    initValue = value, allowDecimals = true,
     title = { stringResource(Res.string.prop_alarm0_lb)+ stringResource(Res.string.dimen_celsius) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "0.2", "25.5"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toFloatOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 0.2 -> NumberInputTextFieldState.Error.CantBeLessThen("0.2")
+            numericValue > 25.5 -> NumberInputTextFieldState.Error.CantBeMoreThen("25.5")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -481,8 +581,23 @@ internal class Alarm0(value: Float? = null) : NumberInputTextFieldDeviceProperty
 //-------------------------- Alarm1 ------------------------------
 @Stable
 internal class Alarm1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
-    initValue = value,
+    initValue = value, allowDecimals = true,
     title = { stringResource(Res.string.prop_alarm1_lb)+ stringResource(Res.string.dimen_celsius) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "0.5", "25.5"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toFloatOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 0.5 -> NumberInputTextFieldState.Error.CantBeLessThen("0.5")
+            numericValue > 25.5 -> NumberInputTextFieldState.Error.CantBeMoreThen("25.5")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -501,8 +616,23 @@ internal class Alarm1(value: Float? = null) : NumberInputTextFieldDeviceProperty
 //-------------------------- ExtOn0 ------------------------------
 @Stable
 internal class ExtOn0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
-    initValue = value,
+    initValue = value, allowDecimals = true,
     title = { stringResource(Res.string.prop_extOn0_lb)+ stringResource(Res.string.dimen_celsius) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "0.1", "25.5"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toFloatOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 0.1 -> NumberInputTextFieldState.Error.CantBeLessThen("0.1")
+            numericValue > 25.5 -> NumberInputTextFieldState.Error.CantBeMoreThen("25.5")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -521,8 +651,23 @@ internal class ExtOn0(value: Float? = null) : NumberInputTextFieldDeviceProperty
 //-------------------------- ExtOn1 ------------------------------
 @Stable
 internal class ExtOn1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
-    initValue = value,
+    initValue = value, allowDecimals = true,
     title = { stringResource(Res.string.prop_extOn1_lb)+ stringResource(Res.string.dimen_celsius) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "0.1", "25.5"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toFloatOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 0.1 -> NumberInputTextFieldState.Error.CantBeLessThen("0.1")
+            numericValue > 25.5 -> NumberInputTextFieldState.Error.CantBeMoreThen("25.5")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -541,8 +686,23 @@ internal class ExtOn1(value: Float? = null) : NumberInputTextFieldDeviceProperty
 //-------------------------- ExtOff0 ------------------------------
 @Stable
 internal class ExtOff0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
-    initValue = value,
+    initValue = value, allowDecimals = true,
     title = { stringResource(Res.string.prop_extOff0_lb)+ stringResource(Res.string.dimen_celsius) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "0.1", "25.5"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toFloatOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 0.1 -> NumberInputTextFieldState.Error.CantBeLessThen("0.1")
+            numericValue > 25.5 -> NumberInputTextFieldState.Error.CantBeMoreThen("25.5")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -561,8 +721,23 @@ internal class ExtOff0(value: Float? = null) : NumberInputTextFieldDevicePropert
 //-------------------------- ExtOff1 ------------------------------
 @Stable
 internal class ExtOff1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
-    initValue = value,
+    initValue = value, allowDecimals = true,
     title = { stringResource(Res.string.prop_extOff1_lb)+ stringResource(Res.string.dimen_celsius) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "0.1", "25.5"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toFloatOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 0.1 -> NumberInputTextFieldState.Error.CantBeLessThen("0.1")
+            numericValue > 25.5 -> NumberInputTextFieldState.Error.CantBeMoreThen("25.5")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -582,7 +757,22 @@ internal class ExtOff1(value: Float? = null) : NumberInputTextFieldDevicePropert
 @Stable
 internal class Air0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { stringResource(Res.string.prop_air0_lb)+ stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_air0_lb)+ stringResource(Res.string.dimen_min) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "1", "255"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toIntOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 1 -> NumberInputTextFieldState.Error.CantBeLessThen("1")
+            numericValue > 255 -> NumberInputTextFieldState.Error.CantBeMoreThen("255")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -602,7 +792,22 @@ internal class Air0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int
 @Stable
 internal class Air1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { stringResource(Res.string.prop_air1_lb)+ stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_air1_lb)+ stringResource(Res.string.dimen_sec) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "0", "255"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toIntOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 0 -> NumberInputTextFieldState.Error.CantBeLessThen("0")
+            numericValue > 255 -> NumberInputTextFieldState.Error.CantBeMoreThen("255")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -641,21 +846,35 @@ internal class SpCO2(value: Float? = null) : SliderDeviceProperty<Float>(
 
 //-------------------------- KoffCurr ------------------------------
 @Stable
-internal class KoffCurr(value: Float? = null) : SliderDeviceProperty<Float>(
+internal class KoffCurr(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    min = 0f, max = 200f, increment = 10f,
     title = { stringResource(Res.string.prop_koffCurr_lb) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "0", "255"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toIntOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 0 -> NumberInputTextFieldState.Error.CantBeLessThen("0")
+            numericValue > 255 -> NumberInputTextFieldState.Error.CantBeMoreThen("255")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
-            is StatusPacketV1 -> packet.koffCurr.toFloat()
+            is StatusPacketV1 -> packet.koffCurr
             else -> null
         }
         inputHelper.setValue(value)
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(koffCurr = it.toInt()) } ?: packet
+        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(koffCurr = it) } ?: packet
         else -> packet
     }
 }
@@ -686,6 +905,21 @@ internal class Hysteresis(value: Float? = null) : SliderDeviceProperty<Float>(
 internal class TurnTime(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
     title = { stringResource(Res.string.prop_turnTime_lb)+ stringResource(Res.string.dimen_sec) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "40", "255"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toIntOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 40 -> NumberInputTextFieldState.Error.CantBeLessThen("40")
+            numericValue > 255 -> NumberInputTextFieldState.Error.CantBeMoreThen("255")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -701,22 +935,58 @@ internal class TurnTime(value: Int? = null) : NumberInputTextFieldDeviceProperty
     }
 }
 
-//-------------------------- ZonaFlap ----------------------------
+//-------------------------- Zonality ----------------------------
 @Stable
-internal class ZonaFlap(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+internal class Zonality(value: Float? = null) : SliderDeviceProperty<Float>(
     initValue = value,
-    title = { stringResource(Res.string.prop_zoneFlap_lb)+ stringResource(Res.string.dimen_celsius) },
+    min = 1.0f, max = 3.0f, increment = 1.0f,
+    title = { stringResource(Res.string.prop_zonelity_lb)+ stringResource(Res.string.dimen_celsius) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
-            is StatusPacketV1 -> packet.zonaFlap
+            is StatusPacketV1 -> packet.zonality.toFloat()
             else -> null
         }
         inputHelper.setValue(value)
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(zonaFlap = it) } ?: packet
+        is StatusPacketV1 -> inputHelper.value?.let { packet.copy(zonality = it.toInt()) } ?: packet
+        else -> packet
+    }
+}
+
+//-------------------------- Flap restrictions ----------------------------
+@Stable
+internal class FlapRestrictions(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+    initValue = value,
+    title = { stringResource(Res.string.prop_flapRestr_lb)+ stringResource(Res.string.dimen_percent) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "40", "100"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toIntOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 40 -> NumberInputTextFieldState.Error.CantBeLessThen("40")
+            numericValue > 100 -> NumberInputTextFieldState.Error.CantBeMoreThen("100")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
+) {
+    override fun readValue(packet: StatusPacket) {
+        val value = when (packet) {
+            is StatusPacketV1 -> packet.flapRestrictions
+            else -> null
+        }
+        inputHelper.setValue(value)
+    }
+
+    override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
+        is StatusPacketV1 -> inputHelper.state.valueAsInt?.let { packet.copy(flapRestrictions = it) } ?: packet
         else -> packet
     }
 }
@@ -725,7 +995,22 @@ internal class ZonaFlap(value: Int? = null) : NumberInputTextFieldDeviceProperty
 @Stable
 internal class WaitCooling(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { stringResource(Res.string.prop_waitCooling_lb)+ stringResource(Res.string.dimen_sec) },
+    title = { stringResource(Res.string.prop_waitCooling_lb)+ stringResource(Res.string.dimen_min) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "4", "17"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toIntOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 4 -> NumberInputTextFieldState.Error.CantBeLessThen("4")
+            numericValue > 17 -> NumberInputTextFieldState.Error.CantBeMoreThen("17")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -746,14 +1031,21 @@ internal class WaitCooling(value: Int? = null) : NumberInputTextFieldDevicePrope
 internal class Pkoff0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
     title = { stringResource(Res.string.prop_pkoff0_lb) },
-    onValidate = {
-        val intValue = it.toIntOrNull()
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "1", "100"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toIntOrNull()
         when {
-            intValue == null -> NumberInputTextFieldState.Error.Invalid
-            intValue < 1 -> NumberInputTextFieldState.Error.CantBeLessThen("1")
-            else -> null
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 1 -> NumberInputTextFieldState.Error.CantBeLessThen("1")
+            numericValue > 100 -> NumberInputTextFieldState.Error.CantBeMoreThen("100")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
-    }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -774,14 +1066,21 @@ internal class Pkoff0(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 internal class Pkoff1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
     title = { stringResource(Res.string.prop_pkoff1_lb) },
-    onValidate = {
-        val intValue = it.toIntOrNull()
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "1", "100"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toIntOrNull()
         when {
-            intValue == null -> NumberInputTextFieldState.Error.Invalid
-            intValue < 1 -> NumberInputTextFieldState.Error.CantBeLessThen("1")
-            else -> null
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 1 -> NumberInputTextFieldState.Error.CantBeLessThen("1")
+            numericValue > 100 -> NumberInputTextFieldState.Error.CantBeMoreThen("100")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
-    }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -802,14 +1101,21 @@ internal class Pkoff1(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 internal class Ikoff0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
     title = { stringResource(Res.string.prop_ikoff0_lb) },
-    onValidate = {
-        val intValue = it.toIntOrNull()
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "0", "100"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toIntOrNull()
         when {
-            intValue == null -> NumberInputTextFieldState.Error.Invalid
-            intValue < 100 -> NumberInputTextFieldState.Error.CantBeLessThen("100")
-            else -> null
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 0 -> NumberInputTextFieldState.Error.CantBeLessThen("0")
+            numericValue > 100 -> NumberInputTextFieldState.Error.CantBeMoreThen("100")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
-    }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -830,14 +1136,21 @@ internal class Ikoff0(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 internal class Ikoff1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
     title = { stringResource(Res.string.prop_ikoff1_lb) },
-    onValidate = {
-        val intValue = it.toIntOrNull()
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "0", "100"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toIntOrNull()
         when {
-            intValue == null -> NumberInputTextFieldState.Error.Invalid
-            intValue < 100 -> NumberInputTextFieldState.Error.CantBeLessThen("100")
-            else -> null
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 0 -> NumberInputTextFieldState.Error.CantBeLessThen("0")
+            numericValue > 100 -> NumberInputTextFieldState.Error.CantBeMoreThen("100")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
-    }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -858,6 +1171,21 @@ internal class Ikoff1(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 internal class Identif(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
     title = { stringResource(Res.string.prop_identif_lb) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "0", "100"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toIntOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 0 -> NumberInputTextFieldState.Error.CantBeLessThen("0")
+            numericValue > 100 -> NumberInputTextFieldState.Error.CantBeMoreThen("100")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {

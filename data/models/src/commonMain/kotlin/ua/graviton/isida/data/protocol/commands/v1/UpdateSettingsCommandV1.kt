@@ -69,7 +69,8 @@ data class UpdateSettingsCommandV1(
     val koffCurr: Int,      // 1 байт ind=44 маштабный коэф. по току симистора  (150 для AC1010)
     val hysteresis: Float,  // 1 байт ind=45 гистерезис канала увлажнения маска 0x3F;
     val permission: Int,    // hysteresis -> разрешение использования HIH-5030 маска 0x40; AM2301 маска 0x80;
-    val zonaFlap: Int,      // 1 байт ind=46 порог зональности в камере
+    val zonality: Int,      // 1 байт ind=46 порог зональности в камере (маска 0xC0; к zonaFlap)
+    val flapRestrictions: Int,  // максимальное открытие заслонки (маска 0x3F; к zonaFlap + 37)
     val turnTime: Int,      // 1 байт ind=47 время ожидания прохода лотков в секундах
     val waitCooling: Int,   // 1 байт ind=48 время ожидания начала режима охлаждения
     val pkoff0: Int,        // 1 байт ind=49 пропорциональный коэфф.#0

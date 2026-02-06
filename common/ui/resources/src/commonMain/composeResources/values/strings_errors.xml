@@ -43,9 +43,9 @@
     <string name="register_block_whoppah">Whoppah isn't allowed</string>
     <string name="error_invalid_pass">Invalid password</string>
     <string name="error_invalid_pass_repeat">Passwords do not match</string>
-    <string name="common_required">Required</string>
-    <string name="common_error_price_invalid">Invalid</string>
-    <string name="common_error_price_less_than">Can't be less than %1$s</string>
-    <string name="common_error_price_more_than">Can't be more than %1$s</string>
-    <string name="common_error_price_required">Required</string>
+    <string name="common_required">Требуется</string>
+    <string name="common_error_price_invalid">Неверное число</string>
+    <string name="common_error_price_less_than">Не может быть меньше %1$s</string>
+    <string name="common_error_price_more_than">Не может быть больше %1$s</string>
+    <string name="common_error_price_required">Требуется число</string>
 </resources>

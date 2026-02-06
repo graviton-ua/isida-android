@@ -135,8 +135,8 @@
     <string name="prop_minImpulse_lb">Минимальный импульс</string>
     <string name="prop_maxImpulse_lb">Максимальный импульс</string>
     <string name="prop_repeatTime_lb">Период повторения импульсов</string>
-    <string name="prop_turnOff_lb">Поворот вперед</string>
-    <string name="prop_turnOn_lb">Поворот назад</string>
+    <string name="prop_turnOff_lb">Поворот пауза</string>
+    <string name="prop_turnOn_lb">Поворот работа</string>
     <string name="prop_alarm0_lb">Отклонение по сухому</string>
     <string name="prop_alarm1_lb">Отклонение по увлажнению</string>
     <string name="prop_extOn0_lb">Заслонка открыть</string>
@@ -148,7 +148,8 @@
     <string name="prop_CO2_lb">Концентрация СО2</string>
     <string name="prop_koffCurr_lb">Масштабный коэф.  тока</string>
     <string name="prop_Hysteresis_lb">Гистерезис канала увлажнения</string>
-    <string name="prop_zoneFlap_lb">Порог зональности в камере</string>
+    <string name="prop_zonelity_lb">Порог зональности в камере</string>
+    <string name="prop_flapRestr_lb">Максимальное открытие заслонки</string>
     <string name="prop_turnTime_lb">Время ожидания прохода лотков</string>
     <string name="prop_waitCooling_lb">Время ожидания охлаждения</string>
     <string name="prop_pkoff0_lb">Пропорциональный нагрева</string>

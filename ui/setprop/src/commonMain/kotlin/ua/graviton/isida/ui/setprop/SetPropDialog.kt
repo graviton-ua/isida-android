@@ -111,8 +111,8 @@ private class DevicePropertyPreviewParameterProvider : PreviewParameterProvider<
         ExtendMode(), RelayMode(), Program(),
         MinRun(), MaxRun(), Period(), TurnOff(), TurnOn(),
         Alarm0(), Alarm1(), ExtOn0(), ExtOn1(), ExtOff0(), ExtOff1(),
-        Air0(), Air1(), SpCO2(), KoffCurr(), Hysteresis(), ZonaFlap(),
-        TurnTime(), WaitCooling(), Permission(),
+        Air0(), Air1(), SpCO2(), KoffCurr(), Hysteresis(), Zonality(),
+        TurnTime(), WaitCooling(), Permission(), FlapRestrictions(),
         Pkoff0(value = 1), Pkoff1(value = 99), Ikoff0(), Ikoff1(),
         Identif(),
     )

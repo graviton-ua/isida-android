@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.*
 import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.domain.observers.ObserveStatus
+import java.util.Locale
 
 @Inject
 @ViewModelKey(PropViewModel::class)
@@ -71,7 +72,7 @@ class PropViewModel(
     )
 }
 
-private fun Float.format(): String = String.format("%.1f", this)
+private fun Float.format(): String = String.format(Locale.getDefault(), "%.1f", this)
 private const val EMPTY_PLACEHOLDER = "--"
 
 private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
@@ -128,7 +129,14 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
         id = "program",
         title = composableString { stringResource(Res.string.prop_program_lb) },
         value = composableString(this@toItems?.programm) {
-            this@toItems?.programm?.toString() ?: EMPTY_PLACEHOLDER
+            val programm = this@toItems?.programm
+            when (programm) {
+                1 -> "Tratat"
+                2 -> "Tratat"
+                3 -> "Tratat"
+                null -> EMPTY_PLACEHOLDER
+                else -> programm.toString()
+            }
         }
     )
     item(
@@ -243,13 +251,13 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             this@toItems?.hysteresis?.toString()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER
         }
     )
-    item(
-        id = "zonaFlap",
-        title = composableString { stringResource(Res.string.prop_zoneFlap_lb) },
-        value = composableString(this@toItems?.zonaFlap) {
-            this@toItems?.zonaFlap?.toString()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER
-        }
-    )
+    // item(
+    //     id = "zonaFlap",
+    //     title = composableString { stringResource(Res.string.prop_zoneFlap_lb) },
+    //     value = composableString(this@toItems?.zonaFlap) {
+    //         this@toItems?.zonaFlap?.toString()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER
+    //     }
+    // )
     item(
         id = "turnTime",
         title = composableString { stringResource(Res.string.prop_turnTime_lb) },
