@@ -1,5 +1,6 @@
 package ua.graviton.isida.ui.home.prop
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.whoppah.common.resources.*
@@ -51,6 +52,10 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
         title = composableString { stringResource(Res.string.prop_spT0_lb) },
         value = composableString(this@toItems?.spT0) {
             this@toItems?.spT0?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER
+        },
+        style = {
+            backgroundColor = Color.Red
+
         }
     )
     item(
