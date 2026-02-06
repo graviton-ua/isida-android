@@ -1,9 +1,12 @@
 package ua.graviton.isida.ui.home.program
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.Summarize
@@ -101,33 +104,39 @@ private fun ProgramTable(
     items: List<ProgramViewState.ProgramItem>,
     modifier: Modifier = Modifier,
 ) {
+    val horizontalScrollState = rememberScrollState()
+
     LazyColumn(modifier = modifier) {
-        item {
-            HeaderRow()
+        stickyHeader {
+            HeaderRow(horizontalScrollState)
         }
         items(items) { item ->
-            DataRow(item)
-            HorizontalDivider(modifier = Modifier.padding(horizontal = 8.dp), thickness = 0.5.dp, color = Color.LightGray)
+            DataRow(item, horizontalScrollState)
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                thickness = 0.5.dp,
+                color = Color.LightGray
+            )
         }
     }
 }
 
 @Composable
-private fun HeaderRow() {
+private fun HeaderRow(scrollState: ScrollState) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
+            .horizontalScroll(scrollState)
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(vertical = 8.dp, horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        HeaderCell("Day", Modifier.weight(1f))
-        HeaderCell("T0", Modifier.weight(1.2f))
-        HeaderCell("T1", Modifier.weight(1.2f))
-        HeaderCell("Rh", Modifier.weight(1f))
-        HeaderCell("Flp", Modifier.weight(1f))
-        HeaderCell("Tr", Modifier.weight(1f))
-        HeaderCell("Cl", Modifier.weight(1f))
+        HeaderCell("Day", Modifier.width(60.dp))
+        HeaderCell("T0", Modifier.width(80.dp))
+        HeaderCell("T1", Modifier.width(80.dp))
+        HeaderCell("Rh", Modifier.width(60.dp))
+        HeaderCell("Flp", Modifier.width(60.dp))
+        HeaderCell("Tr", Modifier.width(60.dp))
+        HeaderCell("Cl", Modifier.width(60.dp))
     }
 }
 
@@ -143,20 +152,20 @@ private fun RowScope.HeaderCell(text: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun DataRow(item: ProgramViewState.ProgramItem) {
+private fun DataRow(item: ProgramViewState.ProgramItem, scrollState: ScrollState) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
+            .horizontalScroll(scrollState)
             .padding(vertical = 12.dp, horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        DataCell(item.day.toString(), Modifier.weight(1f))
-        DataCell(item.t0.toString(), Modifier.weight(1.2f))
-        DataCell(item.t1.toString(), Modifier.weight(1.2f))
-        DataCell(item.rh.toString(), Modifier.weight(1f))
-        DataCell(item.flp.toString(), Modifier.weight(1f))
-        DataCell(item.tr.toString(), Modifier.weight(1f))
-        DataCell(item.cl.toString(), Modifier.weight(1f))
+        DataCell(item.day.toString(), Modifier.width(60.dp))
+        DataCell(item.t0.toString(), Modifier.width(80.dp))
+        DataCell(item.t1.toString(), Modifier.width(80.dp))
+        DataCell(item.rh.toString(), Modifier.width(60.dp))
+        DataCell(item.flp.toString(), Modifier.width(60.dp))
+        DataCell(item.tr.toString(), Modifier.width(60.dp))
+        DataCell(item.cl.toString(), Modifier.width(60.dp))
     }
 }
 
