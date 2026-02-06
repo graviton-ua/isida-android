@@ -1,6 +1,7 @@
 package ua.graviton.isida.data.protocol.packets.v1
 
 import ua.graviton.isida.data.protocol.packets.IsidaPacket
+import ua.graviton.isida.data.protocol.packets.TablePacket
 
 /**
  * Packet containing the incubation program table.
@@ -10,7 +11,7 @@ import ua.graviton.isida.data.protocol.packets.IsidaPacket
  */
 data class TablePacketV1(
     val days: List<TableDayV1>,
-) : IsidaPacket.V1
+) : IsidaPacket.V1, TablePacket
 
 /**
  * Represents the settings for a single day in the incubation program.

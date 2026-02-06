@@ -16,6 +16,8 @@ import ua.graviton.isida.data.bluetooth.asDeviceAddress
 import ua.graviton.isida.data.parsers.RootDecoder
 import ua.graviton.isida.data.protocol.packets.IsidaPacket
 import ua.graviton.isida.data.protocol.packets.StatusPacket
+import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
+import ua.graviton.isida.data.protocol.packets.v2.StatusPacketV2
 
 @Inject
 @SingleIn(AppScope::class)
@@ -48,6 +50,13 @@ class DeviceConnectionManager(
         .flowOn(dispatchers.computation)
         .stateIn(appScope, SharingStarted.WhileSubscribed(), null)
 
+    val protocolVersion: StateFlow<Int?> = statusStream.map { packet ->
+        when (packet) {
+            is StatusPacketV1 -> 1
+            is StatusPacketV2 -> 2
+            else -> null
+        }
+    }.stateIn(appScope, SharingStarted.WhileSubscribed(), null)
 
     suspend fun connect(address: DeviceAddress) = client.connect(address)
     suspend fun connect(address: String) = connect(address.asDeviceAddress())
