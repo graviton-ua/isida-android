@@ -11,7 +11,3 @@ data class HomeViewState(
         val Empty = HomeViewState()
     }
 }
-
-sealed class HomeAction {
-    object ConnectDevice : HomeAction()
-}

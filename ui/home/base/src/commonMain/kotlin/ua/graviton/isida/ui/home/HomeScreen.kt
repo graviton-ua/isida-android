@@ -52,27 +52,20 @@ internal fun HomeScreen(
 
     HomeScreen(
         state = state,
+        connectDevice = connectDevice,
         disconnectDevice = viewModel::disconnect,
         openPowerDialog = openPowerDialog,
         openSetPropDialog = openSetPropDialog,
-        sendTestCommand = viewModel::sendTest,
-    ) { action ->
-        when (action) {
-            //is ShopCartAction.Close -> navigateUp()
-            is HomeAction.ConnectDevice -> connectDevice()
-            else -> viewModel.submitAction(action)
-        }
-    }
+    )
 }
 
 @Composable
 private fun HomeScreen(
     state: HomeViewState,
+    connectDevice: () -> Unit,
     disconnectDevice: () -> Unit,
     openPowerDialog: () -> Unit,
     openSetPropDialog: (String) -> Unit,
-    sendTestCommand: () -> Unit,
-    actioner: (HomeAction) -> Unit,
 ) {
     val navigationState = rememberNavigationState(
         configuration = config,
@@ -93,10 +86,9 @@ private fun HomeScreen(
             HomeTopBar(
                 deviceConnected = state.deviceConnected,
                 modifier = Modifier.fillMaxWidth(),
-                connectDevice = { actioner(HomeAction.ConnectDevice) },
+                connectDevice = connectDevice,
                 disconnectDevice = disconnectDevice,
                 openPowerDialog = openPowerDialog,
-                sendTestCommand = sendTestCommand,
             )
         },
         bottomBar = {
@@ -134,14 +126,10 @@ private fun HomeTopBar(
     connectDevice: () -> Unit,
     disconnectDevice: () -> Unit,
     openPowerDialog: () -> Unit,
-    sendTestCommand: () -> Unit,
 ) {
     WhTopAppBar(
         title = { Text(text = stringResource(Res.string.app_name)) },
         actions = {
-            if (deviceConnected)
-                TextButton(onClick = sendTestCommand) { Text(text = "Send test") }
-
             var expanded by remember { mutableStateOf(false) }
             IconButton(onClick = { expanded = !expanded }) { Icon(imageVector = Icons.Default.MoreVert, contentDescription = "Device menu") }
             DropdownMenu(
@@ -167,9 +155,6 @@ private fun HomeTopBar(
                 }
             }
         },
-        //backgroundColor = WhoppahTheme.colors.surface,
-        //contentColor = contentColorFor(WhoppahTheme.colors.surface),
-        //contentPadding = WindowInsets.statusBars.asPaddingValues(),
         modifier = modifier
     )
 }
@@ -232,11 +217,10 @@ private fun Preview() {
     WhoppahTheme {
         HomeScreen(
             state = HomeViewState.Empty,
+            connectDevice = {},
             disconnectDevice = {},
             openPowerDialog = {},
             openSetPropDialog = {},
-            sendTestCommand = {},
-            actioner = {},
         )
     }
 }
