@@ -12,6 +12,7 @@ import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
 import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.graviton.isida.data.protocol.commands.IsidaCommand
@@ -38,6 +39,9 @@ class SetPropViewModel(
     }
 
     private val logger by lazy { Logger.withTag("SetPropViewModel") }
+
+    private val _events = Channel<SetPropViewEvent>(Channel.BUFFERED)
+    val events: Flow<SetPropViewEvent> = _events.receiveAsFlow()
 
     private val property = propertyFromId(id)
     private val waitingForData = MutableStateFlow<Boolean>(true)
@@ -88,7 +92,7 @@ class SetPropViewModel(
             .getOrNull() ?: return@launch
 
         sendCommand(cmd)
-            .onSuccess { logger.d { "Command sent" } }
+            .onSuccess { _events.send(SetPropViewEvent.Sent); logger.d { "Command sent" } }
             .onFailure { logger.e(it) { "Command failed" } }
     }
 

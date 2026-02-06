@@ -29,8 +29,15 @@ internal fun SetPropDialog(
     viewModel: SetPropViewModel,
     navigateUp: () -> Unit,
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    LaunchedEffect(viewModel.events) {
+        viewModel.events.collect { event ->
+            when (event) {
+                SetPropViewEvent.Sent -> navigateUp()
+            }
+        }
+    }
 
+    val state by viewModel.state.collectAsStateWithLifecycle()
     SetPropDialog(
         state = state,
         navigateUp = navigateUp,
