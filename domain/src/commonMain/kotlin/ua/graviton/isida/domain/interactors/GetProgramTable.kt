@@ -35,7 +35,7 @@ class GetProgramTable(
                 }
 
                 // 2. Now we are 100% sure we are listening, send the command.
-                val v = manager.protocolVersion.value
+                val v = manager.protocolVersion
                 val command: RequestTableCommand = when (v) {
                     1 -> RequestTableCommandV1(1)
                     else -> throw IllegalStateException("Unsupported protocol version: $v")

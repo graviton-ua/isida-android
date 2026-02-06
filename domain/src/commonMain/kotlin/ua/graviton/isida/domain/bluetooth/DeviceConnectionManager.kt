@@ -50,13 +50,22 @@ class DeviceConnectionManager(
         .flowOn(dispatchers.computation)
         .stateIn(appScope, SharingStarted.WhileSubscribed(), null)
 
-    val protocolVersion: StateFlow<Int?> = statusStream.map { packet ->
+    val protocolVersionAsFlow: StateFlow<Int?> = statusStream.map { packet ->
         when (packet) {
             is StatusPacketV1 -> 1
             is StatusPacketV2 -> 2
             else -> null
         }
     }.stateIn(appScope, SharingStarted.WhileSubscribed(), null)
+
+    val protocolVersion: Int?
+        get() = statusStream.value?.let { packet ->
+            when (packet) {
+                is StatusPacketV1 -> 1
+                is StatusPacketV2 -> 2
+                else -> null
+            }
+        }
 
     suspend fun connect(address: DeviceAddress) = client.connect(address)
     suspend fun connect(address: String) = connect(address.asDeviceAddress())

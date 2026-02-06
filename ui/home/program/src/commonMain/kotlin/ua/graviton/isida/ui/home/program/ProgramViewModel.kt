@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.graviton.isida.data.protocol.packets.TablePacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
+import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
 import ua.graviton.isida.data.protocol.packets.v1.TablePacketV1
 import ua.graviton.isida.domain.interactors.GetProgramTable
 import ua.graviton.isida.domain.observers.ObserveStatus
@@ -26,7 +27,20 @@ class ProgramViewModel(
 ) : ViewModel() {
     private val logger by lazy { Logger.withTag("ProgramViewModel") }
 
-    private val table = MutableStateFlow<TablePacket?>(null)
+    private val table = MutableStateFlow<TablePacket?>(
+        TablePacketV1(
+            days = List(30) { index ->
+                TableDayV1(
+                    spT0 = 37.5f + index * 0.1f,
+                    spT1 = 28.3f + index * 0.05f,
+                    spRh = 50 + index,
+                    spFlp = 10 + index,
+                    spTr = 1,
+                    spCl = 0
+                )
+            }
+        )
+    )
     private val loadingState = ObservableLoadingCounter()
 
     private val itemsState = table.map { packet ->
@@ -42,6 +56,7 @@ class ProgramViewModel(
                     cl = day.spCl,
                 )
             }
+
             else -> emptyList()
         }
     }
