@@ -31,7 +31,7 @@ kotlin {
             api(projects.ui.devicemode)
             api(projects.ui.home.base)
             api(projects.ui.home.prop)
-            api(projects.ui.home.report)
+            api(projects.ui.home.program)
             api(projects.ui.home.stats)
             api(projects.ui.scan)
             api(projects.ui.setprop)

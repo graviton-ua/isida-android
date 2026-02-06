@@ -1,13 +1,13 @@
-package ua.graviton.isida.ui.home.report
+package ua.graviton.isida.ui.home.program
 
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import ua.graviton.isida.ui.navigation.Navigator
 
-fun EntryProviderScope<NavKey>.addReportScreen(
+fun EntryProviderScope<NavKey>.addProgramScreen(
     navigator: Navigator,
 ) {
-    entry<ReportScreen> {
-        ReportScreen()
+    entry<ProgramScreen> {
+        ProgramScreen()
     }
 }

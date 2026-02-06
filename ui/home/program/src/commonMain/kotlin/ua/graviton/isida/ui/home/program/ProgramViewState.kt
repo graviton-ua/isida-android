@@ -1,18 +1,14 @@
-package ua.graviton.isida.ui.home.report
+package ua.graviton.isida.ui.home.program
 
-data class ReportViewState(
+data class ProgramViewState(
     val cellNumber: Int = 0,
     val header: String,
     val items: List<String>,
 ) {
     companion object {
-        val Empty = ReportViewState(
+        val Empty = ProgramViewState(
             header = "",
             items = emptyList(),
         )
     }
-}
-
-sealed class ReportAction {
-    object Start : ReportAction()
 }

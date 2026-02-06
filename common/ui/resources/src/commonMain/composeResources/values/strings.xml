@@ -4,7 +4,7 @@
 
     <string name="home_tab_stats">Stats</string>
     <string name="home_tab_prop">Properties</string>
-    <string name="home_tab_report">Report</string>
+    <string name="home_tab_programtable">Program</string>
 
     <string name="CellNum">КАМЕРА № %1$d</string>
     <string name="btnStart">Старт</string>

@@ -9,7 +9,7 @@ plugins {
 kotlin {
 
     android {
-        namespace = "ua.graviton.isida.ui.home.report"
+        namespace = "ua.graviton.isida.ui.home.program"
     }
 
     sourceSets {

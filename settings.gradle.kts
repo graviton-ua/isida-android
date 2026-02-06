@@ -73,7 +73,7 @@ include(
     ":ui:devicemode",
     ":ui:home:base",
     ":ui:home:prop",
-    ":ui:home:report",
+    ":ui:home:program",
     ":ui:home:stats",
     ":ui:scan",
     ":ui:setprop",

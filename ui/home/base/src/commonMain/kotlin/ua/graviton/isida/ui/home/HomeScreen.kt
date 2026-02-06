@@ -28,8 +28,8 @@ import kotlinx.serialization.modules.polymorphic
 import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.ui.home.prop.PropScreen
 import ua.graviton.isida.ui.home.prop.addPropScreen
-import ua.graviton.isida.ui.home.report.ReportScreen
-import ua.graviton.isida.ui.home.report.addReportScreen
+import ua.graviton.isida.ui.home.program.ProgramScreen
+import ua.graviton.isida.ui.home.program.addProgramScreen
 import ua.graviton.isida.ui.home.stats.StatsScreen
 import ua.graviton.isida.ui.home.stats.addStatsScreen
 import ua.graviton.isida.ui.navigation.*
@@ -38,7 +38,7 @@ import ua.graviton.isida.ui.navigation.*
 data object HomeScreen : NavKey
 
 private val TOP_LEVEL_ROUTES: List<HomeTabScreen> = listOf(
-    StatsScreen, PropScreen, ReportScreen,
+    StatsScreen, PropScreen, ProgramScreen,
 )
 
 @Composable
@@ -77,7 +77,7 @@ private fun HomeScreen(
         entryProvider {
             addStatsScreen(navigator = navigator)
             addPropScreen(navigator = navigator, openSetPropDialog = openSetPropDialog)
-            addReportScreen(navigator = navigator)
+            addProgramScreen(navigator = navigator)
         }
     }
 
@@ -204,7 +204,7 @@ private val config = SavedStateConfiguration {
     serializersModule = SerializersModule {
         polymorphic(NavKey::class) {
             subclass(PropScreen::class, PropScreen.serializer())
-            subclass(ReportScreen::class, ReportScreen.serializer())
+            subclass(ProgramScreen::class, ProgramScreen.serializer())
             subclass(StatsScreen::class, StatsScreen.serializer())
         }
     }

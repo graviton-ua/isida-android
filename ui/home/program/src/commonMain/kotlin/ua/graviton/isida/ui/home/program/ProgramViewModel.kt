@@ -1,4 +1,4 @@
-package ua.graviton.isida.ui.home.report
+package ua.graviton.isida.ui.home.program
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,25 +7,21 @@ import com.whoppah.metrox.viewmodel.ViewModelScope
 import com.whoppah.util.ObservableLoadingCounter
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.domain.observers.ObserveStatus
-import java.util.UUID
 
 @Inject
-@ViewModelKey(ReportViewModel::class)
+@ViewModelKey(ProgramViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
-class ReportViewModel(
+class ProgramViewModel(
     observeStatus: ObserveStatus,
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
-    private val pendingActions = MutableSharedFlow<ReportAction>()
     private val headerState = MutableStateFlow("")
     private val itemsState = MutableStateFlow<List<String>>(emptyList())
 
-    val state: StateFlow<ReportViewState> = combine(
+    val state: StateFlow<ProgramViewState> = combine(
         observeStatus.flow.mapNotNull { packet ->
             when (packet) {
                 is StatusPacketV1 -> packet.node
@@ -34,7 +30,7 @@ class ReportViewModel(
         }.onStart { emit(0) },
         headerState, itemsState, loadingState.observable
     ) { node, header, items, loading ->
-        ReportViewState(
+        ProgramViewState(
             cellNumber = node,
             header = header,
             items = items,
@@ -42,29 +38,6 @@ class ReportViewModel(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = ReportViewState.Empty,
+        initialValue = ProgramViewState.Empty,
     )
-
-    init {
-        viewModelScope.launch {
-            pendingActions.collect { action ->
-                when (action) {
-                    is ReportAction.Start -> start().also { it.join() }
-                    else -> Unit
-                }
-            }
-        }
-    }
-
-    fun submitAction(action: ReportAction) {
-        viewModelScope.launch { pendingActions.emit(action) }
-    }
-
-
-    private fun CoroutineScope.start() = launch {
-        headerState.value = UUID.randomUUID().toString()
-        itemsState.value = listOf(
-            "andrew", "thomas", "roman", "lora"
-        )
-    }
 }

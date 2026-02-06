@@ -26,7 +26,7 @@ kotlin {
             implementation(projects.common.ui.navigation)
 
             implementation(projects.ui.home.prop)
-            implementation(projects.ui.home.report)
+            implementation(projects.ui.home.program)
             implementation(projects.ui.home.stats)
 
             implementation(libs.kotlinx.datetime)

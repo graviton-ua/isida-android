@@ -2,7 +2,7 @@
 <resources>
     <string name="home_tab_stats">Монитор</string>
     <string name="home_tab_prop">Опции</string>
-    <string name="home_tab_report">Отчёт</string>
+    <string name="home_tab_programtable">Программа</string>
 
     <string name="butPower">Управление</string>
 
