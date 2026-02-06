@@ -1,6 +1,5 @@
 package ua.graviton.isida.ui.home.prop
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -70,7 +69,7 @@ private fun PropScreen(
                 onClick = { navigateSetPropDialog(item.id) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = if (index.mod(2) == 0) Color.Unspecified else Color.White.copy(alpha = 0.2f)),
+                    .backgroundNotNull(color = if (index.mod(2) == 0) null else Color.White.copy(alpha = 0.2f)),
             )
         }
     }
