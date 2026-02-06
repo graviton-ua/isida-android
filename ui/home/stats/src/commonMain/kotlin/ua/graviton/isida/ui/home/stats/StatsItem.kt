@@ -1,8 +1,8 @@
 package ua.graviton.isida.ui.home.stats
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
+import com.whoppah.common.resources.ComposableString
 
 /**
  * Представляет собой отдельный элемент в списке на экране статистики.
@@ -23,26 +23,6 @@ sealed interface StatsItem {
         val titleColor: Color? = null,
         val valueColor: Color? = null,
     )
-
-
-    @Immutable
-    class ComposableString(
-        val key: Any,
-        val text: @Composable () -> String,
-    ) {
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (other !is ComposableString) return false
-            return key == other.key
-        }
-
-        override fun hashCode(): Int = key.hashCode()
-
-        companion object {
-            fun composableString(key: Any, text: @Composable () -> String) = ComposableString(key, text)
-            fun composableString(vararg keys: Any, text: @Composable () -> String) = ComposableString(keys.toList(), text)
-        }
-    }
 
 
     /**

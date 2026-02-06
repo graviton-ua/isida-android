@@ -40,21 +40,18 @@ internal fun PropScreen(
     viewModel: PropViewModel = injectedViewModel(),
     openSetPropDialog: (String) -> Unit,
 ) {
-    val viewState by viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
-    PropScreen(viewState) { action ->
-        when (action) {
-            is PropAction.SetPropDialog -> openSetPropDialog(action.id)
-            //is ShopCartAction.NavigateCheckout -> openCheckout()
-            else -> viewModel.submitAction(action)
-        }
-    }
+    PropScreen(
+        state = state,
+        navigateSetPropDialog = openSetPropDialog,
+    )
 }
 
 @Composable
 private fun PropScreen(
     state: PropViewState,
-    actioner: (PropAction) -> Unit,
+    navigateSetPropDialog: (String) -> Unit,
 ) {
     val lazyListState = rememberLazyListState()
     LazyColumn(
@@ -64,11 +61,11 @@ private fun PropScreen(
     ) {
         itemsIndexed(
             items = state.items,
-            key = { index, it -> it.id },
+            key = { _, it -> it.id },
         ) { index, item ->
             Item(
                 item = item,
-                click = { actioner(it) },
+                onClick = { navigateSetPropDialog(item.id) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(color = if (index.mod(2) == 0) Color.Unspecified else Color.White.copy(alpha = 0.2f)),
@@ -80,25 +77,25 @@ private fun PropScreen(
 @Composable
 private fun Item(
     item: PropItem,
-    click: (PropAction) -> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         modifier = modifier
-            .clickable(onClick = { click(PropAction.SetPropDialog(item.id)) })
+            .clickable(onClick = onClick)
             .defaultMinSize(minHeight = 42.dp)
             .padding(horizontal = 12.dp)
     ) {
         Text(
-            text = item.title.asString(),
+            text = item.title.text(),
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(2f),
         )
         Text(
-            text = item.value.asString(),
+            text = item.value.text(),
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
@@ -117,7 +114,7 @@ private fun Preview() {
     WhoppahTheme {
         PropScreen(
             state = PropViewState.Preview,
-            actioner = {}
+            navigateSetPropDialog = {}
         )
     }
 }

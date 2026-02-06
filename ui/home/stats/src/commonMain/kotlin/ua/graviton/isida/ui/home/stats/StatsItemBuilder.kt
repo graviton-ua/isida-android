@@ -1,6 +1,7 @@
 package ua.graviton.isida.ui.home.stats
 
 import androidx.compose.ui.graphics.Color
+import com.whoppah.common.resources.ComposableString
 
 /**
  * Класс-строитель, отвечающий за создание списка элементов [StatsItem] с использованием DSL.
@@ -34,7 +35,7 @@ internal class StatsListBuilder {
     private val list = mutableListOf<StatsItem>()
 
     fun header(
-        title: StatsItem.ComposableString,
+        title: ComposableString,
         style: StyleBuilder.() -> Unit = {},
     ) {
         val builder = StyleBuilder()
@@ -43,8 +44,8 @@ internal class StatsListBuilder {
     }
 
     fun item(
-        title: StatsItem.ComposableString,
-        content: StatsItem.ComposableString,
+        title: ComposableString,
+        content: ComposableString,
         style: (StyleBuilder.() -> Unit)? = null,
     ) {
         val builder = StyleBuilder()

@@ -1,13 +1,13 @@
 package ua.graviton.isida.ui.home.prop
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
+import androidx.compose.runtime.Immutable
+import com.whoppah.common.resources.ComposableString
+import com.whoppah.common.resources.ComposableString.Companion.composableString
 import com.whoppah.common.resources.Res
 import com.whoppah.common.resources.timer
-import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
-@Stable
+@Immutable
 data class PropViewState(
     val items: List<PropItem>
 ) {
@@ -15,55 +15,14 @@ data class PropViewState(
         val Init = PropViewState(emptyList())
         val Preview = PropViewState(
             items = listOf(
-                PropItem(id = "1", title = PropItem.Title.Text("Some item example"), value = PropItem.Value.Data(23)),
-                PropItem(id = "2", title = PropItem.Title.Text("item example"), value = PropItem.Value.Data(23.2333)),
-                PropItem(id = "3", title = PropItem.Title.Text("Some item"), value = PropItem.Value.Text("Example")),
-                PropItem(id = "4", title = PropItem.Title.Text("Some example"), value = PropItem.Value.TextRes(Res.string.timer)),
+                PropItem.Default(id = "1", title = composableString { "Some item example" }, value = composableString { "23 C" }),
+                PropItem.Default(id = "2", title = composableString { "item example" }, value = composableString { "23.2333" }),
+                PropItem.Default(id = "3", title = composableString { "Some item" }, value = composableString { "Example" }),
+                PropItem.Default(
+                    id = "4",
+                    title = composableString { "Some example" },
+                    value = composableString { stringResource(Res.string.timer) }),
             )
         )
     }
-}
-
-@Stable
-data class PropItem(
-    val id: String,
-    val title: Title,
-    val value: Value,
-) {
-    sealed interface Title {
-        @JvmInline value class Text(val text: String) : Title
-        @JvmInline value class ResId(val id: StringResource) : Title
-
-        @Composable
-        fun asString(): String = when (this) {
-            is Text -> text
-            is ResId -> stringResource(id)
-        }
-    }
-
-    sealed interface Value {
-        data class Data<T : Number?>(val value: T, val format: @Composable ((T) -> String)? = null) : Value {
-            @Composable
-            override fun asString(): String = format?.invoke(value) ?: value.toString()
-        }
-
-        @JvmInline value class Text(val text: String) : Value {
-            @Composable
-            override fun asString(): String = text
-        }
-
-        @JvmInline value class TextRes(val id: StringResource) : Value {
-            @Composable
-            override fun asString(): String = stringResource(id)
-        }
-
-        @Composable
-        fun asString(): String
-    }
-}
-
-internal sealed class PropAction {
-    data class SetPropDialog(
-        val id: String,
-    ) : PropAction()
 }

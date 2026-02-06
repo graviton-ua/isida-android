@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.whoppah.common.compose.theme.IsidaColor
 import com.whoppah.common.resources.*
+import com.whoppah.common.resources.ComposableString.Companion.composableString
 import com.whoppah.metrox.viewmodel.ViewModelKey
 import com.whoppah.metrox.viewmodel.ViewModelScope
 import com.whoppah.util.ObservableLoadingCounter
@@ -14,15 +15,10 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.*
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import ua.graviton.isida.data.models.*
 import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
-import ua.graviton.isida.data.models.DeviceMode
-import ua.graviton.isida.data.models.DeviceModeExtra
-import ua.graviton.isida.data.models.DeviceError
-import ua.graviton.isida.data.models.OutputBit
-import ua.graviton.isida.data.models.DeviceWarning
 import ua.graviton.isida.domain.observers.ObserveStatus
-import ua.graviton.isida.ui.home.stats.StatsItem.ComposableString.Companion.composableString
 
 @Inject
 @ViewModelKey(StatsViewModel::class)
