@@ -1,4 +1,4 @@
-package ua.graviton.isida.data.models
+package ua.graviton.isida.data.protocol
 
 /**
  * Represents the operating mode of the device.

@@ -15,7 +15,11 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.*
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-import ua.graviton.isida.data.models.*
+import ua.graviton.isida.data.protocol.DeviceError
+import ua.graviton.isida.data.protocol.DeviceMode
+import ua.graviton.isida.data.protocol.DeviceModeExtra
+import ua.graviton.isida.data.protocol.DeviceWarning
+import ua.graviton.isida.data.protocol.OutputBit
 import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.domain.observers.ObserveStatus
