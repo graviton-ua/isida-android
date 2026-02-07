@@ -8,11 +8,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.Summarize
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,6 +44,7 @@ internal fun ProgramScreen(
     ProgramScreen(
         state = state,
         onFetch = viewModel::fetchTable,
+        onTableSelected = viewModel::selectTableHeader,
     )
 }
 
@@ -51,11 +52,14 @@ internal fun ProgramScreen(
 private fun ProgramScreen(
     state: ProgramViewState,
     onFetch: () -> Unit,
+    onTableSelected: (Int) -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         ControlPanel(
+            selectedTable = state.selectedTable,
             isLoading = state.isLoading,
             onFetch = onFetch,
+            onTableSelected = onTableSelected,
             modifier = Modifier.fillMaxWidth().padding(8.dp)
         )
 
@@ -74,23 +78,49 @@ private fun ProgramScreen(
 
 @Composable
 private fun ControlPanel(
+    selectedTable: Int,
     isLoading: Boolean,
     onFetch: () -> Unit,
+    onTableSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var expanded by remember { mutableStateOf(false) }
+
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Button(
+        Box {
+            OutlinedButton(
+                onClick = { expanded = true },
+                enabled = !isLoading,
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                Text(text = "Table $selectedTable")
+                Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+            }
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                (1..4).forEach { number ->
+                    DropdownMenuItem(
+                        text = { Text("Table $number") },
+                        onClick = {
+                            onTableSelected(number)
+                            expanded = false
+                        }
+                    )
+                }
+            }
+        }
+
+        IconButton(
             onClick = onFetch,
             enabled = !isLoading,
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
         ) {
-            Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
-            Spacer(Modifier.width(8.dp))
-            Text(text = "Fetch Table")
+            Icon(imageVector = Icons.Default.Refresh, contentDescription = "Refresh")
         }
 
         if (isLoading) {
@@ -191,7 +221,8 @@ private fun Preview() {
                     ProgramViewState.ProgramItem(2, 37.7f, 28.4f, 55, 0, 1, 0),
                 )
             ),
-            onFetch = {}
+            onFetch = {},
+            onTableSelected = {}
         )
     }
 }

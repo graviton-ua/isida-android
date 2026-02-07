@@ -27,6 +27,7 @@ class ProgramViewModel(
     private val logger by lazy { Logger.withTag("ProgramViewModel") }
 
     private val connectionState = manager.connectionState
+    private val selectedTable = MutableStateFlow(1)
     private val table = MutableStateFlow<TablePacket?>(null)
     private val loadingState = ObservableLoadingCounter()
 
@@ -50,10 +51,12 @@ class ProgramViewModel(
 
     val state: StateFlow<ProgramViewState> = combine(
         connectionState,
+        selectedTable,
         itemsState,
         loadingState.observable
-    ) { state, items, loading ->
+    ) { state, selected, items, loading ->
         ProgramViewState(
+            selectedTable = selected,
             isLoading = loading,
             items = if (state == ConnectionState.CONNECTED) items else emptyList(),
         )
@@ -65,11 +68,16 @@ class ProgramViewModel(
 
     private var fetchTableJob: Job? = null
 
+    fun selectTableHeader(number: Int) {
+        selectedTable.value = number
+        fetchTable()
+    }
+
     fun fetchTable() {
         fetchTableJob?.cancel()
         fetchTableJob = viewModelScope.launch {
             loadingState.addLoader()
-            getProgramTable.byNumber(1)
+            getProgramTable.byNumber(selectedTable.value)
                 .onSuccess { table.value = it }
                 .onFailure { logger.w(it) { "Failed to fetch table" } }
             loadingState.removeLoader()
