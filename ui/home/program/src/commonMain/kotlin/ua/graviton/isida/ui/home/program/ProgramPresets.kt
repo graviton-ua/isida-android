@@ -17,7 +17,7 @@ data class ProgramPreset(
                 name = "Universal",
                 description = "General purpose incubation settings suitable for most common birds.",
                 table = TablePacketV1(
-                    days = List(30) { 
+                    days = List(30) {
                         TableDayV1(spT0 = 37.8f, spT1 = 28.5f, spRh = 55, spFlp = 0, spTr = 1, spCl = 0)
                     }
                 )
@@ -29,6 +29,8 @@ data class ProgramPreset(
                 table = TablePacketV1(
                     days = List(30) { index ->
                         when {
+                            index in 5..15 -> TableDayV1(spT0 = 37.8f, spT1 = 28.5f, spRh = 55, spFlp = 0, spTr = 1, spCl = 0)
+                            index in 1 until 3 -> TableDayV1(spT0 = 37.8f, spT1 = 28.5f, spRh = 55, spFlp = 0, spTr = 1, spCl = 0)
                             index < 18 -> TableDayV1(spT0 = 37.8f, spT1 = 28.5f, spRh = 55, spFlp = 0, spTr = 1, spCl = 0)
                             else -> TableDayV1(spT0 = 37.5f, spT1 = 29.0f, spRh = 65, spFlp = 1, spTr = 0, spCl = 1)
                         }
