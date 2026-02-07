@@ -40,6 +40,7 @@ import com.whoppah.common.resources.prop_minImpulse_lb
 import com.whoppah.common.resources.prop_pkoff0_lb
 import com.whoppah.common.resources.prop_pkoff1_lb
 import com.whoppah.common.resources.prop_program_lb
+import com.whoppah.common.resources.prop_program_reset
 import com.whoppah.common.resources.prop_relMode0
 import com.whoppah.common.resources.prop_relMode1
 import com.whoppah.common.resources.prop_relMode2
@@ -342,10 +343,11 @@ internal class RelayMode(value: Int? = null) : RadioListDeviceProperty<Int>(
 internal class Program(value: Int? = null) : RadioListDeviceProperty<Int>(
     initValue = value,
     title = { stringResource(Res.string.prop_program_lb) },
-    list = listOf(0, 1, 2, 3, 4),
+    list = listOf(0, 1, 2, 3, 4, 5),
     listItemTitleMap = {
         when(it) {
             0-> stringResource(Res.string.no)
+            5-> stringResource(Res.string.prop_program_reset)
             else-> {
                 val label = stringResource(Res.string.prop_program_lb)
                 "$label $it"
@@ -621,14 +623,14 @@ internal class ExtOn0(value: Float? = null) : NumberInputTextFieldDeviceProperty
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
-            "0.1", "25.5"
+            "0.2", "25.5"
         )
     },
     onValidate = { text -> // Переименовал в text для ясности
         val numericValue = text.toFloatOrNull()
         when {
             numericValue == null -> NumberInputTextFieldState.Error.Required
-            numericValue < 0.1 -> NumberInputTextFieldState.Error.CantBeLessThen("0.1")
+            numericValue < 0.2 -> NumberInputTextFieldState.Error.CantBeLessThen("0.2")
             numericValue > 25.5 -> NumberInputTextFieldState.Error.CantBeMoreThen("25.5")
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
@@ -656,14 +658,14 @@ internal class ExtOn1(value: Float? = null) : NumberInputTextFieldDeviceProperty
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
-            "0.1", "25.5"
+            "0.2", "25.5"
         )
     },
     onValidate = { text -> // Переименовал в text для ясности
         val numericValue = text.toFloatOrNull()
         when {
             numericValue == null -> NumberInputTextFieldState.Error.Required
-            numericValue < 0.1 -> NumberInputTextFieldState.Error.CantBeLessThen("0.1")
+            numericValue < 0.2 -> NumberInputTextFieldState.Error.CantBeLessThen("0.2")
             numericValue > 25.5 -> NumberInputTextFieldState.Error.CantBeMoreThen("25.5")
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
@@ -691,7 +693,7 @@ internal class ExtOff0(value: Float? = null) : NumberInputTextFieldDevicePropert
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
-            "0.1", "25.5"
+            "0.1", "15.0"
         )
     },
     onValidate = { text -> // Переименовал в text для ясности
@@ -699,7 +701,7 @@ internal class ExtOff0(value: Float? = null) : NumberInputTextFieldDevicePropert
         when {
             numericValue == null -> NumberInputTextFieldState.Error.Required
             numericValue < 0.1 -> NumberInputTextFieldState.Error.CantBeLessThen("0.1")
-            numericValue > 25.5 -> NumberInputTextFieldState.Error.CantBeMoreThen("25.5")
+            numericValue > 15.0 -> NumberInputTextFieldState.Error.CantBeMoreThen("15.0")
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
@@ -726,7 +728,7 @@ internal class ExtOff1(value: Float? = null) : NumberInputTextFieldDevicePropert
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
-            "0.1", "25.5"
+            "0.1", "15.0"
         )
     },
     onValidate = { text -> // Переименовал в text для ясности
@@ -734,7 +736,7 @@ internal class ExtOff1(value: Float? = null) : NumberInputTextFieldDevicePropert
         when {
             numericValue == null -> NumberInputTextFieldState.Error.Required
             numericValue < 0.1 -> NumberInputTextFieldState.Error.CantBeLessThen("0.1")
-            numericValue > 25.5 -> NumberInputTextFieldState.Error.CantBeMoreThen("25.5")
+            numericValue > 15.0 -> NumberInputTextFieldState.Error.CantBeMoreThen("15.0")
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
@@ -827,7 +829,7 @@ internal class Air1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int
 @Stable
 internal class SpCO2(value: Float? = null) : SliderDeviceProperty<Float>(
     initValue = (value ?: 20f),
-    min = 400f, max = 5000f, increment = 100f,
+    min = 1000f, max = 5000f, increment = 500f,
     title = { stringResource(Res.string.prop_CO2_lb)+ stringResource(Res.string.dimen_ppm) },
 ) {
     override fun readValue(packet: StatusPacket) {
@@ -882,8 +884,8 @@ internal class KoffCurr(value: Int? = null) : NumberInputTextFieldDeviceProperty
 //-------------------------- Hysteresis (маска 0x3F) ------------------------------
 @Stable
 internal class Hysteresis(value: Float? = null) : SliderDeviceProperty<Float>(
-    initValue = (value ?: 0.2f),        // нужно применить маску 0x3F !!!!!!!!!!
-    min = 0.2f, max = 6.0f, increment = 0.2f,
+    initValue = (value ?: 0.2f),
+    min = 0.2f, max = 3.0f, increment = 0.1f,
     title = { stringResource(Res.string.prop_Hysteresis_lb)+ stringResource(Res.string.dimen_celsius) },
 ) {
     override fun readValue(packet: StatusPacket) {

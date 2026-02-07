@@ -53,7 +53,7 @@ object StatusPacketV1Parser : PacketParser<StatusPacketV1> {
         val koffCurr = reader.u8()
 
         val rawHysteresis = reader.u8()
-        val hysteresis = (rawHysteresis and 0x3F) / 10f
+        val hysteresis = (rawHysteresis and 0x1F) / 10f
         val permission = (rawHysteresis and 0xC0) shr 6
 
         val zonaFlap = reader.u8()

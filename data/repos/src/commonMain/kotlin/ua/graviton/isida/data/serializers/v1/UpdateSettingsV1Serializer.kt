@@ -36,7 +36,7 @@ object UpdateSettingsV1Serializer : CommandSerializerV1<UpdateSettingsCommandV1>
         writer.u8(command.air1)
         writer.u8((command.spCO2 / 20f).toInt())
         writer.u8(command.koffCurr)
-        val rawHysteresis = (command.hysteresis * 10).toInt() and 0x3F
+        val rawHysteresis = (command.hysteresis * 10).toInt() and 0x1F
         val rawPermission = (command.permission shl 6) and 0xC0
         writer.u8(rawPermission or rawHysteresis)
         val rawZonality = command.zonality shl 6

@@ -109,7 +109,7 @@
 
     <string name="prop_spT0_lb">Сухой датчик</string>
     <string name="prop_spT1_lb">Влажный датчик</string>
-    <string name="prop_Rh_lb">Разрешение на использование</string>
+    <string name="prop_Rh_lb">Разрешить элекиронный датчик влажности</string>
     <string name="prop_Rh1_lb">HIH-5030</string>
     <string name="prop_Rh2_lb">DHT-21</string>
 
@@ -132,17 +132,19 @@
     <string name="prop_relMode4">импульсный режим УВЛАЖНЕНИЯ</string>
 
     <string name="prop_program_lb">Выполняемая программа</string>
+    <string name="prop_program_reset">Сброс всех программ</string>
     <string name="prop_minImpulse_lb">Минимальный импульс</string>
     <string name="prop_maxImpulse_lb">Максимальный импульс</string>
     <string name="prop_repeatTime_lb">Период повторения импульсов</string>
     <string name="prop_turnOff_lb">Поворот пауза</string>
     <string name="prop_turnOn_lb">Поворот работа</string>
-    <string name="prop_alarm0_lb">Отклонение по сухому</string>
-    <string name="prop_alarm1_lb">Отклонение по увлажнению</string>
+    <string name="txt_limit_switch">Концевой выключатель</string>
+    <string name="prop_alarm0_lb">Тревога (Сухой датчик)</string>
+    <string name="prop_alarm1_lb">Тревога (Влажный датчик)</string>
     <string name="prop_extOn0_lb">Заслонка открыть</string>
-    <string name="prop_extOn1_lb">Заслонка закрыть</string>
-    <string name="prop_extOff0_lb">Дополнительный включить</string>
-    <string name="prop_extOff1_lb">Дополнительный включить</string>
+    <string name="prop_extOn1_lb">Дополнительный включить</string>
+    <string name="prop_extOff0_lb">Заслонка закрыть</string>
+    <string name="prop_extOff1_lb">Дополнительный выключить</string>
     <string name="prop_air0_lb">Проветривание пауза</string>
     <string name="prop_air1_lb">Проветривание работа</string>
     <string name="prop_CO2_lb">Концентрация СО2</string>
@@ -164,7 +166,6 @@
     <string name="dimen_min"> мин.</string>
     <string name="prop_dimen_kwt">%1$s кВт/час.</string>
 
-    <string name="prop_RH_sensor_allowed_label">Разрешить датчик влажности</string>
     <string name="input_info_limit">Установленные ограничения</string>
     <string name="input_info_limit_min_max">Значение должно быть от %1$s до %2$s.</string>
     <string name="input_info_limit_max">Значение должно быть меньше %1$s</string>
