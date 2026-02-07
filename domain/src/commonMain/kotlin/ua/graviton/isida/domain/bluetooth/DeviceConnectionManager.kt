@@ -44,19 +44,11 @@ class DeviceConnectionManager(
             )
         }
         .flowOn(dispatchers.computation)
-        .shareIn(appScope, SharingStarted.WhileSubscribed(), replay = 0)
+        .shareIn(appScope, SharingStarted.Eagerly, replay = 0)
 
     val statusStream: StateFlow<StatusPacket?> = packetStream.filterIsInstance<StatusPacket>()
         .flowOn(dispatchers.computation)
-        .stateIn(appScope, SharingStarted.WhileSubscribed(), null)
-
-    val protocolVersionAsFlow: StateFlow<Int?> = statusStream.map { packet ->
-        when (packet) {
-            is StatusPacketV1 -> 1
-            is StatusPacketV2 -> 2
-            else -> null
-        }
-    }.stateIn(appScope, SharingStarted.WhileSubscribed(), null)
+        .stateIn(appScope, SharingStarted.Eagerly, null)
 
     val protocolVersion: Int?
         get() = statusStream.value?.let { packet ->

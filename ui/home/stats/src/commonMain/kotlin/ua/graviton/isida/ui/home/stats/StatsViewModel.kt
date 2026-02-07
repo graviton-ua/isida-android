@@ -15,13 +15,11 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.*
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-import ua.graviton.isida.data.protocol.DeviceError
-import ua.graviton.isida.data.protocol.DeviceMode
-import ua.graviton.isida.data.protocol.DeviceModeExtra
-import ua.graviton.isida.data.protocol.DeviceWarning
-import ua.graviton.isida.data.protocol.OutputBit
+import ua.graviton.isida.data.bluetooth.ConnectionState
+import ua.graviton.isida.data.protocol.*
 import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
+import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
 import ua.graviton.isida.domain.observers.ObserveStatus
 
 @Inject
@@ -33,10 +31,12 @@ import ua.graviton.isida.domain.observers.ObserveStatus
  * с использованием DSL [buildStats].
  */
 class StatsViewModel(
+    manager: DeviceConnectionManager,
     observeStatus: ObserveStatus,
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
 
+    private val connectionState = manager.connectionState
     private val packets = observeStatus.flow.stateIn(
         scope = viewModelScope, started = SharingStarted.WhileSubscribed(0), initialValue = null,
     )
@@ -61,7 +61,7 @@ class StatsViewModel(
         }
     }.onStart { emit(null) }
 
-    private val uiItems = packets.map { packet ->
+    private val uiItems = packets.mapNotNull { packet ->
         when (packet) {
             is StatusPacketV1 -> packet.toItems()
             else -> null
@@ -74,13 +74,13 @@ class StatsViewModel(
      * Если данные равны null (еще не получены), возвращается к [PlaceholderStats] для отображения структуры.
      */
     val state: StateFlow<StatsViewState> = combine(
-        deviceId, deviceBgColor, uiItems, loadingState.observable
-    ) { deviceId, deviceBgColor, items, loading ->
+        connectionState, deviceId, deviceBgColor, uiItems, loadingState.observable
+    ) { state, deviceId, deviceBgColor, items, loading ->
         // Создает модель состояния экрана
         StatsViewState(
             titleDeviceId = deviceId,
             titleDeviceBackgroundColor = deviceBgColor,
-            items = items ?: emptyList(),
+            items = if (state == ConnectionState.CONNECTED) items else emptyList(),
         )
     }.stateIn(
         scope = viewModelScope,

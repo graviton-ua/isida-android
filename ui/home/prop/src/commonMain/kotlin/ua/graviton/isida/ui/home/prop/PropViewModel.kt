@@ -12,7 +12,9 @@ import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.*
 import org.jetbrains.compose.resources.stringResource
+import ua.graviton.isida.data.bluetooth.ConnectionState
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
+import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
 import ua.graviton.isida.domain.observers.ObserveStatus
 import java.util.Locale
 
@@ -20,10 +22,12 @@ import java.util.Locale
 @ViewModelKey(PropViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 class PropViewModel(
+    manager: DeviceConnectionManager,
     observeStatus: ObserveStatus,
 ) : ViewModel() {
+    private val connectionState = manager.connectionState
     private val packets = observeStatus.flow.stateIn(
-        scope = viewModelScope, started = SharingStarted.WhileSubscribed(0), initialValue = null,
+        scope = viewModelScope, started = SharingStarted.WhileSubscribed(), initialValue = null,
     )
 
     private val uiItems = packets.mapNotNull { packet ->
@@ -33,9 +37,9 @@ class PropViewModel(
         }
     }.onStart { emit(emptyList()) }
 
-    val state: StateFlow<PropViewState> = uiItems.map { items ->
+    val state: StateFlow<PropViewState> = combine(connectionState, uiItems) { state, items ->
         PropViewState(
-            items = items,
+            items = if (state == ConnectionState.CONNECTED) items else emptyList(),
         )
     }.stateIn(
         scope = viewModelScope,
@@ -432,7 +436,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
         style = {
             val currentValue = this@toItems?.zonality
             if (currentValue != null) {
-                if (currentValue > 2)  backgroundColor = IsidaColor.Yellow100
+                if (currentValue > 2) backgroundColor = IsidaColor.Yellow100
             }
         }
     )

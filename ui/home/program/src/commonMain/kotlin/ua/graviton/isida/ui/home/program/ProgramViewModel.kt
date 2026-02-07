@@ -3,44 +3,31 @@ package ua.graviton.isida.ui.home.program
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import com.whoppah.util.ObservableLoadingCounter
 import com.whoppah.metrox.viewmodel.ViewModelKey
 import com.whoppah.metrox.viewmodel.ViewModelScope
+import com.whoppah.util.ObservableLoadingCounter
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import ua.graviton.isida.data.bluetooth.ConnectionState
 import ua.graviton.isida.data.protocol.packets.TablePacket
-import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
-import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
 import ua.graviton.isida.data.protocol.packets.v1.TablePacketV1
+import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
 import ua.graviton.isida.domain.interactors.GetProgramTable
-import ua.graviton.isida.domain.observers.ObserveStatus
 
 @Inject
 @ViewModelKey(ProgramViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 class ProgramViewModel(
+    manager: DeviceConnectionManager,
     private val getProgramTable: GetProgramTable,
-    private val observeStatus: ObserveStatus,
 ) : ViewModel() {
     private val logger by lazy { Logger.withTag("ProgramViewModel") }
 
-    private val table = MutableStateFlow<TablePacket?>(
-        TablePacketV1(
-            days = List(30) { index ->
-                TableDayV1(
-                    spT0 = 37.5f + index * 0.1f,
-                    spT1 = 28.3f + index * 0.05f,
-                    spRh = 50 + index,
-                    spFlp = 10 + index,
-                    spTr = 1,
-                    spCl = 0
-                )
-            }
-        )
-    )
+    private val connectionState = manager.connectionState
+    private val table = MutableStateFlow<TablePacket?>(null)
     private val loadingState = ObservableLoadingCounter()
 
     private val itemsState = table.map { packet ->
@@ -62,19 +49,13 @@ class ProgramViewModel(
     }
 
     val state: StateFlow<ProgramViewState> = combine(
-        observeStatus.flow.mapNotNull { packet ->
-            when (packet) {
-                is StatusPacketV1 -> packet.node
-                else -> null
-            }
-        }.onStart { emit(0) },
+        connectionState,
         itemsState,
         loadingState.observable
-    ) { node, items, loading ->
+    ) { state, items, loading ->
         ProgramViewState(
             isLoading = loading,
-            cellNumber = node,
-            items = items,
+            items = if (state == ConnectionState.CONNECTED) items else emptyList(),
         )
     }.stateIn(
         scope = viewModelScope,

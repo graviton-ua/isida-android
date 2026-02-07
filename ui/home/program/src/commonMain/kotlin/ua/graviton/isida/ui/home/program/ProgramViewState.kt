@@ -5,7 +5,6 @@ import androidx.compose.runtime.Immutable
 @Immutable
 data class ProgramViewState(
     val isLoading: Boolean = false,
-    val cellNumber: Int = 0,
     val items: List<ProgramItem> = emptyList(),
 ) {
 
