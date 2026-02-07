@@ -69,7 +69,7 @@ class ProgramViewModel(
         fetchTableJob?.cancel()
         fetchTableJob = viewModelScope.launch {
             loadingState.addLoader()
-            getProgramTable()
+            getProgramTable.byNumber(1)
                 .onSuccess { table.value = it }
                 .onFailure { logger.w(it) { "Failed to fetch table" } }
             loadingState.removeLoader()

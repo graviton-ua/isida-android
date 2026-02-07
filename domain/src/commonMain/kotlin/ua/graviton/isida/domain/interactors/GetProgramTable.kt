@@ -20,10 +20,10 @@ import kotlin.time.Duration.Companion.seconds
 class GetProgramTable(
     dispatchers: AppCoroutineDispatchers,
     private val manager: DeviceConnectionManager,
-) : ResultInteractor<Unit, Result<TablePacket>>() {
+) : ResultInteractor<Int, Result<TablePacket>>() {
     private val dispatcher = dispatchers.computation
 
-    override suspend fun doWork(params: Unit): Result<TablePacket> = withContext(dispatcher) {
+    override suspend fun doWork(params: Int): Result<TablePacket> = withContext(dispatcher) {
         runCatching {
             withTimeout(10.seconds) {
                 // 1. Start listener UNDISPATCHED. This ensures the Flow subscription 
@@ -37,7 +37,7 @@ class GetProgramTable(
                 // 2. Now we are 100% sure we are listening, send the command.
                 val v = manager.protocolVersion
                 val command: RequestTableCommand = when (v) {
-                    1 -> RequestTableCommandV1(1)
+                    1 -> RequestTableCommandV1(number = params)
                     else -> throw IllegalStateException("Unsupported protocol version: $v")
                 }
                 val bytes = RootEncoder.serialize(command).getOrThrow()
@@ -49,5 +49,5 @@ class GetProgramTable(
         }
     }
 
-    suspend operator fun invoke() = executeSync(Unit)
+    suspend fun byNumber(number: Int) = executeSync(number)
 }
