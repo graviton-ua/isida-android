@@ -7,6 +7,8 @@ data class ProgramViewState(
     val selectedTable: Int = 1,
     val isLoading: Boolean = false,
     val items: List<ProgramItem> = emptyList(),
+    val showResetDialog: Boolean = false,
+    val availablePresets: List<ProgramPreset> = emptyList(),
 ) {
 
     @Immutable

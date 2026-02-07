@@ -32,6 +32,7 @@ class ProgramViewModel(
     private val selectedTable = MutableStateFlow(1)
     private val table = MutableStateFlow<TablePacket?>(null)
     private val loadingState = ObservableLoadingCounter()
+    private val showResetDialog = MutableStateFlow(false)
 
     private val itemsState = table.map { packet ->
         when (packet) {
@@ -55,12 +56,15 @@ class ProgramViewModel(
         connectionState,
         selectedTable,
         itemsState,
-        loadingState.observable
-    ) { state, selected, items, loading ->
+        loadingState.observable,
+        showResetDialog
+    ) { state, selected, items, loading, resetDialog ->
         ProgramViewState(
             selectedTable = selected,
             isLoading = loading,
-            items = if (state == ConnectionState.CONNECTED) items else emptyList(),
+            items = items,//if (state == ConnectionState.CONNECTED) items else emptyList(),
+            showResetDialog = resetDialog,
+            availablePresets = ProgramPreset.ALL
         )
     }.stateIn(
         scope = viewModelScope,
@@ -82,7 +86,8 @@ class ProgramViewModel(
             getProgramTable.byNumber(selectedTable.value)
                 .onSuccess { table.value = it }
                 .onFailure { logger.w(it) { "Failed to fetch table" } }
-        }.also { it.invokeOnCompletion { loadingState.removeLoader() } }
+            loadingState.removeLoader()
+        }
     }
 
     fun sendTable() {
@@ -92,6 +97,20 @@ class ProgramViewModel(
             updateProgramTable.executeSync(UpdateProgramTable.Params(currentTable))
                 .onSuccess { logger.d { "Table updated successfully" } }
                 .onFailure { logger.w(it) { "Failed to update table" } }
-        }.also { it.invokeOnCompletion { loadingState.removeLoader() } }
+            loadingState.removeLoader()
+        }
+    }
+
+    fun openResetDialog() {
+        showResetDialog.value = true
+    }
+
+    fun closeResetDialog() {
+        showResetDialog.value = false
+    }
+
+    fun applyPreset(preset: ProgramPreset) {
+        table.value = preset.table
+        closeResetDialog()
     }
 }

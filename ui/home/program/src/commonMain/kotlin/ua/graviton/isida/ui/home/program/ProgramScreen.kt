@@ -10,6 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material.icons.outlined.Summarize
 import androidx.compose.material3.*
@@ -47,6 +48,9 @@ internal fun ProgramScreen(
         onFetch = viewModel::fetchTable,
         onSend = viewModel::sendTable,
         onTableSelected = viewModel::selectTableHeader,
+        onOpenReset = viewModel::openResetDialog,
+        onCloseReset = viewModel::closeResetDialog,
+        onApplyPreset = viewModel::applyPreset,
     )
 }
 
@@ -56,6 +60,9 @@ private fun ProgramScreen(
     onFetch: () -> Unit,
     onSend: () -> Unit,
     onTableSelected: (Int) -> Unit,
+    onOpenReset: () -> Unit,
+    onCloseReset: () -> Unit,
+    onApplyPreset: (ProgramPreset) -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         ControlPanel(
@@ -65,6 +72,7 @@ private fun ProgramScreen(
             onFetch = onFetch,
             onSend = onSend,
             onTableSelected = onTableSelected,
+            onOpenReset = onOpenReset,
             modifier = Modifier.fillMaxWidth().padding(8.dp)
         )
 
@@ -79,6 +87,14 @@ private fun ProgramScreen(
             )
         }
     }
+
+    if (state.showResetDialog) {
+        ResetDialog(
+            presets = state.availablePresets,
+            onDismiss = onCloseReset,
+            onConfirm = onApplyPreset
+        )
+    }
 }
 
 @Composable
@@ -89,6 +105,7 @@ private fun ControlPanel(
     onFetch: () -> Unit,
     onSend: () -> Unit,
     onTableSelected: (Int) -> Unit,
+    onOpenReset: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -130,6 +147,13 @@ private fun ControlPanel(
             Icon(imageVector = Icons.Default.Refresh, contentDescription = "Refresh")
         }
 
+        IconButton(
+            onClick = onOpenReset,
+            enabled = !isLoading,
+        ) {
+            Icon(imageVector = Icons.Default.RestartAlt, contentDescription = "Reset to Default")
+        }
+
         Spacer(Modifier.weight(1f))
 
         FilledIconButton(
@@ -143,6 +167,63 @@ private fun ControlPanel(
             CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
         }
     }
+}
+
+@Composable
+private fun ResetDialog(
+    presets: List<ProgramPreset>,
+    onDismiss: () -> Unit,
+    onConfirm: (ProgramPreset) -> Unit,
+) {
+    var selectedPreset by remember { mutableStateOf(presets.firstOrNull()) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(text = "Reset to Default") },
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(text = "Choose a preset to reset the table values:")
+                presets.forEach { preset ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = selectedPreset == preset,
+                            onClick = { selectedPreset = preset }
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(text = preset.name, style = MaterialTheme.typography.bodyLarge)
+                            Text(
+                                text = preset.description,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = { selectedPreset?.let { onConfirm(it) } },
+                enabled = selectedPreset != null
+            ) {
+                Text("Reset")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
 }
 
 @Composable
@@ -239,7 +320,10 @@ private fun Preview() {
             ),
             onFetch = {},
             onSend = {},
-            onTableSelected = {}
+            onTableSelected = {},
+            onOpenReset = {},
+            onCloseReset = {},
+            onApplyPreset = {}
         )
     }
 }
