@@ -10,7 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.RestartAlt
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material.icons.outlined.Summarize
 import androidx.compose.material3.*
@@ -151,7 +151,7 @@ private fun ControlPanel(
             onClick = onOpenReset,
             enabled = !isLoading,
         ) {
-            Icon(imageVector = Icons.Default.RestartAlt, contentDescription = "Reset to Default")
+            Icon(imageVector = Icons.Default.Tune, contentDescription = "Presets")
         }
 
         Spacer(Modifier.weight(1f))

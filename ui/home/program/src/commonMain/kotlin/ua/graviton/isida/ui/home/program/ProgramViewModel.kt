@@ -62,7 +62,7 @@ class ProgramViewModel(
         ProgramViewState(
             selectedTable = selected,
             isLoading = loading,
-            items = items,//if (state == ConnectionState.CONNECTED) items else emptyList(),
+            items = if (state == ConnectionState.CONNECTED) items else emptyList(),
             showResetDialog = resetDialog,
             availablePresets = ProgramPreset.ALL
         )
