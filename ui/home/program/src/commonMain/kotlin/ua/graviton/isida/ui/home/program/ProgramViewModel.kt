@@ -16,6 +16,7 @@ import ua.graviton.isida.data.protocol.packets.TablePacket
 import ua.graviton.isida.data.protocol.packets.v1.TablePacketV1
 import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
 import ua.graviton.isida.domain.interactors.GetProgramTable
+import ua.graviton.isida.domain.interactors.UpdateProgramTable
 
 @Inject
 @ViewModelKey(ProgramViewModel::class)
@@ -23,6 +24,7 @@ import ua.graviton.isida.domain.interactors.GetProgramTable
 class ProgramViewModel(
     manager: DeviceConnectionManager,
     private val getProgramTable: GetProgramTable,
+    private val updateProgramTable: UpdateProgramTable,
 ) : ViewModel() {
     private val logger by lazy { Logger.withTag("ProgramViewModel") }
 
@@ -80,7 +82,16 @@ class ProgramViewModel(
             getProgramTable.byNumber(selectedTable.value)
                 .onSuccess { table.value = it }
                 .onFailure { logger.w(it) { "Failed to fetch table" } }
-            loadingState.removeLoader()
-        }
+        }.also { it.invokeOnCompletion { loadingState.removeLoader() } }
+    }
+
+    fun sendTable() {
+        val currentTable = table.value ?: return
+        viewModelScope.launch {
+            loadingState.addLoader()
+            updateProgramTable.executeSync(UpdateProgramTable.Params(currentTable))
+                .onSuccess { logger.d { "Table updated successfully" } }
+                .onFailure { logger.w(it) { "Failed to update table" } }
+        }.also { it.invokeOnCompletion { loadingState.removeLoader() } }
     }
 }

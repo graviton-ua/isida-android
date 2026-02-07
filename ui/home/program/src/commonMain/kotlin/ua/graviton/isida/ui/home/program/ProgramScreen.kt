@@ -10,6 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material.icons.outlined.Summarize
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -44,6 +45,7 @@ internal fun ProgramScreen(
     ProgramScreen(
         state = state,
         onFetch = viewModel::fetchTable,
+        onSend = viewModel::sendTable,
         onTableSelected = viewModel::selectTableHeader,
     )
 }
@@ -52,13 +54,16 @@ internal fun ProgramScreen(
 private fun ProgramScreen(
     state: ProgramViewState,
     onFetch: () -> Unit,
+    onSend: () -> Unit,
     onTableSelected: (Int) -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         ControlPanel(
             selectedTable = state.selectedTable,
+            hasData = state.items.isNotEmpty(),
             isLoading = state.isLoading,
             onFetch = onFetch,
+            onSend = onSend,
             onTableSelected = onTableSelected,
             modifier = Modifier.fillMaxWidth().padding(8.dp)
         )
@@ -79,8 +84,10 @@ private fun ProgramScreen(
 @Composable
 private fun ControlPanel(
     selectedTable: Int,
+    hasData: Boolean,
     isLoading: Boolean,
     onFetch: () -> Unit,
+    onSend: () -> Unit,
     onTableSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -121,6 +128,15 @@ private fun ControlPanel(
             enabled = !isLoading,
         ) {
             Icon(imageVector = Icons.Default.Refresh, contentDescription = "Refresh")
+        }
+
+        Spacer(Modifier.weight(1f))
+
+        FilledIconButton(
+            onClick = onSend,
+            enabled = !isLoading && hasData,
+        ) {
+            Icon(imageVector = Icons.Default.Upload, contentDescription = "Upload Table")
         }
 
         if (isLoading) {
@@ -222,6 +238,7 @@ private fun Preview() {
                 )
             ),
             onFetch = {},
+            onSend = {},
             onTableSelected = {}
         )
     }
