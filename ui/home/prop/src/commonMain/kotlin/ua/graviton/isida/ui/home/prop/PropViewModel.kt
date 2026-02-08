@@ -54,6 +54,7 @@ private const val EMPTY_PLACEHOLDER = "--"
 private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
     val currentPermission = this@toItems?.permission
     val programm = this@toItems?.programm
+    //-------------------------- spT0 ------------------------------
     item(
         id = "spT0",
         title = composableString { stringResource(Res.string.prop_spT0_lb) },
@@ -72,6 +73,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- spT1 ------------------------------
     item(
         id = "spT1",
         title = composableString { stringResource(Res.string.prop_spT1_lb) },
@@ -90,6 +92,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- permission ------------------------
     item(
         id = "permission",
         title = composableString { stringResource(Res.string.prop_Rh_lb) },
@@ -111,24 +114,26 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- spRh1, spRh0 ----------------------
     if (currentPermission != null) {
         if (currentPermission > 0) {
             item(
                 id = "spRh1",
                 title = composableString { stringResource(Res.string.prop_spRh1_lb) },
-                value = composableString(this@toItems?.spRh1) {
-                    this@toItems?.spRh1?.format()?.let { stringResource(Res.string.prop_dimen_percent, it) } ?: EMPTY_PLACEHOLDER
+                value = composableString(this@toItems.spRh1) {
+                    this@toItems.spRh1.format().let { stringResource(Res.string.prop_dimen_percent, it) }
                 }
             )
             item(
                 id = "spRh0",
                 title = composableString { stringResource(Res.string.prop_spRh0_lb) },
-                value = composableString(this@toItems?.spRh0) {
-                    this@toItems?.spRh0?.format()?.let { stringResource(Res.string.prop_dimen_percent, it) } ?: EMPTY_PLACEHOLDER
+                value = composableString(this@toItems.spRh0) {
+                    this@toItems.spRh0.format().let { stringResource(Res.string.prop_dimen_percent, it) }
                 }
             )
         }
     }
+    //-------------------------- extendMode ----------------------
     item(
         id = "extendMode",
         title = composableString { stringResource(Res.string.prop_extMode_lb) },
@@ -157,6 +162,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- relayMode ----------------------
     item(
         id = "relayMode",
         title = composableString { stringResource(Res.string.prop_relMode_lb) },
@@ -172,6 +178,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- program ----------------------
     item(
         id = "program",
         title = composableString { stringResource(Res.string.prop_program_lb) },
@@ -194,6 +201,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- minRun ----------------------
     item(
         id = "minRun",
         title = composableString { stringResource(Res.string.prop_minImpulse_lb) },
@@ -212,6 +220,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- maxRun ----------------------
     item(
         id = "maxRun",
         title = composableString { stringResource(Res.string.prop_maxImpulse_lb) },
@@ -230,6 +239,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- period ----------------------
     item(
         id = "period",
         title = composableString { stringResource(Res.string.prop_repeatTime_lb) },
@@ -237,6 +247,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             this@toItems?.period?.toString()?.let { stringResource(Res.string.prop_dimen_sec, it) } ?: EMPTY_PLACEHOLDER
         }
     )
+    //-------------------------- turnOff ----------------------
     item(
         id = "turnOff",
         title = composableString { stringResource(Res.string.prop_turnOff_lb) },
@@ -244,6 +255,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             this@toItems?.timer0?.toString()?.let { stringResource(Res.string.prop_dimen_min, it) } ?: EMPTY_PLACEHOLDER
         }
     )
+    //-------------------------- turnOn ----------------------
     item(
         id = "turnOn",
         title = composableString { stringResource(Res.string.prop_turnOn_lb) },
@@ -265,6 +277,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- alarm0 ----------------------
     item(
         id = "alarm0",
         title = composableString { stringResource(Res.string.prop_alarm0_lb) },
@@ -283,6 +296,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- alarm1 ----------------------
     item(
         id = "alarm1",
         title = composableString { stringResource(Res.string.prop_alarm1_lb) },
@@ -301,6 +315,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- extOn0 ----------------------
     item(
         id = "extOn0",
         title = composableString { stringResource(Res.string.prop_extOn0_lb) },
@@ -319,6 +334,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- extOn1 ----------------------
     item(
         id = "extOn1",
         title = composableString { stringResource(Res.string.prop_extOn1_lb) },
@@ -337,6 +353,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- extOff0 ----------------------
     item(
         id = "extOff0",
         title = composableString { stringResource(Res.string.prop_extOff0_lb) },
@@ -354,6 +371,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- extOff1 ----------------------
     item(
         id = "extOff1",
         title = composableString { stringResource(Res.string.prop_extOff1_lb) },
@@ -371,6 +389,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- air0 ----------------------
     item(
         id = "air0",
         title = composableString { stringResource(Res.string.prop_air0_lb) },
@@ -378,6 +397,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             this@toItems?.air0?.toString()?.let { stringResource(Res.string.prop_dimen_min, it) } ?: EMPTY_PLACEHOLDER
         }
     )
+    //-------------------------- air1 ----------------------
     item(
         id = "air1",
         title = composableString { stringResource(Res.string.prop_air1_lb) },
@@ -385,6 +405,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             this@toItems?.air1?.toString()?.let { stringResource(Res.string.prop_dimen_sec, it) } ?: EMPTY_PLACEHOLDER
         }
     )
+    //-------------------------- spCO2 ----------------------
     item(
         id = "spCO2",
         title = composableString { stringResource(Res.string.prop_CO2_lb) },
@@ -402,6 +423,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- koffCurr ----------------------
     item(
         id = "koffCurr",
         title = composableString { stringResource(Res.string.prop_koffCurr_lb) },
@@ -420,6 +442,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- hysteresis ----------------------
     item(
         id = "hysteresis",
         title = composableString { stringResource(Res.string.prop_Hysteresis_lb) },
@@ -427,6 +450,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             this@toItems?.hysteresis?.toString()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER
         }
     )
+    //-------------------------- zonality ----------------------
     item(
         id = "zonality",
         title = composableString { stringResource(Res.string.prop_zonelity_lb) },
@@ -440,6 +464,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- flapRestrictions ----------------------
     item(
         id = "flapRestrictions",
         title = composableString { stringResource(Res.string.prop_flapRestr_lb) },
@@ -447,6 +472,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             this@toItems?.flapRestrictions?.toString()?.let { stringResource(Res.string.prop_dimen_percent, it) } ?: EMPTY_PLACEHOLDER
         }
     )
+    //-------------------------- turnTime ----------------------
     item(
         id = "turnTime",
         title = composableString { stringResource(Res.string.prop_turnTime_lb) },
@@ -454,6 +480,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             this@toItems?.turnTime?.toString()?.let { stringResource(Res.string.prop_dimen_sec, it) } ?: EMPTY_PLACEHOLDER
         }
     )
+    //-------------------------- waitCooling ----------------------
     item(
         id = "waitCooling",
         title = composableString { stringResource(Res.string.prop_waitCooling_lb) },
@@ -461,6 +488,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             this@toItems?.waitCooling?.toString()?.let { stringResource(Res.string.prop_dimen_sec, it) } ?: EMPTY_PLACEHOLDER
         }
     )
+    //-------------------------- pkoff0 ----------------------
     item(
         id = "pkoff0",
         title = composableString { stringResource(Res.string.prop_pkoff0_lb) },
@@ -479,6 +507,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- pkoff1 ----------------------
     item(
         id = "pkoff1",
         title = composableString { stringResource(Res.string.prop_pkoff1_lb) },
@@ -497,6 +526,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- ikoff0 ----------------------
     item(
         id = "ikoff0",
         title = composableString { stringResource(Res.string.prop_ikoff0_lb) },
@@ -515,6 +545,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- ikoff1 ----------------------
     item(
         id = "ikoff1",
         title = composableString { stringResource(Res.string.prop_ikoff1_lb) },
@@ -533,6 +564,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- identif ----------------------
     item(
         id = "identif",
         title = composableString { stringResource(Res.string.prop_identif_lb) },
