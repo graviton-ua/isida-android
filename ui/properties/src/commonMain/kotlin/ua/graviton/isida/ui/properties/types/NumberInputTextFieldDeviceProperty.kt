@@ -15,14 +15,14 @@ import kotlinx.coroutines.flow.map
 import ua.graviton.isida.ui.properties.DeviceProperty
 
 @Stable
-internal abstract class NumberInputTextFieldDeviceProperty<T : Number>(
+abstract class NumberInputTextFieldDeviceProperty<T : Number>(
     initValue: T? = null,
     override val title: @Composable () -> String,
     override val description: (@Composable () -> String)? = null,
     private val allowDecimals: Boolean = false,
     onValidate: InputTextFieldStateErrorScope<Error>.(String) -> Error? = { null },
 ) : DeviceProperty {
-    protected val inputHelper = DefaultNumberInputTextFieldStateHelper(initValue = initValue, onValidate = onValidate)
+    val inputHelper = DefaultNumberInputTextFieldStateHelper(initValue = initValue, onValidate = onValidate)
 
     @Composable
     override fun Content(modifier: Modifier) {
