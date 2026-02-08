@@ -95,10 +95,11 @@ class ProgramViewModel(
     }
 
     fun sendTable() {
+        val tableNumber = selectedTable.value
         val currentTable = table.value ?: return
         viewModelScope.launch {
             loadingState.addLoader()
-            updateProgramTable.executeSync(UpdateProgramTable.Params(currentTable))
+            updateProgramTable.executeSync(UpdateProgramTable.Params(tableNumber, currentTable))
                 .onSuccess { logger.d { "Table updated successfully" } }
                 .onFailure { logger.w(it) { "Failed to update table" } }
             loadingState.removeLoader()

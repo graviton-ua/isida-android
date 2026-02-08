@@ -6,7 +6,7 @@ import ua.graviton.isida.data.serializers.CommandWriter
 import kotlin.reflect.KClass
 
 object SetTableCommandV1Serializer : CommandSerializerV1<SetTableCommandV1>() {
-    override val length: Int = 240      // [0xF0, 0x00]
+    override val length: Int = 242      // [0xF0, 0x00]
     override val commandId: Int = 57    // [0x39]
 
     override fun serializePayload(
@@ -14,6 +14,7 @@ object SetTableCommandV1Serializer : CommandSerializerV1<SetTableCommandV1>() {
         writer: CommandWriter
     ): Result<ByteArray> = Result.runCatching {
         // Write data to byte array
+        writer.u16(command.number)
         command.days.forEach { day -> TableDayV1Serializer.serializePayload(day, writer) }
 
         writer.data

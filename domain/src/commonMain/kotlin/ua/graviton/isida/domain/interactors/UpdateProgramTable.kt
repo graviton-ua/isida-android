@@ -44,7 +44,7 @@ class UpdateProgramTable(
                 }
 
                 val command: SetTableCommand = when (params.table) {
-                    is TablePacketV1 -> SetTableCommandV1(days = params.table.days)
+                    is TablePacketV1 -> SetTableCommandV1(number = params.number, days = params.table.days)
                     else -> throw IllegalStateException("Unsupported table type: ${params.table::class}")
                 }
                 val bytes = RootEncoder.serialize(command).getOrThrow()
@@ -57,5 +57,5 @@ class UpdateProgramTable(
         }
     }
 
-    data class Params(val table: TablePacket)
+    data class Params(val number: Int, val table: TablePacket)
 }

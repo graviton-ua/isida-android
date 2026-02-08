@@ -10,5 +10,6 @@ import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
  * @property days The list of daily program settings to upload.
  */
 data class SetTableCommandV1(
+    val number: Int,
     val days: List<TableDayV1>,
 ) : IsidaCommand.V1, SetTableCommand
