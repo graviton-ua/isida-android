@@ -10,16 +10,12 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
 import com.whoppah.common.compose.theme.WhoppahTheme
 import com.whoppah.common.compose.ui.WhDialog
 import kotlinx.serialization.Serializable
-import ua.graviton.isida.ui.setprop.models.*
 
 @Serializable
 data class SetPropDialog(val id: String) : NavKey
@@ -112,31 +108,31 @@ private fun DialogButtons(
 }
 
 
-private class DevicePropertyPreviewParameterProvider : PreviewParameterProvider<DeviceProperty> {
-    val properties = listOf(
-        SpT0(value = 10f), SpT1(value = 25f), SpRh0(value = 24f), SpRh1(),
-        ExtendMode(), RelayMode(), Program(),
-        MinRun(), MaxRun(), Period(), TurnOff(), TurnOn(),
-        Alarm0(), Alarm1(), ExtOn0(), ExtOn1(), ExtOff0(), ExtOff1(),
-        Air0(), Air1(), SpCO2(), KoffCurr(), Hysteresis(), Zonality(),
-        TurnTime(), WaitCooling(), Permission(), FlapRestrictions(),
-        Pkoff0(value = 1), Pkoff1(value = 99), Ikoff0(), Ikoff1(),
-        Identif(),
-    )
-    override val values = properties.asSequence()
-}
-
-@Preview
-@Composable
-private fun Preview(
-    @PreviewParameter(DevicePropertyPreviewParameterProvider::class) property: DeviceProperty,
-) {
-    WhoppahTheme {
-        LaunchedEffect(Unit) { property.validate() }
-        SetPropDialog(
-            state = SetPropViewState(property = property),
-            navigateUp = {},
-            send = {},
-        )
-    }
-}
+// private class DevicePropertyPreviewParameterProvider : PreviewParameterProvider<DeviceProperty> {
+//     val properties = listOf(
+//         SpT0(value = 10f), SpT1(value = 25f), SpRh0(value = 24f), SpRh1(),
+//         ExtendMode(), RelayMode(), Program(),
+//         MinRun(), MaxRun(), Period(), TurnOff(), TurnOn(),
+//         Alarm0(), Alarm1(), ExtOn0(), ExtOn1(), ExtOff0(), ExtOff1(),
+//         Air0(), Air1(), SpCO2(), KoffCurr(), Hysteresis(), Zonality(),
+//         TurnTime(), WaitCooling(), Permission(), FlapRestrictions(),
+//         Pkoff0(value = 1), Pkoff1(value = 99), Ikoff0(), Ikoff1(),
+//         Identif(),
+//     )
+//     override val values = properties.asSequence()
+// }
+//
+// @Preview
+// @Composable
+// private fun Preview(
+//     @PreviewParameter(DevicePropertyPreviewParameterProvider::class) property: DeviceProperty,
+// ) {
+//     WhoppahTheme {
+//         LaunchedEffect(Unit) { property.validate() }
+//         SetPropDialog(
+//             state = SetPropViewState(property = property),
+//             navigateUp = {},
+//             send = {},
+//         )
+//     }
+// }

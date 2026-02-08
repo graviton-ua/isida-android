@@ -1,4 +1,4 @@
-package ua.graviton.isida.ui.setprop.models
+package ua.graviton.isida.ui.properties
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable

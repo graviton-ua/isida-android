@@ -9,7 +9,7 @@ plugins {
 kotlin {
 
     android {
-        namespace = "ua.graviton.isida.ui.setprop"
+        namespace = "ua.graviton.isida.ui.setday"
     }
 
     sourceSets {
@@ -25,7 +25,7 @@ kotlin {
             implementation(projects.common.ui.navigation)
 
             implementation(projects.ui.properties)
-
+            
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
         }

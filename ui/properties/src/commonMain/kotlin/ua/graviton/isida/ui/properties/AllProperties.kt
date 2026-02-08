@@ -1,70 +1,16 @@
-package ua.graviton.isida.ui.setprop.models
+package ua.graviton.isida.ui.properties
 
 import androidx.compose.runtime.Stable
 import com.whoppah.common.compose.input.NumberInputTextFieldState
-import com.whoppah.common.resources.Res
-import com.whoppah.common.resources.prop_CO2_lb
-import com.whoppah.common.resources.prop_Hysteresis_lb
-import com.whoppah.common.resources.prop_air0_lb
-import com.whoppah.common.resources.prop_air1_lb
-import com.whoppah.common.resources.prop_alarm0_lb
-import com.whoppah.common.resources.prop_alarm1_lb
-import com.whoppah.common.resources.dimen_celsius
-import com.whoppah.common.resources.dimen_min
-import com.whoppah.common.resources.dimen_percent
-import com.whoppah.common.resources.dimen_ppm
-import com.whoppah.common.resources.dimen_sec
-import com.whoppah.common.resources.input_info_limit_min_max
-import com.whoppah.common.resources.no
-import com.whoppah.common.resources.prop_Rh1_lb
-import com.whoppah.common.resources.prop_Rh2_lb
-import com.whoppah.common.resources.prop_Rh_lb
-import com.whoppah.common.resources.prop_extMode0
-import com.whoppah.common.resources.prop_extMode1
-import com.whoppah.common.resources.prop_extMode2
-import com.whoppah.common.resources.prop_extMode3
-import com.whoppah.common.resources.prop_extMode4
-import com.whoppah.common.resources.prop_extMode5
-import com.whoppah.common.resources.prop_extMode_lb
-import com.whoppah.common.resources.prop_extOff0_lb
-import com.whoppah.common.resources.prop_extOff1_lb
-import com.whoppah.common.resources.prop_extOn0_lb
-import com.whoppah.common.resources.prop_extOn1_lb
-import com.whoppah.common.resources.prop_flapRestr_lb
-import com.whoppah.common.resources.prop_identif_lb
-import com.whoppah.common.resources.prop_ikoff0_lb
-import com.whoppah.common.resources.prop_ikoff1_lb
-import com.whoppah.common.resources.prop_koffCurr_lb
-import com.whoppah.common.resources.prop_maxImpulse_lb
-import com.whoppah.common.resources.prop_minImpulse_lb
-import com.whoppah.common.resources.prop_pkoff0_lb
-import com.whoppah.common.resources.prop_pkoff1_lb
-import com.whoppah.common.resources.prop_program_lb
-import com.whoppah.common.resources.prop_program_reset
-import com.whoppah.common.resources.prop_relMode0
-import com.whoppah.common.resources.prop_relMode1
-import com.whoppah.common.resources.prop_relMode2
-import com.whoppah.common.resources.prop_relMode3
-import com.whoppah.common.resources.prop_relMode4
-import com.whoppah.common.resources.prop_relMode_lb
-import com.whoppah.common.resources.prop_repeatTime_lb
-import com.whoppah.common.resources.prop_spRh0_lb
-import com.whoppah.common.resources.prop_spRh1_lb
-import com.whoppah.common.resources.prop_spT0_lb
-import com.whoppah.common.resources.prop_spT1_lb
-import com.whoppah.common.resources.prop_turnOff_lb
-import com.whoppah.common.resources.prop_turnOn_lb
-import com.whoppah.common.resources.prop_turnTime_lb
-import com.whoppah.common.resources.prop_waitCooling_lb
-import com.whoppah.common.resources.prop_zonelity_lb
+import com.whoppah.common.resources.*
 import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
-import ua.graviton.isida.ui.setprop.models.types.NumberInputTextFieldDeviceProperty
-import ua.graviton.isida.ui.setprop.models.types.SliderDeviceProperty
-import ua.graviton.isida.ui.setprop.models.types.RadioListDeviceProperty
+import ua.graviton.isida.ui.properties.types.NumberInputTextFieldDeviceProperty
+import ua.graviton.isida.ui.properties.types.RadioListDeviceProperty
+import ua.graviton.isida.ui.properties.types.SliderDeviceProperty
 
-internal fun propertyFromId(id: String): DeviceProperty = when (id) {
+fun propertyFromId(id: String): DeviceProperty = when (id) {
     "spT0" -> SpT0()
     "spT1" -> SpT1()
     "permission" -> Permission()
@@ -106,7 +52,7 @@ internal fun propertyFromId(id: String): DeviceProperty = when (id) {
 @Stable
 internal class SpT0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_spT0_lb)+ stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_spT0_lb) + stringResource(Res.string.dimen_celsius) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -141,7 +87,7 @@ internal class SpT0(value: Float? = null) : NumberInputTextFieldDeviceProperty<F
 @Stable
 internal class SpT1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_spT1_lb)+ stringResource(Res.string.dimen_celsius)},
+    title = { stringResource(Res.string.prop_spT1_lb) + stringResource(Res.string.dimen_celsius) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -188,26 +134,28 @@ internal class Permission(value: Int? = null) : RadioListDeviceProperty<Int>(
         if (id != null) stringResource(id) else "Unknown"
     },
 ) {
-        override fun readValue(packet: StatusPacket) {
-            val value = when (packet) {
-                is StatusPacketV1 -> packet.permission
-                else -> null
-            }
-            inputHelper.setValue(value)
+    override fun readValue(packet: StatusPacket) {
+        val value = when (packet) {
+            is StatusPacketV1 -> packet.permission
+            else -> null
         }
-
-        override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-            is StatusPacketV1 -> inputHelper.value?.let {
-                packet.copy(permission = it) } ?: packet
-            else -> packet
-        }
+        inputHelper.setValue(value)
     }
+
+    override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
+        is StatusPacketV1 -> inputHelper.value?.let {
+            packet.copy(permission = it)
+        } ?: packet
+
+        else -> packet
+    }
+}
 
 //-------------------------- spRh0 ------------------------------
 @Stable
 internal class SpRh0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value,
-    title = { stringResource(Res.string.prop_spRh0_lb)+ stringResource(Res.string.dimen_percent) },
+    title = { stringResource(Res.string.prop_spRh0_lb) + stringResource(Res.string.dimen_percent) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -242,7 +190,7 @@ internal class SpRh0(value: Float? = null) : NumberInputTextFieldDeviceProperty<
 @Stable
 internal class SpRh1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_spRh1_lb)+ stringResource(Res.string.dimen_percent) },
+    title = { stringResource(Res.string.prop_spRh1_lb) + stringResource(Res.string.dimen_percent) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -280,16 +228,16 @@ internal class ExtendMode(value: Int? = null) : RadioListDeviceProperty<Int>(
     title = { stringResource(Res.string.prop_extMode_lb) },
     list = listOf(0, 1, 2, 3, 4, 5),
     listItemTitleMap = { modeIndex ->
-            val id = when (modeIndex) {
-                0 -> Res.string.prop_extMode0
-                1 -> Res.string.prop_extMode1
-                2 -> Res.string.prop_extMode2
-                3 -> Res.string.prop_extMode3
-                4 -> Res.string.prop_extMode4
-                5 -> Res.string.prop_extMode5
-                else -> null
-            }
-            if (id != null) stringResource(id) else "Unknown"
+        val id = when (modeIndex) {
+            0 -> Res.string.prop_extMode0
+            1 -> Res.string.prop_extMode1
+            2 -> Res.string.prop_extMode2
+            3 -> Res.string.prop_extMode3
+            4 -> Res.string.prop_extMode4
+            5 -> Res.string.prop_extMode5
+            else -> null
+        }
+        if (id != null) stringResource(id) else "Unknown"
     },
 ) {
     override fun readValue(packet: StatusPacket) {
@@ -313,14 +261,14 @@ internal class RelayMode(value: Int? = null) : RadioListDeviceProperty<Int>(
     title = { stringResource(Res.string.prop_relMode_lb) },
     list = listOf(0, 1, 2, 3, 4),
     listItemTitleMap = { modeIndex ->
-            val id = when (modeIndex) {
-                0 -> Res.string.prop_relMode0
-                1 -> Res.string.prop_relMode1
-                2 -> Res.string.prop_relMode2
-                3 -> Res.string.prop_relMode3
-                4 -> Res.string.prop_relMode4
-                else -> null
-            }
+        val id = when (modeIndex) {
+            0 -> Res.string.prop_relMode0
+            1 -> Res.string.prop_relMode1
+            2 -> Res.string.prop_relMode2
+            3 -> Res.string.prop_relMode3
+            4 -> Res.string.prop_relMode4
+            else -> null
+        }
         if (id != null) stringResource(id) else "Unknown"
     },
 ) {
@@ -345,10 +293,10 @@ internal class Program(value: Int? = null) : RadioListDeviceProperty<Int>(
     title = { stringResource(Res.string.prop_program_lb) },
     list = listOf(0, 1, 2, 3, 4, 5),
     listItemTitleMap = {
-        when(it) {
-            0-> stringResource(Res.string.no)
-            5-> stringResource(Res.string.prop_program_reset)
-            else-> {
+        when (it) {
+            0 -> stringResource(Res.string.no)
+            5 -> stringResource(Res.string.prop_program_reset)
+            else -> {
                 val label = stringResource(Res.string.prop_program_lb)
                 "$label $it"
             }
@@ -374,7 +322,7 @@ internal class Program(value: Int? = null) : RadioListDeviceProperty<Int>(
 @Stable
 internal class MinRun(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_minImpulse_lb)+ stringResource(Res.string.dimen_sec) },
+    title = { stringResource(Res.string.prop_minImpulse_lb) + stringResource(Res.string.dimen_sec) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -409,7 +357,7 @@ internal class MinRun(value: Float? = null) : NumberInputTextFieldDeviceProperty
 @Stable
 internal class MaxRun(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { stringResource(Res.string.prop_maxImpulse_lb)+ stringResource(Res.string.dimen_sec) },
+    title = { stringResource(Res.string.prop_maxImpulse_lb) + stringResource(Res.string.dimen_sec) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -444,7 +392,7 @@ internal class MaxRun(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 @Stable
 internal class Period(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { stringResource(Res.string.prop_repeatTime_lb)+ stringResource(Res.string.dimen_sec) },
+    title = { stringResource(Res.string.prop_repeatTime_lb) + stringResource(Res.string.dimen_sec) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -479,7 +427,7 @@ internal class Period(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 @Stable
 internal class TurnOff(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { stringResource(Res.string.prop_turnOff_lb)+ stringResource(Res.string.dimen_min) },
+    title = { stringResource(Res.string.prop_turnOff_lb) + stringResource(Res.string.dimen_min) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -514,7 +462,7 @@ internal class TurnOff(value: Int? = null) : NumberInputTextFieldDeviceProperty<
 @Stable
 internal class TurnOn(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { stringResource(Res.string.prop_turnOn_lb)+ stringResource(Res.string.dimen_min) },
+    title = { stringResource(Res.string.prop_turnOn_lb) + stringResource(Res.string.dimen_min) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -549,7 +497,7 @@ internal class TurnOn(value: Int? = null) : NumberInputTextFieldDeviceProperty<I
 @Stable
 internal class Alarm0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_alarm0_lb)+ stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_alarm0_lb) + stringResource(Res.string.dimen_celsius) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -584,7 +532,7 @@ internal class Alarm0(value: Float? = null) : NumberInputTextFieldDeviceProperty
 @Stable
 internal class Alarm1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_alarm1_lb)+ stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_alarm1_lb) + stringResource(Res.string.dimen_celsius) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -619,7 +567,7 @@ internal class Alarm1(value: Float? = null) : NumberInputTextFieldDeviceProperty
 @Stable
 internal class ExtOn0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_extOn0_lb)+ stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_extOn0_lb) + stringResource(Res.string.dimen_celsius) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -654,7 +602,7 @@ internal class ExtOn0(value: Float? = null) : NumberInputTextFieldDeviceProperty
 @Stable
 internal class ExtOn1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_extOn1_lb)+ stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_extOn1_lb) + stringResource(Res.string.dimen_celsius) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -689,7 +637,7 @@ internal class ExtOn1(value: Float? = null) : NumberInputTextFieldDeviceProperty
 @Stable
 internal class ExtOff0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_extOff0_lb)+ stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_extOff0_lb) + stringResource(Res.string.dimen_celsius) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -724,7 +672,7 @@ internal class ExtOff0(value: Float? = null) : NumberInputTextFieldDevicePropert
 @Stable
 internal class ExtOff1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_extOff1_lb)+ stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_extOff1_lb) + stringResource(Res.string.dimen_celsius) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -759,7 +707,7 @@ internal class ExtOff1(value: Float? = null) : NumberInputTextFieldDevicePropert
 @Stable
 internal class Air0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { stringResource(Res.string.prop_air0_lb)+ stringResource(Res.string.dimen_min) },
+    title = { stringResource(Res.string.prop_air0_lb) + stringResource(Res.string.dimen_min) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -794,7 +742,7 @@ internal class Air0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int
 @Stable
 internal class Air1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { stringResource(Res.string.prop_air1_lb)+ stringResource(Res.string.dimen_sec) },
+    title = { stringResource(Res.string.prop_air1_lb) + stringResource(Res.string.dimen_sec) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -830,7 +778,7 @@ internal class Air1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int
 internal class SpCO2(value: Float? = null) : SliderDeviceProperty<Float>(
     initValue = (value ?: 20f),
     min = 1000f, max = 5000f, increment = 500f,
-    title = { stringResource(Res.string.prop_CO2_lb)+ stringResource(Res.string.dimen_ppm) },
+    title = { stringResource(Res.string.prop_CO2_lb) + stringResource(Res.string.dimen_ppm) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -886,7 +834,7 @@ internal class KoffCurr(value: Int? = null) : NumberInputTextFieldDeviceProperty
 internal class Hysteresis(value: Float? = null) : SliderDeviceProperty<Float>(
     initValue = (value ?: 0.2f),
     min = 0.2f, max = 3.0f, increment = 0.1f,
-    title = { stringResource(Res.string.prop_Hysteresis_lb)+ stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_Hysteresis_lb) + stringResource(Res.string.dimen_celsius) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -906,7 +854,7 @@ internal class Hysteresis(value: Float? = null) : SliderDeviceProperty<Float>(
 @Stable
 internal class TurnTime(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { stringResource(Res.string.prop_turnTime_lb)+ stringResource(Res.string.dimen_sec) },
+    title = { stringResource(Res.string.prop_turnTime_lb) + stringResource(Res.string.dimen_sec) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -942,7 +890,7 @@ internal class TurnTime(value: Int? = null) : NumberInputTextFieldDeviceProperty
 internal class Zonality(value: Float? = null) : SliderDeviceProperty<Float>(
     initValue = value,
     min = 1.0f, max = 3.0f, increment = 1.0f,
-    title = { stringResource(Res.string.prop_zonelity_lb)+ stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_zonelity_lb) + stringResource(Res.string.dimen_celsius) },
 ) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
@@ -962,7 +910,7 @@ internal class Zonality(value: Float? = null) : SliderDeviceProperty<Float>(
 @Stable
 internal class FlapRestrictions(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { stringResource(Res.string.prop_flapRestr_lb)+ stringResource(Res.string.dimen_percent) },
+    title = { stringResource(Res.string.prop_flapRestr_lb) + stringResource(Res.string.dimen_percent) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -997,7 +945,7 @@ internal class FlapRestrictions(value: Int? = null) : NumberInputTextFieldDevice
 @Stable
 internal class WaitCooling(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { stringResource(Res.string.prop_waitCooling_lb)+ stringResource(Res.string.dimen_min) },
+    title = { stringResource(Res.string.prop_waitCooling_lb) + stringResource(Res.string.dimen_min) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,

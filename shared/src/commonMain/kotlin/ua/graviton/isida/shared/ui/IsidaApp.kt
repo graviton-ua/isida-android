@@ -15,9 +15,11 @@ import ua.graviton.isida.ui.devicemode.DeviceModeDialog
 import ua.graviton.isida.ui.devicemode.addDeviceModeDialog
 import ua.graviton.isida.ui.home.HomeScreen
 import ua.graviton.isida.ui.home.addHomeScreen
-import ua.graviton.isida.ui.navigation.Navigator
+import ua.graviton.isida.ui.navigation.NavigatorWithResultBus
+import ua.graviton.isida.ui.navigation.result.ResultEventBus
 import ua.graviton.isida.ui.scan.ScanDevicesScreen
 import ua.graviton.isida.ui.scan.addScanDevicesScreen
+import ua.graviton.isida.ui.setday.addSetDayScreen
 import ua.graviton.isida.ui.setprop.SetPropDialog
 import ua.graviton.isida.ui.setprop.addSetPropDialog
 
@@ -43,6 +45,7 @@ fun IsidaApp(
                 addDeviceModeDialog(navigator = navigator)
                 addScanDevicesScreen(navigator = navigator)
                 addSetPropDialog(navigator = navigator)
+                addSetDayScreen(navigator = navigator)
             },
             entryDecorators = listOf(
                 rememberSaveableStateHolderNavEntryDecorator(),
@@ -55,7 +58,10 @@ fun IsidaApp(
 
 private class NavigatorImpl(
     val backStack: NavBackStack<NavKey>,
-) : Navigator {
+) : NavigatorWithResultBus {
+
+    override val resultBus: ResultEventBus = ResultEventBus()
+
     override fun navigateUp() {
         // If backstack contains only one destination, we shouldn't allow to go back
         if (backStack.size == 1) return

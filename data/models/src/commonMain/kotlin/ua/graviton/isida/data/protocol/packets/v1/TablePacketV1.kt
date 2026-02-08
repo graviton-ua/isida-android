@@ -1,6 +1,8 @@
 package ua.graviton.isida.data.protocol.packets.v1
 
+import kotlinx.serialization.Serializable
 import ua.graviton.isida.data.protocol.packets.IsidaPacket
+import ua.graviton.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.data.protocol.packets.TablePacket
 
 /**
@@ -23,6 +25,7 @@ data class TablePacketV1(
  * @property spTr Tray rotation setpoint.
  * @property spCl Cooling setpoint.
  */
+@Serializable
 data class TableDayV1(
     val spT0: Float,    // 2 bytes
     val spT1: Float,    // 2 bytes
@@ -30,4 +33,4 @@ data class TableDayV1(
     val spFlp: Int,     // 1 byte
     val spTr: Int,      // 1 byte
     val spCl: Int,      // 1 byte
-)
+) : TableDay

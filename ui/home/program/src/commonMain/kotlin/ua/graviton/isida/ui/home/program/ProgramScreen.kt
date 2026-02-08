@@ -31,6 +31,7 @@ import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
 import ua.graviton.isida.ui.navigation.HomeTabScreen
+import ua.graviton.isida.ui.navigation.result.ResultEventBus
 
 @Serializable
 data object ProgramScreen : HomeTabScreen {
@@ -41,7 +42,10 @@ data object ProgramScreen : HomeTabScreen {
 @Composable
 internal fun ProgramScreen(
     viewModel: ProgramViewModel = injectedViewModel(),
+    resultBus: ResultEventBus,
 ) {
+    // ResultEffect here to receive UpdatedDay from SetDayDialog
+
     val state by viewModel.state.collectAsStateWithLifecycle()
     ProgramScreen(
         state = state,

@@ -26,13 +26,14 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import org.jetbrains.compose.resources.stringResource
-import ua.graviton.isida.ui.home.prop.PropScreen
-import ua.graviton.isida.ui.home.prop.addPropScreen
 import ua.graviton.isida.ui.home.program.ProgramScreen
 import ua.graviton.isida.ui.home.program.addProgramScreen
+import ua.graviton.isida.ui.home.prop.PropScreen
+import ua.graviton.isida.ui.home.prop.addPropScreen
 import ua.graviton.isida.ui.home.stats.StatsScreen
 import ua.graviton.isida.ui.home.stats.addStatsScreen
 import ua.graviton.isida.ui.navigation.*
+import ua.graviton.isida.ui.navigation.result.ResultEventBus
 
 @Serializable
 data object HomeScreen : NavKey
@@ -44,6 +45,7 @@ private val TOP_LEVEL_ROUTES: List<HomeTabScreen> = listOf(
 @Composable
 internal fun HomeScreen(
     viewModel: HomeViewModel = injectedViewModel(),
+    resultBus: ResultEventBus,
     connectDevice: () -> Unit,
     openPowerDialog: () -> Unit,
     openSetPropDialog: (String) -> Unit,
@@ -52,6 +54,7 @@ internal fun HomeScreen(
 
     HomeScreen(
         state = state,
+        resultBus = resultBus,
         connectDevice = connectDevice,
         disconnectDevice = viewModel::disconnect,
         openPowerDialog = openPowerDialog,
@@ -62,6 +65,7 @@ internal fun HomeScreen(
 @Composable
 private fun HomeScreen(
     state: HomeViewState,
+    resultBus: ResultEventBus,
     connectDevice: () -> Unit,
     disconnectDevice: () -> Unit,
     openPowerDialog: () -> Unit,
@@ -73,11 +77,11 @@ private fun HomeScreen(
         topLevelRoutes = TOP_LEVEL_ROUTES.toSet(),
     )
     val navigator = remember(navigationState) { NavigatorImpl(navigationState) }
-    val entryProvider = remember(navigator) {
+    val entryProvider = remember(navigator, resultBus) {
         entryProvider {
             addStatsScreen(navigator = navigator)
             addPropScreen(navigator = navigator, openSetPropDialog = openSetPropDialog)
-            addProgramScreen(navigator = navigator)
+            addProgramScreen(navigator = navigator, resultBus = resultBus)
         }
     }
 
@@ -217,6 +221,7 @@ private fun Preview() {
     WhoppahTheme {
         HomeScreen(
             state = HomeViewState.Empty,
+            resultBus = ResultEventBus(),
             connectDevice = {},
             disconnectDevice = {},
             openPowerDialog = {},

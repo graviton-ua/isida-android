@@ -1,4 +1,4 @@
-package ua.graviton.isida.ui.setprop.models.types
+package ua.graviton.isida.ui.properties.types
 
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
@@ -8,12 +8,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.whoppah.common.compose.input.DefaultInputStateHelper
@@ -23,9 +20,7 @@ import com.whoppah.common.compose.theme.WhoppahTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ua.graviton.isida.data.protocol.packets.StatusPacket
-import ua.graviton.isida.ui.setprop.SetPropDialog
-import ua.graviton.isida.ui.setprop.SetPropViewState
-import ua.graviton.isida.ui.setprop.models.DeviceProperty
+import ua.graviton.isida.ui.properties.DeviceProperty
 
 @Stable
 internal abstract class SliderDeviceProperty<T : Number>(
@@ -174,17 +169,17 @@ private class SliderPreviewParameterProvider : PreviewParameterProvider<DevicePr
     override val values = properties.asSequence()
 }
 
-@Preview
-@Composable
-private fun Preview(
-    @PreviewParameter(SliderPreviewParameterProvider::class) property: DeviceProperty,
-) {
-    WhoppahTheme {
-        LaunchedEffect(Unit) { property.validate() }
-        SetPropDialog(
-            state = SetPropViewState(property = property),
-            navigateUp = {},
-            send = {},
-        )
-    }
-}
+// @Preview
+// @Composable
+// private fun Preview(
+//     @PreviewParameter(SliderPreviewParameterProvider::class) property: DeviceProperty,
+// ) {
+//     WhoppahTheme {
+//         LaunchedEffect(Unit) { property.validate() }
+//         SetPropDialog(
+//             state = SetPropViewState(property = property),
+//             navigateUp = {},
+//             send = {},
+//         )
+//     }
+// }

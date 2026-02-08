@@ -35,6 +35,7 @@ kotlin {
             api(projects.ui.home.stats)
             api(projects.ui.scan)
             api(projects.ui.setprop)
+            api(projects.ui.setday)
 
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.jetbrains.lifecycle.viewmodel.navigation3)

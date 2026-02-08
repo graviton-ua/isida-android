@@ -21,7 +21,7 @@ import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.domain.interactors.SendCommand
 import ua.graviton.isida.domain.observers.ObserveStatus
-import ua.graviton.isida.ui.setprop.models.propertyFromId
+import ua.graviton.isida.ui.properties.propertyFromId
 
 @AssistedInject
 class SetPropViewModel(
