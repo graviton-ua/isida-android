@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.graviton.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.data.protocol.packets.TablePacket
+import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
 import ua.graviton.isida.data.protocol.packets.v1.TablePacketV1
 import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
 import ua.graviton.isida.domain.interactors.GetProgramTable
@@ -116,5 +117,22 @@ class ProgramViewModel(
 
     fun onDayUpdated(index: Int, day: TableDay) {
         logger.d { "onDayUpdated: $index, $day" }
+        table.update { currentTable ->
+            val result: TablePacket? = when (currentTable) {
+                is TablePacketV1 -> {
+                    if (day is TableDayV1) {
+                        val dayIndex = index - 1
+                        val newDays = currentTable.days.toMutableList()
+                        if (dayIndex in newDays.indices) {
+                            newDays[dayIndex] = day
+                            currentTable.copy(days = newDays)
+                        } else currentTable
+                    } else currentTable
+                }
+
+                else -> currentTable
+            }
+            result
+        }
     }
 }
