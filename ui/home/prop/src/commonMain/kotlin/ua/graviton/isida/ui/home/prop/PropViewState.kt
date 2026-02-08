@@ -9,11 +9,13 @@ import org.jetbrains.compose.resources.stringResource
 
 @Immutable
 data class PropViewState(
+    val deviceConnected: Boolean,
     val items: List<PropItem>
 ) {
     companion object {
-        val Init = PropViewState(emptyList())
+        val Init = PropViewState(deviceConnected = false, items = emptyList())
         val Preview = PropViewState(
+            deviceConnected = true,
             items = listOf(
                 PropItem.Default(id = "1", title = composableString { "Some item example" }, value = composableString { "23 C" }),
                 PropItem.Default(id = "2", title = composableString { "item example" }, value = composableString { "23.2333" }),

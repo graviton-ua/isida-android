@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
  * @property items Список строк [StatsItem] (заголовки и информационные элементы) для отображения в списке.
  */
 data class StatsViewState(
+    val deviceConnected: Boolean,
     val titleDeviceId: Int?,
     val titleDeviceBackgroundColor: Color?,
 
@@ -22,6 +23,7 @@ data class StatsViewState(
          * Содержит элементы-заполнители для определения структуры списка.
          */
         val Empty = StatsViewState(
+            deviceConnected = false,
             titleDeviceId = null,
             titleDeviceBackgroundColor = null,
             items = emptyList(),
@@ -31,6 +33,7 @@ data class StatsViewState(
          * Состояние предварительного просмотра, заполненное фиктивными данными, подходящее для предварительного просмотра в инструментах UI.
          */
         val Preview = StatsViewState(
+            deviceConnected = true,
             titleDeviceId = 1,
             titleDeviceBackgroundColor = null,
             items = emptyList(),

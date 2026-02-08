@@ -38,8 +38,10 @@ class PropViewModel(
     }.onStart { emit(emptyList()) }
 
     val state: StateFlow<PropViewState> = combine(connectionState, uiItems) { state, items ->
+        val connected = state == ConnectionState.CONNECTED
         PropViewState(
-            items = if (state == ConnectionState.CONNECTED) items else emptyList(),
+            deviceConnected = connected,
+            items = if (connected) items else emptyList(),
         )
     }.stateIn(
         scope = viewModelScope,

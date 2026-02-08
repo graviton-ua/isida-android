@@ -213,4 +213,6 @@
     <string name="prop_ikoff1_lb">Integral humidification</string>
     <string name="prop_identif_lb">Device number</string>
 
+    <string name="device_not_connected_title">Device Not Connected</string>
+    <string name="device_not_connected_message">Please connect to the device to see information and manage settings.</string>
 </resources>

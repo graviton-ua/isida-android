@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -21,6 +21,8 @@ import com.whoppah.common.compose.ui.WhTopAppBar
 import com.whoppah.common.resources.Res
 import com.whoppah.common.resources.app_name
 import com.whoppah.common.resources.butPower
+import com.whoppah.common.resources.disconnect
+import com.whoppah.common.resources.label_connect
 import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
@@ -138,28 +140,16 @@ private fun HomeTopBar(
     WhTopAppBar(
         title = { Text(text = stringResource(Res.string.app_name)) },
         actions = {
-            var expanded by remember { mutableStateOf(false) }
-            IconButton(onClick = { expanded = !expanded }) { Icon(imageVector = Icons.Default.MoreVert, contentDescription = "Device menu") }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                if (deviceConnected)
-                    DropdownMenuItem(
-                        text = { Text(text = stringResource(Res.string.butPower)) },
-                        onClick = openPowerDialog,
-                    )
-
-                when (deviceConnected) {
-                    false -> DropdownMenuItem(
-                        text = { Text(text = "Connect") },
-                        onClick = { connectDevice(); expanded = false }
-                    )
-
-                    true -> DropdownMenuItem(
-                        text = { Text(text = "Disconnect") },
-                        onClick = { disconnectDevice(); expanded = false }
-                    )
+            if (deviceConnected) {
+                IconButton(onClick = openPowerDialog) {
+                    Icon(imageVector = Icons.Default.Tune, contentDescription = stringResource(Res.string.butPower))
+                }
+                TextButton(onClick = disconnectDevice) {
+                    Text(text = stringResource(Res.string.disconnect))
+                }
+            } else {
+                TextButton(onClick = connectDevice) {
+                    Text(text = stringResource(Res.string.label_connect))
                 }
             }
         },

@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.whoppah.common.compose.theme.WhoppahTheme
+import com.whoppah.common.compose.ui.DeviceNotConnectedPlaceholder
 import com.whoppah.common.resources.Res
 import com.whoppah.common.resources.home_tab_programtable
 import com.whoppah.metrox.viewmodel.injectedViewModel
@@ -72,28 +73,32 @@ private fun ProgramScreen(
     onApplyPreset: (ProgramPreset) -> Unit,
     onEditDay: (Int, TableDay) -> Unit,
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        ControlPanel(
-            selectedTable = state.selectedTable,
-            hasData = state.items.isNotEmpty(),
-            isLoading = state.isLoading,
-            onFetch = onFetch,
-            onSend = onSend,
-            onTableSelected = onTableSelected,
-            onOpenReset = onOpenReset,
-            modifier = Modifier.fillMaxWidth().padding(8.dp)
-        )
-
-        if (state.items.isEmpty() && !state.isLoading) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(text = "No data. Press Fetch to get program table.")
-            }
-        } else {
-            ProgramTable(
-                items = state.items,
-                onEditDay = onEditDay,
-                modifier = Modifier.fillMaxSize()
+    if (!state.deviceConnected) {
+        DeviceNotConnectedPlaceholder()
+    } else {
+        Column(modifier = Modifier.fillMaxSize()) {
+            ControlPanel(
+                selectedTable = state.selectedTable,
+                hasData = state.items.isNotEmpty(),
+                isLoading = state.isLoading,
+                onFetch = onFetch,
+                onSend = onSend,
+                onTableSelected = onTableSelected,
+                onOpenReset = onOpenReset,
+                modifier = Modifier.fillMaxWidth().padding(8.dp)
             )
+
+            if (state.items.isEmpty() && !state.isLoading) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(text = "No data. Press Refresh to get program table.")
+                }
+            } else {
+                ProgramTable(
+                    items = state.items,
+                    onEditDay = onEditDay,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
     }
 

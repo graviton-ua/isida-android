@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.whoppah.common.compose.backgroundNotNull
 import com.whoppah.common.compose.theme.WhoppahTheme
+import com.whoppah.common.compose.ui.DeviceNotConnectedPlaceholder
 import com.whoppah.common.resources.Res
 import com.whoppah.common.resources.home_tab_stats
 import com.whoppah.metrox.viewmodel.injectedViewModel
@@ -61,16 +62,20 @@ internal fun StatsScreen(
 private fun StatsScreen(
     state: StatsViewState,
 ) {
-    val lazyListState = rememberLazyListState()
-    LazyColumn(
-        state = lazyListState,
-        contentPadding = WindowInsets.statusBars.add(WindowInsets(left = 12.dp, right = 12.dp)).asPaddingValues(),
-        modifier = Modifier.fillMaxSize()
-    ) {
-        state.items.forEach { item ->
-            when (item) {
-                is StatsItem.Header -> stickyHeader { HeaderItem(item) }
-                is StatsItem.Info -> item { InfoItem(item) }
+    if (!state.deviceConnected) {
+        DeviceNotConnectedPlaceholder()
+    } else {
+        val lazyListState = rememberLazyListState()
+        LazyColumn(
+            state = lazyListState,
+            contentPadding = WindowInsets.statusBars.add(WindowInsets(left = 12.dp, right = 12.dp)).asPaddingValues(),
+            modifier = Modifier.fillMaxSize()
+        ) {
+            state.items.forEach { item ->
+                when (item) {
+                    is StatsItem.Header -> stickyHeader { HeaderItem(item) }
+                    is StatsItem.Info -> item { InfoItem(item) }
+                }
             }
         }
     }

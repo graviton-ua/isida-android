@@ -76,11 +76,13 @@ class StatsViewModel(
     val state: StateFlow<StatsViewState> = combine(
         connectionState, deviceId, deviceBgColor, uiItems, loadingState.observable
     ) { state, deviceId, deviceBgColor, items, loading ->
+        val connected = state == ConnectionState.CONNECTED
         // Создает модель состояния экрана
         StatsViewState(
+            deviceConnected = connected,
             titleDeviceId = deviceId,
             titleDeviceBackgroundColor = deviceBgColor,
-            items = if (state == ConnectionState.CONNECTED) items else emptyList(),
+            items = if (connected) items else emptyList(),
         )
     }.stateIn(
         scope = viewModelScope,
