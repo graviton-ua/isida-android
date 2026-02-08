@@ -10,12 +10,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import co.touchlab.kermit.Logger
-import com.whoppah.metrox.viewmodel.LocalViewModelFactoryOwner
-import com.whoppah.metrox.viewmodel.ViewModelFactoryOwner
+import com.whoppah.metrox.viewmodel.LocalMetroViewModelFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import ua.graviton.isida.data.bluetooth.ConnectionState
@@ -63,9 +61,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CompositionLocalProvider(
                 // Provide a way to access the ViewModel factory to injectedViewModel calls down the composable tree
-                LocalViewModelFactoryOwner provides object : ViewModelFactoryOwner {
-                    override val viewModelFactory: ViewModelProvider.Factory get() = appGraph.viewModelFactory
-                },
+                LocalMetroViewModelFactory provides appGraph.viewModelFactory,
             ) {
                 IsidaApp()
             }
