@@ -2,11 +2,9 @@ package ua.graviton.isida
 
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.window.application
-import androidx.lifecycle.ViewModelProvider
 import com.whoppah.base.PlatformConfig
 import com.whoppah.base.PlatformInfo
-import com.whoppah.metrox.viewmodel.LocalViewModelFactoryOwner
-import com.whoppah.metrox.viewmodel.ViewModelFactoryOwner
+import com.whoppah.metrox.viewmodel.LocalMetroViewModelFactory
 import dev.zacsweers.metro.createGraphFactory
 import kotlinx.coroutines.cancel
 import ua.graviton.isida.shared.di.JvmAppGraph
@@ -32,9 +30,7 @@ fun main() {
     application {
         CompositionLocalProvider(
             // Provide a way to access the ViewModel factory to injectedViewModel calls down the composable tree
-            LocalViewModelFactoryOwner provides object : ViewModelFactoryOwner {
-                override val viewModelFactory: ViewModelProvider.Factory get() = appGraph.viewModelFactory
-            },
+            LocalMetroViewModelFactory provides appGraph.viewModelFactory,
         ) {
             App(
                 state = rememberAppState(exitApp = { appGraph.appScope.cancel(); exitApplication() })

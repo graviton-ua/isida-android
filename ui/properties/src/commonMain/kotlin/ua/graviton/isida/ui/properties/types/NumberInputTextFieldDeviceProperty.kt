@@ -1,4 +1,4 @@
-package ua.graviton.isida.ui.setprop.models.types
+package ua.graviton.isida.ui.properties.types
 
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
@@ -12,17 +12,17 @@ import com.whoppah.common.compose.input.PriceInputTransformation
 import com.whoppah.common.compose.ui.WhTextField
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import ua.graviton.isida.ui.setprop.models.DeviceProperty
+import ua.graviton.isida.ui.properties.DeviceProperty
 
 @Stable
-internal abstract class NumberInputTextFieldDeviceProperty<T : Number>(
+abstract class NumberInputTextFieldDeviceProperty<T : Number>(
     initValue: T? = null,
     override val title: @Composable () -> String,
     override val description: (@Composable () -> String)? = null,
     private val allowDecimals: Boolean = false,
     onValidate: InputTextFieldStateErrorScope<Error>.(String) -> Error? = { null },
 ) : DeviceProperty {
-    protected val inputHelper = DefaultNumberInputTextFieldStateHelper(initValue = initValue, onValidate = onValidate)
+    val inputHelper = DefaultNumberInputTextFieldStateHelper(initValue = initValue, onValidate = onValidate)
 
     @Composable
     override fun Content(modifier: Modifier) {

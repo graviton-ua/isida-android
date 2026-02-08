@@ -12,7 +12,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.graviton.isida.data.bluetooth.ConnectionState
+import ua.graviton.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.data.protocol.packets.TablePacket
+import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
 import ua.graviton.isida.data.protocol.packets.v1.TablePacketV1
 import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
 import ua.graviton.isida.domain.interactors.GetProgramTable
@@ -59,10 +61,12 @@ class ProgramViewModel(
         loadingState.observable,
         showResetDialog
     ) { state, selected, items, loading, resetDialog ->
+        val connected = state == ConnectionState.CONNECTED
         ProgramViewState(
+            deviceConnected = connected,
             selectedTable = selected,
             isLoading = loading,
-            items = if (state == ConnectionState.CONNECTED) items else emptyList(),
+            items = if (connected) items else emptyList(),
             showResetDialog = resetDialog,
             availablePresets = ProgramPreset.ALL
         )
@@ -112,5 +116,27 @@ class ProgramViewModel(
     fun applyPreset(preset: ProgramPreset) {
         table.value = preset.table
         closeResetDialog()
+    }
+
+    fun onDayUpdated(index: Int, day: TableDay) {
+        //TODO: Currently index is coming as Day number (starting from 1..30). We should Use Index instead (starting from 0..29)
+        logger.d { "onDayUpdated: $index, $day" }
+        table.update { currentTable ->
+            val result: TablePacket? = when (currentTable) {
+                is TablePacketV1 -> {
+                    if (day is TableDayV1) {
+                        val dayIndex = index - 1
+                        val newDays = currentTable.days.toMutableList()
+                        if (dayIndex in newDays.indices) {
+                            newDays[dayIndex] = day
+                            currentTable.copy(days = newDays)
+                        } else currentTable
+                    } else currentTable
+                }
+
+                else -> currentTable
+            }
+            result
+        }
     }
 }

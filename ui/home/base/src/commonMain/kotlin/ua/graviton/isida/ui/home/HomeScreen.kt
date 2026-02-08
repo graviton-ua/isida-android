@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -21,18 +21,22 @@ import com.whoppah.common.compose.ui.WhTopAppBar
 import com.whoppah.common.resources.Res
 import com.whoppah.common.resources.app_name
 import com.whoppah.common.resources.butPower
+import com.whoppah.common.resources.disconnect
+import com.whoppah.common.resources.label_connect
 import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import org.jetbrains.compose.resources.stringResource
-import ua.graviton.isida.ui.home.prop.PropScreen
-import ua.graviton.isida.ui.home.prop.addPropScreen
+import ua.graviton.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.ui.home.program.ProgramScreen
 import ua.graviton.isida.ui.home.program.addProgramScreen
+import ua.graviton.isida.ui.home.prop.PropScreen
+import ua.graviton.isida.ui.home.prop.addPropScreen
 import ua.graviton.isida.ui.home.stats.StatsScreen
 import ua.graviton.isida.ui.home.stats.addStatsScreen
 import ua.graviton.isida.ui.navigation.*
+import ua.graviton.isida.ui.navigation.result.ResultEventBus
 
 @Serializable
 data object HomeScreen : NavKey
@@ -44,28 +48,34 @@ private val TOP_LEVEL_ROUTES: List<HomeTabScreen> = listOf(
 @Composable
 internal fun HomeScreen(
     viewModel: HomeViewModel = injectedViewModel(),
+    resultBus: ResultEventBus,
     connectDevice: () -> Unit,
     openPowerDialog: () -> Unit,
     openSetPropDialog: (String) -> Unit,
+    navigateSetDay: (Int, TableDay) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     HomeScreen(
         state = state,
+        resultBus = resultBus,
         connectDevice = connectDevice,
         disconnectDevice = viewModel::disconnect,
         openPowerDialog = openPowerDialog,
         openSetPropDialog = openSetPropDialog,
+        navigateSetDay = navigateSetDay,
     )
 }
 
 @Composable
 private fun HomeScreen(
     state: HomeViewState,
+    resultBus: ResultEventBus,
     connectDevice: () -> Unit,
     disconnectDevice: () -> Unit,
     openPowerDialog: () -> Unit,
     openSetPropDialog: (String) -> Unit,
+    navigateSetDay: (Int, TableDay) -> Unit,
 ) {
     val navigationState = rememberNavigationState(
         configuration = config,
@@ -73,11 +83,11 @@ private fun HomeScreen(
         topLevelRoutes = TOP_LEVEL_ROUTES.toSet(),
     )
     val navigator = remember(navigationState) { NavigatorImpl(navigationState) }
-    val entryProvider = remember(navigator) {
+    val entryProvider = remember(navigator, resultBus) {
         entryProvider {
             addStatsScreen(navigator = navigator)
             addPropScreen(navigator = navigator, openSetPropDialog = openSetPropDialog)
-            addProgramScreen(navigator = navigator)
+            addProgramScreen(navigator = navigator, resultBus = resultBus, navigateSetDay = navigateSetDay)
         }
     }
 
@@ -130,28 +140,16 @@ private fun HomeTopBar(
     WhTopAppBar(
         title = { Text(text = stringResource(Res.string.app_name)) },
         actions = {
-            var expanded by remember { mutableStateOf(false) }
-            IconButton(onClick = { expanded = !expanded }) { Icon(imageVector = Icons.Default.MoreVert, contentDescription = "Device menu") }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                if (deviceConnected)
-                    DropdownMenuItem(
-                        text = { Text(text = stringResource(Res.string.butPower)) },
-                        onClick = openPowerDialog,
-                    )
-
-                when (deviceConnected) {
-                    false -> DropdownMenuItem(
-                        text = { Text(text = "Connect") },
-                        onClick = { connectDevice(); expanded = false }
-                    )
-
-                    true -> DropdownMenuItem(
-                        text = { Text(text = "Disconnect") },
-                        onClick = { disconnectDevice(); expanded = false }
-                    )
+            if (deviceConnected) {
+                IconButton(onClick = openPowerDialog) {
+                    Icon(imageVector = Icons.Default.Tune, contentDescription = stringResource(Res.string.butPower))
+                }
+                TextButton(onClick = disconnectDevice) {
+                    Text(text = stringResource(Res.string.disconnect))
+                }
+            } else {
+                TextButton(onClick = connectDevice) {
+                    Text(text = stringResource(Res.string.label_connect))
                 }
             }
         },
@@ -217,10 +215,12 @@ private fun Preview() {
     WhoppahTheme {
         HomeScreen(
             state = HomeViewState.Empty,
+            resultBus = ResultEventBus(),
             connectDevice = {},
             disconnectDevice = {},
             openPowerDialog = {},
             openSetPropDialog = {},
+            navigateSetDay = { _, _ -> },
         )
     }
 }

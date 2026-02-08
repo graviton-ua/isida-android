@@ -24,6 +24,8 @@ kotlin {
             implementation(projects.common.ui.metrox.viewmodel)
             implementation(projects.common.ui.navigation)
 
+            implementation(projects.ui.setday)
+
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
         }

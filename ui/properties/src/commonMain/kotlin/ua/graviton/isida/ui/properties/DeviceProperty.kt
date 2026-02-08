@@ -1,10 +1,9 @@
-package ua.graviton.isida.ui.setprop.models
+package ua.graviton.isida.ui.properties
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.flow.Flow
-import ua.graviton.isida.data.protocol.packets.StatusPacket
 
 @Stable
 interface DeviceProperty {
@@ -20,7 +19,4 @@ interface DeviceProperty {
     suspend fun validateOnInputUpdate()
 
     suspend fun clearErrorOnInputUpdate()
-
-    fun readValue(packet: StatusPacket)
-    fun copyAndUpdate(packet: StatusPacket): StatusPacket
 }

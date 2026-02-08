@@ -1,4 +1,4 @@
-package ua.graviton.isida.ui.setprop.models.types
+package ua.graviton.isida.ui.properties.types
 
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
@@ -8,12 +8,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.whoppah.common.compose.input.DefaultInputStateHelper
@@ -22,13 +19,10 @@ import com.whoppah.common.compose.input.InputStateErrorScope
 import com.whoppah.common.compose.theme.WhoppahTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import ua.graviton.isida.data.protocol.packets.StatusPacket
-import ua.graviton.isida.ui.setprop.SetPropDialog
-import ua.graviton.isida.ui.setprop.SetPropViewState
-import ua.graviton.isida.ui.setprop.models.DeviceProperty
+import ua.graviton.isida.ui.properties.DeviceProperty
 
 @Stable
-internal abstract class SliderDeviceProperty<T : Number>(
+abstract class SliderDeviceProperty<T : Number>(
     initValue: T? = null,
     val min: T, val max: T,
     @param:IntRange(from = 0) private val steps: Int = 0,
@@ -51,7 +45,7 @@ internal abstract class SliderDeviceProperty<T : Number>(
         onValidate = onValidate,
     )
 
-    protected val inputHelper = DefaultInputStateHelper(
+    val inputHelper = DefaultInputStateHelper(
         initValue = initValue,
         onValidate = onValidate,
         errorScope = SliderErrorScope,
@@ -133,40 +127,28 @@ private class SliderPreviewParameterProvider : PreviewParameterProvider<DevicePr
         onValidate = {
             if (it == null) error { "Custom required error" } else null
         },
-    ) {
-        override fun readValue(packet: StatusPacket) = Unit
-        override fun copyAndUpdate(packet: StatusPacket): StatusPacket = packet
-    }
+    )
 
     @Stable
     private object TestInt : SliderDeviceProperty<Int>(
         initValue = 4,
         title = { "Test Int" },
         min = 1, max = 5, steps = 3,
-    ) {
-        override fun readValue(packet: StatusPacket) = Unit
-        override fun copyAndUpdate(packet: StatusPacket): StatusPacket = packet
-    }
+    )
 
     @Stable
     private object TestFloat : SliderDeviceProperty<Float>(
         initValue = 3f,
         title = { "Test Float" },
         min = 1f, max = 5f,
-    ) {
-        override fun readValue(packet: StatusPacket) = Unit
-        override fun copyAndUpdate(packet: StatusPacket): StatusPacket = packet
-    }
+    )
 
     @Stable
     private object TestFloatIncrement : SliderDeviceProperty<Float>(
         initValue = 3f,
         title = { "Test Float" },
         min = 1f, max = 5f, increment = 0.1f,
-    ) {
-        override fun readValue(packet: StatusPacket) = Unit
-        override fun copyAndUpdate(packet: StatusPacket): StatusPacket = packet
-    }
+    )
 
     val properties = listOf<DeviceProperty>(
         TestIntNull, TestInt, TestFloat, TestFloatIncrement,
@@ -174,17 +156,17 @@ private class SliderPreviewParameterProvider : PreviewParameterProvider<DevicePr
     override val values = properties.asSequence()
 }
 
-@Preview
-@Composable
-private fun Preview(
-    @PreviewParameter(SliderPreviewParameterProvider::class) property: DeviceProperty,
-) {
-    WhoppahTheme {
-        LaunchedEffect(Unit) { property.validate() }
-        SetPropDialog(
-            state = SetPropViewState(property = property),
-            navigateUp = {},
-            send = {},
-        )
-    }
-}
+// @Preview
+// @Composable
+// private fun Preview(
+//     @PreviewParameter(SliderPreviewParameterProvider::class) property: DeviceProperty,
+// ) {
+//     WhoppahTheme {
+//         LaunchedEffect(Unit) { property.validate() }
+//         SetPropDialog(
+//             state = SetPropViewState(property = property),
+//             navigateUp = {},
+//             send = {},
+//         )
+//     }
+// }

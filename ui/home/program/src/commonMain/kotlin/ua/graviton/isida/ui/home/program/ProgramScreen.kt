@@ -1,12 +1,9 @@
 package ua.graviton.isida.ui.home.program
 
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Refresh
@@ -25,12 +22,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.whoppah.common.compose.theme.WhoppahTheme
+import com.whoppah.common.compose.ui.DeviceNotConnectedPlaceholder
 import com.whoppah.common.resources.Res
 import com.whoppah.common.resources.home_tab_programtable
 import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
+import ua.graviton.isida.data.protocol.packets.TableDay
+import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
 import ua.graviton.isida.ui.navigation.HomeTabScreen
+import ua.graviton.isida.ui.navigation.result.ResultEffect
+import ua.graviton.isida.ui.navigation.result.ResultEventBus
+import ua.graviton.isida.ui.setday.SetDayScreenResult
 
 @Serializable
 data object ProgramScreen : HomeTabScreen {
@@ -41,7 +44,11 @@ data object ProgramScreen : HomeTabScreen {
 @Composable
 internal fun ProgramScreen(
     viewModel: ProgramViewModel = injectedViewModel(),
+    resultBus: ResultEventBus,
+    navigateSetDay: (Int, TableDay) -> Unit,
 ) {
+    ResultEffect<SetDayScreenResult>(resultEventBus = resultBus) { viewModel.onDayUpdated(it.index, it.day) }
+
     val state by viewModel.state.collectAsStateWithLifecycle()
     ProgramScreen(
         state = state,
@@ -51,6 +58,7 @@ internal fun ProgramScreen(
         onOpenReset = viewModel::openResetDialog,
         onCloseReset = viewModel::closeResetDialog,
         onApplyPreset = viewModel::applyPreset,
+        onEditDay = navigateSetDay,
     )
 }
 
@@ -63,28 +71,34 @@ private fun ProgramScreen(
     onOpenReset: () -> Unit,
     onCloseReset: () -> Unit,
     onApplyPreset: (ProgramPreset) -> Unit,
+    onEditDay: (Int, TableDay) -> Unit,
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        ControlPanel(
-            selectedTable = state.selectedTable,
-            hasData = state.items.isNotEmpty(),
-            isLoading = state.isLoading,
-            onFetch = onFetch,
-            onSend = onSend,
-            onTableSelected = onTableSelected,
-            onOpenReset = onOpenReset,
-            modifier = Modifier.fillMaxWidth().padding(8.dp)
-        )
-
-        if (state.items.isEmpty() && !state.isLoading) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(text = "No data. Press Fetch to get program table.")
-            }
-        } else {
-            ProgramTable(
-                items = state.items,
-                modifier = Modifier.fillMaxSize()
+    if (!state.deviceConnected) {
+        DeviceNotConnectedPlaceholder()
+    } else {
+        Column(modifier = Modifier.fillMaxSize()) {
+            ControlPanel(
+                selectedTable = state.selectedTable,
+                hasData = state.items.isNotEmpty(),
+                isLoading = state.isLoading,
+                onFetch = onFetch,
+                onSend = onSend,
+                onTableSelected = onTableSelected,
+                onOpenReset = onOpenReset,
+                modifier = Modifier.fillMaxWidth().padding(8.dp)
             )
+
+            if (state.items.isEmpty() && !state.isLoading) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(text = "No data. Press Refresh to get program table.")
+                }
+            } else {
+                ProgramTable(
+                    items = state.items,
+                    onEditDay = onEditDay,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
     }
 
@@ -229,6 +243,7 @@ private fun ResetDialog(
 @Composable
 private fun ProgramTable(
     items: List<ProgramViewState.ProgramItem>,
+    onEditDay: (Int, TableDay) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val horizontalScrollState = rememberScrollState()
@@ -238,7 +253,16 @@ private fun ProgramTable(
             HeaderRow(horizontalScrollState)
         }
         items(items) { item ->
-            DataRow(item, horizontalScrollState)
+            DataRow(
+                item = item, scrollState = horizontalScrollState,
+                onClick = {
+                    onEditDay(
+                        item.day,
+                        TableDayV1(spT0 = item.t0, spT1 = item.t1, spRh = item.rh, spFlp = item.flp, spTr = item.tr, spCl = item.cl)
+                    )
+                },
+                modifier = Modifier,
+            )
             HorizontalDivider(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 thickness = 0.5.dp,
@@ -279,10 +303,16 @@ private fun RowScope.HeaderCell(text: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun DataRow(item: ProgramViewState.ProgramItem, scrollState: ScrollState) {
+private fun DataRow(
+    item: ProgramViewState.ProgramItem,
+    scrollState: ScrollState,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .horizontalScroll(scrollState)
+            .clickable(onClick = onClick)
             .padding(vertical = 12.dp, horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -323,7 +353,8 @@ private fun Preview() {
             onTableSelected = {},
             onOpenReset = {},
             onCloseReset = {},
-            onApplyPreset = {}
+            onApplyPreset = {},
+            onEditDay = { _, _ -> },
         )
     }
 }

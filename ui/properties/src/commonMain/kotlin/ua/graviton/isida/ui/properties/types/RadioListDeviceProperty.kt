@@ -1,13 +1,10 @@
-package ua.graviton.isida.ui.setprop.models.types
+package ua.graviton.isida.ui.properties.types
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.whoppah.common.compose.input.DefaultInputStateHelper
@@ -20,13 +17,10 @@ import com.whoppah.common.resources.programm
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.jetbrains.compose.resources.stringResource
-import ua.graviton.isida.data.protocol.packets.StatusPacket
-import ua.graviton.isida.ui.setprop.SetPropDialog
-import ua.graviton.isida.ui.setprop.SetPropViewState
-import ua.graviton.isida.ui.setprop.models.DeviceProperty
+import ua.graviton.isida.ui.properties.DeviceProperty
 
 @Stable
-internal abstract class RadioListDeviceProperty<T>(
+abstract class RadioListDeviceProperty<T>(
     initValue: T? = null,
     val list: List<T>,
     override val title: @Composable () -> String,
@@ -34,7 +28,7 @@ internal abstract class RadioListDeviceProperty<T>(
     val listItemTitleMap: @Composable (T) -> String = { "Item $it" },
     onValidate: InputStateErrorScope<Error>.(T?) -> Error? = { if (it == null) Error.Required else null },
 ) : DeviceProperty {
-    protected val inputHelper = DefaultInputStateHelper(
+    val inputHelper = DefaultInputStateHelper(
         initValue = initValue,
         onValidate = onValidate,
         errorScope = RadioErrorScope,
@@ -118,10 +112,7 @@ private class RadioListPreviewParameterProvider : PreviewParameterProvider<Devic
         onValidate = {
             if (it == null) error { "Custom required error" } else null
         },
-    ) {
-        override fun readValue(packet: StatusPacket) = Unit
-        override fun copyAndUpdate(packet: StatusPacket): StatusPacket = packet
-    }
+    )
 
     @Stable
     private object TestHasValue : RadioListDeviceProperty<Int>(
@@ -135,10 +126,7 @@ private class RadioListPreviewParameterProvider : PreviewParameterProvider<Devic
                 else -> stringResource(Res.string.programm) + " asdasd "
             }
         },
-    ) {
-        override fun readValue(packet: StatusPacket) = Unit
-        override fun copyAndUpdate(packet: StatusPacket): StatusPacket = packet
-    }
+    )
 
     val properties = listOf<DeviceProperty>(
         TestEmpty, TestHasValue,
@@ -146,17 +134,17 @@ private class RadioListPreviewParameterProvider : PreviewParameterProvider<Devic
     override val values = properties.asSequence()
 }
 
-@Preview
-@Composable
-private fun Preview(
-    @PreviewParameter(RadioListPreviewParameterProvider::class) property: DeviceProperty,
-) {
-    WhoppahTheme {
-        LaunchedEffect(Unit) { property.validate() }
-        SetPropDialog(
-            state = SetPropViewState(property = property),
-            navigateUp = {},
-            send = {},
-        )
-    }
-}
+// @Preview
+// @Composable
+// private fun Preview(
+//     @PreviewParameter(RadioListPreviewParameterProvider::class) property: DeviceProperty,
+// ) {
+//     WhoppahTheme {
+//         LaunchedEffect(Unit) { property.validate() }
+//         SetPropDialog(
+//             state = SetPropViewState(property = property),
+//             navigateUp = {},
+//             send = {},
+//         )
+//     }
+// }

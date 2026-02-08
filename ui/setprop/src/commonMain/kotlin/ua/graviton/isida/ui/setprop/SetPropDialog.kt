@@ -19,6 +19,7 @@ import androidx.navigation3.runtime.NavKey
 import com.whoppah.common.compose.theme.WhoppahTheme
 import com.whoppah.common.compose.ui.WhDialog
 import kotlinx.serialization.Serializable
+import ua.graviton.isida.ui.properties.DeviceProperty
 import ua.graviton.isida.ui.setprop.models.*
 
 @Serializable

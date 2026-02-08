@@ -1,41 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="device_mode_enabled">ВКЛЮЧЕНА</string>
-    <string name="device_mode_disabled">ОТКЛЮЧЕНА</string>
-    <string name="state_2">Подгототка к ВКЛЮЧЕНИЮ</string>
-    <string name="state_3">Переход в ГОРИЗОНТ</string>
-    <string name="device_mode_extra_1">ВКЛЮЧЕН мониторинг тихоходного вентилятора</string>
-    <string name="device_mode_extra_2">ВКЛЮЧЕН мониторинг поворота лотков</string>
-    <string name="device_mode_extra_3">ГОРИЗОНТ УСТАНОВЛЕН</string>
-    <string name="device_mode_extra_4">Подгототка к ОХЛАЖДЕНИЮ</string>
-    <string name="device_mode_turn">Поворот лотков</string>
+    <string name="device_mode_enabled">ENABLED</string>
+    <string name="device_mode_disabled">DISABLED</string>
+    <string name="state_2">Preparation for COOLING</string>
+    <string name="state_3">Transition to HORIZON</string>
+    <string name="state_4">Preparation for POWER ON</string>
+    <string name="state_8">Transition to HORIZON</string>
+    <string name="state_10">HORIZON ESTABLISHED</string>
+    <string name="state_20">Tray rotation monitoring ON</string>
+    <string name="state_40">Low-speed fan monitoring ON</string>
+    <string name="device_mode_extra_1">Low-speed fan monitoring ON</string>
+    <string name="device_mode_extra_2">Tray rotation monitoring ON</string>
+    <string name="device_mode_extra_3">HORIZON ESTABLISHED</string>
+    <string name="device_mode_extra_4">Preparation for COOLING</string>
+    <string name="device_mode_turn">Tray rotation</string>
 
-    <string name="fuses_0">ОСТАНОВ вентилятора</string>
-    <string name="fuses_1">НЕТ ПОВОРОТА лотков</string>
-    <string name="fuses_2">короткое нагреватель</string>
-    <string name="fuses_3">короткое увлажнитель</string>
-    <string name="fuses_4">короткое канал III</string>
-    <string name="fuses_5">короткое канал IV</string>
-    <string name="fuses_6">короткое поворот</string>
-    <string name="fuses_7">Состояние дверей</string>
+    <string name="fuses_0">FAN STOP</string>
+    <string name="fuses_1">NO TRAY ROTATION</string>
+    <string name="fuses_2">heater short circuit</string>
+    <string name="fuses_3">humidifier short circuit</string>
+    <string name="fuses_4">channel III short circuit</string>
+    <string name="fuses_5">channel IV short circuit</string>
+    <string name="fuses_6">rotation short circuit</string>
+    <string name="fuses_7">Door status</string>
 
-    <string name="error_01">ОШИБКА ДАТЧИКА температуры</string>
-    <string name="error_02">ОШИБКА ДАТЧИКА влажности</string>
-    <string name="error_04">ПРОБОЙ СИМИСТОРА!</string>
-    <string name="error_08">Обрыв цепи НАГРЕВАТЕЛЯ</string>
+    <string name="error_01">TEMPERATURE SENSOR ERROR</string>
+    <string name="error_02">HUMIDITY SENSOR ERROR</string>
+    <string name="error_04">TRIAC BREAKDOWN!</string>
+    <string name="error_08">HEATER circuit break</string>
     <string name="error_10">!!</string>
-    <string name="error_20">ОШИБКА модуля СО2</string>
-    <string name="error_40">ОШИБКА дополнительного модуля</string>
-    <string name="error_80">ПЕРЕГРЕВ СИМИСТОРА!</string>
+    <string name="error_20">CO2 module ERROR</string>
+    <string name="error_40">Auxiliary module ERROR</string>
+    <string name="error_80">TRIAC OVERHEAT!</string>
 
-    <string name="warning_01">ОТКЛОНЕНИЕ по температуре</string>
-    <string name="warning_02">ОТКЛОНЕНИЕ по влажности</string>
-    <string name="warning_04">Подмена датчика</string>
-    <string name="warning_08">Большой перепад температур</string>
+    <string name="warning_01">Temperature DEVIATION</string>
+    <string name="warning_02">Humidity DEVIATION</string>
+    <string name="warning_04">Sensor substitution</string>
+    <string name="warning_08">Large temperature difference</string>
     <string name="warning_10">!</string>
-    <string name="warning_20">Превышено время охлаждения</string>
+    <string name="warning_20">Cooling time exceeded</string>
     <string name="warning_40">!!!</string>
-    <string name="warning_80">Нет обдува симистора!</string>
+    <string name="warning_80">No triac airflow!</string>
 
     <string name="common_accept">Accept</string>
     <string name="common_cancel">Cancel</string>
@@ -43,9 +48,9 @@
     <string name="register_block_whoppah">Whoppah isn't allowed</string>
     <string name="error_invalid_pass">Invalid password</string>
     <string name="error_invalid_pass_repeat">Passwords do not match</string>
-    <string name="common_required">Требуется</string>
-    <string name="common_error_price_invalid">Неверное число</string>
-    <string name="common_error_price_less_than">Не может быть меньше %1$s</string>
-    <string name="common_error_price_more_than">Не может быть больше %1$s</string>
-    <string name="common_error_price_required">Требуется число</string>
+    <string name="common_required">Required</string>
+    <string name="common_error_price_invalid">Invalid number</string>
+    <string name="common_error_price_less_than">Cannot be less than %1$s</string>
+    <string name="common_error_price_more_than">Cannot be more than %1$s</string>
+    <string name="common_error_price_required">Number required</string>
 </resources>

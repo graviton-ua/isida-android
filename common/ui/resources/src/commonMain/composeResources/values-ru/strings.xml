@@ -170,4 +170,7 @@
     <string name="input_info_limit_min_max">Значение должно быть от %1$s до %2$s.</string>
     <string name="input_info_limit_max">Значение должно быть меньше %1$s</string>
     <string name="input_info_limit_min">Значение должно быть больше %1$s</string>
+
+    <string name="device_not_connected_title">Устройство не подключено</string>
+    <string name="device_not_connected_message">Пожалуйста, подключитесь к устройству, чтобы увидеть информацию и управлять настройками.</string>
 </resources>

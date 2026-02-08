@@ -23,6 +23,7 @@ import com.whoppah.common.compose.backgroundNotNull
 import com.whoppah.common.compose.icons.WhIcons
 import com.whoppah.common.compose.icons.action.Edit
 import com.whoppah.common.compose.theme.WhoppahTheme
+import com.whoppah.common.compose.ui.DeviceNotConnectedPlaceholder
 import com.whoppah.common.resources.Res
 import com.whoppah.common.resources.home_tab_prop
 import com.whoppah.metrox.viewmodel.injectedViewModel
@@ -54,23 +55,27 @@ private fun PropScreen(
     state: PropViewState,
     navigateSetPropDialog: (String) -> Unit,
 ) {
-    val lazyListState = rememberLazyListState()
-    LazyColumn(
-        state = lazyListState,
-        contentPadding = PaddingValues(vertical = 8.dp),
-        modifier = Modifier.fillMaxSize()
-    ) {
-        itemsIndexed(
-            items = state.items,
-            key = { _, it -> it.id },
-        ) { index, item ->
-            Item(
-                item = item,
-                onClick = { navigateSetPropDialog(item.id) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .backgroundNotNull(color = if (index.mod(2) == 0) null else Color.White.copy(alpha = 0.2f)),
-            )
+    if (!state.deviceConnected) {
+        DeviceNotConnectedPlaceholder()
+    } else {
+        val lazyListState = rememberLazyListState()
+        LazyColumn(
+            state = lazyListState,
+            contentPadding = PaddingValues(vertical = 8.dp),
+            modifier = Modifier.fillMaxSize()
+        ) {
+            itemsIndexed(
+                items = state.items,
+                key = { _, it -> it.id },
+            ) { index, item ->
+                Item(
+                    item = item,
+                    onClick = { navigateSetPropDialog(item.id) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .backgroundNotNull(color = if (index.mod(2) == 0) null else Color.White.copy(alpha = 0.2f)),
+                )
+            }
         }
     }
 }
