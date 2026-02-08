@@ -26,6 +26,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import org.jetbrains.compose.resources.stringResource
+import ua.graviton.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.ui.home.program.ProgramScreen
 import ua.graviton.isida.ui.home.program.addProgramScreen
 import ua.graviton.isida.ui.home.prop.PropScreen
@@ -49,6 +50,7 @@ internal fun HomeScreen(
     connectDevice: () -> Unit,
     openPowerDialog: () -> Unit,
     openSetPropDialog: (String) -> Unit,
+    navigateSetDay: (Int, TableDay) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -59,6 +61,7 @@ internal fun HomeScreen(
         disconnectDevice = viewModel::disconnect,
         openPowerDialog = openPowerDialog,
         openSetPropDialog = openSetPropDialog,
+        navigateSetDay = navigateSetDay,
     )
 }
 
@@ -70,6 +73,7 @@ private fun HomeScreen(
     disconnectDevice: () -> Unit,
     openPowerDialog: () -> Unit,
     openSetPropDialog: (String) -> Unit,
+    navigateSetDay: (Int, TableDay) -> Unit,
 ) {
     val navigationState = rememberNavigationState(
         configuration = config,
@@ -81,7 +85,7 @@ private fun HomeScreen(
         entryProvider {
             addStatsScreen(navigator = navigator)
             addPropScreen(navigator = navigator, openSetPropDialog = openSetPropDialog)
-            addProgramScreen(navigator = navigator, resultBus = resultBus)
+            addProgramScreen(navigator = navigator, resultBus = resultBus, navigateSetDay = navigateSetDay)
         }
     }
 
@@ -226,6 +230,7 @@ private fun Preview() {
             disconnectDevice = {},
             openPowerDialog = {},
             openSetPropDialog = {},
+            navigateSetDay = { _, _ -> },
         )
     }
 }

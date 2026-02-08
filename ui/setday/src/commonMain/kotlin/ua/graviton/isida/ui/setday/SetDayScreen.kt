@@ -42,7 +42,7 @@ internal fun SetDayScreen(
     LaunchedEffect(viewModel.events) {
         viewModel.events.collect { event ->
             when (event) {
-                SetDayViewEvent.Sent -> navigateUp()
+                is SetDayViewEvent.OnSubmit -> onSubmit(SetDayScreenResult(event.index, event.day))
             }
         }
     }
@@ -51,7 +51,7 @@ internal fun SetDayScreen(
     SetDayScreen(
         state = state,
         navigateUp = navigateUp,
-        send = viewModel::send,
+        submit = viewModel::submit,
     )
 }
 
@@ -59,7 +59,7 @@ internal fun SetDayScreen(
 internal fun SetDayScreen(
     state: SetDayViewState,
     navigateUp: () -> Unit,
-    send: () -> Unit,
+    submit: () -> Unit,
 ) {
     WhScaffold(
         topBar = {
@@ -86,8 +86,8 @@ internal fun SetDayScreen(
 
 private class SetDayPreviewParameterProvider : PreviewParameterProvider<SetDayViewState> {
     val properties = listOf(
-        SetDayViewState(waitingForData = true),
-        SetDayViewState(waitingForData = false),
+        SetDayViewState(properties = emptyList(), dataIsValid = true),
+        SetDayViewState(properties = emptyList(), dataIsValid = false),
     )
     override val values = properties.asSequence()
 }
@@ -101,7 +101,7 @@ private fun Preview(
         SetDayScreen(
             state = state,
             navigateUp = {},
-            send = {},
+            submit = {},
         )
     }
 }

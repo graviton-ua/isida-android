@@ -2,6 +2,7 @@ package ua.graviton.isida.ui.home
 
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
+import ua.graviton.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.ui.navigation.NavigatorWithResultBus
 
 fun EntryProviderScope<NavKey>.addHomeScreen(
@@ -9,6 +10,7 @@ fun EntryProviderScope<NavKey>.addHomeScreen(
     navigateScanDevices: () -> Unit,
     openPowerDialog: () -> Unit,
     openSetPropDialog: (String) -> Unit,
+    navigateSetDay: (Int, TableDay) -> Unit,
 ) {
     entry<HomeScreen> {
         HomeScreen(
@@ -16,6 +18,7 @@ fun EntryProviderScope<NavKey>.addHomeScreen(
             connectDevice = navigateScanDevices,
             openPowerDialog = openPowerDialog,
             openSetPropDialog = openSetPropDialog,
+            navigateSetDay = navigateSetDay,
         )
     }
 }

@@ -11,7 +11,7 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ua.graviton.isida.data.bluetooth.ConnectionState
+import ua.graviton.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.data.protocol.packets.TablePacket
 import ua.graviton.isida.data.protocol.packets.v1.TablePacketV1
 import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
@@ -62,7 +62,7 @@ class ProgramViewModel(
         ProgramViewState(
             selectedTable = selected,
             isLoading = loading,
-            items = if (state == ConnectionState.CONNECTED) items else emptyList(),
+            items = items,//if (state == ConnectionState.CONNECTED) items else emptyList(),
             showResetDialog = resetDialog,
             availablePresets = ProgramPreset.ALL
         )
@@ -112,5 +112,9 @@ class ProgramViewModel(
     fun applyPreset(preset: ProgramPreset) {
         table.value = preset.table
         closeResetDialog()
+    }
+
+    fun onDayUpdated(index: Int, day: TableDay) {
+        logger.d { "onDayUpdated: $index, $day" }
     }
 }

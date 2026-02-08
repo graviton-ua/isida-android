@@ -19,6 +19,7 @@ import ua.graviton.isida.ui.navigation.NavigatorWithResultBus
 import ua.graviton.isida.ui.navigation.result.ResultEventBus
 import ua.graviton.isida.ui.scan.ScanDevicesScreen
 import ua.graviton.isida.ui.scan.addScanDevicesScreen
+import ua.graviton.isida.ui.setday.SetDayScreen
 import ua.graviton.isida.ui.setday.addSetDayScreen
 import ua.graviton.isida.ui.setprop.SetPropDialog
 import ua.graviton.isida.ui.setprop.addSetPropDialog
@@ -41,6 +42,7 @@ fun IsidaApp(
                     navigateScanDevices = { navigator.navigateTo(ScanDevicesScreen) },
                     openPowerDialog = { navigator.navigateTo(DeviceModeDialog) },
                     openSetPropDialog = { navigator.navigateTo(SetPropDialog(it)) },
+                    navigateSetDay = { index, day -> navigator.navigateTo(SetDayScreen(index, day)) },
                 )
                 addDeviceModeDialog(navigator = navigator)
                 addScanDevicesScreen(navigator = navigator)
