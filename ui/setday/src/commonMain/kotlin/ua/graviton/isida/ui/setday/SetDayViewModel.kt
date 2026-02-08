@@ -81,8 +81,7 @@ class SetDayViewModel(
         is TableDayV1 -> listOf(
             SpT0(value = day.spT0),
             SpT1(value = day.spT1),
-            //TODO: Int shouldn't be casted to FLOAT !!!!!!!!!
-            SpRh1(value = day.spRh.toFloat()),
+            SpRh1(value = day.spRh),
             TurnTime(value = day.spTr),
             FlapRestrictions(value = day.spFlp),
             WaitCooling(value = day.spCl),

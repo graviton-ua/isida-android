@@ -71,7 +71,7 @@ class DevicePropertyPermission(value: Int? = null) : RadioListDeviceProperty<Int
 
 //-------------------------- spRh0 ------------------------------
 @Stable
-class DevicePropertySpRh0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
+class DevicePropertySpRh0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
     title = { stringResource(Res.string.prop_spRh0_lb) + stringResource(Res.string.dimen_percent) },
     description = {
@@ -93,7 +93,7 @@ class DevicePropertySpRh0(value: Float? = null) : NumberInputTextFieldDeviceProp
 
 //-------------------------- spRh1 ------------------------------
 @Stable
-class DevicePropertySpRh1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
+class DevicePropertySpRh1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value, allowDecimals = true,
     title = { stringResource(Res.string.prop_spRh1_lb) + stringResource(Res.string.dimen_percent) },
     description = {

@@ -30,8 +30,8 @@ object StatusPacketV1Parser : PacketParser<StatusPacketV1> {
         val minSec = reader.u8()
         val spT0 = reader.u16() / 10f
         val spT1 = reader.u16() / 10f
-        val spRh0 = reader.u8() / 10f
-        val spRh1 = reader.u8() / 10f
+        val spRh0 = reader.u8()
+        val spRh1 = reader.u8()
         val state = reader.u8()
         val extendMode = reader.u8()
         val relayMode = reader.u8()

@@ -115,7 +115,7 @@ private fun DialogButtons(
 
 private class DevicePropertyPreviewParameterProvider : PreviewParameterProvider<DeviceProperty> {
     val properties = listOf(
-        SpT0(value = 10f), SpT1(value = 25f), SpRh0(value = 24f), SpRh1(),
+        SpT0(value = 10f), SpT1(value = 25f), SpRh0(value = 24), SpRh1(),
         ExtendMode(), RelayMode(), Program(),
         MinRun(), MaxRun(), Period(), TurnOff(), TurnOn(),
         Alarm0(), Alarm1(), ExtOn0(), ExtOn1(), ExtOff0(), ExtOff1(),

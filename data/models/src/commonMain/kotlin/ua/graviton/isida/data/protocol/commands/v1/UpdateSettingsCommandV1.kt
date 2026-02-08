@@ -51,8 +51,8 @@ data class UpdateSettingsCommandV1(
     // or pass the entire DataPackageDto if the device expects the full snapshot back.
     val spT0: Float,       // 2 байт ind=20,21 Уставка температуры sp[0].spT->Сухой датчик;
     val spT1: Float,       // 2 байт ind=22,23 Уставка температуры sp[1].spT->Влажный датчик
-    val spRh0: Float,      // 1 байт ind=24 ПОДСТРОЙКА HIH-5030
-    val spRh1: Float,      // 1 байт ind=25 Уставка влажности Датчик HIH-5030
+    val spRh0: Int,      // 1 байт ind=24 ПОДСТРОЙКА HIH-5030
+    val spRh1: Int,      // 1 байт ind=25 Уставка влажности Датчик HIH-5030
     val state: Int,         // 1 байт ind=26 состояние камеры (ОТКЛ. ВКЛ. ОХЛАЖДЕНИЕ, и т.д.)
     val extendMode: Int,    // 1 байт ind=27 расширенный режим работы  0-СИРЕНА; 1-ВЕНТ. 2-Форс НАГР. 3-Форс ОХЛЖД. 4-Форс ОСУШ. 5-Дубляж увлажнения
     val relayMode: Int,     // 1 байт ind=28 релейный режим работы  0-НЕТ; 1->по кан.[0] 2->по кан.[1] 3->по кан.[0]&[1]

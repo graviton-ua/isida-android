@@ -122,16 +122,12 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             item(
                 id = "spRh1",
                 title = composableString { stringResource(Res.string.prop_spRh1_lb) },
-                value = composableString(this@toItems.spRh1) {
-                    this@toItems.spRh1.format().let { stringResource(Res.string.prop_dimen_percent, it) }
-                }
+                value = composableString(this@toItems.spRh1) { "${this@toItems.spRh1} %" }
             )
             item(
                 id = "spRh0",
                 title = composableString { stringResource(Res.string.prop_spRh0_lb) },
-                value = composableString(this@toItems.spRh0) {
-                    this@toItems.spRh0.format().let { stringResource(Res.string.prop_dimen_percent, it) }
-                }
+                value = composableString(this@toItems.spRh0) { "${this@toItems.spRh0} %" }
             )
         }
     }

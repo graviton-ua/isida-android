@@ -105,7 +105,7 @@ internal class Permission(
 
 //-------------------------- spRh0 ------------------------------
 @Stable
-internal class SpRh0(value: Float? = null) : StatusPacketProperty<DevicePropertySpRh0>(property = DevicePropertySpRh0(value = value)) {
+internal class SpRh0(value: Int? = null) : StatusPacketProperty<DevicePropertySpRh0>(property = DevicePropertySpRh0(value = value)) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
             is StatusPacketV1 -> packet.spRh0
@@ -115,14 +115,14 @@ internal class SpRh0(value: Float? = null) : StatusPacketProperty<DeviceProperty
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> property.inputHelper.state.valueAsFloat?.let { packet.copy(spRh0 = it) } ?: packet
+        is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(spRh0 = it) } ?: packet
         else -> packet
     }
 }
 
 //-------------------------- spRh1 ------------------------------
 @Stable
-internal class SpRh1(value: Float? = null) : StatusPacketProperty<DevicePropertySpRh1>(property = DevicePropertySpRh1(value = value)) {
+internal class SpRh1(value: Int? = null) : StatusPacketProperty<DevicePropertySpRh1>(property = DevicePropertySpRh1(value = value)) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
             is StatusPacketV1 -> packet.spRh1
@@ -132,7 +132,7 @@ internal class SpRh1(value: Float? = null) : StatusPacketProperty<DeviceProperty
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> property.inputHelper.state.valueAsFloat?.let { packet.copy(spRh1 = it) } ?: packet
+        is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(spRh1 = it) } ?: packet
         else -> packet
     }
 }

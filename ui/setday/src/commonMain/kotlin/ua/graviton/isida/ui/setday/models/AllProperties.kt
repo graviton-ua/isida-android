@@ -45,7 +45,7 @@ internal class SpT1(
 
 //-------------------------- spRh1 ------------------------------
 @Stable
-internal class SpRh1(value: Float? = null) : TableDayProperty<DevicePropertySpRh1>(property = DevicePropertySpRh1(value = value)) {
+internal class SpRh1(value: Int? = null) : TableDayProperty<DevicePropertySpRh1>(property = DevicePropertySpRh1(value = value)) {
     override fun readValue(packet: TableDay) {
         val value = when (packet) {
             is TableDayV1 -> packet.spRh
@@ -55,8 +55,7 @@ internal class SpRh1(value: Float? = null) : TableDayProperty<DevicePropertySpRh
     }
 
     override fun copyAndUpdate(packet: TableDay): TableDay = when (packet) {
-        //TODO: Float shouldn't be casted to INT !!!!!!!!!
-        is TableDayV1 -> property.inputHelper.state.valueAsFloat?.let { packet.copy(spRh = it.toInt()) } ?: packet
+        is TableDayV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(spRh = it) } ?: packet
         else -> packet
     }
 }
