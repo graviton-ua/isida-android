@@ -1,6 +1,5 @@
 package ua.graviton.isida.data.parsers
 
-import com.whoppah.util.readU16LE
 import com.whoppah.util.readU8
 import ua.graviton.isida.data.protocol.packets.IsidaPacket
 
