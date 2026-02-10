@@ -94,7 +94,7 @@ class AndroidBluetoothClient(
      */
     override suspend fun disconnect(): Unit = withContext(Dispatchers.IO) {
         logger.d { "Disconnecting..." }
-        readJob?.cancelAndJoin()
+        readJob?.cancel()//AndJoin()    //TODO: Do we need Join here ???
         try {
             socket?.close()
         } catch (e: Exception) {
