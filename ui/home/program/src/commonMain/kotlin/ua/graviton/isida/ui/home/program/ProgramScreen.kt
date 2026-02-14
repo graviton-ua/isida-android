@@ -316,7 +316,29 @@ private fun Preview() {
     WhoppahTheme {
         ProgramScreen(
             state = ProgramViewState(
-                table = null // Or provide a mock table if needed
+                deviceConnected = true,
+                table = buildTable {
+                    header {
+                        cell(width = 60.dp) { "Day" }
+                        cell(width = 80.dp) { "T0" }
+                        cell(width = 80.dp) { "T1" }
+                        cell(width = 60.dp) { "Rh" }
+                        cell(width = 60.dp) { "Flp" }
+                        cell(width = 60.dp) { "Tr" }
+                        cell(width = 60.dp) { "Cl" }
+                    }
+                    repeat(30) { index ->
+                        row {
+                            cell(width = 60.dp) { (index + 1).toString() }
+                            cell(width = 80.dp) { "37.5" }
+                            cell(width = 80.dp) { "30.0" }
+                            cell(width = 60.dp) { "55" }
+                            cell(width = 60.dp) { "10" }
+                            cell(width = 60.dp) { "1" }
+                            cell(width = 60.dp) { "0" }
+                        }
+                    }
+                }
             ),
             onFetch = {},
             onSend = {},
