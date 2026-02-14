@@ -1,18 +1,18 @@
 [versions]
-agp = "9.0.0"
+agp = "9.0.1"
 #Kotlin
-kotlin = "2.3.20-RC-73"
+kotlin = "2.3.20-RC-128"
 kotlinx-serialization = "1.10.0"
 kotlinx-coroutines = "1.10.2"
 kotlinx-io = "0.8.2"
 #Compose
-jetbrains-compose = "1.10.0"
+jetbrains-compose = "1.10.1"
 jetbrains-material3 = "1.10.0-alpha05"
 jetbrains-material3-adaptive = "1.3.0-alpha04"
 jetbrains-lifecycle = "2.10.0-alpha08"
 jetbrains-navigation3 = "1.0.0-alpha06"
 #Others
-metro = "0.10.2"
+metro = "0.10.3"
 moko-permissions = "0.20.1"
 multiplatformsettings = "1.3.0"
 sqldelight = "2.2.1"
@@ -27,7 +27,7 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 google-gms = { id = "com.google.gms.google-services", version = "4.4.4" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.6" }
-firebase-appdistribution = { id = "com.google.firebase.appdistribution", version = "5.2.0" }
+firebase-appdistribution = { id = "com.google.firebase.appdistribution", version = "5.2.1" }
 metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 
@@ -57,7 +57,7 @@ jetbrains-lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifec
 jetbrains-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrains-lifecycle" }
 jetbrains-lifecycle-viewmodel-navigation3 = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "jetbrains-lifecycle" }
 jetbrains-navigation3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "jetbrains-navigation3" }
-jetbrains-navigationevent = { module = "org.jetbrains.androidx.navigationevent:navigationevent-compose", version = "1.0.0" }
+jetbrains-navigationevent = { module = "org.jetbrains.androidx.navigationevent:navigationevent-compose", version = "1.0.1" }
 
 #Squareup
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version = "2.14" }
@@ -65,7 +65,7 @@ leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", ve
 #Androidx
 androidx-core = { module = "androidx.core:core-ktx", version = "1.17.0" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version = "1.2.0" }
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version = "1.12.2" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version = "1.12.4" }
 
 moko-permissions-bluetooth = { module = "dev.icerock.moko:permissions-bluetooth", version.ref = "moko-permissions" }
 moko-permissions-location = { module = "dev.icerock.moko:permissions-location", version.ref = "moko-permissions" }
@@ -80,7 +80,7 @@ sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", 
 sqldelight-primitive = { module = "app.cash.sqldelight:primitive-adapters", version.ref = "sqldelight" }
 sqldelight-dialect = { module = "app.cash.sqldelight:sqlite-3-38-dialect", version.ref = "sqldelight" }
 
-firebase-bom = { module = "com.google.firebase:firebase-bom", version = "34.8.0" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version = "34.9.0" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-config = { module = "com.google.firebase:firebase-config" }
