@@ -221,9 +221,9 @@ private fun ResetDialog(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Column(modifier = Modifier.weight(1f)) {
-                            Text(text = preset.name, style = MaterialTheme.typography.bodyLarge)
+                            Text(text = preset.name(), style = MaterialTheme.typography.bodyLarge)
                             Text(
-                                text = preset.description,
+                                text = preset.description(),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
