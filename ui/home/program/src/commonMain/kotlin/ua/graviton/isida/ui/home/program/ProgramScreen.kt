@@ -1,9 +1,15 @@
 package ua.graviton.isida.ui.home.program
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Refresh
@@ -19,6 +25,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.whoppah.common.compose.theme.WhoppahTheme
@@ -79,7 +86,7 @@ private fun ProgramScreen(
         Column(modifier = Modifier.fillMaxSize()) {
             ControlPanel(
                 selectedTable = state.selectedTable,
-                hasData = state.items.isNotEmpty(),
+                hasData = state.table != null,
                 isLoading = state.isLoading,
                 onFetch = onFetch,
                 onSend = onSend,
@@ -88,13 +95,14 @@ private fun ProgramScreen(
                 modifier = Modifier.fillMaxWidth().padding(8.dp)
             )
 
-            if (state.items.isEmpty() && !state.isLoading) {
+            val table = state.table
+            if (table == null && !state.isLoading) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(text = "No data. Press Refresh to get program table.")
                 }
-            } else {
+            } else if (table != null) {
                 ProgramTable(
-                    items = state.items,
+                    table = table,
                     onEditDay = onEditDay,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -240,100 +248,65 @@ private fun ResetDialog(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ProgramTable(
-    items: List<ProgramViewState.ProgramItem>,
+    table: Table,
     onEditDay: (Int, TableDay) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val horizontalScrollState = rememberScrollState()
 
     LazyColumn(modifier = modifier) {
-        stickyHeader {
-            HeaderRow(horizontalScrollState)
-        }
-        items(items) { item ->
-            DataRow(
-                item = item, scrollState = horizontalScrollState,
-                onClick = {
-                    onEditDay(
-                        item.day,
-                        TableDayV1(spT0 = item.t0, spT1 = item.t1, spRh = item.rh, spFlp = item.flp, spTr = item.tr, spCl = item.cl)
+        table.rows.forEachIndexed { index, row ->
+            when (row) {
+                is Table.Row.Header -> stickyHeader(key = "header_$index") {
+                    TableRow(row, horizontalScrollState)
+                }
+                is Table.Row.Default -> item(key = "row_$index") {
+                    TableRow(
+                        row = row,
+                        scrollState = horizontalScrollState,
+                        modifier = Modifier.clickable(enabled = row.day != null) {
+                            row.day?.let { onEditDay(index, it) }
+                        }
                     )
-                },
-                modifier = Modifier,
-            )
-            HorizontalDivider(
-                modifier = Modifier.padding(horizontal = 8.dp),
-                thickness = 0.5.dp,
-                color = Color.LightGray
-            )
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        thickness = 0.5.dp,
+                        color = Color.LightGray
+                    )
+                }
+            }
         }
     }
 }
 
 @Composable
-private fun HeaderRow(scrollState: ScrollState) {
-    Row(
-        modifier = Modifier
-            .horizontalScroll(scrollState)
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(vertical = 8.dp, horizontal = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        HeaderCell("Day", Modifier.width(60.dp))
-        HeaderCell("T0", Modifier.width(80.dp))
-        HeaderCell("T1", Modifier.width(80.dp))
-        HeaderCell("Rh", Modifier.width(60.dp))
-        HeaderCell("Flp", Modifier.width(60.dp))
-        HeaderCell("Tr", Modifier.width(60.dp))
-        HeaderCell("Cl", Modifier.width(60.dp))
-    }
-}
-
-@Composable
-private fun RowScope.HeaderCell(text: String, modifier: Modifier = Modifier) {
-    Text(
-        text = text,
-        modifier = modifier,
-        fontWeight = FontWeight.Bold,
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.labelMedium
-    )
-}
-
-@Composable
-private fun DataRow(
-    item: ProgramViewState.ProgramItem,
+private fun TableRow(
+    row: Table.Row,
     scrollState: ScrollState,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier
+            .fillMaxWidth()
+            .then(if (row is Table.Row.Header) Modifier.background(MaterialTheme.colorScheme.surfaceVariant) else Modifier)
             .horizontalScroll(scrollState)
-            .clickable(onClick = onClick)
-            .padding(vertical = 12.dp, horizontal = 4.dp),
+            .padding(vertical = if (row is Table.Row.Header) 8.dp else 12.dp, horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        DataCell(item.day.toString(), Modifier.width(60.dp))
-        DataCell(item.t0.toString(), Modifier.width(80.dp))
-        DataCell(item.t1.toString(), Modifier.width(80.dp))
-        DataCell(item.rh.toString(), Modifier.width(60.dp))
-        DataCell(item.flp.toString(), Modifier.width(60.dp))
-        DataCell(item.tr.toString(), Modifier.width(60.dp))
-        DataCell(item.cl.toString(), Modifier.width(60.dp))
+        row.cells.forEach { cell ->
+            Text(
+                text = cell.value(),
+                modifier = if (cell.width != Dp.Unspecified) Modifier.width(cell.width) else Modifier,
+                fontWeight = if (row is Table.Row.Header) FontWeight.Bold else FontWeight.Normal,
+                textAlign = TextAlign.Center,
+                style = if (row is Table.Row.Header) MaterialTheme.typography.labelMedium else MaterialTheme.typography.bodyMedium,
+                color = cell.style.color ?: Color.Unspecified
+            )
+        }
     }
-}
-
-@Composable
-private fun RowScope.DataCell(text: String, modifier: Modifier = Modifier) {
-    Text(
-        text = text,
-        modifier = modifier,
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.bodyMedium
-    )
 }
 
 
@@ -343,10 +316,7 @@ private fun Preview() {
     WhoppahTheme {
         ProgramScreen(
             state = ProgramViewState(
-                items = listOf(
-                    ProgramViewState.ProgramItem(1, 37.8f, 28.5f, 55, 0, 1, 0),
-                    ProgramViewState.ProgramItem(2, 37.7f, 28.4f, 55, 0, 1, 0),
-                )
+                table = null // Or provide a mock table if needed
             ),
             onFetch = {},
             onSend = {},

@@ -7,23 +7,7 @@ data class ProgramViewState(
     val deviceConnected: Boolean = false,
     val selectedTable: Int = 1,
     val isLoading: Boolean = false,
-    val items: List<ProgramItem> = emptyList(),
+    val table: Table? = null,
     val showResetDialog: Boolean = false,
     val availablePresets: List<ProgramPreset> = emptyList(),
-) {
-
-    @Immutable
-    data class ProgramItem(
-        val day: Int,
-        val t0: Float,
-        val t1: Float,
-        val rh: Int,
-        val flp: Int,
-        val tr: Int,
-        val cl: Int,
-    )
-
-    companion object {
-        val Empty = ProgramViewState()
-    }
-}
+)

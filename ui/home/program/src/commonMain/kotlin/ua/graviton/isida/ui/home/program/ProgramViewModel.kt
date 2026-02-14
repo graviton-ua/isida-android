@@ -1,5 +1,6 @@
 package ua.graviton.isida.ui.home.program
 
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
@@ -36,44 +37,28 @@ class ProgramViewModel(
     private val loadingState = ObservableLoadingCounter()
     private val showResetDialog = MutableStateFlow(false)
 
-    private val itemsState = table.map { packet ->
-        when (packet) {
-            is TablePacketV1 -> packet.days.mapIndexed { index, day ->
-                ProgramViewState.ProgramItem(
-                    day = index + 1,
-                    t0 = day.spT0,
-                    t1 = day.spT1,
-                    rh = day.spRh,
-                    flp = day.spFlp,
-                    tr = day.spTr,
-                    cl = day.spCl,
-                )
-            }
-
-            else -> emptyList()
-        }
-    }
+    private val tableState = table.map { packet -> packet?.toState() }
 
     val state: StateFlow<ProgramViewState> = combine(
         connectionState,
         selectedTable,
-        itemsState,
+        tableState,
         loadingState.observable,
         showResetDialog
-    ) { state, selected, items, loading, resetDialog ->
+    ) { state, selected, table, loading, resetDialog ->
         val connected = state == ConnectionState.CONNECTED
         ProgramViewState(
             deviceConnected = connected,
             selectedTable = selected,
             isLoading = loading,
-            items = if (connected) items else emptyList(),
+            table = if (connected) table else null,
             showResetDialog = resetDialog,
             availablePresets = ProgramPreset.ALL
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = ProgramViewState.Empty,
+        initialValue = ProgramViewState(),
     )
 
     private var fetchTableJob: Job? = null
@@ -138,6 +123,38 @@ class ProgramViewModel(
                 else -> currentTable
             }
             result
+        }
+    }
+
+
+    private fun TablePacket.toState(): Table? = when (this) {
+        is TablePacketV1 -> toState()
+        else -> {
+            logger.w { "Unknown table type" }
+            null
+        }
+    }
+
+    private fun TablePacketV1.toState(): Table = buildTable {
+        header {
+            cell(width = 60.dp) { "Day" }
+            cell(width = 80.dp) { "T0" }
+            cell(width = 80.dp) { "T1" }
+            cell(width = 60.dp) { "Rh" }
+            cell(width = 60.dp) { "Flp" }
+            cell(width = 60.dp) { "Tr" }
+            cell(width = 60.dp) { "Cl" }
+        }
+        days.forEachIndexed { index, day ->
+            row(day) {
+                cell(width = 60.dp) { (index + 1).toString() }
+                cell(width = 80.dp) { day.spT0.toString() }
+                cell(width = 80.dp) { day.spT1.toString() }
+                cell(width = 60.dp) { day.spRh.toString() }
+                cell(width = 60.dp) { day.spFlp.toString() }
+                cell(width = 60.dp) { day.spTr.toString() }
+                cell(width = 60.dp) { day.spCl.toString() }
+            }
         }
     }
 }
