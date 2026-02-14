@@ -13,7 +13,6 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ua.graviton.isida.data.bluetooth.ConnectionState
 import ua.graviton.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.data.protocol.packets.TablePacket
 import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
@@ -107,16 +106,14 @@ class ProgramViewModel(
     }
 
     fun onDayUpdated(index: Int, day: TableDay) {
-        //TODO: Currently index is coming as Day number (starting from 1..30). We should Use Index instead (starting from 0..29)
         logger.d { "onDayUpdated: $index, $day" }
         table.update { currentTable ->
             val result: TablePacket? = when (currentTable) {
                 is TablePacketV1 -> {
                     if (day is TableDayV1) {
-                        val dayIndex = index - 1
                         val newDays = currentTable.days.toMutableList()
-                        if (dayIndex in newDays.indices) {
-                            newDays[dayIndex] = day
+                        if (index in newDays.indices) {
+                            newDays[index] = day
                             currentTable.copy(days = newDays)
                         } else currentTable
                     } else currentTable
@@ -149,13 +146,13 @@ class ProgramViewModel(
         }
         var alreadyAddedHeader = false
         days.forEachIndexed { index, day ->
-            if (day.spT0 > 25.0 && !alreadyAddedHeader) {
+            if (day.spT0 > 30.0 && !alreadyAddedHeader) {
                 header {
                     cell(width = 460.dp) { "Посмотри внимательно на экран" }
                 }
                 alreadyAddedHeader = true
             }
-            row(day) {
+            day(index = index, day = day) {
                 cell(width = 60.dp) { (index + 1).toString() }
                 cell(width = 80.dp) { day.spT0.toString() }
                 cell(width = 80.dp) { day.spT1.toString() }

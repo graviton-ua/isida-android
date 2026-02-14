@@ -14,24 +14,22 @@ data class Table(
     @Immutable
     sealed interface Row {
         val cells: List<Cell>
-        val day: TableDay?
 
         @Immutable
         data class StickyHeader(
             override val cells: List<Cell>,
-            override val day: TableDay? = null,
         ) : Row
 
         @Immutable
         data class Header(
             override val cells: List<Cell>,
-            override val day: TableDay? = null,
         ) : Row
 
         @Immutable
-        data class Default(
+        data class Day(
+            val index: Int,
+            val day: TableDay,
             override val cells: List<Cell>,
-            override val day: TableDay? = null,
         ) : Row
     }
 
@@ -64,10 +62,10 @@ internal class TableBuilder {
         rows.add(Table.Row.Header(cells = builder.build()))
     }
 
-    fun row(day: TableDay? = null, block: RowBuilder.() -> Unit) {
+    fun day(index: Int, day: TableDay, block: RowBuilder.() -> Unit) {
         val builder = RowBuilder()
         builder.block()
-        rows.add(Table.Row.Default(cells = builder.build(), day = day))
+        rows.add(Table.Row.Day(cells = builder.build(), index = index, day = day))
     }
 
     fun build(): Table = Table(rows = rows)

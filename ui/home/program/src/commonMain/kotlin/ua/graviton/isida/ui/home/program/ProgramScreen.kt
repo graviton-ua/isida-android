@@ -29,6 +29,7 @@ import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
 import ua.graviton.isida.data.protocol.packets.TableDay
+import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
 import ua.graviton.isida.ui.navigation.HomeTabScreen
 import ua.graviton.isida.ui.navigation.result.ResultEffect
 import ua.graviton.isida.ui.navigation.result.ResultEventBus
@@ -260,13 +261,11 @@ private fun ProgramTable(
                     TableRow(row, horizontalScrollState)
                 }
 
-                is Table.Row.Default -> item(key = "row_$index", contentType = "day") {
+                is Table.Row.Day -> item(key = "row_$index", contentType = "day") {
                     TableRow(
                         row = row,
                         scrollState = horizontalScrollState,
-                        modifier = Modifier.clickable(enabled = row.day != null) {
-                            row.day?.let { onEditDay(index, it) }
-                        }
+                        modifier = Modifier.clickable { onEditDay(row.index, row.day) }
                     )
                     HorizontalDivider(
                         modifier = Modifier.padding(horizontal = 8.dp),
@@ -329,14 +328,15 @@ private fun Preview() {
                         cell(width = 60.dp) { "Cl" }
                     }
                     repeat(30) { index ->
-                        row {
+                        val day = TableDayV1(37.5f, 30.0f, 55, 10, 1, 0)
+                        day(index, day) {
                             cell(width = 60.dp) { (index + 1).toString() }
-                            cell(width = 80.dp) { "37.5" }
-                            cell(width = 80.dp) { "30.0" }
-                            cell(width = 60.dp) { "55" }
-                            cell(width = 60.dp) { "10" }
-                            cell(width = 60.dp) { "1" }
-                            cell(width = 60.dp) { "0" }
+                            cell(width = 80.dp) { day.spT0.toString() }
+                            cell(width = 80.dp) { day.spT1.toString() }
+                            cell(width = 60.dp) { day.spRh.toString() }
+                            cell(width = 60.dp) { day.spFlp.toString() }
+                            cell(width = 60.dp) { day.spTr.toString() }
+                            cell(width = 60.dp) { day.spCl.toString() }
                         }
                     }
                 }
