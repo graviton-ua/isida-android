@@ -146,7 +146,7 @@ class ProgramViewModel(
         }
         var alreadyAddedHeader = false
         days.forEachIndexed { index, day ->
-            if (day.spT0 > 30.0 && !alreadyAddedHeader) {
+            if (day.spT1 > 30.0 && !alreadyAddedHeader) {
                 header {
                     cell(width = 460.dp) { "Посмотри внимательно на экран" }
                 }
