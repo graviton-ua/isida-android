@@ -344,9 +344,13 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
     item(
         title = composableString { stringResource(Res.string.outFlap) },
         content = composableString(output, pvFlap) {
-            val value = output and OutputBit.OUT_Flap.code
-            val str = if (value != 0) stringResource(Res.string.flapOpen) else stringResource(Res.string.flapClose)
-            "$str  $pvFlap %"
+            val isOpen = (pvFlap) != 0
+            if (isOpen) {
+                val label = stringResource(Res.string.flapOpen)
+                "$label  $pvFlap %" // Возвращаем собранную строку
+            } else {
+                stringResource(Res.string.flapClose) // Возвращаем строку закрытого состояния
+            }
         },
         style = {
             val value = output and OutputBit.OUT_Flap.code
@@ -513,4 +517,139 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             }
         },
     )
+
+    header(
+        title = composableString { stringResource(Res.string.titleOther) }
+    )
+    // *****--------------------------- Current Time -------------------------------*****
+    item(
+        title = composableString(currentTime) {
+            "currentTime:"
+        },
+        content = composableString(currentTime, programm) {
+            val day = (currentTime shr 11) and 0x1F
+            val hour = (currentTime shr 6) and 0x1F
+            val minute = currentTime and 0x3F
+            if (programm != 0)
+                "Day: $day, Time: ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}"
+            else ""
+        },
+    )
+    // *****--------------------------- nothing0 -------------------------------*****
+    item(
+        title = composableString(nothing0) {
+            "currentDate"
+            // // Настраиваем формат: префикс "0x" и минимальная длина 2 символа
+            // val myFormat = HexFormat {
+            //     number {
+            //         prefix = "0x"
+            //         minLength = 2
+            //         removeLeadingZeros = true
+            //         upperCase = true // Чтобы получить 'D' вместо 'd'
+            //     }
+            // }
+            // "$str: ${nothing0.toHexString(myFormat)}   $nothing0"
+        },
+        content = composableString(nothing0) {
+            val month = (nothing0 shr 4) and 0x0F
+            val year = nothing0 and 0x0F
+
+            "Month: $month, Year: $year"
+        },
+    )
+    // *****--------------------------- nothing1 -------------------------------*****
+    item(
+        title = composableString(nothing1) {
+            val str = "nothing1"
+            // Настраиваем формат: префикс "0x" и минимальная длина 2 символа
+            val myFormat = HexFormat {
+                number {
+                    prefix = "0x"
+                    minLength = 2
+                    removeLeadingZeros = true
+                    upperCase = true // Чтобы получить 'D' вместо 'd'
+                }
+            }
+            "$str: ${nothing1.toHexString(myFormat)}   $nothing1"
+        },
+        content = composableString(nothing1) {
+            nothing1.toString(2).padStart(8, '0')
+        },
+    )
+    // *****--------------------------- IP0 -------------------------------*****
+    item(
+        title = composableString(ip0) {
+            val str = "IP0"
+            // Настраиваем формат: префикс "0x" и минимальная длина 2 символа
+            val myFormat = HexFormat {
+                number {
+                    prefix = "0x"
+                    minLength = 2
+                    removeLeadingZeros = true
+                    upperCase = true // Чтобы получить 'D' вместо 'd'
+                }
+            }
+            "$str: ${ip0.toHexString(myFormat)}   $ip0"
+        },
+        content = composableString(ip0) {
+            ip0.toString(2).padStart(8, '0')
+        },
+    )// *****--------------------------- IP1 -------------------------------*****
+    item(
+        title = composableString(ip1) {
+            val str = "IP1"
+            // Настраиваем формат: префикс "0x" и минимальная длина 2 символа
+            val myFormat = HexFormat {
+                number {
+                    prefix = "0x"
+                    minLength = 2
+                    removeLeadingZeros = true
+                    upperCase = true // Чтобы получить 'D' вместо 'd'
+                }
+            }
+            "$str: ${ip1.toHexString(myFormat)}   $ip1"
+        },
+        content = composableString(ip1) {
+            ip1.toString(2).padStart(8, '0')
+        },
+    )
+    // *****--------------------------- IP2 -------------------------------*****
+    item(
+        title = composableString(ip2) {
+            val str = "IP2"
+            // Настраиваем формат: префикс "0x" и минимальная длина 2 символа
+            val myFormat = HexFormat {
+                number {
+                    prefix = "0x"
+                    minLength = 2
+                    removeLeadingZeros = true
+                    upperCase = true // Чтобы получить 'D' вместо 'd'
+                }
+            }
+            "$str: ${ip2.toHexString(myFormat)}   $ip2"
+        },
+        content = composableString(ip2) {
+            ip2.toString(2).padStart(8, '0')
+        },
+    )
+    // *****--------------------------- IP3 -------------------------------*****
+    item(
+        title = composableString(ip3) {
+            val str = "IP3"
+            // Настраиваем формат: префикс "0x" и минимальная длина 2 символа
+            val myFormat = HexFormat {
+                number {
+                    prefix = "0x"
+                    minLength = 2
+                    removeLeadingZeros = true
+                    upperCase = true // Чтобы получить 'D' вместо 'd'
+                }
+            }
+            "$str: ${ip3.toHexString(myFormat)}   $ip3"
+        },
+        content = composableString(ip3) {
+            ip3.toString(2).padStart(8, '0')
+        },
+    )
+
 }

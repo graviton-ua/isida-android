@@ -16,6 +16,7 @@
     <string name="titleControl">МЕХАНИЗМЫ</string>
     <string name="titleStstus">СОСТОЯНИЕ</string>
     <string name="titleErrors">ПРЕДУПРЕЖДЕНИЯ</string>
+    <string name="titleOther">ПРОЧЕЕ</string>
 
     <string name="num1">1</string>
     <string name="pv_t0_label">Сухой</string>

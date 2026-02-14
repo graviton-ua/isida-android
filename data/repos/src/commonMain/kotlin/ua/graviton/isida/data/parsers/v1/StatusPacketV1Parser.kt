@@ -26,8 +26,7 @@ object StatusPacketV1Parser : PacketParser<StatusPacketV1> {
         val errors = reader.u8()
         val warning = reader.u8()
         val output = reader.u8()
-        val dayHour = reader.u8()
-        val minSec = reader.u8()
+        val currentTime = reader.u16()
         val spT0 = reader.u16() / 10f
         val spT1 = reader.u16() / 10f
         val spRh0 = reader.u8()
@@ -90,8 +89,7 @@ object StatusPacketV1Parser : PacketParser<StatusPacketV1> {
             errors = errors,
             warning = warning,
             output = output,
-            dayHour = dayHour,
-            minSec = minSec,
+            currentTime = currentTime,
             spT0 = spT0,
             spT1 = spT1,
             spRh0 = spRh0,

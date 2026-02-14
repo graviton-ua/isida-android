@@ -157,11 +157,10 @@ class DevicePropertyRelayMode(value: Int? = null) : RadioListDeviceProperty<Int>
 class DevicePropertyProgram(value: Int? = null) : RadioListDeviceProperty<Int>(
     initValue = value,
     title = { stringResource(Res.string.prop_program_lb) },
-    list = listOf(0, 1, 2, 3, 4, 5),
+    list = listOf(0, 1, 2, 3, 4),
     listItemTitleMap = {
         when (it) {
             0 -> stringResource(Res.string.no)
-            5 -> stringResource(Res.string.prop_program_reset)
             else -> {
                 val label = stringResource(Res.string.prop_program_lb)
                 "$label $it"

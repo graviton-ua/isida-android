@@ -23,8 +23,8 @@ import ua.graviton.isida.data.protocol.packets.StatusPacket
  * @property errors Error flags.
  * @property warning Warning flags.
  * @property output Output control signals.
- * @property dayHour Current Day and Hour.
- * @property minSec Current Minute and Second.
+ * @property currentTime Биты 15–11: День (5 бит), Биты 10–6: Час (5 бит), Биты 5–0: Минуты (6 бит)
+ *
  * @property spT0 Temperature setpoint for sensor #0.
  * @property spT1 Temperature setpoint for sensor #1.
  * @property spRh0 Adjustment/Calibration for HIH-5030.
@@ -80,8 +80,7 @@ data class StatusPacketV2(
     val errors: Int = 0,      // 1 байт ind=15 ошибки
     val warning: Int = 0,     // 1 байт ind=16 предупреждения
     val output: Int = 0,      // 1 байт ind=17 запись сигналов управления в микросхему 74HC595D
-    val dayHour: Int = 0,     // 1 байт ind=18 DDHH = 2209
-    val minSec: Int = 0,      // 1 байт ind=19 MMSS = 0728
+    val currentTime: Int = 0, // 2 байт ind=18,19 Биты 15–11: День (5 бит), Биты 10–6: Час (5 бит), Биты 5–0: Минуты (6 бит)
     // ------------------ ИТОГО 20 bytes -------------------------------
     val spT0: Float = 0f,       // 2 байт ind=20,21 Уставка температуры sp[0].spT->Сухой датчик;
     val spT1: Float = 0f,       // 2 байт ind=22,23 Уставка температуры sp[1].spT->Влажный датчик
