@@ -17,6 +17,12 @@ data class Table(
         val day: TableDay?
 
         @Immutable
+        data class StickyHeader(
+            override val cells: List<Cell>,
+            override val day: TableDay? = null,
+        ) : Row
+
+        @Immutable
         data class Header(
             override val cells: List<Cell>,
             override val day: TableDay? = null,
@@ -45,6 +51,12 @@ data class Table(
 
 internal class TableBuilder {
     private val rows = mutableListOf<Table.Row>()
+
+    fun stickyHeader(block: RowBuilder.() -> Unit) {
+        val builder = RowBuilder()
+        builder.block()
+        rows.add(Table.Row.StickyHeader(cells = builder.build()))
+    }
 
     fun header(block: RowBuilder.() -> Unit) {
         val builder = RowBuilder()

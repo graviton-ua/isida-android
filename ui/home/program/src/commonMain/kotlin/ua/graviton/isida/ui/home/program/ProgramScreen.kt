@@ -1,15 +1,8 @@
 package ua.graviton.isida.ui.home.program
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Refresh
@@ -36,7 +29,6 @@ import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
 import ua.graviton.isida.data.protocol.packets.TableDay
-import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
 import ua.graviton.isida.ui.navigation.HomeTabScreen
 import ua.graviton.isida.ui.navigation.result.ResultEffect
 import ua.graviton.isida.ui.navigation.result.ResultEventBus
@@ -260,10 +252,15 @@ private fun ProgramTable(
     LazyColumn(modifier = modifier) {
         table.rows.forEachIndexed { index, row ->
             when (row) {
-                is Table.Row.Header -> stickyHeader(key = "header_$index") {
+                is Table.Row.StickyHeader -> stickyHeader(key = "header_$index") {
                     TableRow(row, horizontalScrollState)
                 }
-                is Table.Row.Default -> item(key = "row_$index") {
+
+                is Table.Row.Header -> item(key = "header_$index", contentType = "header") {
+                    TableRow(row, horizontalScrollState)
+                }
+
+                is Table.Row.Default -> item(key = "row_$index", contentType = "day") {
                     TableRow(
                         row = row,
                         scrollState = horizontalScrollState,
@@ -291,7 +288,11 @@ private fun TableRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .then(if (row is Table.Row.Header) Modifier.background(MaterialTheme.colorScheme.surfaceVariant) else Modifier)
+            .then(
+                if (row is Table.Row.Header || row is Table.Row.StickyHeader)
+                    Modifier.background(MaterialTheme.colorScheme.surfaceVariant)
+                else Modifier
+            )
             .horizontalScroll(scrollState)
             .padding(vertical = if (row is Table.Row.Header) 8.dp else 12.dp, horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -300,9 +301,9 @@ private fun TableRow(
             Text(
                 text = cell.value(),
                 modifier = if (cell.width != Dp.Unspecified) Modifier.width(cell.width) else Modifier,
-                fontWeight = if (row is Table.Row.Header) FontWeight.Bold else FontWeight.Normal,
+                fontWeight = if (row is Table.Row.Header || row is Table.Row.StickyHeader) FontWeight.Bold else FontWeight.Normal,
                 textAlign = TextAlign.Center,
-                style = if (row is Table.Row.Header) MaterialTheme.typography.labelMedium else MaterialTheme.typography.bodyMedium,
+                style = if (row is Table.Row.Header || row is Table.Row.StickyHeader) MaterialTheme.typography.labelMedium else MaterialTheme.typography.bodyMedium,
                 color = cell.style.color ?: Color.Unspecified
             )
         }

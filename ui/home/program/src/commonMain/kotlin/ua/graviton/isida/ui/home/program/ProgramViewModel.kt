@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.whoppah.metrox.viewmodel.ViewModelKey
 import com.whoppah.metrox.viewmodel.ViewModelScope
+import com.whoppah.util.AppCoroutineDispatchers
 import com.whoppah.util.ObservableLoadingCounter
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
@@ -25,6 +26,7 @@ import ua.graviton.isida.domain.interactors.UpdateProgramTable
 @ViewModelKey(ProgramViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 class ProgramViewModel(
+    dispatchers: AppCoroutineDispatchers,
     manager: DeviceConnectionManager,
     private val getProgramTable: GetProgramTable,
     private val updateProgramTable: UpdateProgramTable,
@@ -37,7 +39,7 @@ class ProgramViewModel(
     private val loadingState = ObservableLoadingCounter()
     private val showResetDialog = MutableStateFlow(false)
 
-    private val tableState = table.map { packet -> packet?.toState() }
+    private val tableState = table.map { packet -> packet?.toState() }.flowOn(dispatchers.computation)
 
     val state: StateFlow<ProgramViewState> = combine(
         connectionState,
@@ -136,7 +138,7 @@ class ProgramViewModel(
     }
 
     private fun TablePacketV1.toState(): Table = buildTable {
-        header {
+        stickyHeader {
             cell(width = 60.dp) { "Day" }
             cell(width = 80.dp) { "T0" }
             cell(width = 80.dp) { "T1" }
@@ -145,7 +147,14 @@ class ProgramViewModel(
             cell(width = 60.dp) { "Tr" }
             cell(width = 60.dp) { "Cl" }
         }
+        var alreadyAddedHeader = false
         days.forEachIndexed { index, day ->
+            if (day.spT0 > 25.0 && !alreadyAddedHeader) {
+                header {
+                    cell(width = 460.dp) { "Посмотри внимательно на экран" }
+                }
+                alreadyAddedHeader = true
+            }
             row(day) {
                 cell(width = 60.dp) { (index + 1).toString() }
                 cell(width = 80.dp) { day.spT0.toString() }
@@ -157,4 +166,46 @@ class ProgramViewModel(
             }
         }
     }
+    // private fun TablePacketV1.toState(): Table = buildTable {
+    //     header {
+    //         cell(width = 60.dp) { "Day" }
+    //         cell(width = 80.dp) { "T0" }
+    //         cell(width = 80.dp) { "T1" }
+    //         cell(width = 60.dp) { "Rh" }
+    //         cell(width = 60.dp) { "Flp" }
+    //         cell(width = 60.dp) { "Tr" }
+    //         cell(width = 60.dp) { "Cl" }
+    //     }
+    //     days.take(15).forEachIndexed { index, day ->
+    //         row(day) {
+    //             cell(width = 60.dp) { (index + 1).toString() }
+    //             cell(width = 80.dp) { day.spT0.toString() }
+    //             cell(width = 80.dp) { day.spT1.toString() }
+    //             cell(width = 60.dp) { day.spRh.toString() }
+    //             cell(width = 60.dp) { day.spFlp.toString() }
+    //             cell(width = 60.dp) { day.spTr.toString() }
+    //             cell(width = 60.dp) { day.spCl.toString() }
+    //         }
+    //     }
+    //     header {
+    //         cell(width = 60.dp) { "Day" }
+    //         cell(width = 80.dp) { "T0" }
+    //         cell(width = 80.dp) { "T1" }
+    //         cell(width = 60.dp) { "Rh" }
+    //         cell(width = 60.dp) { "Flp" }
+    //         cell(width = 60.dp) { "Tr" }
+    //         cell(width = 60.dp) { "Cl" }
+    //     }
+    //     days.takeLast(15).forEachIndexed { index, day ->
+    //         row(day) {
+    //             cell(width = 60.dp) { (index + 1).toString() }
+    //             cell(width = 80.dp) { day.spT0.toString() }
+    //             cell(width = 80.dp) { day.spT1.toString() }
+    //             cell(width = 60.dp) { day.spRh.toString() }
+    //             cell(width = 60.dp) { day.spFlp.toString() }
+    //             cell(width = 60.dp) { day.spTr.toString() }
+    //             cell(width = 60.dp) { day.spCl.toString() }
+    //         }
+    //     }
+    // }
 }
