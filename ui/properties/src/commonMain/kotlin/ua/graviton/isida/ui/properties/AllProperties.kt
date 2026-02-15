@@ -12,7 +12,7 @@ import ua.graviton.isida.ui.properties.types.SliderDeviceProperty
 @Stable
 class DevicePropertySpT0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_spT0_lb) + stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_spT0_lb) + " °C" },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -34,7 +34,7 @@ class DevicePropertySpT0(value: Float? = null) : NumberInputTextFieldDevicePrope
 @Stable
 class DevicePropertySpT1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_spT1_lb) + stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_spT1_lb) + " °C" },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -73,7 +73,7 @@ class DevicePropertyPermission(value: Int? = null) : RadioListDeviceProperty<Int
 @Stable
 class DevicePropertySpRh0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { stringResource(Res.string.prop_spRh0_lb) + stringResource(Res.string.dimen_percent) },
+    title = { stringResource(Res.string.prop_spRh0_lb) + " %" },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -95,7 +95,7 @@ class DevicePropertySpRh0(value: Int? = null) : NumberInputTextFieldDeviceProper
 @Stable
 class DevicePropertySpRh1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_spRh1_lb) + stringResource(Res.string.dimen_percent) },
+    title = { stringResource(Res.string.prop_spRh1_lb) + " %" },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -284,7 +284,7 @@ class DevicePropertyTurnOn(value: Int? = null) : NumberInputTextFieldDevicePrope
 @Stable
 class DevicePropertyAlarm0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_alarm0_lb) + stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_alarm0_lb) + " °C" },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -306,7 +306,7 @@ class DevicePropertyAlarm0(value: Float? = null) : NumberInputTextFieldDevicePro
 @Stable
 class DevicePropertyAlarm1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_alarm1_lb) + stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_alarm1_lb) + " °C" },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -328,7 +328,7 @@ class DevicePropertyAlarm1(value: Float? = null) : NumberInputTextFieldDevicePro
 @Stable
 class DevicePropertyExtOn0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_extOn0_lb) + stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_extOn0_lb) + " °C" },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -350,7 +350,7 @@ class DevicePropertyExtOn0(value: Float? = null) : NumberInputTextFieldDevicePro
 @Stable
 class DevicePropertyExtOn1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_extOn1_lb) + stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_extOn1_lb) + " °C" },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -372,7 +372,7 @@ class DevicePropertyExtOn1(value: Float? = null) : NumberInputTextFieldDevicePro
 @Stable
 class DevicePropertyExtOff0(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_extOff0_lb) + stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_extOff0_lb) + " °C" },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -394,7 +394,7 @@ class DevicePropertyExtOff0(value: Float? = null) : NumberInputTextFieldDevicePr
 @Stable
 class DevicePropertyExtOff1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_extOff1_lb) + stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_extOff1_lb) + " °C" },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
@@ -461,7 +461,7 @@ class DevicePropertyAir1(value: Int? = null) : NumberInputTextFieldDevicePropert
 class DevicePropertySpCO2(value: Float? = null) : SliderDeviceProperty<Float>(
     initValue = (value ?: 20f),
     min = 1000f, max = 5000f, increment = 500f,
-    title = { stringResource(Res.string.prop_CO2_lb) + stringResource(Res.string.dimen_ppm) },
+    title = { stringResource(Res.string.prop_CO2_lb) + " ppm." },
 )
 
 //-------------------------- KoffCurr ------------------------------
@@ -491,7 +491,7 @@ class DevicePropertyKoffCurr(value: Int? = null) : NumberInputTextFieldDevicePro
 class DevicePropertyHysteresis(value: Float? = null) : SliderDeviceProperty<Float>(
     initValue = (value ?: 0.2f),
     min = 0.2f, max = 3.0f, increment = 0.1f,
-    title = { stringResource(Res.string.prop_Hysteresis_lb) + stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_Hysteresis_lb) + " °C" },
 )
 
 //-------------------------- TurnTime ------------------------------
@@ -507,14 +507,14 @@ class DevicePropertyTurnTime(value: Int? = null) : SliderDeviceProperty<Int>(
 class DevicePropertyZonality(value: Int? = null) : SliderDeviceProperty<Int>(
     initValue = value,
     min = 1, max = 3, increment = 1.0f,
-    title = { stringResource(Res.string.prop_zonelity_lb) + stringResource(Res.string.dimen_celsius) },
+    title = { stringResource(Res.string.prop_zonelity_lb) + " °C" },
 )
 
 //-------------------------- Flap restrictions ----------------------------
 @Stable
 class DevicePropertyFlapRestrictions(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
-    title = { stringResource(Res.string.prop_flapRestr_lb) + stringResource(Res.string.dimen_percent) },
+    title = { stringResource(Res.string.prop_flapRestr_lb) + " %" },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,

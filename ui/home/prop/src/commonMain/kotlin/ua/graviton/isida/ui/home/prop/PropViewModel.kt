@@ -61,7 +61,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
         id = "spT0",
         title = composableString { stringResource(Res.string.prop_spT0_lb) },
         value = composableString(this@toItems?.spT0) {
-            this@toItems?.spT0?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER
+            this@toItems?.spT0?.format()?.let { "$it °C" } ?: EMPTY_PLACEHOLDER
         },
         style = {
             val currVal = this@toItems?.spT0
@@ -80,7 +80,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
         id = "spT1",
         title = composableString { stringResource(Res.string.prop_spT1_lb) },
         value = composableString(this@toItems?.spT1) {
-            this@toItems?.spT1?.format()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER
+            this@toItems?.spT1?.format()?.let { "$it °C" } ?: EMPTY_PLACEHOLDER
         },
         style = {
             val currVal = this@toItems?.spT1
@@ -280,7 +280,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
         id = "alarm0",
         title = composableString { stringResource(Res.string.prop_alarm0_lb) },
         value = composableString(this@toItems?.alarm0) {
-            this@toItems?.alarm0?.toString()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER
+            this@toItems?.alarm0?.toString()?.let { "$it °C" } ?: EMPTY_PLACEHOLDER
         },
         style = {
             val currVal = this@toItems?.alarm0
@@ -299,7 +299,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
         id = "alarm1",
         title = composableString { stringResource(Res.string.prop_alarm1_lb) },
         value = composableString(this@toItems?.alarm1) {
-            this@toItems?.alarm1?.toString()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER
+            this@toItems?.alarm1?.toString()?.let { "$it °C" } ?: EMPTY_PLACEHOLDER
         },
         style = {
             val currVal = this@toItems?.alarm1
@@ -318,7 +318,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
         id = "extOn0",
         title = composableString { stringResource(Res.string.prop_extOn0_lb) },
         value = composableString(this@toItems?.extOn0) {
-            this@toItems?.extOn0?.toString()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER
+            this@toItems?.extOn0?.toString()?.let { "$it °C" } ?: EMPTY_PLACEHOLDER
         },
         style = {
             val currVal = this@toItems?.extOn0
@@ -337,7 +337,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
         id = "extOn1",
         title = composableString { stringResource(Res.string.prop_extOn1_lb) },
         value = composableString(this@toItems?.extOn1) {
-            this@toItems?.extOn1?.toString()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER
+            this@toItems?.extOn1?.toString()?.let { "$it °C" } ?: EMPTY_PLACEHOLDER
         },
         style = {
             val currVal = this@toItems?.extOn1
@@ -356,7 +356,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
         id = "extOff0",
         title = composableString { stringResource(Res.string.prop_extOff0_lb) },
         value = composableString(this@toItems?.extOff0) {
-            this@toItems?.extOff0?.toString()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER
+            this@toItems?.extOff0?.toString()?.let { "$it °C" } ?: EMPTY_PLACEHOLDER
         },
         style = {
             val currVal = this@toItems?.extOff0
@@ -374,7 +374,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
         id = "extOff1",
         title = composableString { stringResource(Res.string.prop_extOff1_lb) },
         value = composableString(this@toItems?.extOff1) {
-            this@toItems?.extOff1?.toString()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER
+            this@toItems?.extOff1?.toString()?.let { "$it °C" } ?: EMPTY_PLACEHOLDER
         },
         style = {
             val currVal = this@toItems?.extOff1
@@ -408,7 +408,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
         id = "spCO2",
         title = composableString { stringResource(Res.string.prop_CO2_lb) },
         value = composableString(this@toItems?.spCO2) {
-            this@toItems?.spCO2?.toString()?.let { stringResource(Res.string.prop_dimen_ppm, it) } ?: EMPTY_PLACEHOLDER
+            this@toItems?.spCO2?.toString()?.let { "$it ppm." } ?: EMPTY_PLACEHOLDER
         },
         style = {
             val currVal = this@toItems?.spCO2
@@ -445,7 +445,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
         id = "hysteresis",
         title = composableString { stringResource(Res.string.prop_Hysteresis_lb) },
         value = composableString(this@toItems?.hysteresis) {
-            this@toItems?.hysteresis?.toString()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER
+            this@toItems?.hysteresis?.toString()?.let { "$it °C" } ?: EMPTY_PLACEHOLDER
         }
     )
     //-------------------------- zonality ----------------------
@@ -453,7 +453,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
         id = "zonality",
         title = composableString { stringResource(Res.string.prop_zonelity_lb) },
         value = composableString(this@toItems?.zonality) {
-            this@toItems?.zonality?.toString()?.let { stringResource(Res.string.prop_dimen_celsius, it) } ?: EMPTY_PLACEHOLDER
+            this@toItems?.zonality?.toString()?.let { "$it °C" } ?: EMPTY_PLACEHOLDER
         },
         style = {
             val currentValue = this@toItems?.zonality
@@ -467,7 +467,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
         id = "flapRestrictions",
         title = composableString { stringResource(Res.string.prop_flapRestr_lb) },
         value = composableString(this@toItems?.flapRestrictions) {
-            this@toItems?.flapRestrictions?.toString()?.let { stringResource(Res.string.prop_dimen_percent, it) } ?: EMPTY_PLACEHOLDER
+            this@toItems?.flapRestrictions?.toString()?.let { "$it %" } ?: EMPTY_PLACEHOLDER
         }
     )
     //-------------------------- turnTime ----------------------
