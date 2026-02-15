@@ -60,7 +60,7 @@ object StatusPacketV1Parser : PacketParser<StatusPacketV1> {
         val zonality = (zonaFlap and 0xC0) shr 6
 
         val turnTime = reader.u8()
-        val waitCooling = reader.u8() * 4
+        val waitCooling = reader.u8() / 15
         val pkoff0 = reader.u8()
         val pkoff1 = reader.u8()
         val ikoff0 = reader.u8()

@@ -496,31 +496,17 @@ class DevicePropertyHysteresis(value: Float? = null) : SliderDeviceProperty<Floa
 
 //-------------------------- TurnTime ------------------------------
 @Stable
-class DevicePropertyTurnTime(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+class DevicePropertyTurnTime(value: Int? = null) : SliderDeviceProperty<Int>(
     initValue = value,
-    title = { stringResource(Res.string.prop_turnTime_lb) + stringResource(Res.string.dimen_sec) },
-    description = {
-        stringResource(
-            Res.string.input_info_limit_min_max,
-            "40", "255"
-        )
-    },
-    onValidate = { text -> // Переименовал в text для ясности
-        val numericValue = text.toIntOrNull()
-        when {
-            numericValue == null -> NumberInputTextFieldState.Error.Required
-            numericValue < 40 -> NumberInputTextFieldState.Error.CantBeLessThen("40")
-            numericValue > 255 -> NumberInputTextFieldState.Error.CantBeMoreThen("255")
-            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
-        }
-    },
+    min = 1, max = 4, increment = 1.0f,
+    title = { stringResource(Res.string.prop_turnTime_lb) + stringResource(Res.string.dimen_min) },
 )
 
 //-------------------------- Zonality ----------------------------
 @Stable
-class DevicePropertyZonality(value: Float? = null) : SliderDeviceProperty<Float>(
+class DevicePropertyZonality(value: Int? = null) : SliderDeviceProperty<Int>(
     initValue = value,
-    min = 1.0f, max = 3.0f, increment = 1.0f,
+    min = 1, max = 3, increment = 1.0f,
     title = { stringResource(Res.string.prop_zonelity_lb) + stringResource(Res.string.dimen_celsius) },
 )
 
@@ -548,24 +534,10 @@ class DevicePropertyFlapRestrictions(value: Int? = null) : NumberInputTextFieldD
 
 //-------------------------- WaitCooling -------------------------
 @Stable
-class DevicePropertyWaitCooling(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+class DevicePropertyWaitCooling(value: Int? = null) : SliderDeviceProperty<Int>(
     initValue = value,
+    min = 4, max = 17, increment = 1.0f,
     title = { stringResource(Res.string.prop_waitCooling_lb) + stringResource(Res.string.dimen_min) },
-    description = {
-        stringResource(
-            Res.string.input_info_limit_min_max,
-            "4", "17"
-        )
-    },
-    onValidate = { text -> // Переименовал в text для ясности
-        val numericValue = text.toIntOrNull()
-        when {
-            numericValue == null -> NumberInputTextFieldState.Error.Required
-            numericValue < 4 -> NumberInputTextFieldState.Error.CantBeLessThen("4")
-            numericValue > 17 -> NumberInputTextFieldState.Error.CantBeMoreThen("17")
-            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
-        }
-    },
 )
 
 //-------------------------- Pkoff0 ------------------------------
