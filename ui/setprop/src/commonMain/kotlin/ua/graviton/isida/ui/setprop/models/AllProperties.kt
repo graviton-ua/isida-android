@@ -473,24 +473,24 @@ internal class TurnTime(value: Int? = null) : StatusPacketProperty<DevicePropert
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(turnTime = it) } ?: packet
+        is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(turnTime = it) } ?: packet
         else -> packet
     }
 }
 
 //-------------------------- Zonality ----------------------------
 @Stable
-internal class Zonality(value: Float? = null) : StatusPacketProperty<DevicePropertyZonality>(property = DevicePropertyZonality(value = value)) {
+internal class Zonality(value: Int? = null) : StatusPacketProperty<DevicePropertyZonality>(property = DevicePropertyZonality(value = value)) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
-            is StatusPacketV1 -> packet.zonality.toFloat()
+            is StatusPacketV1 -> packet.zonality
             else -> null
         }
         property.inputHelper.setValue(value)
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(zonality = it.toInt()) } ?: packet
+        is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(zonality = it) } ?: packet
         else -> packet
     }
 }
@@ -526,7 +526,7 @@ internal class WaitCooling(value: Int? = null) :
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(waitCooling = it) } ?: packet
+        is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(waitCooling = it) } ?: packet
         else -> packet
     }
 }

@@ -13,6 +13,7 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import ua.graviton.isida.data.bluetooth.ConnectionState
 import ua.graviton.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.data.protocol.packets.TablePacket
 import ua.graviton.isida.data.protocol.packets.v1.TableDayV1

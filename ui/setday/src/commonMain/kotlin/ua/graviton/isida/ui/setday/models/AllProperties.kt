@@ -72,7 +72,7 @@ internal class TurnTime(value: Int? = null) : TableDayProperty<DevicePropertyTur
     }
 
     override fun copyAndUpdate(packet: TableDay): TableDay = when (packet) {
-        is TableDayV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(spTr = it) } ?: packet
+        is TableDayV1 -> property.inputHelper.value?.let { packet.copy(spTr = it) } ?: packet
         else -> packet
     }
 }
@@ -108,7 +108,7 @@ internal class WaitCooling(value: Int? = null) :
     }
 
     override fun copyAndUpdate(packet: TableDay): TableDay = when (packet) {
-        is TableDayV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(spCl = it) } ?: packet
+        is TableDayV1 -> property.inputHelper.value?.let { packet.copy(spCl = it) } ?: packet
         else -> packet
     }
 }
