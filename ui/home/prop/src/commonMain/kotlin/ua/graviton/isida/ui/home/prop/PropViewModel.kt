@@ -332,6 +332,24 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+    //-------------------------- extOff0 ----------------------
+    item(
+        id = "extOff0",
+        title = composableString { stringResource(Res.string.prop_extOff0_lb) },
+        value = composableString(this@toItems?.extOff0) {
+            this@toItems?.extOff0?.toString()?.let { "$it °C" } ?: EMPTY_PLACEHOLDER
+        },
+        style = {
+            val currVal = this@toItems?.extOff0
+            backgroundColor = when {
+                currVal == null -> null
+                currVal > 10.0 -> IsidaColor.Red100
+                currVal > 3.0 -> IsidaColor.Yellow100
+                currVal < 0.2 -> IsidaColor.Yellow100
+                else -> null
+            }
+        }
+    )
     //-------------------------- extOn1 ----------------------
     item(
         id = "extOn1",
@@ -347,24 +365,6 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
                 currVal > 5.0 -> IsidaColor.Yellow100
                 currVal < 0.3 -> IsidaColor.Red100
                 currVal < 0.5 -> IsidaColor.Yellow100
-                else -> null
-            }
-        }
-    )
-    //-------------------------- extOff0 ----------------------
-    item(
-        id = "extOff0",
-        title = composableString { stringResource(Res.string.prop_extOff0_lb) },
-        value = composableString(this@toItems?.extOff0) {
-            this@toItems?.extOff0?.toString()?.let { "$it °C" } ?: EMPTY_PLACEHOLDER
-        },
-        style = {
-            val currVal = this@toItems?.extOff0
-            backgroundColor = when {
-                currVal == null -> null
-                currVal > 10.0 -> IsidaColor.Red100
-                currVal > 3.0 -> IsidaColor.Yellow100
-                currVal < 0.2 -> IsidaColor.Yellow100
                 else -> null
             }
         }
@@ -475,7 +475,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
         id = "turnTime",
         title = composableString { stringResource(Res.string.prop_turnTime_lb) },
         value = composableString(this@toItems?.turnTime) {
-            this@toItems?.turnTime?.toString()?.let { stringResource(Res.string.prop_dimen_sec, it) } ?: EMPTY_PLACEHOLDER
+            this@toItems?.turnTime?.toString()?.let { stringResource(Res.string.prop_dimen_min, it) } ?: EMPTY_PLACEHOLDER
         }
     )
     //-------------------------- waitCooling ----------------------
@@ -483,7 +483,7 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
         id = "waitCooling",
         title = composableString { stringResource(Res.string.prop_waitCooling_lb) },
         value = composableString(this@toItems?.waitCooling) {
-            this@toItems?.waitCooling?.toString()?.let { stringResource(Res.string.prop_dimen_sec, it) } ?: EMPTY_PLACEHOLDER
+            this@toItems?.waitCooling?.toString()?.let { stringResource(Res.string.prop_dimen_min, it) } ?: EMPTY_PLACEHOLDER
         }
     )
     //-------------------------- pkoff0 ----------------------

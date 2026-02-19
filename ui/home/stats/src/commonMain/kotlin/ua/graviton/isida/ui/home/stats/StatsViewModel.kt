@@ -340,6 +340,26 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
         },
     )
 
+// *****--------------------------- Fan -------------------------------*****
+    item(
+        title = composableString { stringResource(Res.string.outFlap) },
+        content = composableString( pvFan) {
+            val isOpen = (pvFan) > 1
+            if (isOpen) {
+                val label = stringResource(Res.string.fanRun)
+                val dimen = stringResource(Res.string.dimen_speed)
+                "$label  $pvFan $dimen" // Возвращаем собранную строку
+            } else {
+                stringResource(Res.string.fanStop) // Возвращаем строку закрытого состояния
+            }
+        },
+        style = {
+            val value = pvFan
+            if (value != 0) backgroundColor = IsidaColor.Green100
+            else backgroundColor = IsidaColor.Red500
+        },
+    )
+
     // *****--------------------------- Flap -------------------------------*****
     item(
         title = composableString { stringResource(Res.string.outFlap) },
@@ -538,24 +558,27 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
     // *****--------------------------- nothing0 -------------------------------*****
     item(
         title = composableString(nothing0) {
-            "currentDate"
-            // // Настраиваем формат: префикс "0x" и минимальная длина 2 символа
-            // val myFormat = HexFormat {
-            //     number {
-            //         prefix = "0x"
-            //         minLength = 2
-            //         removeLeadingZeros = true
-            //         upperCase = true // Чтобы получить 'D' вместо 'd'
-            //     }
-            // }
-            // "$str: ${nothing0.toHexString(myFormat)}   $nothing0"
+            val str = "nothing0"
+            // Настраиваем формат: префикс "0x" и минимальная длина 2 символа
+            val myFormat = HexFormat {
+                number {
+                    prefix = "0x"
+                    minLength = 2
+                    removeLeadingZeros = true
+                    upperCase = true // Чтобы получить 'D' вместо 'd'
+                }
+            }
+            "$str: ${nothing0.toHexString(myFormat)}   $nothing0"
         },
         content = composableString(nothing0) {
-            val month = (nothing0 shr 4) and 0x0F
-            val year = nothing0 and 0x0F
-
-            "Month: $month, Year: $year"
+            nothing0.toString(2).padStart(8, '0')
         },
+        // content = composableString(nothing0) {
+        //     val month = (nothing0 shr 4) and 0x0F
+        //     val year = nothing0 and 0x0F
+        //
+        //     "Month: $month, Year: $year"
+        // },
     )
     // *****--------------------------- nothing1 -------------------------------*****
     item(

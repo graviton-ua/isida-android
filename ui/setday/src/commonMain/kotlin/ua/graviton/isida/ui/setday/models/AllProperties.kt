@@ -90,7 +90,7 @@ internal class FlapRestrictions(value: Int? = null) :
     }
 
     override fun copyAndUpdate(packet: TableDay): TableDay = when (packet) {
-        is TableDayV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(spFlp = it) } ?: packet
+        is TableDayV1 -> property.inputHelper.value?.let { packet.copy(spFlp = it) } ?: packet
         else -> packet
     }
 }

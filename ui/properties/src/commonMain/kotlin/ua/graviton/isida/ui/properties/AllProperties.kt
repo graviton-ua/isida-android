@@ -222,7 +222,7 @@ class DevicePropertyPeriod(value: Int? = null) : NumberInputTextFieldDevicePrope
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
-            "30", "255"
+            "30", "240"
         )
     },
     onValidate = { text -> // Переименовал в text для ясности
@@ -512,24 +512,10 @@ class DevicePropertyZonality(value: Int? = null) : SliderDeviceProperty<Int>(
 
 //-------------------------- Flap restrictions ----------------------------
 @Stable
-class DevicePropertyFlapRestrictions(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+class DevicePropertyFlapRestrictions(value: Int? = null) : SliderDeviceProperty<Int>(
     initValue = value,
+    min = 40, max = 100, increment = 10.0f,
     title = { stringResource(Res.string.prop_flapRestr_lb) + " %" },
-    description = {
-        stringResource(
-            Res.string.input_info_limit_min_max,
-            "40", "100"
-        )
-    },
-    onValidate = { text -> // Переименовал в text для ясности
-        val numericValue = text.toIntOrNull()
-        when {
-            numericValue == null -> NumberInputTextFieldState.Error.Required
-            numericValue < 40 -> NumberInputTextFieldState.Error.CantBeLessThen("40")
-            numericValue > 100 -> NumberInputTextFieldState.Error.CantBeMoreThen("100")
-            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
-        }
-    },
 )
 
 //-------------------------- WaitCooling -------------------------

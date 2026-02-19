@@ -508,7 +508,7 @@ internal class FlapRestrictions(value: Int? = null) :
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(flapRestrictions = it) } ?: packet
+        is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(flapRestrictions = it) } ?: packet
         else -> packet
     }
 }

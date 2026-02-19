@@ -53,6 +53,8 @@
     <string name="flapAngle">Открытие заслонки %</string>
     <string name="outExtend">Вспомогательный канал</string>
     <string name="outTrays">Таймер поворота лотков</string>
+    <string name="fanRun">Вентилятор вращается</string>
+    <string name="fanStop">Вентилятор остановлен</string>
 
     <string name="programm">Программа</string>
     <string name="incubation">Всего час.</string>
@@ -166,6 +168,7 @@
     <string name="prop_dimen_min">%1$s мин.</string>
     <string name="dimen_min"> мин.</string>
     <string name="prop_dimen_kwt">%1$s кВт/час.</string>
+    <string name="dimen_speed"> об./мин.</string>
 
     <string name="input_info_limit">Установленные ограничения</string>
     <string name="input_info_limit_min_max">Значение должно быть от %1$s до %2$s.</string>

@@ -42,7 +42,7 @@ object UpdateSettingsV1Serializer : CommandSerializerV1<UpdateSettingsCommandV1>
         val rawZonality = command.zonality shl 6
         val rawFlapristr = command.flapRestrictions - 37 and 0x3F
         writer.u8(rawZonality or rawFlapristr)
-        writer.u8(command.turnTime)
+        writer.u8(command.turnTime * 60)
         writer.u8(command.waitCooling * 15)
         writer.u8(command.pkoff0)
         writer.u8(command.pkoff1)
