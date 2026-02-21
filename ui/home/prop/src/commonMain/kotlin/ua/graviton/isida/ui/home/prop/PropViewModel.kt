@@ -580,4 +580,13 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
+
+//-------------------------- GearBox ----------------------
+    item(
+        id = "gearbox",
+        title = composableString { stringResource(Res.string.prop_koffGear_lb) },
+        value = composableString(this@toItems?.gearbox) {
+            this@toItems?.gearbox?.toString() ?: EMPTY_PLACEHOLDER
+        },
+    )
 }

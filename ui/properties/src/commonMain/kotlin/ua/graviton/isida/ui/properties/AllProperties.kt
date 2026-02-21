@@ -634,4 +634,26 @@ class DevicePropertyIdentif(value: Int? = null) : NumberInputTextFieldDeviceProp
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-) 
+)
+
+//-------------------------- GearBox ------------------------------
+@Stable
+class DevicePropertyGearBox(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+    initValue = value,
+    title = { stringResource(Res.string.prop_koffGear_lb) },
+    description = {
+        stringResource(
+            Res.string.input_info_limit_min_max,
+            "1", "15"
+        )
+    },
+    onValidate = { text -> // Переименовал в text для ясности
+        val numericValue = text.toIntOrNull()
+        when {
+            numericValue == null -> NumberInputTextFieldState.Error.Required
+            numericValue < 1 -> NumberInputTextFieldState.Error.CantBeLessThen("1")
+            numericValue > 15 -> NumberInputTextFieldState.Error.CantBeMoreThen("15")
+            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
+        }
+    },
+)

@@ -39,6 +39,7 @@ fun propertyFromId(id: String): StatusPacketProperty<*> = when (id) {
     "ikoff0" -> Ikoff0()
     "ikoff1" -> Ikoff1()
     "identif" -> Identif()
+    "gearbox" -> GearBox()
 
     else -> throw IllegalStateException("Unknown property id: $id")
 }
@@ -612,6 +613,23 @@ internal class Identif(value: Int? = null) : StatusPacketProperty<DeviceProperty
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(identif = it) } ?: packet
+        else -> packet
+    }
+}
+
+//-------------------------- GearBox ------------------------------
+@Stable
+internal class GearBox(value: Int? = null) : StatusPacketProperty<DevicePropertyGearBox>(property = DevicePropertyGearBox(value = value)) {
+    override fun readValue(packet: StatusPacket) {
+        val value = when (packet) {
+            is StatusPacketV1 -> packet.gearbox
+            else -> null
+        }
+        property.inputHelper.setValue(value)
+    }
+
+    override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
+        is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(maxRun = it) } ?: packet
         else -> packet
     }
 }

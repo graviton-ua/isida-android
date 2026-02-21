@@ -52,9 +52,10 @@
     <string name="flapOpen">открыта</string>
     <string name="flapAngle">Открытие заслонки %</string>
     <string name="outExtend">Вспомогательный канал</string>
+    <string name="fanStatus">Тихоходный вентилятор</string>
+    <string name="fanRun">вращается</string>
+    <string name="fanStop">остановлен</string>
     <string name="outTrays">Таймер поворота лотков</string>
-    <string name="fanRun">Вентилятор вращается</string>
-    <string name="fanStop">Вентилятор остановлен</string>
 
     <string name="programm">Программа</string>
     <string name="incubation">Всего час.</string>
@@ -151,7 +152,8 @@
     <string name="prop_air0_lb">Проветривание пауза</string>
     <string name="prop_air1_lb">Проветривание работа</string>
     <string name="prop_CO2_lb">Концентрация СО2</string>
-    <string name="prop_koffCurr_lb">Масштабный коэф.  тока</string>
+    <string name="prop_koffCurr_lb">Масштабный коэф. тока</string>
+    <string name="prop_koffGear_lb">Коэф. передачи ремня вентилятора</string>
     <string name="prop_Hysteresis_lb">Гистерезис канала увлажнения</string>
     <string name="prop_zonelity_lb">Порог зональности в камере</string>
     <string name="prop_flapRestr_lb">Максимальное открытие заслонки</string>

@@ -70,7 +70,7 @@ object StatusPacketV1Parser : PacketParser<StatusPacketV1> {
         val ip1 = reader.u8()
         val ip2 = reader.u8()
         val ip3 = reader.u8()
-        val nothing0 = reader.u8()
+        val gearbox = reader.u8()
         val nothing1 = reader.u8()
 
         StatusPacketV1(
@@ -128,7 +128,7 @@ object StatusPacketV1Parser : PacketParser<StatusPacketV1> {
             ip1 = ip1,
             ip2 = ip2,
             ip3 = ip3,
-            nothing0 = nothing0,
+            gearbox = gearbox,
             nothing1 = nothing1,
         )
     }

@@ -43,7 +43,7 @@ import ua.graviton.isida.data.protocol.commands.UpdateSettingCommand
  * @property ip1 IP address byte 1.
  * @property ip2 IP address byte 2.
  * @property ip3 IP address byte 3.
- * @property nothing0 Unused/Reserved field.
+ * @property gearbox Unused/Reserved field.
  * @property nothing1 Unused/Reserved field.
  */
 data class UpdateSettingsCommandV1(
@@ -79,6 +79,6 @@ data class UpdateSettingsCommandV1(
     val ikoff1: Int,        // 1 байт ind=52 интегральный коэфф.#1
     val identif: Int,       // 1 байт ind=53 сетевой номер прибора
     val ip0: Int, val ip1: Int, val ip2: Int, val ip3: Int, // 4 байт ind=54;ind=55;ind=56;ind=57;
-    val nothing0: Int,      // 1 байт ind=58;       не используется
+    val gearbox: Int,       // 1 байт ind=58; коэффициент передачи от асинхрон.дв. к вентилятору (маска 0000 1111)
     val nothing1: Int,      // 1 байт ind=59;       не используется
 ) : IsidaCommand.V1, UpdateSettingCommand

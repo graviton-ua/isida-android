@@ -125,7 +125,7 @@ class SetPropViewModel(
                 identif = snapshot.identif,
                 ip0 = snapshot.ip0, ip1 = snapshot.ip1,
                 ip2 = snapshot.ip2, ip3 = snapshot.ip3,
-                nothing0 = snapshot.nothing0,
+                gearbox = snapshot.gearbox,
                 nothing1 = snapshot.nothing1,
             )
         )

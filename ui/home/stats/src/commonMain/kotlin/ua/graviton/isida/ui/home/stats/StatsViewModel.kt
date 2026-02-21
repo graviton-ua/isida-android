@@ -340,31 +340,11 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
         },
     )
 
-// *****--------------------------- Fan -------------------------------*****
-    item(
-        title = composableString { stringResource(Res.string.outFlap) },
-        content = composableString( pvFan) {
-            val isOpen = (pvFan) > 1
-            if (isOpen) {
-                val label = stringResource(Res.string.fanRun)
-                val dimen = stringResource(Res.string.dimen_speed)
-                "$label  $pvFan $dimen" // Возвращаем собранную строку
-            } else {
-                stringResource(Res.string.fanStop) // Возвращаем строку закрытого состояния
-            }
-        },
-        style = {
-            val value = pvFan
-            if (value != 0) backgroundColor = IsidaColor.Green100
-            else backgroundColor = IsidaColor.Red500
-        },
-    )
-
     // *****--------------------------- Flap -------------------------------*****
     item(
         title = composableString { stringResource(Res.string.outFlap) },
         content = composableString(output, pvFlap) {
-            val isOpen = (pvFlap) != 0
+            val isOpen = pvFlap != 0
             if (isOpen) {
                 val label = stringResource(Res.string.flapOpen)
                 "$label  $pvFlap %" // Возвращаем собранную строку
@@ -375,6 +355,33 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
         style = {
             val value = output and OutputBit.OUT_Flap.code
             if (value != 0) backgroundColor = IsidaColor.Green100
+        },
+    )
+
+    // *****--------------------------- Fan -------------------------------*****
+    item(
+        title = composableString { stringResource(Res.string.fanStatus) },
+        content = composableString( state, pvFan, errors) {
+            val isRun = pvFan > 1
+            val gear = if(gearbox == 0) 1 else gearbox
+            if (isRun) {
+                val label = stringResource(Res.string.fanRun)
+                val dimen = stringResource(Res.string.dimen_speed)
+                "$label  ${pvFan * 60 / gear} $dimen" // Возвращаем собранную строку
+            } else  if (errors and DeviceError.ERROR_40.code != 0){
+                stringResource(Res.string.device_not_connected_title) // Устройство не подключено
+            } else {
+                stringResource(Res.string.fanStop) // Возвращаем строку закрытого состояния
+            }
+        },
+        style = {
+            val mode = state and DeviceMode.ENABLE.code
+            if (mode == DeviceMode.ENABLE.code) {
+                val value = pvFan
+                if (value != 0) backgroundColor = IsidaColor.Green100
+                else backgroundColor = IsidaColor.Red500
+            }
+            else if(errors and DeviceError.ERROR_40.code != 0) backgroundColor = IsidaColor.Red500
         },
     )
 
@@ -555,10 +562,10 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             else ""
         },
     )
-    // *****--------------------------- nothing0 -------------------------------*****
+    // *****--------------------------- GearBox -------------------------------*****
     item(
-        title = composableString(nothing0) {
-            val str = "nothing0"
+        title = composableString(gearbox) {
+            val str = "gearbox"
             // Настраиваем формат: префикс "0x" и минимальная длина 2 символа
             val myFormat = HexFormat {
                 number {
@@ -568,14 +575,14 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
                     upperCase = true // Чтобы получить 'D' вместо 'd'
                 }
             }
-            "$str: ${nothing0.toHexString(myFormat)}   $nothing0"
+            "$str: ${gearbox.toHexString(myFormat)}   $gearbox"
         },
-        content = composableString(nothing0) {
-            nothing0.toString(2).padStart(8, '0')
+        content = composableString(gearbox) {
+            gearbox.toString(2).padStart(8, '0')
         },
-        // content = composableString(nothing0) {
-        //     val month = (nothing0 shr 4) and 0x0F
-        //     val year = nothing0 and 0x0F
+        // content = composableString(gearbox) {
+        //     val month = (gearbox shr 4) and 0x0F
+        //     val year = gearbox and 0x0F
         //
         //     "Month: $month, Year: $year"
         // },
