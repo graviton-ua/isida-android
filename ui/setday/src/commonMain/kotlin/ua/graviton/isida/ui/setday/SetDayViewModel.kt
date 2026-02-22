@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.graviton.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
+import ua.graviton.isida.ui.properties.DevicePropertyTurnPermission
 import ua.graviton.isida.ui.setday.models.*
 
 @AssistedInject
@@ -82,8 +83,8 @@ class SetDayViewModel(
             SpT0(value = day.spT0),
             SpT1(value = day.spT1),
             SpRh1(value = day.spRh),
-            TurnTime(value = day.spTr),
-            FlapRestrictions(value = day.spFlp),
+            TurnPermission(value = day.spTr),
+            FlapProgramDay(value = day.spFlp),
             WaitCooling(value = day.spCl),
         )
 

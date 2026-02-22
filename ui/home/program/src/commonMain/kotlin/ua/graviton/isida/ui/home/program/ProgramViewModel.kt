@@ -21,6 +21,8 @@ import ua.graviton.isida.data.protocol.packets.v1.TablePacketV1
 import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
 import ua.graviton.isida.domain.interactors.GetProgramTable
 import ua.graviton.isida.domain.interactors.UpdateProgramTable
+import com.whoppah.common.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 @Inject
 @ViewModelKey(ProgramViewModel::class)
@@ -134,22 +136,22 @@ class ProgramViewModel(
             null
         }
     }
-
+//------------------- Sticky Header ---------------------------
     private fun TablePacketV1.toState(): Table = buildTable {
         stickyHeader {
-            cell(width = 60.dp) { "Day" }
-            cell(width = 80.dp) { "T0" }
-            cell(width = 80.dp) { "T1" }
-            cell(width = 60.dp) { "Rh" }
-            cell(width = 60.dp) { "Flp" }
-            cell(width = 60.dp) { "Tr" }
-            cell(width = 60.dp) { "Cl" }
+            cell(width = 60.dp) { stringResource(Res.string.program_table_day) }
+            cell(width = 80.dp) { stringResource(Res.string.program_table_t0) }
+            cell(width = 80.dp) { stringResource(Res.string.program_table_t1) }
+            cell(width = 60.dp) { stringResource(Res.string.program_table_rh) }
+            cell(width = 60.dp) { stringResource(Res.string.program_table_flp) }
+            cell(width = 60.dp) { stringResource(Res.string.program_table_tr) }
+            cell(width = 60.dp) { stringResource(Res.string.program_table_cl) }
         }
         var alreadyAddedHeader = false
         days.forEachIndexed { index, day ->
-            if (day.spT1 > 30.0 && !alreadyAddedHeader) {
+            if (day.spT0 < 30.0 && !alreadyAddedHeader) {
                 header {
-                    cell(width = 460.dp) { "Посмотри внимательно на экран" }
+                    cell(width = 460.dp) { stringResource(Res.string.program_table_complete) }
                 }
                 alreadyAddedHeader = true
             }

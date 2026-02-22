@@ -502,6 +502,21 @@ class DevicePropertyTurnTime(value: Int? = null) : SliderDeviceProperty<Int>(
     title = { stringResource(Res.string.prop_turnTime_lb) + stringResource(Res.string.dimen_min) },
 )
 
+//------------------------ TurnPermission ----------------------------
+@Stable
+class DevicePropertyTurnPermission(value: Int? = null) : RadioListDeviceProperty<Int>(
+    initValue = value,
+    title = { stringResource(Res.string.prop_turnPermission_lb) },
+    list = listOf(1, 0),
+    listItemTitleMap = { modeIndex ->
+        when (modeIndex) {
+            1 -> stringResource(Res.string.prop_turnPermission_on)
+            0 -> stringResource(Res.string.prop_turnPermission_off)
+            else -> ""
+        }
+    },
+)
+
 //-------------------------- Zonality ----------------------------
 @Stable
 class DevicePropertyZonality(value: Int? = null) : SliderDeviceProperty<Int>(
@@ -516,6 +531,14 @@ class DevicePropertyFlapRestrictions(value: Int? = null) : SliderDeviceProperty<
     initValue = value,
     min = 40, max = 100, increment = 10.0f,
     title = { stringResource(Res.string.prop_flapRestr_lb) + " %" },
+)
+
+//----------------- Opening the Flap for the current day ------------------
+@Stable
+class DevicePropertyFlapProgramDay(value: Int? = null) : SliderDeviceProperty<Int>(
+    initValue = value,
+    min = 0, max = 40, increment = 10.0f,
+    title = { stringResource(Res.string.prop_flapProg_lb) + " %" },
 )
 
 //-------------------------- WaitCooling -------------------------

@@ -52,6 +52,9 @@
     <string name="flapOpen">відкрита</string>
     <string name="flapAngle">Відкриття заслінки %</string>
     <string name="outExtend">Допоміжний канал</string>
+    <string name="fanStatus">Тихохідний вентилятор</string>
+    <string name="fanRun">обертається</string>
+    <string name="fanStop">зупинений</string>
     <string name="outTrays">Таймер повороту лотків</string>
 
     <string name="programm">Програма</string>
@@ -150,6 +153,7 @@
     <string name="prop_air1_lb">Провітрювання робота</string>
     <string name="prop_CO2_lb">Концентрація СО2</string>
     <string name="prop_koffCurr_lb">Масштабний коеф. струму</string>
+    <string name="prop_koffGear_lb">Коеф. ремінної передачі вентилятора</string>
     <string name="prop_Hysteresis_lb">Гістерезис каналу зволоження</string>
     <string name="prop_zonelity_lb">Поріг зональності в камері</string>
     <string name="prop_flapRestr_lb">Максимальне відкриття заслінки</string>
@@ -161,11 +165,25 @@
     <string name="prop_ikoff1_lb">Інтегральний зволоження</string>
     <string name="prop_identif_lb">Номер приладу</string>
 
+    <string name="prop_turnPermission_lb">Поворот лотків</string>
+    <string name="prop_turnPermission_on">ДОЗВОЛЕНО</string>
+    <string name="prop_turnPermission_off">ЗАБОРОНЕНО</string>
+
+    <string name="program_table_day">День</string>
+    <string name="program_table_t0">T0</string>
+    <string name="program_table_t1">T1</string>
+    <string name="program_table_rh">Rh</string>
+    <string name="program_table_flp">Засл</string>
+    <string name="program_table_tr">Пов</string>
+    <string name="program_table_cl">Охолодж</string>
+    <string name="program_table_complete">Інкубація завершена</string>
+
     <string name="prop_dimen_sec">%1$s сек.</string>
     <string name="dimen_sec"> сек.</string>
     <string name="prop_dimen_min">%1$s хв.</string>
     <string name="dimen_min"> хв.</string>
     <string name="prop_dimen_kwt">%1$s кВт/год.</string>
+    <string name="dimen_speed"> об./хв.</string>
 
     <string name="input_info_limit">Встановлені обмеження</string>
     <string name="input_info_limit_min_max">Значення повинно бути від %1$s до %2$s.</string>

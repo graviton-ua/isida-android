@@ -163,14 +163,14 @@ private class SetDayPreviewParameterProvider : PreviewParameterProvider<SetDayVi
         SetDayViewState(
             properties = listOf(
                 SpT0(value = 10f), SpT1(), SpRh1(),
-                TurnTime(), FlapRestrictions(), WaitCooling(),
+                TurnPermission(), FlapProgramDay(), WaitCooling(),
             ),
             dataIsValid = true,
         ),
         SetDayViewState(
             properties = listOf(
                 SpT0(value = 10f), SpT1(), SpRh1(),
-                TurnTime(), FlapRestrictions(), WaitCooling(),
+                TurnPermission(), FlapProgramDay(), WaitCooling(),
             ),
             dataIsValid = false,
         ),

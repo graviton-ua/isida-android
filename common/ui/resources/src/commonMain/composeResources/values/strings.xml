@@ -87,6 +87,7 @@
     <string name="prop_dimen_min">%1$s min.</string>
     <string name="dimen_min"> min.</string>
     <string name="prop_dimen_kwt">%1$s kWt/h.</string>
+    <string name="dimen_speed"> rpm</string>
 
     <string name="prop_dry_sensor_label">Dry sensor</string>
     <string name="prop_wet_sensor_label">Wet sensor</string>
@@ -156,6 +157,9 @@
     <string name="flapOpen">open</string>
     <string name="flapAngle">Flap opening %</string>
     <string name="outExtend">Auxiliary channel</string>
+    <string name="fanStatus">Low-speed fan</string>
+    <string name="fanRun">running</string>
+    <string name="fanStop">stopped</string>
     <string name="outTrays">Tray rotation timer</string>
     <string name="prop_spT0_lb">Dry sensor</string>
     <string name="prop_spT1_lb">Wet sensor</string>
@@ -196,6 +200,7 @@
     <string name="prop_air1_lb">Airing work</string>
     <string name="prop_CO2_lb">CO2 concentration</string>
     <string name="prop_koffCurr_lb">Current scale factor</string>
+    <string name="prop_koffGear_lb">Fan belt transmission ratio</string>
     <string name="prop_Hysteresis_lb">Humidification channel hysteresis</string>
     <string name="prop_zonelity_lb">Zonality threshold in chamber</string>
     <string name="prop_flapRestr_lb">Max flap opening</string>
@@ -206,6 +211,19 @@
     <string name="prop_ikoff0_lb">Integral heating</string>
     <string name="prop_ikoff1_lb">Integral humidification</string>
     <string name="prop_identif_lb">Device number</string>
+
+    <string name="prop_turnPermission_lb">Tray rotation</string>
+    <string name="prop_turnPermission_on">ALLOWED</string>
+    <string name="prop_turnPermission_off">FORBIDDEN</string>
+
+    <string name="program_table_day">Day</string>
+    <string name="program_table_t0">T0</string>
+    <string name="program_table_t1">T1</string>
+    <string name="program_table_rh">Rh</string>
+    <string name="program_table_flp">Flp</string>
+    <string name="program_table_tr">Tr</string>
+    <string name="program_table_cl">Cl</string>
+    <string name="program_table_complete">Incubation complete</string>
 
     <string name="device_not_connected_title">Device Not Connected</string>
     <string name="device_not_connected_message">Please connect to the device to see information and manage settings.</string>

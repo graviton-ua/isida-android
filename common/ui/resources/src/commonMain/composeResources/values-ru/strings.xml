@@ -157,6 +157,7 @@
     <string name="prop_Hysteresis_lb">Гистерезис канала увлажнения</string>
     <string name="prop_zonelity_lb">Порог зональности в камере</string>
     <string name="prop_flapRestr_lb">Максимальное открытие заслонки</string>
+    <string name="prop_flapProg_lb">Открытие заслонки в этот день</string>
     <string name="prop_turnTime_lb">Время ожидания прохода лотков</string>
     <string name="prop_waitCooling_lb">Время ожидания охлаждения</string>
     <string name="prop_pkoff0_lb">Пропорциональный нагрева</string>
@@ -164,6 +165,19 @@
     <string name="prop_ikoff0_lb">Интегральный нагрева</string>
     <string name="prop_ikoff1_lb">Интегральный увлажнения</string>
     <string name="prop_identif_lb">Номер прибора</string>
+
+    <string name="prop_turnPermission_lb">Поворот лотков в этот день</string>
+    <string name="prop_turnPermission_on">РАЗРЕШЕН</string>
+    <string name="prop_turnPermission_off">ЗАПРЕЩЕН</string>
+
+    <string name="program_table_day">День</string>
+    <string name="program_table_t0">T0</string>
+    <string name="program_table_t1">T1</string>
+    <string name="program_table_rh">Rh</string>
+    <string name="program_table_flp">Засл</string>
+    <string name="program_table_tr">Пов</string>
+    <string name="program_table_cl">Охл</string>
+    <string name="program_table_complete">Инкубация завершена</string>
 
     <string name="prop_dimen_sec">%1$s сек.</string>
     <string name="dimen_sec"> сек.</string>

@@ -60,9 +60,9 @@ internal class SpRh1(value: Int? = null) : TableDayProperty<DevicePropertySpRh1>
     }
 }
 
-//-------------------------- TurnTime ------------------------------
+//-------------------------- TurnPermission ------------------------------
 @Stable
-internal class TurnTime(value: Int? = null) : TableDayProperty<DevicePropertyTurnTime>(property = DevicePropertyTurnTime(value = value)) {
+internal class TurnPermission(value: Int? = null) : TableDayProperty<DevicePropertyTurnPermission>(property = DevicePropertyTurnPermission(value = value)) {
     override fun readValue(packet: TableDay) {
         val value = when (packet) {
             is TableDayV1 -> packet.spTr
@@ -77,10 +77,11 @@ internal class TurnTime(value: Int? = null) : TableDayProperty<DevicePropertyTur
     }
 }
 
-//-------------------------- Flap restrictions ----------------------------
+//----------------- Opening the Flap for the current day ------------------
 @Stable
-internal class FlapRestrictions(value: Int? = null) :
-    TableDayProperty<DevicePropertyFlapRestrictions>(property = DevicePropertyFlapRestrictions(value = value)) {
+internal class FlapProgramDay(value: Int? = null) :
+    TableDayProperty<DevicePropertyFlapProgramDay>(property = DevicePropertyFlapProgramDay(value = value)) {
+
     override fun readValue(packet: TableDay) {
         val value = when (packet) {
             is TableDayV1 -> packet.spFlp
@@ -90,7 +91,10 @@ internal class FlapRestrictions(value: Int? = null) :
     }
 
     override fun copyAndUpdate(packet: TableDay): TableDay = when (packet) {
-        is TableDayV1 -> property.inputHelper.value?.let { packet.copy(spFlp = it) } ?: packet
+        is TableDayV1 -> {
+            val newValue = (property.inputHelper.value as? Number)?.toInt()
+            if (newValue != null) packet.copy(spFlp = newValue) else packet
+        }
         else -> packet
     }
 }
@@ -108,7 +112,10 @@ internal class WaitCooling(value: Int? = null) :
     }
 
     override fun copyAndUpdate(packet: TableDay): TableDay = when (packet) {
-        is TableDayV1 -> property.inputHelper.value?.let { packet.copy(spCl = it) } ?: packet
+        is TableDayV1 -> {
+            val newValue = (property.inputHelper.value as? Number)?.toInt()
+            if (newValue != null) packet.copy(spCl = newValue) else packet
+        }
         else -> packet
     }
 }
