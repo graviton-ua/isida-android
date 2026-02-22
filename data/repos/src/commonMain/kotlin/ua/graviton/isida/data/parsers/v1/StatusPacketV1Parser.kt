@@ -66,12 +66,12 @@ object StatusPacketV1Parser : PacketParser<StatusPacketV1> {
         val ikoff0 = reader.u8()
         val ikoff1 = reader.u8()
         val identif = reader.u8()
+        val gearbox = reader.u8()
+        val nothing1 = reader.u8()
         val ip0 = reader.u8()
         val ip1 = reader.u8()
         val ip2 = reader.u8()
         val ip3 = reader.u8()
-        val gearbox = reader.u8()
-        val nothing1 = reader.u8()
 
         StatusPacketV1(
             model = model,
@@ -124,12 +124,12 @@ object StatusPacketV1Parser : PacketParser<StatusPacketV1> {
             ikoff0 = ikoff0,
             ikoff1 = ikoff1,
             identif = identif,
+            gearbox = gearbox,
+            nothing1 = nothing1,
             ip0 = ip0,
             ip1 = ip1,
             ip2 = ip2,
             ip3 = ip3,
-            gearbox = gearbox,
-            nothing1 = nothing1,
         )
     }
 }

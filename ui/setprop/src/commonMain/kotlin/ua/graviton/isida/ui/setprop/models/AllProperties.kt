@@ -428,23 +428,6 @@ internal class SpCO2(value: Float? = null) : StatusPacketProperty<DeviceProperty
     }
 }
 
-//-------------------------- KoffCurr ------------------------------
-@Stable
-internal class KoffCurr(value: Int? = null) : StatusPacketProperty<DevicePropertyKoffCurr>(property = DevicePropertyKoffCurr(value = value)) {
-    override fun readValue(packet: StatusPacket) {
-        val value = when (packet) {
-            is StatusPacketV1 -> packet.koffCurr
-            else -> null
-        }
-        property.inputHelper.setValue(value)
-    }
-
-    override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(koffCurr = it) } ?: packet
-        else -> packet
-    }
-}
-
 //-------------------------- Hysteresis (маска 0x3F) ------------------------------
 @Stable
 internal class Hysteresis(value: Float? = null) : StatusPacketProperty<DevicePropertyHysteresis>(property = DevicePropertyHysteresis(value = value)) {
@@ -617,6 +600,23 @@ internal class Identif(value: Int? = null) : StatusPacketProperty<DeviceProperty
     }
 }
 
+//-------------------------- KoffCurr ------------------------------
+@Stable
+internal class KoffCurr(value: Int? = null) : StatusPacketProperty<DevicePropertyKoffCurr>(property = DevicePropertyKoffCurr(value = value)) {
+    override fun readValue(packet: StatusPacket) {
+        val value = when (packet) {
+            is StatusPacketV1 -> packet.koffCurr
+            else -> null
+        }
+        property.inputHelper.setValue(value)
+    }
+
+    override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
+        is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(koffCurr = it) } ?: packet
+        else -> packet
+    }
+}
+
 //-------------------------- GearBox ------------------------------
 @Stable
 internal class GearBox(value: Int? = null) : StatusPacketProperty<DevicePropertyGearBox>(property = DevicePropertyGearBox(value = value)) {
@@ -629,7 +629,7 @@ internal class GearBox(value: Int? = null) : StatusPacketProperty<DeviceProperty
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(maxRun = it) } ?: packet
+        is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(gearbox = it) } ?: packet
         else -> packet
     }
 }

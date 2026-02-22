@@ -644,7 +644,7 @@ class DevicePropertyGearBox(value: Int? = null) : NumberInputTextFieldDeviceProp
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
-            "1", "15"
+            "1", "31"
         )
     },
     onValidate = { text -> // Переименовал в text для ясности
@@ -652,7 +652,7 @@ class DevicePropertyGearBox(value: Int? = null) : NumberInputTextFieldDeviceProp
         when {
             numericValue == null -> NumberInputTextFieldState.Error.Required
             numericValue < 1 -> NumberInputTextFieldState.Error.CantBeLessThen("1")
-            numericValue > 15 -> NumberInputTextFieldState.Error.CantBeMoreThen("15")
+            numericValue > 31 -> NumberInputTextFieldState.Error.CantBeMoreThen("31")
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },

@@ -421,25 +421,6 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
-    //-------------------------- koffCurr ----------------------
-    item(
-        id = "koffCurr",
-        title = composableString { stringResource(Res.string.prop_koffCurr_lb) },
-        value = composableString(this@toItems?.koffCurr) {
-            this@toItems?.koffCurr?.toString() ?: EMPTY_PLACEHOLDER
-        },
-        style = {
-            val currVal = this@toItems?.koffCurr
-            backgroundColor = when {
-                currVal == null -> null
-                currVal > 200 -> IsidaColor.Red100
-                currVal > 120 -> IsidaColor.Yellow100
-                currVal < 50 -> IsidaColor.Red500
-                currVal < 80 -> IsidaColor.Yellow100
-                else -> null
-            }
-        }
-    )
     //-------------------------- hysteresis ----------------------
     item(
         id = "hysteresis",
@@ -580,8 +561,26 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
-
-//-------------------------- GearBox ----------------------
+    //-------------------------- koffCurr ----------------------
+    item(
+        id = "koffCurr",
+        title = composableString { stringResource(Res.string.prop_koffCurr_lb) },
+        value = composableString(this@toItems?.koffCurr) {
+            this@toItems?.koffCurr?.toString() ?: EMPTY_PLACEHOLDER
+        },
+        style = {
+            val currVal = this@toItems?.koffCurr
+            backgroundColor = when {
+                currVal == null -> null
+                currVal > 200 -> IsidaColor.Red100
+                currVal > 120 -> IsidaColor.Yellow100
+                currVal < 50 -> IsidaColor.Red500
+                currVal < 80 -> IsidaColor.Yellow100
+                else -> null
+            }
+        }
+    )
+    //-------------------------- GearBox ----------------------
     item(
         id = "gearbox",
         title = composableString { stringResource(Res.string.prop_koffGear_lb) },

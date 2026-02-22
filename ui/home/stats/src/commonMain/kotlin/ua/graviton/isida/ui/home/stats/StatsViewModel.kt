@@ -361,27 +361,35 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
     // *****--------------------------- Fan -------------------------------*****
     item(
         title = composableString { stringResource(Res.string.fanStatus) },
-        content = composableString( state, pvFan, errors) {
-            val isRun = pvFan > 1
-            val gear = if(gearbox == 0) 1 else gearbox
-            if (isRun) {
-                val label = stringResource(Res.string.fanRun)
-                val dimen = stringResource(Res.string.dimen_speed)
-                "$label  ${pvFan * 60 / gear} $dimen" // Возвращаем собранную строку
-            } else  if (errors and DeviceError.ERROR_40.code != 0){
-                stringResource(Res.string.device_not_connected_title) // Устройство не подключено
-            } else {
-                stringResource(Res.string.fanStop) // Возвращаем строку закрытого состояния
-            }
+        content = composableString(state, pvFan, errors) {
+            // Превращаем результат bitwise AND в Boolean
+            val modeOn = (state and DeviceMode.FAN_MONITORING_ON.code) != 0
+            val isError40 = (errors and DeviceError.ERROR_40.code) != 0
+
+            if (modeOn) {
+                val gear = if (gearbox == 0) 1 else gearbox
+                if (pvFan > 1) {
+                    val label = stringResource(Res.string.fanRun)
+                    val dimen = stringResource(Res.string.dimen_speed)
+                    "$label  ${pvFan * 60 / gear} $dimen"
+                } else if (isError40) {
+                    stringResource(Res.string.device_not_connected_title)
+                } else {
+                    stringResource(Res.string.fanStop)
+                }
+            } else { "" }
         },
         style = {
-            val mode = state and DeviceMode.ENABLE.code
-            if (mode == DeviceMode.ENABLE.code) {
-                val value = pvFan
-                if (value != 0) backgroundColor = IsidaColor.Green100
-                else backgroundColor = IsidaColor.Red500
+            val isEnabled = (state and DeviceMode.ENABLE.code) != 0
+            val modeOn = (state and DeviceMode.FAN_MONITORING_ON.code) != 0
+            val isError40 = (errors and DeviceError.ERROR_40.code) != 0
+            if (modeOn) {
+                if (isEnabled) {
+                    backgroundColor = if (pvFan != 0) IsidaColor.Green100 else IsidaColor.Red500
+                } else if (isError40) {
+                    backgroundColor = IsidaColor.Red500
+                }
             }
-            else if(errors and DeviceError.ERROR_40.code != 0) backgroundColor = IsidaColor.Red500
         },
     )
 
@@ -624,7 +632,8 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
         content = composableString(ip0) {
             ip0.toString(2).padStart(8, '0')
         },
-    )// *****--------------------------- IP1 -------------------------------*****
+    )
+    // *****--------------------------- IP1 -------------------------------*****
     item(
         title = composableString(ip1) {
             val str = "IP1"

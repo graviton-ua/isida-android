@@ -49,14 +49,12 @@ object UpdateSettingsV1Serializer : CommandSerializerV1<UpdateSettingsCommandV1>
         writer.u8(command.ikoff0)
         writer.u8(command.ikoff1)
         writer.u8(command.identif)
+        writer.u8(command.gearbox)
+        writer.u8(command.nothing1)
         writer.u8(command.ip0)
         writer.u8(command.ip1)
         writer.u8(command.ip2)
         writer.u8(command.ip3)
-
-        writer.u8(command.gearbox)
-        writer.u8(command.nothing1)
-
         writer.data
     }
 

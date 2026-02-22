@@ -152,8 +152,8 @@
     <string name="prop_air0_lb">Проветривание пауза</string>
     <string name="prop_air1_lb">Проветривание работа</string>
     <string name="prop_CO2_lb">Концентрация СО2</string>
-    <string name="prop_koffCurr_lb">Масштабный коэф. тока</string>
-    <string name="prop_koffGear_lb">Коэф. передачи ремня вентилятора</string>
+    <string name="prop_koffCurr_lb">Масштабный коэф. измерения тока</string>
+    <string name="prop_koffGear_lb">Коэф. ременной передачи вентилятора</string>
     <string name="prop_Hysteresis_lb">Гистерезис канала увлажнения</string>
     <string name="prop_zonelity_lb">Порог зональности в камере</string>
     <string name="prop_flapRestr_lb">Максимальное открытие заслонки</string>
