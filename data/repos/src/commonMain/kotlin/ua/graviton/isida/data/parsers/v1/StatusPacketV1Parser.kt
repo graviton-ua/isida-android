@@ -48,7 +48,7 @@ object StatusPacketV1Parser : PacketParser<StatusPacketV1> {
         val extOff1 = reader.u8() / 10f
         val air0 = reader.u8()
         val air1 = reader.u8()
-        val spCO2 = reader.u8() * 20f
+        val spCO2 = reader.u8() * 20
         val koffCurr = reader.u8()
 
         val rawHysteresis = reader.u8()

@@ -413,10 +413,10 @@ internal class Air1(value: Int? = null) : StatusPacketProperty<DevicePropertyAir
 
 //-------------------------- SpCO2 ------------------------------
 @Stable
-internal class SpCO2(value: Float? = null) : StatusPacketProperty<DevicePropertySpCO2>(property = DevicePropertySpCO2(value = value)) {
+internal class SpCO2(value: Int? = null) : StatusPacketProperty<DevicePropertySpCO2>(property = DevicePropertySpCO2(value = value)) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
-            is StatusPacketV1 -> packet.spCO2 * 20f
+            is StatusPacketV1 -> packet.spCO2 * 20
             else -> null
         }
         property.inputHelper.setValue(value)

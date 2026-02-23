@@ -458,9 +458,9 @@ class DevicePropertyAir1(value: Int? = null) : NumberInputTextFieldDevicePropert
 
 //-------------------------- SpCO2 ------------------------------
 @Stable
-class DevicePropertySpCO2(value: Float? = null) : SliderDeviceProperty<Float>(
-    initValue = (value ?: 20f),
-    min = 1000f, max = 5000f, increment = 500f,
+class DevicePropertySpCO2(value: Int? = null) : SliderDeviceProperty<Int>(
+    initValue = (value ?: 20),
+    min = 1000, max = 5000, increment = 500f,
     title = { stringResource(Res.string.prop_CO2_lb) + " ppm." },
 )
 

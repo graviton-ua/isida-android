@@ -65,7 +65,7 @@ data class UpdateSettingsCommandV1(
     val extOn0: Float, val extOn1: Float,   // 2 байт ind=37,38 смещение для ВКЛ. вспомогательного канала
     val extOff0: Float, val extOff1: Float, // 2 байт ind=39,40 смещение для ОТКЛ. вспомогательного канала
     val air0: Int, val air1: Int,             // 2 байт ind=41,42 таймер проветривания air[0]-пауза; air[1]-работа; если air[1]=0-ОТКЛЮЧЕНО
-    val spCO2: Float,       // 1 байт ind=43 опорное значение для управления концетрацией СО2
+    val spCO2: Int,       // 1 байт ind=43 опорное значение для управления концетрацией СО2
     val koffCurr: Int,      // 1 байт ind=44 маштабный коэф. по току симистора  (150 для AC1010)
     val hysteresis: Float,  // 1 байт ind=45 гистерезис канала увлажнения маска 0x3F;
     val permission: Int,    // hysteresis -> разрешение использования HIH-5030 маска 0x40; AM2301 маска 0x80;
