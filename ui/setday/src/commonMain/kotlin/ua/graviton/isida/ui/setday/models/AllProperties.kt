@@ -1,13 +1,9 @@
 package ua.graviton.isida.ui.setday.models
 
 import androidx.compose.runtime.Stable
-import com.whoppah.common.resources.Res
-import com.whoppah.common.resources.prop_CO2_lb
-import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
 import ua.graviton.isida.ui.properties.*
-import ua.graviton.isida.ui.properties.types.SliderDeviceProperty
 
 //-------------------------- spT0 ------------------------------
 @Stable

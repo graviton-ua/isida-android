@@ -176,7 +176,7 @@
     <string name="program_table_rh">Rh</string>
     <string name="program_table_flp">Засл</string>
     <string name="program_table_tr">Пов</string>
-    <string name="program_table_cl">Охл</string>
+    <string name="program_table_cl">CO2</string>
     <string name="program_table_complete">Инкубация завершена</string>
 
     <string name="prop_dimen_sec">%1$s сек.</string>
