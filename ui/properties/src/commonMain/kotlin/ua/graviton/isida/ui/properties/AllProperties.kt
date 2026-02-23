@@ -16,14 +16,14 @@ class DevicePropertySpT0(value: Float? = null) : NumberInputTextFieldDevicePrope
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
-            "30.0", "45.0"
+            "28.0", "45.0"
         )
     },
     onValidate = { value ->
         val floatValue = value.toFloatOrNull()
         when {
             floatValue == null -> NumberInputTextFieldState.Error.Invalid
-            floatValue < 30f -> NumberInputTextFieldState.Error.CantBeLessThen("30.0")
+            floatValue < 28f -> NumberInputTextFieldState.Error.CantBeLessThen("30.0")
             floatValue > 45f -> NumberInputTextFieldState.Error.CantBeMoreThen("45.0")
             else -> null
         }
@@ -38,14 +38,14 @@ class DevicePropertySpT1(value: Float? = null) : NumberInputTextFieldDevicePrope
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
-            "25.0", "40.0"
+            "20.0", "40.0"
         )
     },
     onValidate = { value ->
         val floatValue = value.toFloatOrNull()
         when {
             floatValue == null -> NumberInputTextFieldState.Error.Invalid
-            floatValue < 25f -> NumberInputTextFieldState.Error.CantBeLessThen("25.0")
+            floatValue < 20f -> NumberInputTextFieldState.Error.CantBeLessThen("20.0")
             floatValue > 40f -> NumberInputTextFieldState.Error.CantBeMoreThen("40.0")
             else -> null
         }
