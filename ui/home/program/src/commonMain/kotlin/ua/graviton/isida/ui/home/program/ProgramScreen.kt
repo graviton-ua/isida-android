@@ -336,7 +336,7 @@ private fun Preview() {
                             cell(width = 60.dp) { day.spRh.toString() }
                             cell(width = 60.dp) { day.spFlp.toString() }
                             cell(width = 60.dp) { day.spTr.toString() }
-                            cell(width = 60.dp) { day.spCl.toString() }
+                            cell(width = 60.dp) { day.spCO2.toString() }
                         }
                     }
                 }

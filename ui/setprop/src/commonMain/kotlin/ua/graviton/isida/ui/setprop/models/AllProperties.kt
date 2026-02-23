@@ -416,7 +416,7 @@ internal class Air1(value: Int? = null) : StatusPacketProperty<DevicePropertyAir
 internal class SpCO2(value: Int? = null) : StatusPacketProperty<DevicePropertySpCO2>(property = DevicePropertySpCO2(value = value)) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
-            is StatusPacketV1 -> packet.spCO2 * 20
+            is StatusPacketV1 -> packet.spCO2
             else -> null
         }
         property.inputHelper.setValue(value)

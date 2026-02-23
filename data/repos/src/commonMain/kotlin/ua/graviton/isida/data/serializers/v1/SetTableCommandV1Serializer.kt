@@ -30,6 +30,6 @@ private object TableDayV1Serializer {
         writer.u8(day.spRh)
         writer.u8(day.spFlp)
         writer.u8(day.spTr)
-        writer.u8(day.spCl)
+        writer.u8(day.spCO2 / 20)
     }
 }

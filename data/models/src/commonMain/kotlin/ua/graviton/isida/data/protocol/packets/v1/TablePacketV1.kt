@@ -23,7 +23,7 @@ data class TablePacketV1(
  * @property spRh Humidity setpoint.
  * @property spFlp Flap position setpoint.
  * @property spTr Tray rotation setpoint.
- * @property spCl Cooling setpoint.
+ * @property spCO2 Cooling setpoint.
  */
 @Serializable
 data class TableDayV1(
@@ -32,5 +32,5 @@ data class TableDayV1(
     val spRh: Int,      // 1 byte
     val spFlp: Int,     // 1 byte
     val spTr: Int,      // 1 byte
-    val spCl: Int,      // 1 byte
+    val spCO2: Int,     // 1 byte
 ) : TableDay

@@ -28,7 +28,7 @@ private object TableDayV1Parser {
             spRh = reader.u8(),
             spFlp = reader.u8(),
             spTr = reader.u8(),
-            spCl = reader.u8(),
+            spCO2 = reader.u8() * 20,
         )
     }
 }

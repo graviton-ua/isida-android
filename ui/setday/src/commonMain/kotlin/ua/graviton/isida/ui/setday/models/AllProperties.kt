@@ -1,9 +1,13 @@
 package ua.graviton.isida.ui.setday.models
 
 import androidx.compose.runtime.Stable
+import com.whoppah.common.resources.Res
+import com.whoppah.common.resources.prop_CO2_lb
+import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
 import ua.graviton.isida.ui.properties.*
+import ua.graviton.isida.ui.properties.types.SliderDeviceProperty
 
 //-------------------------- spT0 ------------------------------
 @Stable
@@ -99,13 +103,13 @@ internal class FlapProgramDay(value: Int? = null) :
     }
 }
 
-//-------------------------- WaitCooling -------------------------
+//-------------------------- SpCO2 -------------------------
 @Stable
-internal class WaitCooling(value: Int? = null) :
-    TableDayProperty<DevicePropertyWaitCooling>(property = DevicePropertyWaitCooling(value = value)) {
+internal class PropertySpCO2(value: Int? = null) :
+    TableDayProperty<DevicePropertySpCO2>(property = DevicePropertySpCO2(value = value)) {
     override fun readValue(packet: TableDay) {
         val value = when (packet) {
-            is TableDayV1 -> packet.spCl
+            is TableDayV1 -> packet.spCO2
             else -> null
         }
         property.inputHelper.setValue(value)
@@ -114,7 +118,7 @@ internal class WaitCooling(value: Int? = null) :
     override fun copyAndUpdate(packet: TableDay): TableDay = when (packet) {
         is TableDayV1 -> {
             val newValue = (property.inputHelper.value as? Number)?.toInt()
-            if (newValue != null) packet.copy(spCl = newValue) else packet
+            if (newValue != null) packet.copy(spCO2 = newValue) else packet
         }
         else -> packet
     }

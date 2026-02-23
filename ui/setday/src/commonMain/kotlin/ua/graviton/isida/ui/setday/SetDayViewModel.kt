@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.graviton.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
-import ua.graviton.isida.ui.properties.DevicePropertyTurnPermission
 import ua.graviton.isida.ui.setday.models.*
 
 @AssistedInject
@@ -85,7 +84,7 @@ class SetDayViewModel(
             SpRh1(value = day.spRh),
             TurnPermission(value = day.spTr),
             FlapProgramDay(value = day.spFlp),
-            WaitCooling(value = day.spCl),
+            PropertySpCO2(value = day.spCO2),
         )
 
         else -> throw IllegalArgumentException("Unsupported TableDay version")
