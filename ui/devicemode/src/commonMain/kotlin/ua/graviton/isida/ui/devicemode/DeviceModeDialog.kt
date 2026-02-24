@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,22 +34,26 @@ internal fun DeviceModeDialog(
     viewModel: DeviceModeViewModel = injectedViewModel(),
     navigateUp: () -> Unit,
 ) {
-    val viewState by viewModel.state.collectAsStateWithLifecycle()
-
-    DeviceModeDialog(
-        state = viewState,
-        actioner = { action ->
-            when (action) {
-                is DeviceModeAction.NavigateUp -> navigateUp()
-                else -> viewModel.submitAction(action)
+    LaunchedEffect(viewModel.events) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is DeviceModeViewEvent.OnApplied -> navigateUp()
             }
         }
+    }
+
+    val viewState by viewModel.state.collectAsStateWithLifecycle()
+    DeviceModeDialog(
+        state = viewState,
+        navigateUp = navigateUp,
+        actioner = viewModel::submitAction,
     )
 }
 
 @Composable
 private fun DeviceModeDialog(
     state: DeviceModeViewState,
+    navigateUp: () -> Unit,
     actioner: (DeviceModeAction) -> Unit,
 ) {
     WhDialog {
@@ -77,7 +82,7 @@ private fun DeviceModeDialog(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 OutlinedButton(
-                    onClick = { actioner(DeviceModeAction.NavigateUp) },
+                    onClick = navigateUp,
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
@@ -236,6 +241,7 @@ private fun Preview1() {
     WhoppahTheme {
         DeviceModeDialog(
             state = DeviceModeViewState.Empty,
+            navigateUp = {},
             actioner = {}
         )
     }
@@ -247,6 +253,7 @@ private fun Preview2() {
     WhoppahTheme {
         DeviceModeDialog(
             state = DeviceModeViewState(mode = DeviceMode.ENABLE),
+            navigateUp = {},
             actioner = {}
         )
     }

@@ -10,7 +10,7 @@ fun EntryProviderScope<NavKey>.addDeviceModeDialog(
     navigator: Navigator,
 ) {
     entry<DeviceModeDialog>(
-        metadata = DialogSceneStrategy.dialog(DialogProperties(usePlatformDefaultWidth = false))
+        metadata = DialogSceneStrategy.dialog(DialogProperties(usePlatformDefaultWidth = true))
     ) {
         DeviceModeDialog(
             navigateUp = navigator::navigateUp,

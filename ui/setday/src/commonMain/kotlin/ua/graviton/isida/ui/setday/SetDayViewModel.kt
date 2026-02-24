@@ -2,7 +2,6 @@ package ua.graviton.isida.ui.setday
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.touchlab.kermit.Logger
 import com.whoppah.metrox.viewmodel.ViewModelAssistedFactory
 import com.whoppah.metrox.viewmodel.ViewModelKey
 import com.whoppah.metrox.viewmodel.ViewModelScope
@@ -33,8 +32,6 @@ class SetDayViewModel(
     interface Factory : ViewModelAssistedFactory {
         fun create(index: Int, day: TableDay): SetDayViewModel
     }
-
-    private val logger by lazy { Logger.withTag("SetDayViewModel") }
 
     private val _events = Channel<SetDayViewEvent>(Channel.BUFFERED)
     val events: Flow<SetDayViewEvent> = _events.receiveAsFlow()

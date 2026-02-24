@@ -7,12 +7,13 @@ import com.whoppah.metrox.viewmodel.ViewModelScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ua.graviton.isida.data.protocol.commands.v1.DeviceModeCommandV1
-import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.data.protocol.DeviceMode
 import ua.graviton.isida.data.protocol.DeviceModeExtra
+import ua.graviton.isida.data.protocol.commands.v1.DeviceModeCommandV1
+import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.domain.interactors.SendCommand
 import ua.graviton.isida.domain.observers.ObserveStatus
 
@@ -23,6 +24,9 @@ class DeviceModeViewModel(
     observeStatus: ObserveStatus,
     private val sendCommand: SendCommand,
 ) : ViewModel() {
+    private val _events = Channel<DeviceModeViewEvent>(Channel.BUFFERED)
+    val events: Flow<DeviceModeViewEvent> = _events.receiveAsFlow()
+
     private val pendingActions = MutableSharedFlow<DeviceModeAction>()
 
     private val deviceId = MutableStateFlow<Int?>(null)
@@ -117,13 +121,7 @@ class DeviceModeViewModel(
 
 
     private fun CoroutineScope.send() = launch {
-        val device = deviceId.value ?: return@launch
         val mode = mode.value ?: return@launch
-        // events.emit(
-        //     DeviceModeEvent.Send(
-        //         command = deviceMode(device, mode, *modeExtras.value.toTypedArray())
-        //     )
-        // )
 
         val extras = modeExtras.value
 
@@ -133,5 +131,6 @@ class DeviceModeViewModel(
         }
 
         sendCommand(DeviceModeCommandV1(mode = commandValue))
+            .onSuccess { _events.send(DeviceModeViewEvent.OnApplied) }
     }
 }
