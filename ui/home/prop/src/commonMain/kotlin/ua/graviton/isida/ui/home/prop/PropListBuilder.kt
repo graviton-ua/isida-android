@@ -1,7 +1,7 @@
 package ua.graviton.isida.ui.home.prop
 
 import androidx.compose.ui.graphics.Color
-import com.whoppah.common.resources.ComposableString
+import ua.isida.common.ui.resources.ComposableString
 
 internal class PropListBuilder {
     private val list = mutableListOf<PropItem>()

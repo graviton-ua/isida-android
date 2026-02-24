@@ -1,7 +1,7 @@
 package ua.graviton.isida.ui.home.stats
 
 import androidx.compose.ui.graphics.Color
-import com.whoppah.common.resources.ComposableString
+import ua.isida.common.ui.resources.ComposableString
 
 /**
  * Класс-строитель, отвечающий за создание списка элементов [StatsItem] с использованием DSL.

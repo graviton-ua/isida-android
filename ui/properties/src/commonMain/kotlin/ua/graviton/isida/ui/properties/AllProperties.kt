@@ -2,7 +2,7 @@ package ua.graviton.isida.ui.properties
 
 import androidx.compose.runtime.Stable
 import com.whoppah.common.compose.input.NumberInputTextFieldState
-import com.whoppah.common.resources.*
+import ua.isida.common.ui.resources.*
 import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.ui.properties.types.NumberInputTextFieldDeviceProperty
 import ua.graviton.isida.ui.properties.types.RadioListDeviceProperty

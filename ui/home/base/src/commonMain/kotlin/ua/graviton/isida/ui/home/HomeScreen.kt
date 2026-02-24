@@ -19,7 +19,7 @@ import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.whoppah.common.compose.theme.WhoppahTheme
 import com.whoppah.common.compose.ui.WhTopAppBar
-import com.whoppah.common.resources.*
+import ua.isida.common.ui.resources.*
 import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule

@@ -1,4 +1,4 @@
-package com.whoppah.common.resources
+package ua.isida.common.ui.resources
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable

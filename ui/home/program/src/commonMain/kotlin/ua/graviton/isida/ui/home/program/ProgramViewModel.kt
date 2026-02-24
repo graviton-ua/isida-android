@@ -4,7 +4,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import com.whoppah.common.resources.*
+import ua.isida.common.ui.resources.*
 import com.whoppah.metrox.viewmodel.ViewModelKey
 import com.whoppah.metrox.viewmodel.ViewModelScope
 import com.whoppah.util.AppCoroutineDispatchers

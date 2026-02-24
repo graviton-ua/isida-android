@@ -1,10 +1,9 @@
 package ua.graviton.isida.ui.home.prop
 
 import androidx.compose.runtime.Immutable
-import com.whoppah.common.resources.ComposableString
-import com.whoppah.common.resources.ComposableString.Companion.composableString
-import com.whoppah.common.resources.Res
-import com.whoppah.common.resources.timer
+import ua.isida.common.ui.resources.ComposableString.Companion.composableString
+import ua.isida.common.ui.resources.Res
+import ua.isida.common.ui.resources.timer
 import org.jetbrains.compose.resources.stringResource
 
 @Immutable

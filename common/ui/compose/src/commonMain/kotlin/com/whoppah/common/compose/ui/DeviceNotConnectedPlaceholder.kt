@@ -11,9 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.whoppah.common.resources.Res
-import com.whoppah.common.resources.device_not_connected_message
-import com.whoppah.common.resources.device_not_connected_title
+import ua.isida.common.ui.resources.Res
+import ua.isida.common.ui.resources.device_not_connected_message
+import ua.isida.common.ui.resources.device_not_connected_title
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

@@ -23,8 +23,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.whoppah.common.compose.backgroundNotNull
 import com.whoppah.common.compose.theme.WhoppahTheme
 import com.whoppah.common.compose.ui.DeviceNotConnectedPlaceholder
-import com.whoppah.common.resources.Res
-import com.whoppah.common.resources.home_tab_prop
+import ua.isida.common.ui.resources.Res
+import ua.isida.common.ui.resources.home_tab_prop
 import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource

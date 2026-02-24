@@ -4,10 +4,10 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
 import com.whoppah.common.compose.input.TextInputTextFieldState.Error
-import com.whoppah.common.resources.common_error_price_invalid
-import com.whoppah.common.resources.common_error_price_required
+import ua.isida.common.ui.resources.common_error_price_invalid
+import ua.isida.common.ui.resources.common_error_price_required
 import org.jetbrains.compose.resources.stringResource
-import com.whoppah.common.resources.Res as R
+import ua.isida.common.ui.resources.Res as R
 
 @Stable
 interface TextInputTextFieldState : InputTextFieldState<Error> {

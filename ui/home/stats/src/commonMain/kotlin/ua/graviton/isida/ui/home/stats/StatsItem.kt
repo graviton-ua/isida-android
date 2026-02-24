@@ -2,7 +2,7 @@ package ua.graviton.isida.ui.home.stats
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
-import com.whoppah.common.resources.ComposableString
+import ua.isida.common.ui.resources.ComposableString
 
 /**
  * Представляет собой отдельный элемент в списке на экране статистики.

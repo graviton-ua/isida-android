@@ -1,7 +1,9 @@
-package com.whoppah.common.resources
+package ua.isida.common.ui.resources
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
+import ua.isida.common.ui.resources.PlatformLocale
+import ua.isida.common.ui.resources.language
 import java.util.Locale
 
 actual typealias PlatformLocale = Locale

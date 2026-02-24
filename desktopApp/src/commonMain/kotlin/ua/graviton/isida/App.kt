@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
-import com.whoppah.common.resources.Res
-import com.whoppah.common.resources.icon
+import ua.isida.common.ui.resources.Res
+import ua.isida.common.ui.resources.icon
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import ua.graviton.isida.shared.ui.IsidaApp

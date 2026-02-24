@@ -5,8 +5,8 @@ package ua.graviton.isida.ui.home.stats
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.whoppah.common.compose.theme.IsidaColor
-import com.whoppah.common.resources.*
-import com.whoppah.common.resources.ComposableString.Companion.composableString
+import ua.isida.common.ui.resources.*
+import ua.isida.common.ui.resources.ComposableString.Companion.composableString
 import com.whoppah.metrox.viewmodel.ViewModelKey
 import com.whoppah.metrox.viewmodel.ViewModelScope
 import com.whoppah.util.ObservableLoadingCounter

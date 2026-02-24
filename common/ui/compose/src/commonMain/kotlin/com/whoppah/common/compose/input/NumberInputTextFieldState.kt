@@ -6,15 +6,15 @@ import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
 import com.whoppah.common.compose.input.NumberInputTextFieldState.Error
-import com.whoppah.common.resources.common_error_price_invalid
-import com.whoppah.common.resources.common_error_price_less_than
-import com.whoppah.common.resources.common_error_price_more_than
-import com.whoppah.common.resources.common_error_price_required
+import ua.isida.common.ui.resources.common_error_price_invalid
+import ua.isida.common.ui.resources.common_error_price_less_than
+import ua.isida.common.ui.resources.common_error_price_more_than
+import ua.isida.common.ui.resources.common_error_price_required
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import org.jetbrains.compose.resources.stringResource
-import com.whoppah.common.resources.Res as R
+import ua.isida.common.ui.resources.Res as R
 
 @Stable
 interface NumberInputTextFieldState : InputTextFieldState<Error> {

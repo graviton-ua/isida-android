@@ -12,8 +12,8 @@ import com.whoppah.common.compose.input.InputState
 import com.whoppah.common.compose.input.InputStateErrorScope
 import com.whoppah.common.compose.theme.WhoppahTheme
 import com.whoppah.common.compose.ui.WhRadioButton
-import com.whoppah.common.resources.Res
-import com.whoppah.common.resources.programm
+import ua.isida.common.ui.resources.Res
+import ua.isida.common.ui.resources.programm
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.jetbrains.compose.resources.stringResource

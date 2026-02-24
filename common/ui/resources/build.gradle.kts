@@ -7,12 +7,9 @@ plugins {
 
 kotlin {
     android {
-        namespace = "com.whoppah.common.resources"
+        namespace = "ua.isida.common.ui.resources"
 
         androidResources { enable = true }
-        // defaultConfig {
-        //     consumerProguardFiles("consumer-rules.pro")
-        // }
     }
 
     sourceSets {
@@ -29,5 +26,5 @@ kotlin {
 
 compose.resources {
     publicResClass = true
-    packageOfResClass = "com.whoppah.common.resources"
+    packageOfResClass = "ua.isida.common.ui.resources"
 }

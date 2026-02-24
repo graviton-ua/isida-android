@@ -19,7 +19,7 @@ import com.whoppah.common.compose.theme.IsidaColor
 import com.whoppah.common.compose.theme.WhoppahTheme
 import com.whoppah.common.compose.ui.WhDialog
 import com.whoppah.common.compose.ui.WhRadioButton
-import com.whoppah.common.resources.*
+import ua.isida.common.ui.resources.*
 import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.stringResource
