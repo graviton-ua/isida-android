@@ -20,6 +20,8 @@ import com.whoppah.common.compose.theme.WhoppahTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ua.graviton.isida.ui.properties.DeviceProperty
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 @Stable
 abstract class SliderDeviceProperty<T : Number>(
@@ -68,7 +70,16 @@ abstract class SliderDeviceProperty<T : Number>(
                 )
                 Slider(
                     value = inputHelper.value?.toFloat() ?: 0f,
-                    onValueChange = { inputHelper.setValue(it as T?) },
+                    onValueChange = {
+                        val value: T? = when (min) {
+                            is Int -> it.roundToInt() as T
+                            is Long -> it.roundToLong() as T
+                            is Double -> it.toDouble() as T
+                            is Float -> it as T
+                            else -> it as T
+                        }
+                        inputHelper.setValue(value)
+                    },
                     valueRange = min.toFloat()..max.toFloat(),
                     steps = steps,
                     modifier = Modifier.weight(1f)
