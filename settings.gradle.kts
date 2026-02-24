@@ -26,6 +26,9 @@ pluginManagement {
         // maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
     }
 }
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
 dependencyResolutionManagement {
     repositories {
         google {
@@ -37,8 +40,6 @@ dependencyResolutionManagement {
         mavenCentral()
         maven { url = uri("https://jitpack.io") }
         maven { url = uri("https://maven.google.com/") }
-        maven { url = uri("https://maven.lokalise.co") }
-        maven { url = uri("https://appboy.github.io/appboy-android-sdk/sdk") }
 
         // Prerelease versions of Compose Multiplatform
         // maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
