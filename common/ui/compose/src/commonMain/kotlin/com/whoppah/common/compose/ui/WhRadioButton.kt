@@ -53,39 +53,7 @@ fun WhRadioButton(
             colors = colors,
         )
 
-        content()
-    }
-}
-
-
-//@Preview(showBackground = true)
-//@Composable
-//private fun Preview(
-//    @PreviewParameter(BooleanPreviewParameterProvider::class) selected: Boolean,
-//) {
-//    WhoppahTheme {
-//        WhRadioButton(
-//            selected = selected,
-//            onClick = {},
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(16.dp)
-//        )
-//    }
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun PreviewWithContent(
-//    @PreviewParameter(BooleanPreviewParameterProvider::class) selected: Boolean,
-//) {
-//    WhoppahTheme {
-//        WhRadioButton(
-//            selected = selected,
-//            onClick = {},
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(16.dp)
-//        ) { Text(text = "Example with content") }
-//    }
-//}
+                content()
+            }
+        }
+        
