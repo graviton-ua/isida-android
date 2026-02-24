@@ -4,6 +4,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import com.whoppah.common.resources.*
 import com.whoppah.metrox.viewmodel.ViewModelKey
 import com.whoppah.metrox.viewmodel.ViewModelScope
 import com.whoppah.util.AppCoroutineDispatchers
@@ -13,6 +14,7 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.data.bluetooth.ConnectionState
 import ua.graviton.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.data.protocol.packets.TablePacket
@@ -21,8 +23,6 @@ import ua.graviton.isida.data.protocol.packets.v1.TablePacketV1
 import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
 import ua.graviton.isida.domain.interactors.GetProgramTable
 import ua.graviton.isida.domain.interactors.UpdateProgramTable
-import com.whoppah.common.resources.*
-import org.jetbrains.compose.resources.stringResource
 
 @Inject
 @ViewModelKey(ProgramViewModel::class)
@@ -79,20 +79,21 @@ class ProgramViewModel(
             getProgramTable.byNumber(selectedTable.value)
                 .onSuccess { table.value = it }
                 .onFailure { logger.w(it) { "Failed to fetch table" } }
-            loadingState.removeLoader()
-        }
+        }.also { it.invokeOnCompletion { loadingState.removeLoader() } }
     }
 
-    fun sendTable() {
+    private var sendTableJob: Job? = null
+
+    private fun sendTable() {
         val tableNumber = selectedTable.value
         val currentTable = table.value ?: return
-        viewModelScope.launch {
+        sendTableJob?.cancel()
+        sendTableJob = viewModelScope.launch {
             loadingState.addLoader()
             updateProgramTable.executeSync(UpdateProgramTable.Params(tableNumber, currentTable))
                 .onSuccess { logger.d { "Table updated successfully" } }
                 .onFailure { logger.w(it) { "Failed to update table" } }
-            loadingState.removeLoader()
-        }
+        }.also { it.invokeOnCompletion { loadingState.removeLoader() } }
     }
 
     fun openResetDialog() {
@@ -106,6 +107,7 @@ class ProgramViewModel(
     fun applyPreset(preset: ProgramPreset) {
         table.value = preset.table
         closeResetDialog()
+        sendTable()
     }
 
     fun onDayUpdated(index: Int, day: TableDay) {
@@ -126,6 +128,8 @@ class ProgramViewModel(
             }
             result
         }
+        // After updating each day we always update table
+        sendTable()
     }
 
 
@@ -136,7 +140,7 @@ class ProgramViewModel(
             null
         }
     }
-//------------------- Sticky Header ---------------------------
+
     private fun TablePacketV1.toState(): Table = buildTable {
         stickyHeader {
             cell(width = 60.dp) { stringResource(Res.string.program_table_day) }
@@ -166,46 +170,4 @@ class ProgramViewModel(
             }
         }
     }
-    // private fun TablePacketV1.toState(): Table = buildTable {
-    //     header {
-    //         cell(width = 60.dp) { "Day" }
-    //         cell(width = 80.dp) { "T0" }
-    //         cell(width = 80.dp) { "T1" }
-    //         cell(width = 60.dp) { "Rh" }
-    //         cell(width = 60.dp) { "Flp" }
-    //         cell(width = 60.dp) { "Tr" }
-    //         cell(width = 60.dp) { "Cl" }
-    //     }
-    //     days.take(15).forEachIndexed { index, day ->
-    //         row(day) {
-    //             cell(width = 60.dp) { (index + 1).toString() }
-    //             cell(width = 80.dp) { day.spT0.toString() }
-    //             cell(width = 80.dp) { day.spT1.toString() }
-    //             cell(width = 60.dp) { day.spRh.toString() }
-    //             cell(width = 60.dp) { day.spFlp.toString() }
-    //             cell(width = 60.dp) { day.spTr.toString() }
-    //             cell(width = 60.dp) { day.spCl.toString() }
-    //         }
-    //     }
-    //     header {
-    //         cell(width = 60.dp) { "Day" }
-    //         cell(width = 80.dp) { "T0" }
-    //         cell(width = 80.dp) { "T1" }
-    //         cell(width = 60.dp) { "Rh" }
-    //         cell(width = 60.dp) { "Flp" }
-    //         cell(width = 60.dp) { "Tr" }
-    //         cell(width = 60.dp) { "Cl" }
-    //     }
-    //     days.takeLast(15).forEachIndexed { index, day ->
-    //         row(day) {
-    //             cell(width = 60.dp) { (index + 1).toString() }
-    //             cell(width = 80.dp) { day.spT0.toString() }
-    //             cell(width = 80.dp) { day.spT1.toString() }
-    //             cell(width = 60.dp) { day.spRh.toString() }
-    //             cell(width = 60.dp) { day.spFlp.toString() }
-    //             cell(width = 60.dp) { day.spTr.toString() }
-    //             cell(width = 60.dp) { day.spCl.toString() }
-    //         }
-    //     }
-    // }
 }

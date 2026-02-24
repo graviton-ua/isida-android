@@ -7,7 +7,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Tune
-import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material.icons.outlined.Summarize
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -53,7 +52,6 @@ internal fun ProgramScreen(
     ProgramScreen(
         state = state,
         onFetch = viewModel::fetchTable,
-        onSend = viewModel::sendTable,
         onTableSelected = viewModel::selectTableHeader,
         onOpenReset = viewModel::openResetDialog,
         onCloseReset = viewModel::closeResetDialog,
@@ -66,7 +64,6 @@ internal fun ProgramScreen(
 private fun ProgramScreen(
     state: ProgramViewState,
     onFetch: () -> Unit,
-    onSend: () -> Unit,
     onTableSelected: (Int) -> Unit,
     onOpenReset: () -> Unit,
     onCloseReset: () -> Unit,
@@ -82,7 +79,6 @@ private fun ProgramScreen(
                 hasData = state.table != null,
                 isLoading = state.isLoading,
                 onFetch = onFetch,
-                onSend = onSend,
                 onTableSelected = onTableSelected,
                 onOpenReset = onOpenReset,
                 modifier = Modifier.fillMaxWidth().padding(8.dp)
@@ -118,7 +114,6 @@ private fun ControlPanel(
     hasData: Boolean,
     isLoading: Boolean,
     onFetch: () -> Unit,
-    onSend: () -> Unit,
     onTableSelected: (Int) -> Unit,
     onOpenReset: () -> Unit,
     modifier: Modifier = Modifier,
@@ -170,13 +165,6 @@ private fun ControlPanel(
         }
 
         Spacer(Modifier.weight(1f))
-
-        FilledIconButton(
-            onClick = onSend,
-            enabled = !isLoading && hasData,
-        ) {
-            Icon(imageVector = Icons.Default.Upload, contentDescription = "Upload Table")
-        }
 
         if (isLoading) {
             CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
@@ -342,7 +330,6 @@ private fun Preview() {
                 }
             ),
             onFetch = {},
-            onSend = {},
             onTableSelected = {},
             onOpenReset = {},
             onCloseReset = {},
