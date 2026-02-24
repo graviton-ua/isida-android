@@ -7,6 +7,7 @@ import com.whoppah.metrox.viewmodel.ViewModelScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -27,7 +28,10 @@ class DeviceModeViewModel(
     private val _events = Channel<DeviceModeViewEvent>(Channel.BUFFERED)
     val events: Flow<DeviceModeViewEvent> = _events.receiveAsFlow()
 
-    private val pendingActions = MutableSharedFlow<DeviceModeAction>()
+    private val pendingActions = Channel<DeviceModeAction>(
+        capacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
 
     private val deviceId = MutableStateFlow<Int?>(null)
     private val mode = MutableStateFlow<DeviceMode?>(null)
@@ -94,7 +98,7 @@ class DeviceModeViewModel(
 
         // Listen actions
         viewModelScope.launch {
-            pendingActions.collect { action ->
+            pendingActions.receiveAsFlow().collect { action ->
                 when (action) {
                     is DeviceModeAction.SelectMode -> {
                         mode.value = action.mode
@@ -116,7 +120,7 @@ class DeviceModeViewModel(
     }
 
     fun submitAction(action: DeviceModeAction) {
-        viewModelScope.launch { pendingActions.emit(action) }
+        pendingActions.trySend(action)
     }
 
 

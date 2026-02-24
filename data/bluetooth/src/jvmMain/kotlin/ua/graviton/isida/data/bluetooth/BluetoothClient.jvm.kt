@@ -8,6 +8,7 @@ import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -28,7 +29,11 @@ class JvmBluetoothDriver(
     private val _state = MutableStateFlow(ConnectionState.DISCONNECTED)
     override val state: StateFlow<ConnectionState> = _state.asStateFlow()
 
-    private val _incomingData = MutableSharedFlow<ByteArray>(replay = 0, extraBufferCapacity = 64)
+    private val _incomingData = MutableSharedFlow<ByteArray>(
+        replay = 0,
+        extraBufferCapacity = 64,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST,
+    )
     override val incomingData: SharedFlow<ByteArray> = _incomingData.asSharedFlow()
 
     private var activePort: SerialPort? = null

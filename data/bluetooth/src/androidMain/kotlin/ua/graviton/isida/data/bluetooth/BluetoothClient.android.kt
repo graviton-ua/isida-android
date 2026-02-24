@@ -40,7 +40,7 @@ class AndroidBluetoothClient(
     private val _incomingData = MutableSharedFlow<ByteArray>(
         replay = 0,
         extraBufferCapacity = 64,
-        onBufferOverflow = BufferOverflow.SUSPEND
+        onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
     override val incomingData: SharedFlow<ByteArray> = _incomingData.asSharedFlow()
 
