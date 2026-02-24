@@ -30,7 +30,7 @@ version = gitDescribe(project.providers).get()
 
 compose.desktop {
     application {
-        mainClass = "ua.graviton.isida.MainKt"
+        mainClass = "ua.isida.MainKt"
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Rpm)
             packageName = "Isida"

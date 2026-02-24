@@ -1,17 +1,11 @@
 plugins {
     id("com.whoppah.kotlin.multiplatform")
-    id("com.whoppah.android.library")
     id("com.whoppah.compose")
     id("com.whoppah.metro")
     alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
-
-    android {
-        namespace = "ua.graviton.isida.ui.setday"
-    }
-
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.base)

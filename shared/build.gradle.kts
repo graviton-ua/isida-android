@@ -9,7 +9,7 @@ plugins {
 kotlin {
 
     android {
-        namespace = "ua.graviton.isida.shared"
+        namespace = "ua.isida.shared"
     }
 
     sourceSets {

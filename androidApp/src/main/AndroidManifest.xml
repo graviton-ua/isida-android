@@ -23,7 +23,7 @@
         tools:replace="android:supportsRtl">
 
         <activity
-            android:name=".MainActivity"
+            android:name="ua.isida.MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="userPortrait"
@@ -35,7 +35,7 @@
         </activity>
 
         <service
-            android:name=".domain.services.BluetoothConnectionService"
+            android:name="ua.isida.domain.services.BluetoothConnectionService"
             android:exported="false" />
     </application>
 </manifest>

@@ -11,10 +11,10 @@ plugins {
 val githubVersionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 0
 
 android {
-    namespace = "ua.graviton.isida"
+    namespace = "ua.isida"
 
     defaultConfig {
-        applicationId = "ua.graviton.isida"
+        applicationId = "ua.isida"
 
         versionCode = githubVersionCode + 1
         versionName = gitDescribe(project.providers).get()

@@ -9,7 +9,7 @@ plugins {
 kotlin {
 
     android {
-        namespace = "ua.graviton.isida.ui.scan"
+        namespace = "ua.isida.ui.scan"
     }
 
     sourceSets {
