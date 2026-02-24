@@ -21,8 +21,8 @@ import com.whoppah.common.compose.toaster.AppToaster
 import com.whoppah.common.permissions.PermissionType
 import com.whoppah.common.permissions.isGranted
 import com.whoppah.common.permissions.rememberPermissionState
-import com.whoppah.common.services.ServiceType
-import com.whoppah.common.services.rememberServiceEnabler
+import ua.isida.common.ui.services.ServiceType
+import ua.isida.common.ui.services.rememberServiceEnabler
 import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import ua.graviton.isida.data.bluetooth.DiscoveredDevice

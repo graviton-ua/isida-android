@@ -1,7 +1,9 @@
-package com.whoppah.common.services
+package ua.isida.common.ui.services
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import ua.isida.common.ui.services.ServiceEnabler
+import ua.isida.common.ui.services.ServiceType
 
 /**
  * JVM/Desktop implementation of [rememberServiceEnabler].

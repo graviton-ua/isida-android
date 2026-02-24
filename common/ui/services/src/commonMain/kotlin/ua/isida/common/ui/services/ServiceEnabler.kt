@@ -1,4 +1,4 @@
-package com.whoppah.common.services
+package ua.isida.common.ui.services
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable

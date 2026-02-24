@@ -6,7 +6,7 @@ plugins {
 
 kotlin {
     android {
-        namespace = "com.whoppah.common.services"
+        namespace = "ua.isida.common.ui.services"
     }
 
     sourceSets {
