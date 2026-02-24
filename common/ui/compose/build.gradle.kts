@@ -14,7 +14,7 @@ kotlin {
             implementation(projects.core.base)
             implementation(projects.core.datetime)
             implementation(projects.core.logging)
-            api(projects.common.ui.composeIcons)
+            api(libs.jetbrains.compose.icons)
             api(projects.common.ui.resources)
 
             implementation(libs.jetbrains.compose.runtime)

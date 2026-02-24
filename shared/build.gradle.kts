@@ -19,7 +19,6 @@ kotlin {
             api(projects.core.preferences)
 
             api(projects.common.ui.compose)
-            api(projects.common.ui.composeIcons)
             api(projects.common.ui.metrox.viewmodel)
             api(projects.common.ui.permissions)
             api(projects.common.ui.resources)

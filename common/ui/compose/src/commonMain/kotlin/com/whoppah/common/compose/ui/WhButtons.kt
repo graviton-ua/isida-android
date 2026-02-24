@@ -6,6 +6,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,8 +26,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.whoppah.common.compose.icons.WhIcons
-import com.whoppah.common.compose.icons.navigation.ChevronLeft
 import com.whoppah.common.compose.theme.WhoppahTheme
 
 @Composable
@@ -142,7 +142,7 @@ fun TopBackButton(
     modifier: Modifier = Modifier,
 ) = IconButton(onClick = onClick, modifier = modifier) {
     Icon(
-        imageVector = WhIcons.Navigation.ChevronLeft,
+        imageVector = Icons.Default.ChevronLeft,
         contentDescription = "Back",
         tint = LocalContentColor.current
     )

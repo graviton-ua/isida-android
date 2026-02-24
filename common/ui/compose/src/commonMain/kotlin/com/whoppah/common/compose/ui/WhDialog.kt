@@ -2,6 +2,8 @@ package com.whoppah.common.compose.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ProvideTextStyle
@@ -11,8 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import com.whoppah.common.compose.LocalWhUriHandler
-import com.whoppah.common.compose.icons.WhIcons
-import com.whoppah.common.compose.icons.navigation.Cross
 import com.whoppah.common.compose.theme.WhoppahTheme
 
 @Composable
@@ -72,7 +72,7 @@ fun WhDialog(
             IconButton(
                 onClick = it,
                 modifier = Modifier.align(Alignment.TopEnd),
-            ) { Icon(imageVector = WhIcons.Navigation.Cross, contentDescription = null) }
+            ) { Icon(imageVector = Icons.Default.Close, contentDescription = null) }
         }
 
         /**

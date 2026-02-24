@@ -58,7 +58,6 @@ include(
     ":core:preferences",
 
     ":common:ui:compose",
-    ":common:ui:compose-icons",
     ":common:ui:metrox:viewmodel",
     ":common:ui:resources",
     ":common:ui:permissions",
