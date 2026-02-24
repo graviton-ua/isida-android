@@ -2,7 +2,6 @@
 
 package com.whoppah.common.compose.ui
 
-//import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.LocalContentColor
@@ -176,36 +175,3 @@ fun Modifier.bottomDivider(enabled: Boolean, strokeWidth: Dp, color: Color) = co
         }
     }
 )
-
-
-//@Preview
-//@Composable
-//private fun Preview() {
-//    WhoppahTheme {
-//        WhTopAppBar(
-//            title = { Text(text = "Sample title") },
-//            navigationIcon = { IconButton(onClick = { }) { Icon(WhIcons.Navigation.Menu, "Navigation menu") } },
-//            actions = { IconButton(onClick = { }) { Icon(WhIcons.Navigation.MenuV, "Navigation menu") } },
-//        )
-//    }
-//}
-//
-//@Preview
-//@Composable
-//private fun PreviewThread() {
-//    WhoppahTheme {
-//        WhCustomTopAppBar(
-//            navigationIcon = { IconButton(onClick = { }) { Icon(WhIcons.Navigation.Menu, "Navigation menu") } },
-//            actions = { IconButton(onClick = { }) { Icon(WhIcons.Navigation.MenuV, "Navigation menu") } },
-//            content = {
-//                Box(
-//                    modifier = Modifier
-//                        .size(164.dp)
-//                        .background(color = Color.Green)
-//                        .border(width = 1.dp, color = Color.Red),
-//                )
-//                Text(text = "Sample title")
-//            },
-//        )
-//    }
-//}

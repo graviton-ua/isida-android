@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
 import com.whoppah.common.compose.theme.WhoppahTheme
-import com.whoppah.common.compose.ui.WhScaffold
 import kotlinx.serialization.Serializable
 import ua.graviton.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.ui.properties.DeviceProperty
@@ -63,13 +62,13 @@ internal fun SetDayScreen(
     navigateUp: () -> Unit,
     submit: () -> Unit,
 ) {
-    WhScaffold(
+    Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(text = "Update day") },
                 navigationIcon = {
                     IconButton(onClick = navigateUp) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 contentPadding = WindowInsets.statusBars.asPaddingValues(),

@@ -54,5 +54,3 @@ class PriceInputTransformation(
         return text.all { it.isDigit() || it in decimalSeparators }
     }
 }
-
-val DefaultPriceInputTransformation = PriceInputTransformation(allowDecimals = false)

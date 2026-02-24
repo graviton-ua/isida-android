@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -16,13 +18,8 @@ import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.whoppah.common.compose.theme.WhoppahTheme
-import com.whoppah.common.compose.ui.WhScaffold
 import com.whoppah.common.compose.ui.WhTopAppBar
-import com.whoppah.common.resources.Res
-import com.whoppah.common.resources.app_name
-import com.whoppah.common.resources.butPower
-import com.whoppah.common.resources.disconnect
-import com.whoppah.common.resources.label_connect
+import com.whoppah.common.resources.*
 import com.whoppah.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
@@ -91,7 +88,7 @@ private fun HomeScreen(
         }
     }
 
-    WhScaffold(
+    Scaffold(
         topBar = {
             HomeTopBar(
                 deviceConnected = state.deviceConnected,
