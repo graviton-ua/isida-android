@@ -1,9 +1,9 @@
 package ua.graviton.isida.ui.home.program
 
 import androidx.compose.runtime.Composable
-import ua.graviton.isida.data.protocol.packets.TablePacket
-import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
-import ua.graviton.isida.data.protocol.packets.v1.TablePacketV1
+import ua.isida.data.protocol.packets.TablePacket
+import ua.isida.data.protocol.packets.v1.TableDayV1
+import ua.isida.data.protocol.packets.v1.TablePacketV1
 
 data class ProgramPreset(
     val id: String,

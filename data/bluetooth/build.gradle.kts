@@ -6,7 +6,7 @@ plugins {
 
 kotlin {
     android {
-        namespace = "ua.graviton.isida.data.bluetooth"
+        namespace = "ua.isida.data.bluetooth"
     }
 
     sourceSets {

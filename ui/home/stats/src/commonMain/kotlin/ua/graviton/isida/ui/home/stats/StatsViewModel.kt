@@ -15,10 +15,9 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.*
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-import ua.graviton.isida.data.bluetooth.ConnectionState
-import ua.graviton.isida.data.protocol.*
-import ua.graviton.isida.data.protocol.packets.StatusPacket
-import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
+import ua.isida.data.bluetooth.ConnectionState
+import ua.isida.data.protocol.*
+import ua.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
 import ua.graviton.isida.domain.observers.ObserveStatus
 

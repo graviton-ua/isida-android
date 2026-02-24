@@ -16,7 +16,7 @@ import co.touchlab.kermit.Logger
 import ua.isida.metrox.viewmodel.LocalMetroViewModelFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import ua.graviton.isida.data.bluetooth.ConnectionState
+import ua.isida.data.bluetooth.ConnectionState
 import ua.graviton.isida.domain.services.intentBLConnectionService
 import ua.graviton.isida.shared.ui.IsidaApp
 

@@ -24,8 +24,8 @@ import ua.isida.common.ui.resources.*
 import ua.isida.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.stringResource
-import ua.graviton.isida.data.protocol.DeviceMode
-import ua.graviton.isida.data.protocol.DeviceModeExtra
+import ua.isida.data.protocol.DeviceMode
+import ua.isida.data.protocol.DeviceModeExtra
 
 @Serializable
 data object DeviceModeDialog : NavKey

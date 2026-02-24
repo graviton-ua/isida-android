@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
-import ua.graviton.isida.data.protocol.commands.RequestTableCommand
-import ua.graviton.isida.data.protocol.commands.v1.RequestTableCommandV1
-import ua.graviton.isida.data.protocol.packets.TablePacket
-import ua.graviton.isida.data.serializers.RootEncoder
+import ua.isida.data.protocol.commands.RequestTableCommand
+import ua.isida.data.protocol.commands.v1.RequestTableCommandV1
+import ua.isida.data.protocol.packets.TablePacket
+import ua.isida.data.serializers.RootEncoder
 import ua.graviton.isida.domain.ResultInteractor
 import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
 import kotlin.time.Duration.Companion.seconds
@@ -35,8 +35,7 @@ class GetProgramTable(
                 }
 
                 // 2. Now we are 100% sure we are listening, send the command.
-                val v = manager.protocolVersion
-                val command: RequestTableCommand = when (v) {
+                val command: RequestTableCommand = when (val v = manager.protocolVersion) {
                     1 -> RequestTableCommandV1(number = params)
                     else -> throw IllegalStateException("Unsupported protocol version: $v")
                 }

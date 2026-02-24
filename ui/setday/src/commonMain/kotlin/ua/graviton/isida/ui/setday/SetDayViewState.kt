@@ -1,7 +1,7 @@
 package ua.graviton.isida.ui.setday
 
 import androidx.compose.runtime.Stable
-import ua.graviton.isida.data.protocol.packets.TableDay
+import ua.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.ui.properties.DeviceProperty
 
 @Stable

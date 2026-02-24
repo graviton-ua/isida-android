@@ -119,7 +119,7 @@ private class RadioListPreviewParameterProvider : PreviewParameterProvider<Devic
         initValue = 3,
         title = { "RelayMode" },
         list = listOf(1, 2, 3, 4, 5),
-        listItemTitleMap = { it ->
+        listItemTitleMap = {
             when (it) {
                 1 -> "Title asdasd"
                 2 -> "asdasd"

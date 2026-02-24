@@ -11,7 +11,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import ua.graviton.isida.data.bluetooth.ConnectionState
+import ua.isida.data.bluetooth.ConnectionState
 import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
 
 @HasMemberInjections

@@ -3,8 +3,8 @@ package ua.graviton.isida.domain.interactors
 import ua.isida.util.AppCoroutineDispatchers
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.withContext
-import ua.graviton.isida.data.protocol.commands.IsidaCommand
-import ua.graviton.isida.data.serializers.RootEncoder
+import ua.isida.data.protocol.commands.IsidaCommand
+import ua.isida.data.serializers.RootEncoder
 import ua.graviton.isida.domain.ResultInteractor
 import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
 

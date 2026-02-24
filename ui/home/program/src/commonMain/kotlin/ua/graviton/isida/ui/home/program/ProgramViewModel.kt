@@ -15,11 +15,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
-import ua.graviton.isida.data.bluetooth.ConnectionState
-import ua.graviton.isida.data.protocol.packets.TableDay
-import ua.graviton.isida.data.protocol.packets.TablePacket
-import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
-import ua.graviton.isida.data.protocol.packets.v1.TablePacketV1
+import ua.isida.data.bluetooth.ConnectionState
+import ua.isida.data.protocol.packets.TableDay
+import ua.isida.data.protocol.packets.TablePacket
+import ua.isida.data.protocol.packets.v1.TableDayV1
+import ua.isida.data.protocol.packets.v1.TablePacketV1
 import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
 import ua.graviton.isida.domain.interactors.GetProgramTable
 import ua.graviton.isida.domain.interactors.UpdateProgramTable

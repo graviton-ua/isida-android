@@ -15,10 +15,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ua.graviton.isida.data.protocol.commands.IsidaCommand
-import ua.graviton.isida.data.protocol.commands.v1.UpdateSettingsCommandV1
-import ua.graviton.isida.data.protocol.packets.StatusPacket
-import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
+import ua.isida.data.protocol.commands.IsidaCommand
+import ua.isida.data.protocol.commands.v1.UpdateSettingsCommandV1
+import ua.isida.data.protocol.packets.StatusPacket
+import ua.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.domain.interactors.SendCommand
 import ua.graviton.isida.domain.observers.ObserveStatus
 import ua.graviton.isida.ui.setprop.models.propertyFromId

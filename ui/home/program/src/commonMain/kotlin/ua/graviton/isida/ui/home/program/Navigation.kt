@@ -2,7 +2,7 @@ package ua.graviton.isida.ui.home.program
 
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
-import ua.graviton.isida.data.protocol.packets.TableDay
+import ua.isida.data.protocol.packets.TableDay
 import ua.isida.common.ui.navigation.Navigator
 import ua.isida.common.ui.navigation.result.ResultEventBus
 

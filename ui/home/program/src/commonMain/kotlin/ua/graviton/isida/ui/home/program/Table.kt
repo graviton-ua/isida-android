@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import ua.graviton.isida.data.protocol.packets.TableDay
+import ua.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.ui.home.program.Table.Cell
 
 @Immutable
@@ -72,7 +72,7 @@ internal class TableBuilder {
 }
 
 internal class RowBuilder {
-    private val cells = mutableListOf<Table.Cell>()
+    private val cells = mutableListOf<Cell>()
 
     fun cell(
         width: Dp = Dp.Unspecified,
@@ -81,7 +81,7 @@ internal class RowBuilder {
     ) {
         val builder = StyleBuilder()
         builder.style()
-        cells.add(Table.Cell(value = text, style = builder.build(), width = width))
+        cells.add(Cell(value = text, style = builder.build(), width = width))
     }
 
     fun build() = cells.toList()

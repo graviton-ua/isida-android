@@ -25,7 +25,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import org.jetbrains.compose.resources.stringResource
-import ua.graviton.isida.data.protocol.packets.TableDay
+import ua.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.ui.home.program.ProgramScreen
 import ua.graviton.isida.ui.home.program.addProgramScreen
 import ua.graviton.isida.ui.home.prop.PropScreen

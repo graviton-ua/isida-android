@@ -1,8 +1,8 @@
 package ua.graviton.isida.ui.devicemode
 
 import androidx.compose.runtime.Immutable
-import ua.graviton.isida.data.protocol.DeviceMode
-import ua.graviton.isida.data.protocol.DeviceModeExtra
+import ua.isida.data.protocol.DeviceMode
+import ua.isida.data.protocol.DeviceModeExtra
 
 @Immutable
 data class DeviceModeViewState(

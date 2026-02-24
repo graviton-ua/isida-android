@@ -1,8 +1,8 @@
 package ua.graviton.isida.ui.setday.models
 
 import androidx.compose.runtime.Stable
-import ua.graviton.isida.data.protocol.packets.TableDay
-import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
+import ua.isida.data.protocol.packets.TableDay
+import ua.isida.data.protocol.packets.v1.TableDayV1
 import ua.graviton.isida.ui.properties.*
 
 //-------------------------- spT0 ------------------------------

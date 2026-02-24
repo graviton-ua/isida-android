@@ -1,7 +1,7 @@
 package ua.graviton.isida.ui.scan
 
 import androidx.compose.runtime.Immutable
-import ua.graviton.isida.data.bluetooth.DiscoveredDevice
+import ua.isida.data.bluetooth.DiscoveredDevice
 
 @Immutable
 data class ScanDevicesViewState(

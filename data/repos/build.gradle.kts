@@ -1,15 +1,10 @@
 plugins {
     id("com.whoppah.kotlin.multiplatform")
-    id("com.whoppah.android.library")
     alias(libs.plugins.kotlinx.serialization)
     id("com.whoppah.metro")
 }
 
 kotlin {
-    android {
-        namespace = "ua.graviton.isida.data.repos"
-    }
-
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.base)

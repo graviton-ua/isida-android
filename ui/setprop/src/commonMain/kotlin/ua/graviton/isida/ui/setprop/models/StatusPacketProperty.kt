@@ -1,7 +1,7 @@
 package ua.graviton.isida.ui.setprop.models
 
 import androidx.compose.runtime.Stable
-import ua.graviton.isida.data.protocol.packets.StatusPacket
+import ua.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.ui.properties.DeviceProperty
 
 @Stable

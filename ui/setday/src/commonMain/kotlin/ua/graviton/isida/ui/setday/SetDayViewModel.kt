@@ -15,8 +15,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ua.graviton.isida.data.protocol.packets.TableDay
-import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
+import ua.isida.data.protocol.packets.TableDay
+import ua.isida.data.protocol.packets.v1.TableDayV1
 import ua.graviton.isida.ui.setday.models.*
 
 @AssistedInject

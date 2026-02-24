@@ -25,7 +25,7 @@ import ua.isida.common.ui.services.ServiceType
 import ua.isida.common.ui.services.rememberServiceEnabler
 import ua.isida.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
-import ua.graviton.isida.data.bluetooth.DiscoveredDevice
+import ua.isida.data.bluetooth.DiscoveredDevice
 
 @Serializable
 data object ScanDevicesScreen : NavKey

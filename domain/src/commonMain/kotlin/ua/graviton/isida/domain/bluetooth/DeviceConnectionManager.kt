@@ -9,15 +9,15 @@ import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
-import ua.graviton.isida.data.bluetooth.BluetoothClient
-import ua.graviton.isida.data.bluetooth.ConnectionState
-import ua.graviton.isida.data.bluetooth.DeviceAddress
-import ua.graviton.isida.data.bluetooth.asDeviceAddress
-import ua.graviton.isida.data.parsers.RootDecoder
-import ua.graviton.isida.data.protocol.packets.IsidaPacket
-import ua.graviton.isida.data.protocol.packets.StatusPacket
-import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
-import ua.graviton.isida.data.protocol.packets.v2.StatusPacketV2
+import ua.isida.data.bluetooth.BluetoothClient
+import ua.isida.data.bluetooth.ConnectionState
+import ua.isida.data.bluetooth.DeviceAddress
+import ua.isida.data.bluetooth.asDeviceAddress
+import ua.isida.data.parsers.RootDecoder
+import ua.isida.data.protocol.packets.IsidaPacket
+import ua.isida.data.protocol.packets.StatusPacket
+import ua.isida.data.protocol.packets.v1.StatusPacketV1
+import ua.isida.data.protocol.packets.v2.StatusPacketV2
 
 @Inject
 @SingleIn(AppScope::class)

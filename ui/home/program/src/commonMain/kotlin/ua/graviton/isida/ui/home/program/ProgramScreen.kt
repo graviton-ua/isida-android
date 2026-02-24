@@ -27,8 +27,8 @@ import ua.isida.common.ui.resources.home_tab_programtable
 import ua.isida.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
-import ua.graviton.isida.data.protocol.packets.TableDay
-import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
+import ua.isida.data.protocol.packets.TableDay
+import ua.isida.data.protocol.packets.v1.TableDayV1
 import ua.isida.common.ui.navigation.HomeTabScreen
 import ua.isida.common.ui.navigation.result.ResultEffect
 import ua.isida.common.ui.navigation.result.ResultEventBus

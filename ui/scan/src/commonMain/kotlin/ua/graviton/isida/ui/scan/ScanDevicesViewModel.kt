@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import ua.graviton.isida.data.bluetooth.DeviceAddress
-import ua.graviton.isida.data.bluetooth.DeviceScanner
+import ua.isida.data.bluetooth.DeviceAddress
+import ua.isida.data.bluetooth.DeviceScanner
 import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
 
 @Inject

@@ -20,7 +20,7 @@ import androidx.navigation3.runtime.NavKey
 import ua.isida.common.ui.compose.theme.AppTheme
 import ua.isida.common.ui.compose.theme.IsidaTheme
 import kotlinx.serialization.Serializable
-import ua.graviton.isida.data.protocol.packets.TableDay
+import ua.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.ui.properties.DeviceProperty
 import ua.graviton.isida.ui.setday.models.*
 
