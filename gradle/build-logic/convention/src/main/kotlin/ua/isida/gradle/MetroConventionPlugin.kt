@@ -1,4 +1,4 @@
-package com.whoppah.gradle
+package ua.isida.gradle
 
 import dev.zacsweers.metro.gradle.DelicateMetroGradleApi
 import dev.zacsweers.metro.gradle.MetroPluginExtension

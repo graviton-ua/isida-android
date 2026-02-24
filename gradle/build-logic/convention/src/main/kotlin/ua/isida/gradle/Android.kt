@@ -1,4 +1,4 @@
-package com.whoppah.gradle
+package ua.isida.gradle
 
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget

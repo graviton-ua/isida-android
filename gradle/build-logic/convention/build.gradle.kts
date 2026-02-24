@@ -13,33 +13,33 @@ dependencies {
 gradlePlugin {
     plugins {
         register("kotlinMultiplatform") {
-            id = "com.whoppah.kotlin.multiplatform"
-            implementationClass = "com.whoppah.gradle.KotlinMultiplatformConventionPlugin"
+            id = "ua.isida.kotlin.multiplatform"
+            implementationClass = "ua.isida.gradle.KotlinMultiplatformConventionPlugin"
         }
 
         register("root") {
-            id = "com.whoppah.root"
-            implementationClass = "com.whoppah.gradle.RootConventionPlugin"
+            id = "ua.isida.root"
+            implementationClass = "ua.isida.gradle.RootConventionPlugin"
         }
 
         register("androidApplication") {
-            id = "com.whoppah.android.application"
-            implementationClass = "com.whoppah.gradle.AndroidApplicationConventionPlugin"
+            id = "ua.isida.android.application"
+            implementationClass = "ua.isida.gradle.AndroidApplicationConventionPlugin"
         }
 
         register("androidLibrary") {
-            id = "com.whoppah.android.library"
-            implementationClass = "com.whoppah.gradle.AndroidLibraryConventionPlugin"
+            id = "ua.isida.android.library"
+            implementationClass = "ua.isida.gradle.AndroidLibraryConventionPlugin"
         }
 
         register("compose") {
-            id = "com.whoppah.compose"
-            implementationClass = "com.whoppah.gradle.ComposeMultiplatformConventionPlugin"
+            id = "ua.isida.compose"
+            implementationClass = "ua.isida.gradle.ComposeMultiplatformConventionPlugin"
         }
 
         register("metro") {
-            id = "com.whoppah.metro"
-            implementationClass = "com.whoppah.gradle.MetroConventionPlugin"
+            id = "ua.isida.metro"
+            implementationClass = "ua.isida.gradle.MetroConventionPlugin"
         }
     }
 }

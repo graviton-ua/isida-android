@@ -1,11 +1,11 @@
 plugins {
-    id("com.whoppah.android.application")
+    id("ua.isida.android.application")
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlinx.serialization)
     //alias(libs.plugins.google.gms)
     //alias(libs.plugins.firebase.crashlytics)
     //alias(libs.plugins.firebase.appdistribution)
-    id("com.whoppah.metro")
+    id("ua.isida.metro")
 }
 
 val githubVersionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 0

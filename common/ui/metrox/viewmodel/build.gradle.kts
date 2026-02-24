@@ -1,7 +1,7 @@
 plugins {
-    id("com.whoppah.kotlin.multiplatform")
-    id("com.whoppah.compose")
-    id("com.whoppah.metro")
+    id("ua.isida.kotlin.multiplatform")
+    id("ua.isida.compose")
+    id("ua.isida.metro")
 }
 
 kotlin {

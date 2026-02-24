@@ -1,6 +1,6 @@
 plugins {
-    id("com.whoppah.kotlin.multiplatform")
-    id("com.whoppah.compose")
+    id("ua.isida.kotlin.multiplatform")
+    id("ua.isida.compose")
     alias(libs.plugins.kotlinx.serialization)
 }
 

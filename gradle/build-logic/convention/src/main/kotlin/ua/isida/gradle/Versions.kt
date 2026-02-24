@@ -1,4 +1,4 @@
-package com.whoppah.gradle
+package ua.isida.gradle
 
 object Versions {
     const val COMPILE_SDK = 36

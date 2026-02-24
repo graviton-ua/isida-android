@@ -1,4 +1,4 @@
-package com.whoppah.gradle
+package ua.isida.gradle
 
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog

@@ -1,8 +1,8 @@
 plugins {
-    id("com.whoppah.kotlin.multiplatform")
-    id("com.whoppah.android.library")
+    id("ua.isida.kotlin.multiplatform")
+    id("ua.isida.android.library")
     alias(libs.plugins.kotlinx.serialization)
-    id("com.whoppah.metro")
+    id("ua.isida.metro")
 }
 
 kotlin {

@@ -1,5 +1,5 @@
 plugins {
-    id("com.whoppah.kotlin.multiplatform")
+    id("ua.isida.kotlin.multiplatform")
 }
 
 kotlin {

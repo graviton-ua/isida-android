@@ -1,5 +1,5 @@
 plugins {
-    id("com.whoppah.root")
+    id("ua.isida.root")
 
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
