@@ -1,6 +1,6 @@
 package ua.graviton.isida.domain
 
-import com.whoppah.util.cancellableRunCatching
+import ua.isida.util.cancellableRunCatching
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BufferOverflow

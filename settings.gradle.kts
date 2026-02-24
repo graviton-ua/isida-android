@@ -53,7 +53,6 @@ dependencyResolutionManagement {
 
 include(
     ":core:base",
-    ":core:datetime",
     ":core:logging",
     ":core:preferences",
 

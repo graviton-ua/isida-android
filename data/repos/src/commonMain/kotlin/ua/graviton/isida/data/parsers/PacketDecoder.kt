@@ -1,6 +1,6 @@
 package ua.graviton.isida.data.parsers
 
-import com.whoppah.util.readU8
+import ua.isida.util.readU8
 import ua.graviton.isida.data.protocol.packets.IsidaPacket
 
 abstract class PacketDecoder<T : IsidaPacket> {

@@ -7,8 +7,8 @@ import co.touchlab.kermit.Logger
 import ua.isida.common.ui.resources.*
 import ua.isida.metrox.viewmodel.ViewModelKey
 import ua.isida.metrox.viewmodel.ViewModelScope
-import com.whoppah.util.AppCoroutineDispatchers
-import com.whoppah.util.ObservableLoadingCounter
+import ua.isida.util.AppCoroutineDispatchers
+import ua.isida.util.ObservableLoadingCounter
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Job

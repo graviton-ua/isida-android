@@ -6,7 +6,7 @@ plugins {
 
 kotlin {
     android {
-        namespace = "com.whoppah.core.logging"
+        namespace = "ua.isida.core.logging"
     }
 
     sourceSets {
@@ -33,9 +33,5 @@ kotlin {
                 implementation(libs.firebase.crashlytics)
             }
         }
-
-        // iosMain {
-        //     dependsOn(mobileMain)
-        // }
     }
 }

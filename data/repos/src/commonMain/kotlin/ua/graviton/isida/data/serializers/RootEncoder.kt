@@ -1,7 +1,7 @@
 package ua.graviton.isida.data.serializers
 
 import co.touchlab.kermit.Logger
-import com.whoppah.extensions.toHexString
+import ua.isida.extensions.toHexString
 import ua.graviton.isida.data.protocol.commands.IsidaCommand
 import ua.graviton.isida.data.serializers.v1.CommandEncoderV1
 

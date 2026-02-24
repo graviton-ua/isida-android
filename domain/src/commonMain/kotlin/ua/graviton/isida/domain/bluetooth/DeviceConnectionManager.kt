@@ -3,7 +3,7 @@
 package ua.graviton.isida.domain.bluetooth
 
 import co.touchlab.kermit.Logger
-import com.whoppah.util.AppCoroutineDispatchers
+import ua.isida.util.AppCoroutineDispatchers
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn

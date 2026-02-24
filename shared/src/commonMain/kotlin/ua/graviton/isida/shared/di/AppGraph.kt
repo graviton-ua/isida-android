@@ -2,7 +2,7 @@ package ua.graviton.isida.shared.di
 
 import androidx.lifecycle.ViewModelProvider
 import ua.isida.metrox.viewmodel.ViewModelGraph
-import com.whoppah.util.AppCoroutineDispatchers
+import ua.isida.util.AppCoroutineDispatchers
 import ua.graviton.isida.shared.AppInitializers
 
 interface AppGraph : ViewModelGraph.Factory {

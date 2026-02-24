@@ -1,9 +1,9 @@
 package ua.graviton.isida.data.parsers
 
 import co.touchlab.kermit.Logger
-import com.whoppah.util.CRC16
-import com.whoppah.util.readU16LE
-import com.whoppah.util.readU8
+import ua.isida.util.CRC16
+import ua.isida.util.readU16LE
+import ua.isida.util.readU8
 import ua.graviton.isida.data.protocol.packets.IsidaPacket
 
 private val logger by lazy { Logger.withTag("PacketParser") }

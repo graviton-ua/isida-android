@@ -7,7 +7,6 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.base)
-            implementation(projects.core.datetime)
             implementation(projects.core.logging)
             api(libs.jetbrains.compose.icons)
             api(projects.common.ui.resources)

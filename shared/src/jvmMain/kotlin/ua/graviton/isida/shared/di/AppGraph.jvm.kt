@@ -1,7 +1,6 @@
 package ua.graviton.isida.shared.di
 
-import com.whoppah.base.PlatformConfig
-import com.whoppah.util.AppCoroutineDispatchers
+import ua.isida.util.AppCoroutineDispatchers
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
@@ -9,6 +8,7 @@ import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import ua.isida.base.PlatformConfig
 
 @DependencyGraph(AppScope::class)
 interface JvmAppGraph : AppGraph {

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ua.isida.metrox.viewmodel.ViewModelKey
 import ua.isida.metrox.viewmodel.ViewModelScope
-import com.whoppah.util.ObservableLoadingCounter
+import ua.isida.util.ObservableLoadingCounter
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.*

@@ -1,6 +1,6 @@
 package ua.graviton.isida.shared
 
-import com.whoppah.appinitializers.AppInitializer
+import ua.isida.appinitializers.AppInitializer
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn

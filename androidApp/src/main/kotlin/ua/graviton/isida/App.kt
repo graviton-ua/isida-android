@@ -3,15 +3,11 @@ package ua.graviton.isida
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
 import android.os.Build
-import com.whoppah.base.PlatformConfig
-import com.whoppah.base.PlatformInfo
 import dev.zacsweers.metro.createGraphFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import ua.graviton.isida.shared.di.AndroidAppGraph
+import ua.isida.base.PlatformConfig
+import ua.isida.base.PlatformInfo
 
 class App : Application() {
     private val config: PlatformConfig by lazy {
@@ -48,7 +44,7 @@ class App : Application() {
                     .apply { description = descriptionText }
             // Register the channel with the system
             val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }

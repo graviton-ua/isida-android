@@ -5,7 +5,7 @@ import android.bluetooth.BluetoothAdapter
 import android.content.ContentResolver
 import android.content.Context
 import com.whoppah.base.PlatformConfig
-import com.whoppah.util.AppCoroutineDispatchers
+import ua.isida.util.AppCoroutineDispatchers
 import dev.zacsweers.metro.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

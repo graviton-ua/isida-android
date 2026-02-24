@@ -113,7 +113,6 @@ class DeviceModeViewModel(
                     }
 
                     is DeviceModeAction.ApplyMode -> send().also { it.join() }
-                    else -> Unit
                 }
             }
         }

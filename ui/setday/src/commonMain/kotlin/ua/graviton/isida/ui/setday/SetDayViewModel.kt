@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import ua.isida.metrox.viewmodel.ViewModelAssistedFactory
 import ua.isida.metrox.viewmodel.ViewModelKey
 import ua.isida.metrox.viewmodel.ViewModelScope
-import com.whoppah.util.AppCoroutineDispatchers
+import ua.isida.util.AppCoroutineDispatchers
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject

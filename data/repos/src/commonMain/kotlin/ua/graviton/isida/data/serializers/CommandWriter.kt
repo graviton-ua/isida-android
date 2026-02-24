@@ -1,7 +1,7 @@
 package ua.graviton.isida.data.serializers
 
-import com.whoppah.util.writeU16LE
-import com.whoppah.util.writeU8
+import ua.isida.util.writeU16LE
+import ua.isida.util.writeU8
 
 class CommandWriter(val data: ByteArray) {
     constructor(size: Int) : this(ByteArray(size))

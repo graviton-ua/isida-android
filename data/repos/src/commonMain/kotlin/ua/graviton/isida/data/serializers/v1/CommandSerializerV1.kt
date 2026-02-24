@@ -1,10 +1,10 @@
 package ua.graviton.isida.data.serializers.v1
 
-import com.whoppah.extensions.asByteArray
-import com.whoppah.util.CRC16
-import com.whoppah.util.writeBytes
-import com.whoppah.util.writeU16LE
-import com.whoppah.util.writeU8
+import ua.isida.extensions.asByteArray
+import ua.isida.util.CRC16
+import ua.isida.util.writeBytes
+import ua.isida.util.writeU16LE
+import ua.isida.util.writeU8
 import ua.graviton.isida.data.protocol.commands.IsidaCommand
 import ua.graviton.isida.data.serializers.CommandSerializer
 

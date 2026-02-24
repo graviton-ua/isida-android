@@ -7,7 +7,7 @@ import android.bluetooth.BluetoothSocket
 import android.os.Handler
 import androidx.core.os.bundleOf
 import co.touchlab.kermit.Logger
-import com.whoppah.extensions.toHexString
+import ua.isida.extensions.toHexString
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

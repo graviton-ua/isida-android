@@ -1,8 +1,7 @@
 package ua.graviton.isida.data.parsers
 
 import co.touchlab.kermit.Logger
-import com.whoppah.extensions.toHexString
-import com.whoppah.util.readU8
+import ua.isida.util.readU8
 import ua.graviton.isida.data.parsers.v1.PacketDecoderV1
 import ua.graviton.isida.data.protocol.packets.IsidaPacket
 

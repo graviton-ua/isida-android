@@ -9,7 +9,7 @@ import ua.isida.common.ui.resources.*
 import ua.isida.common.ui.resources.ComposableString.Companion.composableString
 import ua.isida.metrox.viewmodel.ViewModelKey
 import ua.isida.metrox.viewmodel.ViewModelScope
-import com.whoppah.util.ObservableLoadingCounter
+import ua.isida.util.ObservableLoadingCounter
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.*

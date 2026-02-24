@@ -14,7 +14,6 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.core.datetime)
             implementation(libs.jetbrains.compose.runtime)
             implementation(libs.jetbrains.compose.ui)
             api(libs.jetbrains.compose.resources)

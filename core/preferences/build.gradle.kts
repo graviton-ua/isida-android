@@ -6,7 +6,7 @@ plugins {
 
 kotlin {
     android {
-        namespace = "com.whoppah.core.preferences"
+        namespace = "ua.isida.core.preferences"
     }
 
     sourceSets {

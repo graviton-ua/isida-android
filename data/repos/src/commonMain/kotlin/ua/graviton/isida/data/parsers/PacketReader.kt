@@ -1,7 +1,7 @@
 package ua.graviton.isida.data.parsers
 
-import com.whoppah.util.readU16LE
-import com.whoppah.util.readU8
+import ua.isida.util.readU16LE
+import ua.isida.util.readU8
 
 class PacketReader(val data: ByteArray) {
     var offset = 0

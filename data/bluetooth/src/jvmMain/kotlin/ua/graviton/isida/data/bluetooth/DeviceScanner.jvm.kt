@@ -1,7 +1,6 @@
 package ua.graviton.isida.data.bluetooth
 
 import com.fazecast.jSerialComm.SerialPort
-import com.whoppah.util.AppCoroutineDispatchers
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
@@ -9,6 +8,7 @@ import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import ua.isida.util.AppCoroutineDispatchers
 
 @Inject
 @SingleIn(AppScope::class)

@@ -1,6 +1,6 @@
 package ua.graviton.isida.domain.interactors
 
-import com.whoppah.util.AppCoroutineDispatchers
+import ua.isida.util.AppCoroutineDispatchers
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.withContext
 import ua.graviton.isida.data.protocol.commands.IsidaCommand
