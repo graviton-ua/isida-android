@@ -580,12 +580,12 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             }
         }
     )
-    //-------------------------- GearBox ----------------------
+    //-------------------------- Min Fan ----------------------
     item(
-        id = "gearbox",
-        title = composableString { stringResource(Res.string.prop_koffGear_lb) },
-        value = composableString(this@toItems?.gearbox) {
-            this@toItems?.gearbox?.toString() ?: EMPTY_PLACEHOLDER
+        id = "minFan",
+        title = composableString { stringResource(Res.string.prop_minFan_lb) },
+        value = composableString(this@toItems?.minFan) {
+            this@toItems?.minFan?.toString()?.let { stringResource(Res.string.prop_dimen_speed, it) } ?: EMPTY_PLACEHOLDER
         },
     )
 }

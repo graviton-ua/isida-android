@@ -66,7 +66,7 @@ object StatusPacketV1Parser : PacketParser<StatusPacketV1> {
         val ikoff0 = reader.u8()
         val ikoff1 = reader.u8()
         val identif = reader.u8()
-        val gearbox = reader.u8()
+        val minFan = reader.u8() * 60
         val nothing1 = reader.u8()
         val ip0 = reader.u8()
         val ip1 = reader.u8()
@@ -124,7 +124,7 @@ object StatusPacketV1Parser : PacketParser<StatusPacketV1> {
             ikoff0 = ikoff0,
             ikoff1 = ikoff1,
             identif = identif,
-            gearbox = gearbox,
+            minFan = minFan,
             nothing1 = nothing1,
             ip0 = ip0,
             ip1 = ip1,

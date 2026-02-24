@@ -1,6 +1,7 @@
 package ua.graviton.isida.ui.setprop.models
 
 import androidx.compose.runtime.Stable
+import co.touchlab.kermit.Logger
 import ua.graviton.isida.data.protocol.packets.StatusPacket
 import ua.graviton.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.graviton.isida.ui.properties.*
@@ -39,7 +40,7 @@ fun propertyFromId(id: String): StatusPacketProperty<*> = when (id) {
     "ikoff0" -> Ikoff0()
     "ikoff1" -> Ikoff1()
     "identif" -> Identif()
-    "gearbox" -> GearBox()
+    "minFan" -> MinFan()
 
     else -> throw IllegalStateException("Unknown property id: $id")
 }
@@ -465,6 +466,7 @@ internal class TurnTime(value: Int? = null) : StatusPacketProperty<DevicePropert
 //-------------------------- Zonality ----------------------------
 @Stable
 internal class Zonality(value: Int? = null) : StatusPacketProperty<DevicePropertyZonality>(property = DevicePropertyZonality(value = value)) {
+    private val logger by lazy { Logger.withTag("Zonality") }
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
             is StatusPacketV1 -> packet.zonality
@@ -474,7 +476,10 @@ internal class Zonality(value: Int? = null) : StatusPacketProperty<DevicePropert
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(zonality = it) } ?: packet
+        is StatusPacketV1 -> {
+            logger.d { "Packet.zonality: ${packet.zonality::class} | property.inputHelper.value: ${property.inputHelper.value!!::class}" }
+            property.inputHelper.value?.let { packet.copy(zonality = it) } ?: packet
+        }
         else -> packet
     }
 }
@@ -617,19 +622,19 @@ internal class KoffCurr(value: Int? = null) : StatusPacketProperty<DevicePropert
     }
 }
 
-//-------------------------- GearBox ------------------------------
+//-------------------------- MinFan ------------------------------
 @Stable
-internal class GearBox(value: Int? = null) : StatusPacketProperty<DevicePropertyGearBox>(property = DevicePropertyGearBox(value = value)) {
+internal class MinFan(value: Int? = null) : StatusPacketProperty<DevicePropertyMinFan>(property = DevicePropertyMinFan(value = value)) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
-            is StatusPacketV1 -> packet.gearbox
+            is StatusPacketV1 -> packet.minFan
             else -> null
         }
         property.inputHelper.setValue(value)
     }
 
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(gearbox = it) } ?: packet
+        is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(minFan = it) } ?: packet
         else -> packet
     }
 }

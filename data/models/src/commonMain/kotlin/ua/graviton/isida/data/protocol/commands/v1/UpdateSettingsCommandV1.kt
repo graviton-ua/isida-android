@@ -39,12 +39,12 @@ import ua.graviton.isida.data.protocol.commands.UpdateSettingCommand
  * @property ikoff0 Integral coefficient #0.
  * @property ikoff1 Integral coefficient #1.
  * @property identif Network identifier/number of the device.
+ * @property minFan минимальная скорость вращения вентилятора (маска 0000 1111)
+ *  @property nothing1 Unused/Reserved field.
  * @property ip0 IP address byte 0.
  * @property ip1 IP address byte 1.
  * @property ip2 IP address byte 2.
  * @property ip3 IP address byte 3.
- * @property gearbox Unused/Reserved field.
- * @property nothing1 Unused/Reserved field.
  */
 data class UpdateSettingsCommandV1(
     // We can duplicate the fields from DataPackageDto here,
@@ -78,7 +78,7 @@ data class UpdateSettingsCommandV1(
     val ikoff0: Int,        // 1 байт ind=51 интегральный коэфф.#0
     val ikoff1: Int,        // 1 байт ind=52 интегральный коэфф.#1
     val identif: Int,       // 1 байт ind=53 сетевой номер прибора
-    val ip0: Int, val ip1: Int, val ip2: Int, val ip3: Int, // 4 байт ind=54;ind=55;ind=56;ind=57;
-    val gearbox: Int,       // 1 байт ind=58; коэффициент передачи от асинхрон.дв. к вентилятору (маска 0000 1111)
+    val minFan: Int,        // 1 байт ind=58 минимальная скорость вращения вентилятора (маска 0000 1111)
     val nothing1: Int,      // 1 байт ind=59;       не используется
+    val ip0: Int, val ip1: Int, val ip2: Int, val ip3: Int, // 4 байт ind=54;ind=55;ind=56;ind=57;
 ) : IsidaCommand.V1, UpdateSettingCommand

@@ -25,7 +25,7 @@
     <string name="error_08">Обрыв в цепи НАГРЕВАТЕЛЯ</string>
     <string name="error_10">ПЕРЕГРЕВ симистора!</string>
     <string name="error_20">Модуль ЗАСЛОНОК или СО2</string>
-    <string name="error_40">Модуль ХОЛЛА или ПОВОРОТОВ</string>
+    <string name="error_40">Модуль ХОЛЛА или модуль ПОВОРОТОВ</string>
     <string name="error_80">!!</string>
 
     <string name="warning_01">Отклонение по температуре</string>

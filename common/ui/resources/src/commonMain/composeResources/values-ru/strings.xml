@@ -153,7 +153,7 @@
     <string name="prop_air1_lb">Проветривание работа</string>
     <string name="prop_CO2_lb">Концентрация СО2</string>
     <string name="prop_koffCurr_lb">Масштабный коэф. измерения тока</string>
-    <string name="prop_koffGear_lb">Коэф. ременной передачи вентилятора</string>
+    <string name="prop_minFan_lb">Минимальная скорость вращения вентилятора</string>
     <string name="prop_Hysteresis_lb">Гистерезис канала увлажнения</string>
     <string name="prop_zonelity_lb">Порог зональности в камере</string>
     <string name="prop_flapRestr_lb">Максимальное открытие заслонки</string>
@@ -183,7 +183,7 @@
     <string name="dimen_sec"> сек.</string>
     <string name="prop_dimen_min">%1$s мин.</string>
     <string name="dimen_min"> мин.</string>
-    <string name="prop_dimen_kwt">%1$s кВт/час.</string>
+    <string name="prop_dimen_speed">%1$s об./мин.</string>
     <string name="dimen_speed"> об./мин.</string>
 
     <string name="input_info_limit">Установленные ограничения</string>

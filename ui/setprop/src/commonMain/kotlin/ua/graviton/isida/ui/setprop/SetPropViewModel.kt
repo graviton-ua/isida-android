@@ -123,7 +123,7 @@ class SetPropViewModel(
                 pkoff0 = snapshot.pkoff0, pkoff1 = snapshot.pkoff1,
                 ikoff0 = snapshot.ikoff0, ikoff1 = snapshot.ikoff1,
                 identif = snapshot.identif,
-                gearbox = snapshot.gearbox,
+                minFan = snapshot.minFan,
                 nothing1 = snapshot.nothing1,
                 ip0 = snapshot.ip0, ip1 = snapshot.ip1,
                 ip2 = snapshot.ip2, ip3 = snapshot.ip3,

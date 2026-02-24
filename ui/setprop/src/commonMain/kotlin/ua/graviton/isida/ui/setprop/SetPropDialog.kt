@@ -122,7 +122,7 @@ private class DevicePropertyPreviewParameterProvider : PreviewParameterProvider<
         Air0(), Air1(), SpCO2(), KoffCurr(), Hysteresis(), Zonality(),
         TurnTime(), WaitCooling(), Permission(), FlapRestrictions(),
         Pkoff0(value = 1), Pkoff1(value = 99), Ikoff0(), Ikoff1(),
-        Identif(), GearBox(),
+        Identif(), MinFan(),
     )
     override val values = properties.asSequence()
 }

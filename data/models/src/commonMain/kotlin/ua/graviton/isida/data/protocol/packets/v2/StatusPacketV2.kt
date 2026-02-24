@@ -57,12 +57,12 @@ import ua.graviton.isida.data.protocol.packets.StatusPacket
  * @property ikoff0 Integral coeff #0.
  * @property ikoff1 Integral coeff #1.
  * @property identif Network ID.
+ * @property minFan минимальная скорость вращения вентилятора (маска 0000 1111)
+ * @property nothing1 Unused.
  * @property ip0 IP address byte 0.
  * @property ip1 IP address byte 1.
  * @property ip2 IP address byte 2.
  * @property ip3 IP address byte 3.
- * @property gearbox Unused.
- * @property nothing1 Unused.
  */
 data class StatusPacketV2(
     val model: Int = 0,       // 1 байт ind=0  модель прибора
@@ -110,8 +110,8 @@ data class StatusPacketV2(
     val ikoff0: Int = 0,        // 1 байт ind=51 интегральный коэфф.#0
     val ikoff1: Int = 0,        // 1 байт ind=52 интегральный коэфф.#1
     val identif: Int = 0,       // 1 байт ind=53 сетевой номер прибора
-    val ip0: Int = 0, val ip1: Int = 0, val ip2: Int = 0, val ip3: Int = 0, // 4 байт ind=54;ind=55;ind=56;ind=57;
-    val gearbox: Int = 0,       // 1 байт ind=58; коэффициент передачи от асинхрон.дв. к вентилятору (маска 0000 1111)
+    val minFan: Int = 0,        // 1 байт ind=58 минимальная скорость вращения вентилятора (маска 0000 1111)
     val nothing1: Int = 0,      // 1 байт ind=59;       не используется ! DDHH = 2209
+    val ip0: Int = 0, val ip1: Int = 0, val ip2: Int = 0, val ip3: Int = 0, // 4 байт ind=54;ind=55;ind=56;ind=57;
     // ------------------ ИТОГО 40 bytes -------------------------------
 ) : IsidaPacket.V2, StatusPacket

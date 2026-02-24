@@ -659,24 +659,10 @@ class DevicePropertyIdentif(value: Int? = null) : NumberInputTextFieldDeviceProp
     },
 )
 
-//-------------------------- GearBox ------------------------------
+//-------------------------- MinFan ------------------------------
 @Stable
-class DevicePropertyGearBox(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
+class DevicePropertyMinFan(value: Int? = null) : SliderDeviceProperty<Int>(
     initValue = value,
-    title = { stringResource(Res.string.prop_koffGear_lb) },
-    description = {
-        stringResource(
-            Res.string.input_info_limit_min_max,
-            "1", "31"
-        )
-    },
-    onValidate = { text -> // Переименовал в text для ясности
-        val numericValue = text.toIntOrNull()
-        when {
-            numericValue == null -> NumberInputTextFieldState.Error.Required
-            numericValue < 1 -> NumberInputTextFieldState.Error.CantBeLessThen("1")
-            numericValue > 31 -> NumberInputTextFieldState.Error.CantBeMoreThen("31")
-            else -> null // Если всё в порядке — возвращаем null (ошибки нет)
-        }
-    },
+    min = 60, max = 900, increment = 60.0f,
+    title = { stringResource(Res.string.prop_minFan_lb) + stringResource(Res.string.dimen_speed) },
 )

@@ -361,17 +361,16 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
     // *****--------------------------- Fan -------------------------------*****
     item(
         title = composableString { stringResource(Res.string.fanStatus) },
-        content = composableString(state, pvFan, errors) {
+        content = composableString(state, pvFan, minFan, errors) {
             // Превращаем результат bitwise AND в Boolean
             val modeOn = (state and DeviceMode.FAN_MONITORING_ON.code) != 0
             val isError40 = (errors and DeviceError.ERROR_40.code) != 0
 
             if (modeOn) {
-                val gear = if (gearbox == 0) 1 else gearbox
-                if (pvFan > 1) {
+                if (pvFan >= minFan) {
                     val label = stringResource(Res.string.fanRun)
                     val dimen = stringResource(Res.string.dimen_speed)
-                    "$label  ${pvFan * 60 / gear} $dimen"
+                    "$label  ${pvFan * 60} $dimen"
                 } else if (isError40) {
                     stringResource(Res.string.device_not_connected_title)
                 } else {
@@ -512,46 +511,46 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
     )
 
     // *****--------------------------- Warnings -------------------------------*****
-    item(
-        title = composableString(warning) {
-            val str = stringResource(Res.string.warnings)
-            // Настраиваем формат: префикс "0x" и минимальная длина 2 символа
-            val myFormat = HexFormat {
-                number {
-                    prefix = "0x"
-                    minLength = 2
-                    removeLeadingZeros = true
-                    upperCase = true // Чтобы получить 'D' вместо 'd'
-                }
-            }
-            "$str:  ${warning.toHexString(myFormat)}"
-        },
-        content = composableString(warning) {
-            val value = warning
-            val result = mutableListOf<StringResource>()
-
-            // Используем битовое "И" (and), чтобы проверить каждый флаг независимо
-            if (value and DeviceWarning.WARNING_01.code != 0) result.add(Res.string.warning_01)
-            if (value and DeviceWarning.WARNING_02.code != 0) result.add(Res.string.warning_02)
-            if (value and DeviceWarning.WARNING_04.code != 0) result.add(Res.string.warning_04)
-            if (value and DeviceWarning.WARNING_08.code != 0) result.add(Res.string.warning_08)
-            if (value and DeviceWarning.WARNING_10.code != 0) result.add(Res.string.warning_10)
-            // if (value and Warning.WARNING_20.code != 0) result.add(Res.string.warning_20)
-
-            // Если активных предупреждений нет, возвращаем "Нет"
-            if (result.isEmpty()) {
-                result.add(Res.string.no)
-            }
-            result.map { stringResource(it) }.joinToString(separator = "\n")
-        },
-        style = {
-            val value = warning
-            if (value != 0) {
-                backgroundColor = IsidaColor.Yellow500
-                valueColor = IsidaColor.Red900
-            }
-        },
-    )
+    // item(
+    //     title = composableString(warning) {
+    //         val str = stringResource(Res.string.warnings)
+    //         // Настраиваем формат: префикс "0x" и минимальная длина 2 символа
+    //         val myFormat = HexFormat {
+    //             number {
+    //                 prefix = "0x"
+    //                 minLength = 2
+    //                 removeLeadingZeros = true
+    //                 upperCase = true // Чтобы получить 'D' вместо 'd'
+    //             }
+    //         }
+    //         "$str:  ${warning.toHexString(myFormat)}"
+    //     },
+    //     content = composableString(warning) {
+    //         val value = warning
+    //         val result = mutableListOf<StringResource>()
+    //
+    //         // Используем битовое "И" (and), чтобы проверить каждый флаг независимо
+    //         if (value and DeviceWarning.WARNING_01.code != 0) result.add(Res.string.warning_01)
+    //         if (value and DeviceWarning.WARNING_02.code != 0) result.add(Res.string.warning_02)
+    //         if (value and DeviceWarning.WARNING_04.code != 0) result.add(Res.string.warning_04)
+    //         if (value and DeviceWarning.WARNING_08.code != 0) result.add(Res.string.warning_08)
+    //         if (value and DeviceWarning.WARNING_10.code != 0) result.add(Res.string.warning_10)
+    //         // if (value and Warning.WARNING_20.code != 0) result.add(Res.string.warning_20)
+    //
+    //         // Если активных предупреждений нет, возвращаем "Нет"
+    //         if (result.isEmpty()) {
+    //             result.add(Res.string.no)
+    //         }
+    //         result.map { stringResource(it) }.joinToString(separator = "\n")
+    //     },
+    //     style = {
+    //         val value = warning
+    //         if (value != 0) {
+    //             backgroundColor = IsidaColor.Yellow500
+    //             valueColor = IsidaColor.Red900
+    //         }
+    //     },
+    // )
 
     header(
         title = composableString { stringResource(Res.string.titleOther) }
@@ -570,9 +569,9 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             else ""
         },
     )
-    // *****--------------------------- GearBox -------------------------------*****
+    // *****--------------------------- MinFan -------------------------------*****
     item(
-        title = composableString(gearbox) {
+        title = composableString(minFan) {
             val str = "gearbox"
             // Настраиваем формат: префикс "0x" и минимальная длина 2 символа
             val myFormat = HexFormat {
@@ -583,10 +582,10 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
                     upperCase = true // Чтобы получить 'D' вместо 'd'
                 }
             }
-            "$str: ${gearbox.toHexString(myFormat)}   $gearbox"
+            "$str: ${minFan.toHexString(myFormat)}   $minFan"
         },
-        content = composableString(gearbox) {
-            gearbox.toString(2).padStart(8, '0')
+        content = composableString(minFan) {
+            minFan.toString(2).padStart(8, '0')
         },
         // content = composableString(gearbox) {
         //     val month = (gearbox shr 4) and 0x0F

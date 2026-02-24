@@ -34,13 +34,6 @@
             </intent-filter>
         </activity>
 
-        <!--        <activity-->
-        <!--            android:name=".ui.scan.ScanDevicesActivity"-->
-        <!--            android:exported="false"-->
-        <!--            android:screenOrientation="sensorPortrait"-->
-        <!--            android:theme="@style/Theme.Isida.NoActionBar"-->
-        <!--            android:windowSoftInputMode="adjustResize" />-->
-
         <service
             android:name=".domain.services.BluetoothConnectionService"
             android:exported="false" />
