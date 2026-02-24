@@ -6,7 +6,7 @@ plugins {
 
 kotlin {
     android {
-        namespace = "com.whoppah.common.permissions"
+        namespace = "ua.isida.common.ui.permissions"
     }
 
     sourceSets {

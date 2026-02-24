@@ -18,9 +18,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
 import com.whoppah.common.compose.theme.WhoppahTheme
 import com.whoppah.common.compose.toaster.AppToaster
-import com.whoppah.common.permissions.PermissionType
-import com.whoppah.common.permissions.isGranted
-import com.whoppah.common.permissions.rememberPermissionState
+import ua.isida.common.ui.permissions.PermissionType
+import ua.isida.common.ui.permissions.isGranted
+import ua.isida.common.ui.permissions.rememberPermissionState
 import ua.isida.common.ui.services.ServiceType
 import ua.isida.common.ui.services.rememberServiceEnabler
 import com.whoppah.metrox.viewmodel.injectedViewModel

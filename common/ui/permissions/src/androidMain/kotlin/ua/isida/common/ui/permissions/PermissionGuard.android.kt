@@ -1,8 +1,11 @@
-package com.whoppah.common.permissions
+package ua.isida.common.ui.permissions
 
 import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import ua.isida.common.ui.permissions.PermissionStatus
+import ua.isida.common.ui.permissions.PermissionType
+import ua.isida.common.ui.permissions.rememberPermissionState
 
 /**
  * Android implementation of [rememberWriteStorageAction].

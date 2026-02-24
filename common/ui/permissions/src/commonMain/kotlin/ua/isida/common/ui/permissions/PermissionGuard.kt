@@ -1,4 +1,4 @@
-package com.whoppah.common.permissions
+package ua.isida.common.ui.permissions
 
 import androidx.compose.runtime.Composable
 
