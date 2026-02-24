@@ -2,8 +2,8 @@ package ua.graviton.isida.ui.setday
 
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
-import com.whoppah.metrox.viewmodel.injectedViewModel
-import ua.graviton.isida.ui.navigation.NavigatorWithResultBus
+import ua.isida.metrox.viewmodel.injectedViewModel
+import ua.isida.common.ui.navigation.NavigatorWithResultBus
 
 fun EntryProviderScope<NavKey>.addSetDayScreen(
     navigator: NavigatorWithResultBus,

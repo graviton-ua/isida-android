@@ -2,8 +2,8 @@ package ua.graviton.isida.shared.ui
 
 import androidx.lifecycle.ViewModel
 import co.touchlab.kermit.Logger
-import com.whoppah.metrox.viewmodel.ViewModelKey
-import com.whoppah.metrox.viewmodel.ViewModelScope
+import ua.isida.metrox.viewmodel.ViewModelKey
+import ua.isida.metrox.viewmodel.ViewModelScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 

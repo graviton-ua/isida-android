@@ -81,8 +81,8 @@ sourceSets {
 ### Example Usage
 
 ```kotlin
-import com.whoppah.common.compose.theme.WhTheme
-import com.whoppah.common.compose.ui.WhButton
+import ua.isida.common.ui.compose.theme.WhTheme
+import ua.isida.common.ui.compose.ui.WhButton
 
 @Composable
 fun MyScreen() {

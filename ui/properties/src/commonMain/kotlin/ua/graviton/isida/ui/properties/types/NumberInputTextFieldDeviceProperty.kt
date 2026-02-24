@@ -5,11 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import com.whoppah.common.compose.input.DefaultNumberInputTextFieldStateHelper
-import com.whoppah.common.compose.input.InputTextFieldStateErrorScope
-import com.whoppah.common.compose.input.NumberInputTextFieldState.Error
-import com.whoppah.common.compose.input.PriceInputTransformation
-import com.whoppah.common.compose.ui.WhTextField
+import ua.isida.common.ui.compose.input.DefaultNumberInputTextFieldStateHelper
+import ua.isida.common.ui.compose.input.InputTextFieldStateErrorScope
+import ua.isida.common.ui.compose.input.NumberInputTextFieldState.Error
+import ua.isida.common.ui.compose.input.PriceInputTransformation
+import ua.isida.common.ui.compose.ui.WhTextField
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ua.graviton.isida.ui.properties.DeviceProperty

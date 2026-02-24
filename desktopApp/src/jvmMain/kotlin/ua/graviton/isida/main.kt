@@ -4,7 +4,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.window.application
 import com.whoppah.base.PlatformConfig
 import com.whoppah.base.PlatformInfo
-import com.whoppah.metrox.viewmodel.LocalMetroViewModelFactory
+import ua.isida.metrox.viewmodel.LocalMetroViewModelFactory
 import dev.zacsweers.metro.createGraphFactory
 import kotlinx.coroutines.cancel
 import ua.graviton.isida.shared.di.JvmAppGraph

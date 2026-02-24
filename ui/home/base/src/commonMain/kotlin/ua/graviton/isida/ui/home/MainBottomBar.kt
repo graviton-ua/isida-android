@@ -13,8 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.whoppah.common.compose.theme.WhoppahPalette
-import com.whoppah.common.compose.theme.WhoppahTheme
+import ua.isida.common.ui.compose.theme.IsidaPalette
+import ua.isida.common.ui.compose.theme.AppTheme
+import ua.isida.common.ui.compose.theme.IsidaTheme
 
 @Composable
 internal fun MainBottomBar(
@@ -26,7 +27,7 @@ internal fun MainBottomBar(
         modifier = modifier
             .fillMaxWidth()
             .height(64.dp)
-            .background(color = WhoppahPalette.White),
+            .background(color = IsidaPalette.White),
     ) {
         content()
     }
@@ -46,7 +47,7 @@ internal fun Item(
         modifier = modifier.clickable(onClick = onClick),
     ) {
         CompositionLocalProvider(
-            LocalContentColor provides if (isSelected) WhoppahTheme.colors.secondary else WhoppahPalette.Black
+            LocalContentColor provides if (isSelected) IsidaTheme.colors.secondary else IsidaPalette.Black
         ) {
             Icon(
                 imageVector = icon,
@@ -55,7 +56,7 @@ internal fun Item(
             )
             Text(
                 text = title,
-                style = WhoppahTheme.typography.helper,
+                style = IsidaTheme.typography.helper,
             )
         }
     }
@@ -64,7 +65,7 @@ internal fun Item(
 @Preview
 @Composable
 private fun Preview() {
-    WhoppahTheme {
+    AppTheme {
         MainBottomBar(
             modifier = Modifier.fillMaxWidth(),
         ) {

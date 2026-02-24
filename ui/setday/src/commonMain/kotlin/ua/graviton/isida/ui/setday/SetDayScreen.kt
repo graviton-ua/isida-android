@@ -17,7 +17,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
-import com.whoppah.common.compose.theme.WhoppahTheme
+import ua.isida.common.ui.compose.theme.AppTheme
+import ua.isida.common.ui.compose.theme.IsidaTheme
 import kotlinx.serialization.Serializable
 import ua.graviton.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.ui.properties.DeviceProperty
@@ -115,7 +116,7 @@ internal fun SingleProperty(
     ) {
         Text(
             text = property.title(),
-            style = WhoppahTheme.typography.h4,
+            style = IsidaTheme.typography.h4,
         )
 
         property.Content(
@@ -182,7 +183,7 @@ private class SetDayPreviewParameterProvider : PreviewParameterProvider<SetDayVi
 private fun Preview(
     @PreviewParameter(SetDayPreviewParameterProvider::class) state: SetDayViewState,
 ) {
-    WhoppahTheme {
+    AppTheme {
         SetDayScreen(
             state = state,
             navigateUp = {},

@@ -4,7 +4,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.scene.DialogSceneStrategy
-import ua.graviton.isida.ui.navigation.Navigator
+import ua.isida.common.ui.navigation.Navigator
 
 fun EntryProviderScope<NavKey>.addDeviceModeDialog(
     navigator: Navigator,

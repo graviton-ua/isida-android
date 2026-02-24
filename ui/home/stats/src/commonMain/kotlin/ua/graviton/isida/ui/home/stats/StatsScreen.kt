@@ -16,15 +16,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.whoppah.common.compose.backgroundNotNull
-import com.whoppah.common.compose.theme.WhoppahTheme
-import com.whoppah.common.compose.ui.DeviceNotConnectedPlaceholder
+import ua.isida.common.ui.compose.backgroundNotNull
+import ua.isida.common.ui.compose.theme.AppTheme
+import ua.isida.common.ui.compose.ui.DeviceNotConnectedPlaceholder
 import ua.isida.common.ui.resources.Res
 import ua.isida.common.ui.resources.home_tab_stats
-import com.whoppah.metrox.viewmodel.injectedViewModel
+import ua.isida.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
-import ua.graviton.isida.ui.navigation.HomeTabScreen
+import ua.isida.common.ui.navigation.HomeTabScreen
 
 /**
  * Определяет маршрут экрана статистики и метаданные для навигации.
@@ -131,7 +131,7 @@ private fun InfoItem(
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
-    WhoppahTheme {
+    AppTheme {
         StatsScreen(
             state = StatsViewState.Preview,
         )

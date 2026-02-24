@@ -1,7 +1,7 @@
 package ua.graviton.isida.ui.properties
 
 import androidx.compose.runtime.Stable
-import com.whoppah.common.compose.input.NumberInputTextFieldState
+import ua.isida.common.ui.compose.input.NumberInputTextFieldState
 import ua.isida.common.ui.resources.*
 import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.ui.properties.types.NumberInputTextFieldDeviceProperty

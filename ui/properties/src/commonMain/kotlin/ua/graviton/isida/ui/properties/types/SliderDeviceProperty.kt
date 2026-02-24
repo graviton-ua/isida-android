@@ -13,10 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import com.whoppah.common.compose.input.DefaultInputStateHelper
-import com.whoppah.common.compose.input.InputState
-import com.whoppah.common.compose.input.InputStateErrorScope
-import com.whoppah.common.compose.theme.WhoppahTheme
+import ua.isida.common.ui.compose.input.DefaultInputStateHelper
+import ua.isida.common.ui.compose.input.InputState
+import ua.isida.common.ui.compose.input.InputStateErrorScope
+import ua.isida.common.ui.compose.theme.IsidaTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ua.graviton.isida.ui.properties.DeviceProperty
@@ -66,7 +66,7 @@ abstract class SliderDeviceProperty<T : Number>(
             ) {
                 Text(
                     text = "$min",
-                    style = WhoppahTheme.typography.h5,
+                    style = IsidaTheme.typography.h5,
                 )
                 Slider(
                     value = inputHelper.value?.toFloat() ?: 0f,
@@ -86,15 +86,15 @@ abstract class SliderDeviceProperty<T : Number>(
                 )
                 Text(
                     text = "$max",
-                    style = WhoppahTheme.typography.h5,
+                    style = IsidaTheme.typography.h5,
                 )
             }
 
             if (inputHelper.state.isError)
                 Text(
                     text = inputHelper.state.errorState.value?.asLabel() ?: "",
-                    style = WhoppahTheme.typography.helper,
-                    color = WhoppahTheme.colors.error,
+                    style = IsidaTheme.typography.helper,
+                    color = IsidaTheme.colors.error,
                 )
         }
     }

@@ -2,9 +2,9 @@ package ua.graviton.isida.ui.setday
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.whoppah.metrox.viewmodel.ViewModelAssistedFactory
-import com.whoppah.metrox.viewmodel.ViewModelKey
-import com.whoppah.metrox.viewmodel.ViewModelScope
+import ua.isida.metrox.viewmodel.ViewModelAssistedFactory
+import ua.isida.metrox.viewmodel.ViewModelKey
+import ua.isida.metrox.viewmodel.ViewModelScope
 import com.whoppah.util.AppCoroutineDispatchers
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory

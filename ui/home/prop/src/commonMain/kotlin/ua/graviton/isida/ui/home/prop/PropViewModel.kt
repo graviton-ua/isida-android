@@ -3,11 +3,11 @@ package ua.graviton.isida.ui.home.prop
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.whoppah.common.compose.theme.IsidaColor
+import ua.isida.common.ui.compose.theme.IsidaColor
 import ua.isida.common.ui.resources.*
 import ua.isida.common.ui.resources.ComposableString.Companion.composableString
-import com.whoppah.metrox.viewmodel.ViewModelKey
-import com.whoppah.metrox.viewmodel.ViewModelScope
+import ua.isida.metrox.viewmodel.ViewModelKey
+import ua.isida.metrox.viewmodel.ViewModelScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.*

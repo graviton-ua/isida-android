@@ -14,13 +14,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
-import com.whoppah.common.compose.theme.ContentAlpha
-import com.whoppah.common.compose.theme.IsidaColor
-import com.whoppah.common.compose.theme.WhoppahTheme
-import com.whoppah.common.compose.ui.WhDialog
-import com.whoppah.common.compose.ui.WhRadioButton
+import ua.isida.common.ui.compose.theme.ContentAlpha
+import ua.isida.common.ui.compose.theme.IsidaColor
+import ua.isida.common.ui.compose.theme.AppTheme
+import ua.isida.common.ui.compose.theme.IsidaTheme
+import ua.isida.common.ui.compose.ui.WhDialog
+import ua.isida.common.ui.compose.ui.WhRadioButton
 import ua.isida.common.ui.resources.*
-import com.whoppah.metrox.viewmodel.injectedViewModel
+import ua.isida.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.stringResource
 import ua.graviton.isida.data.protocol.DeviceMode
@@ -168,7 +169,7 @@ private fun CheckItemGroup(
 ) {
     Column(
         modifier = modifier
-            .background(color = WhoppahTheme.colors.surface),
+            .background(color = IsidaTheme.colors.surface),
     ) {
         CheckItem(
             text = stringResource(Res.string.txtChip1),
@@ -224,8 +225,8 @@ private fun CheckItem(
         Text(
             text = text,
             color = when (enabled) {
-                true -> WhoppahTheme.colors.onSurface
-                false -> WhoppahTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled)
+                true -> IsidaTheme.colors.onSurface
+                false -> IsidaTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -238,7 +239,7 @@ private fun CheckItem(
 @Preview(name = "Preview nothing selected")
 @Composable
 private fun Preview1() {
-    WhoppahTheme {
+    AppTheme {
         DeviceModeDialog(
             state = DeviceModeViewState.Empty,
             navigateUp = {},
@@ -250,7 +251,7 @@ private fun Preview1() {
 @Preview(name = "Preview ONLY ROTATION")
 @Composable
 private fun Preview2() {
-    WhoppahTheme {
+    AppTheme {
         DeviceModeDialog(
             state = DeviceModeViewState(mode = DeviceMode.ENABLE),
             navigateUp = {},
@@ -262,7 +263,7 @@ private fun Preview2() {
 @Preview(name = "Radio group")
 @Composable
 fun PreviewRadioGroup() {
-    WhoppahTheme {
+    AppTheme {
         RadioItemGroup(mode = null, onModeSelect = {})
     }
 }
@@ -270,7 +271,7 @@ fun PreviewRadioGroup() {
 @Preview(name = "Check group")
 @Composable
 fun PreviewCheckGroup() {
-    WhoppahTheme {
+    AppTheme {
         CheckItemGroup(extras = emptyList(), toggleExtra = {})
     }
 }

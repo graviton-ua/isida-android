@@ -7,11 +7,11 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import com.whoppah.common.compose.input.DefaultInputStateHelper
-import com.whoppah.common.compose.input.InputState
-import com.whoppah.common.compose.input.InputStateErrorScope
-import com.whoppah.common.compose.theme.WhoppahTheme
-import com.whoppah.common.compose.ui.WhRadioButton
+import ua.isida.common.ui.compose.input.DefaultInputStateHelper
+import ua.isida.common.ui.compose.input.InputState
+import ua.isida.common.ui.compose.input.InputStateErrorScope
+import ua.isida.common.ui.compose.theme.IsidaTheme
+import ua.isida.common.ui.compose.ui.WhRadioButton
 import ua.isida.common.ui.resources.Res
 import ua.isida.common.ui.resources.programm
 import kotlinx.coroutines.flow.Flow
@@ -54,8 +54,8 @@ abstract class RadioListDeviceProperty<T>(
         if (inputHelper.state.isError)
             Text(
                 text = inputHelper.state.errorState.value?.asLabel() ?: "",
-                style = WhoppahTheme.typography.helper,
-                color = WhoppahTheme.colors.error,
+                style = IsidaTheme.typography.helper,
+                color = IsidaTheme.colors.error,
             )
     }
 

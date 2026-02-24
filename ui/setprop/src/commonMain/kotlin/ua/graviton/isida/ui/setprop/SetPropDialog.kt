@@ -16,8 +16,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
-import com.whoppah.common.compose.theme.WhoppahTheme
-import com.whoppah.common.compose.ui.WhDialog
+import ua.isida.common.ui.compose.theme.AppTheme
+import ua.isida.common.ui.compose.theme.IsidaTheme
+import ua.isida.common.ui.compose.ui.WhDialog
 import kotlinx.serialization.Serializable
 import ua.graviton.isida.ui.properties.DeviceProperty
 import ua.graviton.isida.ui.setprop.models.*
@@ -61,7 +62,7 @@ internal fun SetPropDialog(
         ) {
             Text(
                 text = state.property.title(),
-                style = WhoppahTheme.typography.h4,
+                style = IsidaTheme.typography.h4,
             )
 
             state.property.Content(
@@ -132,7 +133,7 @@ private class DevicePropertyPreviewParameterProvider : PreviewParameterProvider<
 private fun Preview(
     @PreviewParameter(DevicePropertyPreviewParameterProvider::class) property: DeviceProperty,
 ) {
-    WhoppahTheme {
+    AppTheme {
         LaunchedEffect(Unit) { property.validate() }
         SetPropDialog(
             state = SetPropViewState(property = property),

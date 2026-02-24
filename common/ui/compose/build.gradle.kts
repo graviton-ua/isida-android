@@ -1,14 +1,9 @@
 plugins {
     id("com.whoppah.kotlin.multiplatform")
-    id("com.whoppah.android.library")
     id("com.whoppah.compose")
 }
 
 kotlin {
-    android {
-        namespace = "com.whoppah.common.compose"
-    }
-
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.base)
@@ -24,10 +19,6 @@ kotlin {
             implementation(libs.jetbrains.lifecycle.runtime)
 
             implementation(libs.kotlinx.serialization.json)
-        }
-
-        androidMain.dependencies {
-            implementation(libs.androidx.core)
         }
     }
 }

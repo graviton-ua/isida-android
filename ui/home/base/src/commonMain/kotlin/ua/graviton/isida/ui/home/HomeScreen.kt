@@ -17,10 +17,10 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
-import com.whoppah.common.compose.theme.WhoppahTheme
-import com.whoppah.common.compose.ui.WhTopAppBar
+import ua.isida.common.ui.compose.theme.AppTheme
+import ua.isida.common.ui.compose.ui.WhTopAppBar
 import ua.isida.common.ui.resources.*
-import com.whoppah.metrox.viewmodel.injectedViewModel
+import ua.isida.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
@@ -32,8 +32,12 @@ import ua.graviton.isida.ui.home.prop.PropScreen
 import ua.graviton.isida.ui.home.prop.addPropScreen
 import ua.graviton.isida.ui.home.stats.StatsScreen
 import ua.graviton.isida.ui.home.stats.addStatsScreen
-import ua.graviton.isida.ui.navigation.*
-import ua.graviton.isida.ui.navigation.result.ResultEventBus
+import ua.isida.common.ui.navigation.HomeTabScreen
+import ua.isida.common.ui.navigation.NavigationState
+import ua.isida.common.ui.navigation.Navigator
+import ua.isida.common.ui.navigation.rememberNavigationState
+import ua.isida.common.ui.navigation.result.ResultEventBus
+import ua.isida.common.ui.navigation.toEntries
 
 @Serializable
 data object HomeScreen : NavKey
@@ -209,7 +213,7 @@ private val config = SavedStateConfiguration {
 @Preview
 @Composable
 private fun Preview() {
-    WhoppahTheme {
+    AppTheme {
         HomeScreen(
             state = HomeViewState.Empty,
             resultBus = ResultEventBus(),

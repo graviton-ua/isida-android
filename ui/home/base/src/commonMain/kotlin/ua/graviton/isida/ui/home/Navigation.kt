@@ -3,7 +3,7 @@ package ua.graviton.isida.ui.home
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import ua.graviton.isida.data.protocol.packets.TableDay
-import ua.graviton.isida.ui.navigation.NavigatorWithResultBus
+import ua.isida.common.ui.navigation.NavigatorWithResultBus
 
 fun EntryProviderScope<NavKey>.addHomeScreen(
     navigator: NavigatorWithResultBus,

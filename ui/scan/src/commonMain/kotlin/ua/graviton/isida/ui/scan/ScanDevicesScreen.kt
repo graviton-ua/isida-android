@@ -16,14 +16,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
-import com.whoppah.common.compose.theme.WhoppahTheme
-import com.whoppah.common.compose.toaster.AppToaster
+import ua.isida.common.ui.compose.theme.AppTheme
+import ua.isida.common.ui.compose.toaster.AppToaster
 import ua.isida.common.ui.permissions.PermissionType
 import ua.isida.common.ui.permissions.isGranted
 import ua.isida.common.ui.permissions.rememberPermissionState
 import ua.isida.common.ui.services.ServiceType
 import ua.isida.common.ui.services.rememberServiceEnabler
-import com.whoppah.metrox.viewmodel.injectedViewModel
+import ua.isida.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import ua.graviton.isida.data.bluetooth.DiscoveredDevice
 
@@ -171,7 +171,7 @@ private fun DeviceItem(
 @Preview
 @Composable
 private fun Preview() {
-    WhoppahTheme {
+    AppTheme {
         ScanDevicesScreen(
             state = ScanDevicesViewState(),
             navigateUp = {},

@@ -20,18 +20,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.whoppah.common.compose.theme.WhoppahTheme
-import com.whoppah.common.compose.ui.DeviceNotConnectedPlaceholder
+import ua.isida.common.ui.compose.theme.AppTheme
+import ua.isida.common.ui.compose.ui.DeviceNotConnectedPlaceholder
 import ua.isida.common.ui.resources.Res
 import ua.isida.common.ui.resources.home_tab_programtable
-import com.whoppah.metrox.viewmodel.injectedViewModel
+import ua.isida.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
 import ua.graviton.isida.data.protocol.packets.TableDay
 import ua.graviton.isida.data.protocol.packets.v1.TableDayV1
-import ua.graviton.isida.ui.navigation.HomeTabScreen
-import ua.graviton.isida.ui.navigation.result.ResultEffect
-import ua.graviton.isida.ui.navigation.result.ResultEventBus
+import ua.isida.common.ui.navigation.HomeTabScreen
+import ua.isida.common.ui.navigation.result.ResultEffect
+import ua.isida.common.ui.navigation.result.ResultEventBus
 import ua.graviton.isida.ui.setday.SetDayScreenResult
 
 @Serializable
@@ -269,7 +269,7 @@ private fun TableRow(
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
-    WhoppahTheme {
+    AppTheme {
         ProgramScreen(
             state = ProgramViewState(
                 deviceConnected = true,

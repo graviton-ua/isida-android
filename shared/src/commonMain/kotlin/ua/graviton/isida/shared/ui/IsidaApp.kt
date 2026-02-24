@@ -8,15 +8,15 @@ import androidx.navigation3.runtime.*
 import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
-import com.whoppah.common.compose.theme.WhoppahTheme
+import ua.isida.common.ui.compose.theme.AppTheme
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import ua.graviton.isida.ui.devicemode.DeviceModeDialog
 import ua.graviton.isida.ui.devicemode.addDeviceModeDialog
 import ua.graviton.isida.ui.home.HomeScreen
 import ua.graviton.isida.ui.home.addHomeScreen
-import ua.graviton.isida.ui.navigation.NavigatorWithResultBus
-import ua.graviton.isida.ui.navigation.result.ResultEventBus
+import ua.isida.common.ui.navigation.NavigatorWithResultBus
+import ua.isida.common.ui.navigation.result.ResultEventBus
 import ua.graviton.isida.ui.scan.ScanDevicesScreen
 import ua.graviton.isida.ui.scan.addScanDevicesScreen
 import ua.graviton.isida.ui.setday.SetDayScreen
@@ -28,7 +28,7 @@ import ua.graviton.isida.ui.setprop.addSetPropDialog
 fun IsidaApp(
     modifier: Modifier = Modifier,
 ) {
-    WhoppahTheme {
+    AppTheme {
         val backStack = rememberNavBackStack(configuration = config, HomeScreen)
         val navigator = remember(backStack) { NavigatorImpl(backStack) }
         val dialogStrategy = remember { DialogSceneStrategy<NavKey>() }
