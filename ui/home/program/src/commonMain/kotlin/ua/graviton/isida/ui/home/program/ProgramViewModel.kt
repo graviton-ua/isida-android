@@ -57,7 +57,6 @@ class ProgramViewModel(
             isLoading = loading,
             table = if (connected) table else null,
             showResetDialog = resetDialog,
-            availablePresets = ProgramPreset.ALL
         )
     }.stateIn(
         scope = viewModelScope,
@@ -104,10 +103,14 @@ class ProgramViewModel(
         showResetDialog.value = false
     }
 
-    fun applyPreset(preset: ProgramPreset) {
-        table.value = preset.table
+    fun applyPreset() {
+        val index = selectedTable.value - 1
+        val presets = ProgramPreset.ALL
+        if (index in presets.indices) {
+            table.value = presets[index].table
+            sendTable()
+        }
         closeResetDialog()
-        sendTable()
     }
 
     fun onDayUpdated(index: Int, day: TableDay) {

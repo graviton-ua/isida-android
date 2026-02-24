@@ -9,5 +9,4 @@ data class ProgramViewState(
     val isLoading: Boolean = false,
     val table: Table? = null,
     val showResetDialog: Boolean = false,
-    val availablePresets: List<ProgramPreset> = emptyList(),
 )

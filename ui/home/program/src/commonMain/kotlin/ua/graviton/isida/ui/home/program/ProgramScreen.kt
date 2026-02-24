@@ -67,7 +67,7 @@ private fun ProgramScreen(
     onTableSelected: (Int) -> Unit,
     onOpenReset: () -> Unit,
     onCloseReset: () -> Unit,
-    onApplyPreset: (ProgramPreset) -> Unit,
+    onApplyPreset: () -> Unit,
     onEditDay: (Int, TableDay) -> Unit,
 ) {
     if (!state.deviceConnected) {
@@ -101,7 +101,6 @@ private fun ProgramScreen(
 
     if (state.showResetDialog) {
         ResetDialog(
-            presets = state.availablePresets,
             onDismiss = onCloseReset,
             onConfirm = onApplyPreset
         )
@@ -174,49 +173,18 @@ private fun ControlPanel(
 
 @Composable
 private fun ResetDialog(
-    presets: List<ProgramPreset>,
     onDismiss: () -> Unit,
-    onConfirm: (ProgramPreset) -> Unit,
+    onConfirm: () -> Unit,
 ) {
-    var selectedPreset by remember { mutableStateOf(presets.firstOrNull()) }
-
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(text = "Reset to Default") },
         text = {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(text = "Choose a preset to reset the table values:")
-                presets.forEach { preset ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = selectedPreset == preset,
-                            onClick = { selectedPreset = preset }
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(text = preset.name(), style = MaterialTheme.typography.bodyLarge)
-                            Text(
-                                text = preset.description(),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-                }
-            }
+            Text(text = "Are you sure you want to reset the current table to its DEFAULT values? This action will overwrite your current settings.")
         },
         confirmButton = {
             Button(
-                onClick = { selectedPreset?.let { onConfirm(it) } },
-                enabled = selectedPreset != null
+                onClick = onConfirm,
             ) {
                 Text("Reset")
             }
