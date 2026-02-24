@@ -10,7 +10,7 @@ import dev.zacsweers.metro.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
+import ua.isida.domain.bluetooth.DeviceConnectionManager
 import ua.graviton.isida.shared.BluetoothStateService
 
 @DependencyGraph(AppScope::class)

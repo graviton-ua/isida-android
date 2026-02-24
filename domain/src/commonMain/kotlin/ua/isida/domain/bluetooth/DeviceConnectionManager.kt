@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalUnsignedTypes::class)
 
-package ua.graviton.isida.domain.bluetooth
+package ua.isida.domain.bluetooth
 
 import co.touchlab.kermit.Logger
 import ua.isida.util.AppCoroutineDispatchers

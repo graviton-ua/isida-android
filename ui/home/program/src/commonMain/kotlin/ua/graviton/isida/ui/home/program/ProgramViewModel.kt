@@ -20,9 +20,9 @@ import ua.isida.data.protocol.packets.TableDay
 import ua.isida.data.protocol.packets.TablePacket
 import ua.isida.data.protocol.packets.v1.TableDayV1
 import ua.isida.data.protocol.packets.v1.TablePacketV1
-import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
-import ua.graviton.isida.domain.interactors.GetProgramTable
-import ua.graviton.isida.domain.interactors.UpdateProgramTable
+import ua.isida.domain.bluetooth.DeviceConnectionManager
+import ua.isida.domain.interactors.GetProgramTable
+import ua.isida.domain.interactors.UpdateProgramTable
 
 @Inject
 @ViewModelKey(ProgramViewModel::class)

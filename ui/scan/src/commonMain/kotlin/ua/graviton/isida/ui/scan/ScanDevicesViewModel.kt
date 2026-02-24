@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ua.isida.data.bluetooth.DeviceAddress
 import ua.isida.data.bluetooth.DeviceScanner
-import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
+import ua.isida.domain.bluetooth.DeviceConnectionManager
 
 @Inject
 @ViewModelKey(ScanDevicesViewModel::class)

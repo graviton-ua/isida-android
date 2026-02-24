@@ -1,12 +1,12 @@
-package ua.graviton.isida.domain.interactors
+package ua.isida.domain.interactors
 
 import ua.isida.util.AppCoroutineDispatchers
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.withContext
 import ua.isida.data.protocol.commands.IsidaCommand
 import ua.isida.data.serializers.RootEncoder
-import ua.graviton.isida.domain.ResultInteractor
-import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
+import ua.isida.domain.ResultInteractor
+import ua.isida.domain.bluetooth.DeviceConnectionManager
 
 @Inject
 class SendCommand(

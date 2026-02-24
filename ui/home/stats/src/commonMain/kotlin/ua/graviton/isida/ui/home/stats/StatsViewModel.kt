@@ -18,8 +18,8 @@ import org.jetbrains.compose.resources.stringResource
 import ua.isida.data.bluetooth.ConnectionState
 import ua.isida.data.protocol.*
 import ua.isida.data.protocol.packets.v1.StatusPacketV1
-import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
-import ua.graviton.isida.domain.observers.ObserveStatus
+import ua.isida.domain.bluetooth.DeviceConnectionManager
+import ua.isida.domain.observers.ObserveStatus
 
 @Inject
 @ViewModelKey(StatsViewModel::class)

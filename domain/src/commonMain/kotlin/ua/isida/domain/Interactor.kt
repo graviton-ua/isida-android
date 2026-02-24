@@ -1,4 +1,4 @@
-package ua.graviton.isida.domain
+package ua.isida.domain
 
 import ua.isida.util.cancellableRunCatching
 import kotlinx.coroutines.ExperimentalCoroutinesApi

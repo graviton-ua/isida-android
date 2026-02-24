@@ -1,4 +1,4 @@
-package ua.graviton.isida.domain.interactors
+package ua.isida.domain.interactors
 
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.CoroutineStart
@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
-import ua.graviton.isida.domain.ResultInteractor
-import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
+import ua.isida.domain.ResultInteractor
+import ua.isida.domain.bluetooth.DeviceConnectionManager
 import ua.isida.data.protocol.commands.SetTableCommand
 import ua.isida.data.protocol.commands.v1.SetTableCommandV1
 import ua.isida.data.protocol.packets.ConfirmPacket

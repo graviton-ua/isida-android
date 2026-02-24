@@ -8,7 +8,7 @@ plugins {
 kotlin {
 
     android {
-        namespace = "ua.graviton.isida.domain"
+        namespace = "ua.isida.domain"
     }
 
     sourceSets {

@@ -10,7 +10,7 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.isida.data.bluetooth.ConnectionState
-import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
+import ua.isida.domain.bluetooth.DeviceConnectionManager
 
 @Inject
 @ViewModelKey(HomeViewModel::class)

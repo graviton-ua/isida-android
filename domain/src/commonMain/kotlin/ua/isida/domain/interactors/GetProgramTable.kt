@@ -1,4 +1,4 @@
-package ua.graviton.isida.domain.interactors
+package ua.isida.domain.interactors
 
 import ua.isida.util.AppCoroutineDispatchers
 import dev.zacsweers.metro.Inject
@@ -12,8 +12,8 @@ import ua.isida.data.protocol.commands.RequestTableCommand
 import ua.isida.data.protocol.commands.v1.RequestTableCommandV1
 import ua.isida.data.protocol.packets.TablePacket
 import ua.isida.data.serializers.RootEncoder
-import ua.graviton.isida.domain.ResultInteractor
-import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
+import ua.isida.domain.ResultInteractor
+import ua.isida.domain.bluetooth.DeviceConnectionManager
 import kotlin.time.Duration.Companion.seconds
 
 @Inject

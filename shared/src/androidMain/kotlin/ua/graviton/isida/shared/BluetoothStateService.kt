@@ -12,7 +12,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ua.isida.data.bluetooth.ConnectionState
-import ua.graviton.isida.domain.bluetooth.DeviceConnectionManager
+import ua.isida.domain.bluetooth.DeviceConnectionManager
 
 @HasMemberInjections
 abstract class BluetoothStateService : Service() {
