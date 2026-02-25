@@ -14,6 +14,10 @@
     <string name="btn_start_scan">Start scan</string>
     <string name="btn_stop_scan">Stop scan</string>
     <string name="btn_refresh">Refresh</string>
+    <string name="btn_reset">Reset</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="dialog_reset_title">Reset to Default</string>
+    <string name="dialog_reset_message">Are you sure you want to reset the current table to its DEFAULT values? This action will overwrite your current settings.</string>
     <string name="num1">1</string>
     <string name="pv_t0_label">Dry</string>
     <string name="pv_t1_label">Wet</string>

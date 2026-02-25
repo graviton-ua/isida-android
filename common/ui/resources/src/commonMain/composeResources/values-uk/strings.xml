@@ -14,6 +14,10 @@
     <string name="btn_start_scan">Почати пошук</string>
     <string name="btn_stop_scan">Зупинити пошук</string>
     <string name="btn_refresh">Оновити</string>
+    <string name="btn_reset">Скинути</string>
+    <string name="btn_cancel">Скасувати</string>
+    <string name="dialog_reset_title">Скидання за замовчуванням</string>
+    <string name="dialog_reset_message">Ви впевнені, що хочете скинути поточну таблицю на значення ЗА ЗАМОВЧУВАННЯМ? Ця дія перезапише ваші поточні налаштування.</string>
     <string name="titleSensor">ДАТЧИКИ</string>
     <string name="titleState">СТАТУС</string>
     <string name="titleControl">МЕХАНІЗМИ</string>

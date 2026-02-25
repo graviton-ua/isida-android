@@ -29,6 +29,10 @@ import ua.isida.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import ua.isida.common.ui.resources.btn_cancel
+import ua.isida.common.ui.resources.btn_reset
+import ua.isida.common.ui.resources.dialog_reset_message
+import ua.isida.common.ui.resources.dialog_reset_title
 import ua.isida.common.ui.resources.program_table_no_data
 import ua.isida.common.ui.resources.program_table_number
 import ua.isida.data.protocol.packets.TableDay
@@ -185,20 +189,20 @@ private fun ResetDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(text = "Reset to Default") },
+        title = { Text(text = stringResource(Res.string.dialog_reset_title)) },
         text = {
-            Text(text = "Are you sure you want to reset the current table to its DEFAULT values? This action will overwrite your current settings.")
+            Text(text = stringResource(Res.string.dialog_reset_message))
         },
         confirmButton = {
             Button(
                 onClick = onConfirm,
             ) {
-                Text("Reset")
+                Text(stringResource(Res.string.btn_reset))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(Res.string.btn_cancel))
             }
         }
     )
