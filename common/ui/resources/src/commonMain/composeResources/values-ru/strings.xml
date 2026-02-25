@@ -13,6 +13,7 @@
     <string name="btnReport">Отчет</string>
     <string name="btn_start_scan">Начать поиск</string>
     <string name="btn_stop_scan">Остановить поиск</string>
+    <string name="btn_refresh">Обновить</string>
     <string name="titleSensor">ДАТЧИКИ</string>
     <string name="titleState">СТАТУС</string>
     <string name="titleControl">МЕХАНИЗМЫ</string>

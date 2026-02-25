@@ -23,6 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ua.isida.common.ui.compose.theme.AppTheme
 import ua.isida.common.ui.compose.ui.DeviceNotConnectedPlaceholder
 import ua.isida.common.ui.resources.Res
+import ua.isida.common.ui.resources.btn_refresh
 import ua.isida.common.ui.resources.home_tab_programtable
 import ua.isida.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
@@ -155,11 +156,11 @@ private fun ControlPanel(
             }
         }
 
-        IconButton(
+        TextButton(
             onClick = onFetch,
             enabled = !isLoading,
         ) {
-            Icon(imageVector = Icons.Default.Refresh, contentDescription = "Refresh")
+            Text(text = stringResource(Res.string.btn_refresh))
         }
 
         IconButton(
