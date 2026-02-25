@@ -51,7 +51,7 @@ class StatsViewModel(
         when (packet) {
             is StatusPacketV1 -> when {
                 packet.fuses + packet.errors + packet.warning > 0 -> IsidaColor.Red500
-                packet.state == 1 -> IsidaColor.Green100
+                packet.state == 1 -> IsidaColor.Green500
                 packet.state == 2 -> IsidaColor.Yellow500
                 else -> null
             }
@@ -99,7 +99,7 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
     header(
         title = composableString(node) { stringResource(Res.string.CellNum, node) },
         style = {
-            backgroundColor = if (state == 0x80) IsidaColor.Yellow500 else if (state > 0) IsidaColor.Green100 else null
+            backgroundColor = if (state == 0x80) IsidaColor.Yellow500 else if (state > 0) IsidaColor.Green500 else null
         }
     )
 
@@ -268,7 +268,7 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
         style = {
             backgroundColor =
                 if (state == DeviceMode.DISABLE.code) IsidaColor.BlueGrey100
-                else if ((state and DeviceMode.ENABLE.code) == DeviceMode.ENABLE.code) IsidaColor.Green100
+                else if ((state and DeviceMode.ENABLE.code) == DeviceMode.ENABLE.code) IsidaColor.Green500
                 else if ((state and DeviceMode.ONLY_ROTATION.code) == DeviceMode.ONLY_ROTATION.code) IsidaColor.Yellow500
                 else IsidaColor.Red100
         },
