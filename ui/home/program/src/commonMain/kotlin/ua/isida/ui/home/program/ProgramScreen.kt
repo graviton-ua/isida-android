@@ -6,7 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.outlined.Summarize
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -27,6 +27,9 @@ import ua.isida.common.ui.resources.home_tab_programtable
 import ua.isida.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
+import ua.isida.common.ui.resources.program_table_no_data
+import ua.isida.common.ui.resources.program_table_number
 import ua.isida.data.protocol.packets.TableDay
 import ua.isida.data.protocol.packets.v1.TableDayV1
 import ua.isida.common.ui.navigation.HomeTabScreen
@@ -87,7 +90,7 @@ private fun ProgramScreen(
             val table = state.table
             if (table == null && !state.isLoading) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = "No data. Press Refresh to get program table.")
+                    Text(text = stringResource(Res.string.program_table_no_data))
                 }
             } else if (table != null) {
                 ProgramTable(
@@ -130,7 +133,7 @@ private fun ControlPanel(
                 enabled = !isLoading,
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
             ) {
-                Text(text = "Table $selectedTable")
+                Text(text = stringResource(Res.string.program_table_number, selectedTable))
                 Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
             }
             DropdownMenu(
@@ -139,7 +142,7 @@ private fun ControlPanel(
             ) {
                 (1..4).forEach { number ->
                     DropdownMenuItem(
-                        text = { Text("Table $number") },
+                        text = { Text(text = stringResource(Res.string.program_table_number, number)) },
                         onClick = {
                             onTableSelected(number)
                             expanded = false
@@ -160,7 +163,7 @@ private fun ControlPanel(
             onClick = onOpenReset,
             enabled = !isLoading,
         ) {
-            Icon(imageVector = Icons.Default.Tune, contentDescription = "Presets")
+            Icon(imageVector = Icons.Default.Restore, contentDescription = "Presets")
         }
 
         Spacer(Modifier.weight(1f))

@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -143,7 +143,7 @@ private fun HomeTopBar(
         actions = {
             if (deviceConnected) {
                 IconButton(onClick = openPowerDialog) {
-                    Icon(imageVector = Icons.Default.Tune, contentDescription = stringResource(Res.string.butPower))
+                    Icon(imageVector = Icons.Default.PowerSettingsNew, contentDescription = stringResource(Res.string.butPower))
                 }
                 TextButton(onClick = disconnectDevice) {
                     Text(text = stringResource(Res.string.disconnect))

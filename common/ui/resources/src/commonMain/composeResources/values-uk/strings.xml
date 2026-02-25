@@ -80,7 +80,7 @@
     <string name="title_activity_device_list" translatable="false">DeviceListActivity</string>
     <string name="title_activity_terminal" translatable="false">TerminalActivity</string>
 
-    <string name="label_connect">Connect</string>
+    <string name="label_connect">Підключити</string>
     <string name="label_send">Send</string>
     <string name="label_scan">SCAN</string>
     <string name="status_not_connect">Status : Not connect.</string>
@@ -89,7 +89,7 @@
     <string name="connect_with_android_device">Connect with android device</string>
     <string name="bluetooth_terminal">Bluetooth Terminal</string>
     <string name="connect_with_ISIDA">Connect with ISIDA</string>
-    <string name="disconnect">Disconnect</string>
+    <string name="disconnect">Відключити</string>
     <string name="bluetooth_is_not_available">Bluetooth is not available</string>
     <string name="connected_to">Connected to</string>
     <string name="connection_lost">Connection lost</string>
@@ -177,6 +177,8 @@
     <string name="program_table_tr">Пов</string>
     <string name="program_table_cl">Охолодж</string>
     <string name="program_table_complete">Інкубація завершена</string>
+    <string name="program_table_no_data">Немає даних. Натисніть Оновити, щоб отримати таблицю програми.</string>
+    <string name="program_table_number">Таблиця %1$d</string>
 
     <string name="prop_dimen_sec">%1$s сек.</string>
     <string name="dimen_sec"> сек.</string>
