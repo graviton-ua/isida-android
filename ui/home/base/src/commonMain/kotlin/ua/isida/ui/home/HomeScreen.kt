@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -146,7 +147,8 @@ private fun HomeTopBar(
         title = {
             Text(
                 text = stringResource(Res.string.app_name),
-                modifier = Modifier.align(Alignment.CenterEnd).padding(end = 12.dp),
+                modifier = Modifier.fillMaxWidth().padding(end = 12.dp),
+                textAlign = TextAlign.End,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
