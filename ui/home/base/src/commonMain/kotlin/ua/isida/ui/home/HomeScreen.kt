@@ -147,8 +147,7 @@ private fun HomeTopBar(
         title = {
             Text(
                 text = stringResource(Res.string.app_name),
-                modifier = Modifier.fillMaxWidth().padding(end = 12.dp),
-                textAlign = TextAlign.End,
+                modifier = Modifier.padding(end = 12.dp),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )

@@ -48,9 +48,14 @@ fun WhTopAppBar(
         contentPadding = contentPadding,
         modifier = modifier
     ) {
-        ProvideTextStyle(
-            value = IsidaTheme.typography.h3,
-        ) { title() }
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.CenterEnd // По умолчанию прижимаем заголовок к правой части
+        ) {
+            ProvideTextStyle(value = IsidaTheme.typography.h3) {
+                title()
+            }
+        }
     }
 }
 
@@ -79,25 +84,27 @@ fun WhCustomTopAppBar(
         ) {
             if (navigationIcon != null) {
                 Row(
-                    modifier = Modifier.fillMaxHeight(),
+                    modifier = Modifier.wrapContentWidth().fillMaxHeight(),
                     verticalAlignment = Alignment.CenterVertically,
-                    content = navigationIcon,
-                )
+                ) {
+                    navigationIcon()
+                }
             }
 
             Box(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(1f),
+                    .weight(1f)
+                    .fillMaxHeight(),
                 content = content,
             )
 
             Row(
-                modifier = Modifier.fillMaxHeight(),
+                modifier = Modifier.wrapContentWidth().fillMaxHeight(),
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically,
-                content = actions,
-            )
+            ) {
+                actions()
+            }
         }
     }
 }
