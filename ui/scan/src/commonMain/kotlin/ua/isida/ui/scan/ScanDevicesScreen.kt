@@ -25,6 +25,10 @@ import ua.isida.common.ui.services.ServiceType
 import ua.isida.common.ui.services.rememberServiceEnabler
 import ua.isida.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.stringResource
+import ua.isida.common.ui.resources.Res
+import ua.isida.common.ui.resources.btn_start_scan
+import ua.isida.common.ui.resources.btn_stop_scan
 import ua.isida.data.bluetooth.DiscoveredDevice
 
 @Serializable
@@ -113,7 +117,7 @@ private fun ScanDevicesScreen(
                 modifier = Modifier.navigationBarsPadding()
             ) {
                 Text(
-                    text = if (state.isScanning) "Stop scan" else "Start scan",
+                    text = stringResource(if (state.isScanning) Res.string.btn_stop_scan else Res.string.btn_start_scan),
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
             }

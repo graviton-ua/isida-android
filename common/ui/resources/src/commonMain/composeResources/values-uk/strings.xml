@@ -11,6 +11,8 @@
     <string name="btnProp">Вст.</string>
     <string name="btnInfo">Інфо</string>
     <string name="btnReport">Звіт</string>
+    <string name="btn_start_scan">Почати пошук</string>
+    <string name="btn_stop_scan">Зупинити пошук</string>
     <string name="titleSensor">ДАТЧИКИ</string>
     <string name="titleState">СТАТУС</string>
     <string name="titleControl">МЕХАНІЗМИ</string>

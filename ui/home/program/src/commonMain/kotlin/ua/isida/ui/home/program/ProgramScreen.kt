@@ -89,8 +89,11 @@ private fun ProgramScreen(
 
             val table = state.table
             if (table == null && !state.isLoading) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = stringResource(Res.string.program_table_no_data))
+                Box(modifier = Modifier.fillMaxSize().padding(16.dp), contentAlignment = Alignment.Center) {
+                    Text(
+                        text = stringResource(Res.string.program_table_no_data),
+                        textAlign = TextAlign.Center
+                    )
                 }
             } else if (table != null) {
                 ProgramTable(

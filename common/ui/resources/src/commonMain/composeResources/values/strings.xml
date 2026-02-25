@@ -11,6 +11,8 @@
     <string name="btnProp">Set.</string>
     <string name="btnInfo">Info</string>
     <string name="btnReport">Report</string>
+    <string name="btn_start_scan">Start scan</string>
+    <string name="btn_stop_scan">Stop scan</string>
     <string name="num1">1</string>
     <string name="pv_t0_label">Dry</string>
     <string name="pv_t1_label">Wet</string>
