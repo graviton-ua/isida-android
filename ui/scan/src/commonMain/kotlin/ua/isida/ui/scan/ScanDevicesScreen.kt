@@ -29,6 +29,7 @@ import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.resources.Res
 import ua.isida.common.ui.resources.btn_start_scan
 import ua.isida.common.ui.resources.btn_stop_scan
+import ua.isida.common.ui.resources.title_scan_devices
 import ua.isida.data.bluetooth.DiscoveredDevice
 
 @Serializable
@@ -100,7 +101,7 @@ private fun ScanDevicesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Scan for devices") },
+                title = { Text(text = stringResource(Res.string.title_scan_devices)) },
                 navigationIcon = {
                     IconButton(onClick = navigateUp) {
                         Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")

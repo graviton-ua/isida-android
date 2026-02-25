@@ -14,6 +14,7 @@
     <string name="btn_start_scan">Начать поиск</string>
     <string name="btn_stop_scan">Остановить поиск</string>
     <string name="btn_refresh">Обновить</string>
+    <string name="title_scan_devices">Поиск устройств</string>
     <string name="btn_reset">Сбросить</string>
     <string name="btn_cancel">Отмена</string>
     <string name="dialog_reset_title">Сброс по умолчанию</string>

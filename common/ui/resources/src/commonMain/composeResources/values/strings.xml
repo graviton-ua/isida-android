@@ -14,6 +14,7 @@
     <string name="btn_start_scan">Start scan</string>
     <string name="btn_stop_scan">Stop scan</string>
     <string name="btn_refresh">Refresh</string>
+    <string name="title_scan_devices">Scan for devices</string>
     <string name="btn_reset">Reset</string>
     <string name="btn_cancel">Cancel</string>
     <string name="dialog_reset_title">Reset to Default</string>
