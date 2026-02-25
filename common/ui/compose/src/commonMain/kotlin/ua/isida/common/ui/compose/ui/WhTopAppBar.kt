@@ -30,53 +30,27 @@ import ua.isida.common.ui.compose.theme.IsidaTheme
  */
 @Composable
 fun WhTopAppBar(
-    title: @Composable RowScope.() -> Unit,
+    title: @Composable BoxScope.() -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    navigationIcon: @Composable (() -> Unit)? = null,
+    navigationIcon: @Composable (RowScope.() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
     backgroundColor: Color = IsidaTheme.colors.background,
     contentColor: Color = contentColorFor(backgroundColor = IsidaTheme.colors.background),
     drawDivider: Boolean = true,
 ) {
-    AppBar(
+    WhCustomTopAppBar(
+        navigationIcon = navigationIcon,
+        actions = actions,
         backgroundColor = backgroundColor,
         contentColor = contentColor,
         drawDivider = drawDivider,
-        dividerColor = IsidaPalette.Grey300,
         contentPadding = contentPadding,
-        modifier = modifier,
+        modifier = modifier
     ) {
-        if (navigationIcon != null) {
-            Row(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .align(Alignment.CenterStart),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                navigationIcon()
-            }
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxHeight()
-                .align(Alignment.Center),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            ProvideTextStyle(
-                value = IsidaTheme.typography.h5,
-            ) { title() }
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxHeight()
-                .align(Alignment.CenterEnd),
-            horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically,
-            content = actions,
-        )
+        ProvideTextStyle(
+            value = IsidaTheme.typography.h3,
+        ) { title() }
     }
 }
 
