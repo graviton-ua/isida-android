@@ -75,7 +75,7 @@ fun WhCustomTopAppBar(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.matchParentSize(),
         ) {
             if (navigationIcon != null) {
                 Row(
@@ -87,7 +87,7 @@ fun WhCustomTopAppBar(
 
             Box(
                 modifier = Modifier
-                    .fillMaxHeight()
+                    .fillMaxSize()
                     .weight(1f),
                 content = content,
             )
