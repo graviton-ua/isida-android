@@ -186,7 +186,7 @@
     <string name="program_table_tr">Пов</string>
     <string name="program_table_cl">CO2</string>
     <string name="program_table_complete">Инкубация завершена</string>
-    <string name="stats_incubation_time_format">День: %1$d, Время: %2$s:%3$s</string>
+    <string name="stats_incubation_time_format">Дней: %1$d, Часов:Минут: %2$s:%3$s</string>
     <string name="program_table_no_data">Нет данных. Нажмите Обновить, чтобы получить таблицу программы.</string>
     <string name="program_table_number">Таблица %1$d</string>
 

@@ -232,7 +232,7 @@
     <string name="program_table_tr">Tr</string>
     <string name="program_table_cl">Cl</string>
     <string name="program_table_complete">Incubation complete</string>
-    <string name="stats_incubation_time_format">Day: %1$d, Time: %2$s:%3$s</string>
+    <string name="stats_incubation_time_format">Days: %1$d, Hours:Minutes: %2$s:%3$s</string>
     <string name="program_table_no_data">No data. Press Refresh to get program table.</string>
     <string name="program_table_number">Table %1$d</string>
 
