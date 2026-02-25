@@ -19,7 +19,7 @@ object StatusPacketV1Parser : PacketParser<StatusPacketV1> {
         val pvRh = reader.u8()
         val pvCO2 = reader.u8() * 20f
         val pvTimer = reader.u8()
-        val pvFan = reader.u8()
+        val pvFan = reader.u8() * 60
         val pvFlap = reader.u8()
         val power = reader.u8()
         val fuses = reader.u8()
