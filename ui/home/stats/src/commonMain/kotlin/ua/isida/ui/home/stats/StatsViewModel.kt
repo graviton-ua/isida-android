@@ -51,7 +51,7 @@ class StatsViewModel(
         when (packet) {
             is StatusPacketV1 -> when {
                 packet.fuses + packet.errors + packet.warning > 0 -> IsidaColor.Red500
-                packet.state == 1 -> IsidaColor.Green500
+                packet.state == 1 -> IsidaColor.Green100
                 packet.state == 2 -> IsidaColor.Yellow500
                 else -> null
             }
@@ -99,7 +99,7 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
     header(
         title = composableString(node) { stringResource(Res.string.CellNum, node) },
         style = {
-            backgroundColor = if (state == 0x80) IsidaColor.Yellow500 else if (state > 0) IsidaColor.Green500 else null
+            backgroundColor = if (state == 0x80) IsidaColor.Yellow500 else if (state > 0) IsidaColor.Green100 else null
         }
     )
 
@@ -268,7 +268,7 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
         style = {
             backgroundColor =
                 if (state == DeviceMode.DISABLE.code) IsidaColor.BlueGrey100
-                else if ((state and DeviceMode.ENABLE.code) == DeviceMode.ENABLE.code) IsidaColor.Green500
+                else if ((state and DeviceMode.ENABLE.code) == DeviceMode.ENABLE.code) IsidaColor.Green100
                 else if ((state and DeviceMode.ONLY_ROTATION.code) == DeviceMode.ONLY_ROTATION.code) IsidaColor.Yellow500
                 else IsidaColor.Red100
         },
@@ -306,6 +306,18 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             }
             resource?.let { stringResource(resource) } ?: ""
         }
+    )
+    // *****--------------------------- Incubation Time -------------------------------*****
+    item(
+        title = composableString { stringResource(Res.string.incubation) },
+        content = composableString(currentTime, programm) {
+            val day = (currentTime shr 11) and 0x1F
+            val hour = (currentTime shr 6) and 0x1F
+            val minute = currentTime and 0x3F
+            if (programm != 0)
+                stringResource(Res.string.stats_incubation_time_format, day, hour, minute)
+            else ""
+        },
     )
 
     header(
@@ -410,7 +422,7 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
         },
         style = {
             val value = output and OutputBit.OUT_Extend.code
-            if (value != 0) backgroundColor = IsidaColor.Green500
+            if (value != 0) backgroundColor = IsidaColor.Green100
         },
     )
 
@@ -423,7 +435,7 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
         },
         style = {
             val value = output and OutputBit.OUT_Trays.code
-            if (value != 0) backgroundColor = IsidaColor.Green500
+            if (value != 0) backgroundColor = IsidaColor.Green100
         },
     )
 
@@ -555,20 +567,6 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
 
     header(
         title = composableString { stringResource(Res.string.titleOther) }
-    )
-    // *****--------------------------- Current Time -------------------------------*****
-    item(
-        title = composableString(currentTime) {
-            "currentTime:"
-        },
-        content = composableString(currentTime, programm) {
-            val day = (currentTime shr 11) and 0x1F
-            val hour = (currentTime shr 6) and 0x1F
-            val minute = currentTime and 0x3F
-            if (programm != 0)
-                "Day: $day, Time: ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}"
-            else ""
-        },
     )
     // *****--------------------------- MinFan -------------------------------*****
     // item(
