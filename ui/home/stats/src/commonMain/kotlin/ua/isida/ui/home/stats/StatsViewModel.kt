@@ -315,7 +315,12 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             val hour = (currentTime shr 6) and 0x1F
             val minute = currentTime and 0x3F
             if (programm != 0)
-                stringResource(Res.string.stats_incubation_time_format, day, hour, minute)
+                stringResource(
+                    Res.string.stats_incubation_time_format,
+                    day,
+                    hour.toString().padStart(2, '0'),
+                    minute.toString().padStart(2, '0')
+                )
             else ""
         },
     )
