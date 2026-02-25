@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="home_tab_stats">Монітор</string>
-    <string name="home_tab_prop">Опції</string>
+    <string name="home_tab_prop">Установки</string>
     <string name="home_tab_programtable">Програма</string>
 
     <string name="butPower">Керування</string>
