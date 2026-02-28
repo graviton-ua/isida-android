@@ -2,9 +2,9 @@ plugins {
     id("ua.isida.android.application")
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlinx.serialization)
-    //alias(libs.plugins.google.gms)
-    //alias(libs.plugins.firebase.crashlytics)
-    //alias(libs.plugins.firebase.appdistribution)
+    alias(libs.plugins.google.gms)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.firebase.appdistribution)
     id("ua.isida.metro")
 }
 
@@ -30,11 +30,29 @@ android {
         buildConfigField("String", "NOTIFICATION_CHANNEL_ID_GENERAL", "\"${manifestPlaceholders["notification_channel_General"]}\"")
     }
 
+    signingConfigs {
+        named("debug") {
+            storeFile = file("debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+        create("release") {
+            val keystoreFile = file("release.keystore")
+            if (keystoreFile.exists()) {
+                storeFile = keystoreFile
+                storePassword = System.getenv("RELEASE_KEYSTORE_PASSWORD") ?: ""
+                keyAlias = "isida"
+                keyPassword = System.getenv("RELEASE_KEYSTORE_PASSWORD") ?: ""
+            }
+        }
+    }
+
     buildTypes {
         getByName("debug") {
             isMinifyEnabled = false
             versionNameSuffix = "-DEBUG"
-            // signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("debug")
 
             buildConfigField("Boolean", "CRASH_REPORTING", "false")
         }
@@ -42,7 +60,7 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            // signingConfig = signingConfigs.getByName("release")
+            signingConfig = if (project.file("release.keystore").exists()) signingConfigs.getByName("release") else signingConfigs.getByName("debug")
         }
     }
 
@@ -151,9 +169,7 @@ fun gitNotes(providers: ProviderFactory, maxCountFallback: Int = 20): Provider<S
                     latestTag
                 }
             }.flatMap { tag ->
-                @Suppress("UselessCallOnNotNull")
-                val source =
-                    if (tag.isNullOrEmpty()) "--max-count=$maxCountFallback" else "$tag..HEAD"
+                val source = if (tag.isNullOrEmpty()) "--max-count=$maxCountFallback" else "$tag..HEAD"
 
                 providers.exec {
                     commandLine("git", "log", "--pretty=* %s (%an) [%h]", source)

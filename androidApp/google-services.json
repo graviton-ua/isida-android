@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "142830573226",
+    "project_id": "isida-11fdf",
+    "storage_bucket": "isida-11fdf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142830573226:android:f72936a3ce21dc05e322d3",
+        "android_client_info": {
+          "package_name": "ua.isida"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL58Kc7R35Rw4lAk4jZgZ2pW0KrAeUSFI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
