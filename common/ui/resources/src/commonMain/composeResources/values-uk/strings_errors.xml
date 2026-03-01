@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="device_mode_enabled">УВІМКНЕНО</string>
-    <string name="device_mode_disabled">ВИМКНЕНО</string>
+    <string name="device_mode_enabled">ЙДЕ ІНКУБАЦІЯ</string>
+    <string name="device_mode_disabled">ВІДКЛЮЧЕНА</string>
     <string name="state_2">Підготовка до ОХОЛОДЖЕННЯ</string>
     <string name="state_4">Підготовка до УВІМКНЕННЯ</string>
     <string name="state_8">Перехід в ГОРИЗОНТ</string>

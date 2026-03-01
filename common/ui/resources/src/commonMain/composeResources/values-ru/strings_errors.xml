@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="device_mode_enabled">ВКЛЮЧЕНА</string>
+    <string name="device_mode_enabled">ИДЕТ ИНКУБАЦИЯ</string>
     <string name="device_mode_disabled">ОТКЛЮЧЕНА</string>
     <string name="state_2">Подгототка к ОХЛАЖДЕНИЮ</string>
     <string name="state_4">Подгототка к ВКЛЮЧЕНИЮ</string>
