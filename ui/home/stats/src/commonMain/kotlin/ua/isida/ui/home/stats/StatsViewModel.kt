@@ -157,46 +157,77 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
         title = composableString {
             stringResource(if (pvRh != 0) Res.string.pv_rh_label else Res.string.pv_t1_label)
         },
-        content = composableString(pvT1, spT1, pvRh) {
-            if (pvRh > 10) {
+        content = composableString(pvT1, spT1, pvRh, spRh1) {
+            if (pvRh > 1) {
                 val value = if (pvRh > 100) 100 else pvRh
                 "$value % [$spRh1 %]"
             } else {
-                val valueFormatted = if (pvT0 > 80) "--.-" else String.format("%.1f", pvT1)
+                val valueFormatted = if (pvT0 >= 85) "--.-" else String.format("%.1f", pvT1)
                 "$valueFormatted °C [$spT1 °C]"
             }
         },
         style = {
-            val st = state and DeviceMode.ENABLE.code
-            val value = if (pvT1 > 80) null else pvT1
-            if (st != 0) {
-                backgroundColor = when {
-                    value == null -> null
-                    value >= spT1 + alarm1 -> IsidaColor.Red100
-                    value <= spT1 - alarm1 -> IsidaColor.Blue100
-                    else -> IsidaColor.Green100
+            val isEnable = (state and DeviceMode.ENABLE.code) != 0
+            if (pvRh > 1) {
+                val value = if (pvRh > 100) 100 else pvRh
+                if (isEnable) {
+                    backgroundColor = when {
+                        value >= spRh1 + alarm1 -> IsidaColor.Red100
+                        value <= spRh1 - alarm1 -> IsidaColor.Blue100
+                        else -> IsidaColor.Green100
+                    }
+                }
+            } else {
+                val value = if (pvT1 >= 85) null else pvT1
+                if (isEnable) {
+                    backgroundColor = when {
+                        value == null -> null
+                        value >= spT1 + alarm1 -> IsidaColor.Red100
+                        value <= spT1 - alarm1 -> IsidaColor.Blue100
+                        else -> IsidaColor.Green100
+                    }
                 }
             }
         },
     )
 
-    // *****--------------------------- T2 -------------------------------*****
+    // *****--------------------------- T2 / T1 ---------------------------*****
     item(
         title = composableString { stringResource(Res.string.pv_t2_label) },
-        content = composableString(pvT2) {
-            val value = if (pvT2 > 80) null else pvT2
-            if (value != null) {
-                val valueFormatted = String.format("%.1f", value)
-                "$valueFormatted °C"
-            } else ""
+        content = composableString(pvT1, pvT2, pvRh) {
+            if (pvRh > 1) {
+                val value = if (pvT1 >= 85) null else pvT1
+                if (value != null) {
+                    val valueFormatted = String.format("%.1f", value)
+                    "$valueFormatted °C"
+                } else ""
+            } else {
+                val value = if (pvT2 > 80) null else pvT2
+                if (value != null) {
+                    val valueFormatted = String.format("%.1f", value)
+                    "$valueFormatted °C"
+                } else ""
+            }
         },
         style = {
-            val st = warning and DeviceWarning.WARNING_08.code
-            backgroundColor = if (st != 0) IsidaColor.Red100
+            val isWarning = (warning and DeviceWarning.WARNING_08.code) !=0
+            backgroundColor = if (isWarning) IsidaColor.Red100
             else null
         },
     )
-
+    // *****--------------------------- T eggs ---------------------------*****
+    item(
+        title = composableString { stringResource(Res.string.pv_t3_label) },
+        content = composableString(pvT2, pvRh) {
+            if (pvRh > 1) {
+                val value = if (pvT2 >= 85) null else pvT2
+                if (value != null) {
+                    val valueFormatted = String.format("%.1f", value)
+                    "$valueFormatted °C"
+                } else ""
+            } else ""
+        },
+    )
     // *****--------------------------- CO2 -------------------------------*****
     item(
         title = composableString { stringResource(Res.string.cotwo) },
@@ -573,31 +604,7 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
     header(
         title = composableString { stringResource(Res.string.titleOther) }
     )
-    // *****--------------------------- MinFan -------------------------------*****
-    // item(
-    //     title = composableString(minFan) {
-    //         val str = "gearbox"
-    //         // Настраиваем формат: префикс "0x" и минимальная длина 2 символа
-    //         val myFormat = HexFormat {
-    //             number {
-    //                 prefix = "0x"
-    //                 minLength = 2
-    //                 removeLeadingZeros = true
-    //                 upperCase = true // Чтобы получить 'D' вместо 'd'
-    //             }
-    //         }
-    //         "$str: ${minFan.toHexString(myFormat)}   $minFan"
-    //     },
-    //     content = composableString(minFan) {
-    //         minFan.toString(2).padStart(8, '0')
-    //     },
-    //     // content = composableString(gearbox) {
-    //     //     val month = (gearbox shr 4) and 0x0F
-    //     //     val year = gearbox and 0x0F
-    //     //
-    //     //     "Month: $month, Year: $year"
-    //     // },
-    // )
+
     // *****--------------------------- nothing1 -------------------------------*****
     // item(
     //     title = composableString(nothing1) {

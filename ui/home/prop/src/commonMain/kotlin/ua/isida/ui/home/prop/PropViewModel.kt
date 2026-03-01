@@ -283,9 +283,8 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
             this@toItems?.alarm0?.toString()?.let { "$it °C" } ?: EMPTY_PLACEHOLDER
         },
         style = {
-            val currVal = this@toItems?.alarm0
+            val currVal = this@toItems?.alarm0 ?: return@item // Выходим, если null
             backgroundColor = when {
-                currVal == null -> null
                 currVal > 5.0 -> IsidaColor.Red100
                 currVal > 2.0 -> IsidaColor.Yellow100
                 currVal < 0.3 -> IsidaColor.Red100
@@ -298,13 +297,16 @@ private fun StatusPacketV1?.toItems(): List<PropItem> = buildProps {
     item(
         id = "alarm1",
         title = composableString { stringResource(Res.string.prop_alarm1_lb) },
-        value = composableString(this@toItems?.alarm1) {
-            this@toItems?.alarm1?.toString()?.let { "$it °C" } ?: EMPTY_PLACEHOLDER
+        value = composableString(this@toItems?.alarm1, this@toItems?.pvRh) {
+            if ((this@toItems?.pvRh ?: 0) > 1) {
+                this@toItems?.alarm1?.toString()?.let { "$it %" } ?: EMPTY_PLACEHOLDER
+            } else {
+                this@toItems?.alarm1?.toString()?.let { "$it %" } ?: EMPTY_PLACEHOLDER
+            }
         },
         style = {
-            val currVal = this@toItems?.alarm1
+            val currVal = this@toItems?.alarm1 ?: return@item // Выходим, если null
             backgroundColor = when {
-                currVal == null -> null
                 currVal > 10.0 -> IsidaColor.Red100
                 currVal > 5.0 -> IsidaColor.Yellow100
                 currVal < 0.6 -> IsidaColor.Red100

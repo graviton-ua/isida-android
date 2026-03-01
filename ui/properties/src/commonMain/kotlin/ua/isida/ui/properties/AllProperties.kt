@@ -306,7 +306,7 @@ class DevicePropertyAlarm0(value: Float? = null) : NumberInputTextFieldDevicePro
 @Stable
 class DevicePropertyAlarm1(value: Float? = null) : NumberInputTextFieldDeviceProperty<Float>(
     initValue = value, allowDecimals = true,
-    title = { stringResource(Res.string.prop_alarm1_lb) + " °C" },
+    title = { stringResource(Res.string.prop_alarm1_lb) },
     description = {
         stringResource(
             Res.string.input_info_limit_min_max,
