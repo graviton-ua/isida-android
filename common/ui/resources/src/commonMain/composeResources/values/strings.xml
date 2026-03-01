@@ -19,7 +19,9 @@
     <string name="btn_reset">Reset</string>
     <string name="btn_cancel">Cancel</string>
     <string name="dialog_reset_title">Reset to Default</string>
-    <string name="dialog_reset_message">Are you sure you want to reset the current table to its DEFAULT values? This action will overwrite your current settings.</string>
+    <string name="dialog_reset_message">Are you sure you want to reset
+        the current table to its DEFAULT values?
+        This action will overwrite your current settings.</string>
     <string name="titleSensor">SENSORS</string>
     <string name="titleState">STATUS</string>
     <string name="titleControl">MECHANISMS</string>
@@ -67,7 +69,7 @@
     <string name="outTrays">Tray rotation timer</string>
 
     <string name="programm">Program</string>
-    <string name="incubation">Incubation</string>
+    <string name="incubation">Incubation duration</string>
     <string name="energyMeter">Cons. El.</string>
 
     <string name="load">Loaded</string>

@@ -18,7 +18,9 @@
     <string name="btn_reset">Сбросить</string>
     <string name="btn_cancel">Отмена</string>
     <string name="dialog_reset_title">Сброс по умолчанию</string>
-    <string name="dialog_reset_message">Вы уверены, что хотите сбросить текущую таблицу на значения ПО УМОЛЧАНИЮ? Это действие перезапишет ваши текущие настройки.</string>
+    <string name="dialog_reset_message">Вы уверены, что хотите сбросить
+        текущую таблицу на значения ПО УМОЛЧАНИЮ?
+        Это действие перезапишет ваши текущие настройки.</string>
     <string name="titleSensor">ДАТЧИКИ</string>
     <string name="titleState">СТАТУС</string>
     <string name="titleControl">МЕХАНИЗМЫ</string>
@@ -66,7 +68,7 @@
     <string name="outTrays">Таймер поворота лотков</string>
 
     <string name="programm">Программа</string>
-    <string name="incubation">Инкубация</string>
+    <string name="incubation">Длительность инкубации</string>
     <string name="energyMeter">Расход Эл.</string>
 
     <string name="load">Загружен</string>

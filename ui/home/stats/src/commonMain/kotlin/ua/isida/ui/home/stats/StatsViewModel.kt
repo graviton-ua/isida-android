@@ -96,10 +96,17 @@ class StatsViewModel(
  * Здесь происходит сопоставление сырых байтов с представлением в пользовательском интерфейсе.
  */
 private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
+    // *****--------------------------- Header -------------------------------*****
     header(
         title = composableString(node) { stringResource(Res.string.CellNum, node) },
         style = {
-            backgroundColor = if (state == 0x80) IsidaColor.Yellow500 else if (state > 0) IsidaColor.Green100 else null
+            backgroundColor =
+                if (fuses != 0) IsidaColor.Red500
+                else if(errors !=0) IsidaColor.Red100
+                else if(warning !=0) IsidaColor.Yellow100
+                else if ((state and 0x80) > 0) IsidaColor.Yellow500
+                else if (state and 0x01 > 0) IsidaColor.Green100
+                else null
         }
     )
 
@@ -108,25 +115,25 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
     )
 
     // *****--------------------------- Status -------------------------------*****
-    item(
-        title = composableString { stringResource(Res.string.titleState) },
-        content = composableString(state) {
-            val value = state and 0x7E
-            val result = mutableListOf<StringResource>()
-            // Проверяем каждый предохранитель по его битовой маске
-            if (value and 0x02 != 0) result.add(Res.string.state_2)
-            if (value and 0x04 != 0) result.add(Res.string.state_4)
-            if (value and 0x08 != 0) result.add(Res.string.state_8)
-            if (value and 0x10 != 0) result.add(Res.string.state_10)
-            if (value and 0x20 != 0) result.add(Res.string.state_20)
-            if (value and 0x40 != 0) result.add(Res.string.state_40)
-            // Если ни один бит не поднят, возвращаем список с ресурсом "нет/норма"
-            // if (result.isEmpty()) {
-            //     result.add(Res.string.no)
-            // }
-            result.map { stringResource(it) }.joinToString(separator = "\n")
-        },
-    )
+    // item(
+    //     title = composableString { stringResource(Res.string.titleState) },
+    //     content = composableString(state) {
+    //         val value = state and 0x7E
+    //         val result = mutableListOf<StringResource>()
+    //         // Проверяем каждый предохранитель по его битовой маске
+    //         if (value and 0x02 != 0) result.add(Res.string.state_2)
+    //         if (value and 0x04 != 0) result.add(Res.string.state_4)
+    //         if (value and 0x08 != 0) result.add(Res.string.state_8)
+    //         if (value and 0x10 != 0) result.add(Res.string.state_10)
+    //         if (value and 0x20 != 0) result.add(Res.string.state_20)
+    //         if (value and 0x40 != 0) result.add(Res.string.state_40)
+    //         // Если ни один бит не поднят, возвращаем список с ресурсом "нет/норма"
+    //         // if (result.isEmpty()) {
+    //         //     result.add(Res.string.no)
+    //         // }
+    //         result.map { stringResource(it) }.joinToString(separator = "\n")
+    //     },
+    // )
 
     // *****--------------------------- T0 -------------------------------*****
     item(
@@ -257,51 +264,62 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             "$str:  ${state.toHexString(myFormat)}"
         },
         content = composableString(state) {
-            // 1. Определяем режим
-            val mode = when (state) {
-                state or DeviceMode.ENABLE.code -> DeviceMode.ENABLE
-                state or DeviceMode.WAITING_COOLING.code -> DeviceMode.ENABLE
-                state or DeviceMode.WAITING_ON.code -> DeviceMode.ENABLE
-                state or DeviceMode.HORIZON_ON.code -> DeviceMode.ENABLE
-                state or DeviceMode.HORIZON_SET.code -> DeviceMode.ENABLE
-                state or DeviceMode.TRAY_ROTATION_ON.code -> DeviceMode.ENABLE
-                state or DeviceMode.FAN_MONITORING_ON.code -> DeviceMode.ENABLE
-                state or DeviceMode.ONLY_ROTATION.code -> DeviceMode.ONLY_ROTATION
+            // 1. Определяем режим (сохраняем специфику)
+            val mode = when {
+                (state and DeviceMode.ONLY_ROTATION.code) != 0 -> DeviceMode.ONLY_ROTATION
+                (state and DeviceMode.HORIZON_SET.code) != 0 -> DeviceMode.HORIZON_SET
+                (state and DeviceMode.HORIZON_ON.code) != 0 -> DeviceMode.HORIZON_ON
+                (state and DeviceMode.WAITING_ON.code) != 0 -> DeviceMode.WAITING_ON
+                (state and DeviceMode.WAITING_COOLING.code) != 0 -> DeviceMode.WAITING_COOLING
+                (state and DeviceMode.ENABLE.code) != 0 -> DeviceMode.ENABLE
                 else -> DeviceMode.DISABLE
             }
 
-            // 2. Собираем экстра-флаги
-            val extras = if (mode == DeviceMode.ENABLE) {
+            // 2. Собираем экстра-флаги (проверяем, включен ли базовый режим работы)
+            val isEnable = mode == DeviceMode.ENABLE
+            val extras = if (isEnable) {
                 val result = mutableListOf<DeviceModeExtra>()
-                if (state == (state or DeviceModeExtra.EXTRA_1.code)) result.add(DeviceModeExtra.EXTRA_1)
-                if (state == (state or DeviceModeExtra.EXTRA_2.code)) result.add(DeviceModeExtra.EXTRA_2)
-                if (state == (state or DeviceModeExtra.EXTRA_3.code)) result.add(DeviceModeExtra.EXTRA_3)
-                if (state == (state or DeviceModeExtra.EXTRA_4.code)) result.add(DeviceModeExtra.EXTRA_4)
-                result
+                if ((state and DeviceModeExtra.EXTRA_1.code) != 0) result.add(DeviceModeExtra.EXTRA_1)
+                if ((state and DeviceModeExtra.EXTRA_2.code) != 0) result.add(DeviceModeExtra.EXTRA_2)
+                if ((state and DeviceModeExtra.EXTRA_3.code) != 0) result.add(DeviceModeExtra.EXTRA_3)
+                if ((state and DeviceModeExtra.EXTRA_4.code) != 0) result.add(DeviceModeExtra.EXTRA_4)
+
+                result.map { extra ->
+                    val res = when (extra) {
+                        DeviceModeExtra.EXTRA_1 -> Res.string.state_40
+                        DeviceModeExtra.EXTRA_2 -> Res.string.state_20
+                        DeviceModeExtra.EXTRA_3 -> Res.string.state_8
+                        DeviceModeExtra.EXTRA_4 -> Res.string.state_2
+                    }
+                    stringResource(res)
+                }.joinToString(separator = "\n")
             } else {
-                emptyList()
+                ""
             }
 
             // 3. Выбираем ресурс (сохраняем в переменную)
             val resource = when (mode) {
-                DeviceMode.DISABLE -> Res.string.device_mode_disabled
                 DeviceMode.ONLY_ROTATION -> Res.string.device_mode_turn
-                else -> when {
-                    extras.contains(DeviceModeExtra.EXTRA_3) -> Res.string.state_10
-                    extras.contains(DeviceModeExtra.EXTRA_4) -> Res.string.state_2
-                    else -> Res.string.device_mode_enabled
-                }
+                DeviceMode.HORIZON_SET -> Res.string.state_10
+                DeviceMode.HORIZON_ON -> Res.string.state_8
+                DeviceMode.WAITING_ON -> Res.string.state_4
+                DeviceMode.WAITING_COOLING -> Res.string.state_2
+                DeviceMode.DISABLE -> Res.string.device_mode_disabled
+                else -> Res.string.device_mode_enabled
             }
 
-            // 4. Оборачиваем в список для соответствия новой сигнатуре функции
-            stringResource(resource)
+            val baseStatus = stringResource(resource)
+            if (extras.isNotEmpty()) "$baseStatus\n$extras" else baseStatus
         },
         style = {
             backgroundColor =
                 if (state == DeviceMode.DISABLE.code) IsidaColor.BlueGrey100
-                else if ((state and DeviceMode.ENABLE.code) == DeviceMode.ENABLE.code) IsidaColor.Green100
                 else if ((state and DeviceMode.ONLY_ROTATION.code) == DeviceMode.ONLY_ROTATION.code) IsidaColor.Yellow500
-                else IsidaColor.Red100
+                else if ((state and DeviceMode.HORIZON_SET.code) == DeviceMode.HORIZON_SET.code) IsidaColor.Yellow100
+                else if ((state and DeviceMode.HORIZON_ON.code) == DeviceMode.HORIZON_ON.code) IsidaColor.Red100
+                else if ((state and DeviceMode.WAITING_ON.code) == DeviceMode.WAITING_ON.code) IsidaColor.Yellow100
+                else if ((state and DeviceMode.WAITING_COOLING.code) == DeviceMode.WAITING_COOLING.code) IsidaColor.Yellow100
+                else IsidaColor.Green100
         },
     )
 
