@@ -73,22 +73,18 @@ class DeviceModeViewModel(
                     }
                 }
                 .map { state ->
-                    val mode = when (state) {
-                        state or DeviceMode.ENABLE.code -> DeviceMode.ENABLE
-                        state or DeviceMode.ONLY_ROTATION.code -> DeviceMode.ONLY_ROTATION
+                    val mode = when {
+                        state and DeviceMode.ENABLE.code != 0 -> DeviceMode.ENABLE
+                        state and DeviceMode.ONLY_ROTATION.code != 0 -> DeviceMode.ONLY_ROTATION
                         else -> DeviceMode.DISABLE
                     }
-                    val extras = if (mode == DeviceMode.ENABLE) {
-                        val result = mutableListOf<DeviceModeExtra>()
-                        if (state == state or DeviceModeExtra.EXTRA_1.code) result.add(DeviceModeExtra.EXTRA_1)
-                        if (state == state or DeviceModeExtra.EXTRA_2.code) result.add(DeviceModeExtra.EXTRA_2)
-                        if (state == state or DeviceModeExtra.EXTRA_3.code) result.add(DeviceModeExtra.EXTRA_3)
-                        if (state == state or DeviceModeExtra.EXTRA_4.code) result.add(DeviceModeExtra.EXTRA_4)
-                        result
-                    } else {
-                        emptyList()
-                    }
-                    mode to extras
+                    val result = mutableListOf<DeviceModeExtra>()
+                    if (state and DeviceModeExtra.EXTRA_1.code != 0) result.add(DeviceModeExtra.EXTRA_1)
+                    if (state and DeviceModeExtra.EXTRA_2.code != 0) result.add(DeviceModeExtra.EXTRA_2)
+                    if (state and DeviceModeExtra.EXTRA_3.code != 0) result.add(DeviceModeExtra.EXTRA_3)
+                    if (state and DeviceModeExtra.EXTRA_4.code != 0) result.add(DeviceModeExtra.EXTRA_4)
+
+                    mode to result
                 }
                 .collect {
                     mode.value = it.first
@@ -128,10 +124,8 @@ class DeviceModeViewModel(
 
         val extras = modeExtras.value
 
-        val commandValue = when (mode) {
-            DeviceMode.ENABLE -> extras.map { it.code }.foldRight(initial = mode.code) { left, right -> left or right }
-            else -> mode.code
-        }
+        val commandValue = extras.map { it.code }
+            .fold(initial = mode.code) { left, right -> left or right }
 
         sendCommand(DeviceModeCommandV1(mode = commandValue))
             .onSuccess { _events.send(DeviceModeViewEvent.OnApplied) }

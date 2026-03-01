@@ -70,13 +70,12 @@ private fun DeviceModeDialog(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            if (state.mode == DeviceMode.ENABLE)
-                CheckItemGroup(
-                    extras = state.extras,
-                    toggleExtra = { actioner(DeviceModeAction.ToggleExtra(it)) },
-                    enabled = state.mode == DeviceMode.ENABLE,
-                    modifier = Modifier.fillMaxWidth()
-                )
+            CheckItemGroup(
+                extras = state.extras,
+                toggleExtra = { actioner(DeviceModeAction.ToggleExtra(it)) },
+                enabled = true,
+                modifier = Modifier.fillMaxWidth()
+            )
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
