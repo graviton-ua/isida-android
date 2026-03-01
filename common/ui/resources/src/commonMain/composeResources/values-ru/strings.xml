@@ -151,8 +151,8 @@
     <string name="prop_turnOff_lb">Поворот пауза</string>
     <string name="prop_turnOn_lb">Поворот работа</string>
     <string name="txt_limit_switch">Концевой выключатель</string>
-    <string name="prop_alarm0_lb">Тревога (Сухой датчик)</string>
-    <string name="prop_alarm1_lb">Тревога (Влажный датчик)</string>
+    <string name="prop_alarm0_lb">Тревога (температура)</string>
+    <string name="prop_alarm1_lb">Тревога (влажность)</string>
     <string name="prop_extOn0_lb">Заслонка открыть</string>
     <string name="prop_extOn1_lb">Дополнительный включить</string>
     <string name="prop_extOff0_lb">Заслонка закрыть</string>
@@ -186,7 +186,7 @@
     <string name="program_table_tr">Пов</string>
     <string name="program_table_cl">CO2</string>
     <string name="program_table_complete">Инкубация завершена</string>
-    <string name="stats_incubation_time_format">Дней: %1$d, Часов:Минут: %2$s:%3$s</string>
+    <string name="stats_incubation_time_format">День: %1$d, Часов:Минут: %2$s:%3$s</string>
     <string name="program_table_no_data">Нет данных. Нажмите Обновить, чтобы получить таблицу программы.</string>
     <string name="program_table_number">Таблица %1$d</string>
 

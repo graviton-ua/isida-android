@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">ISIDA-9</string>
     <string name="home_tab_stats">Монітор</string>
     <string name="home_tab_prop">Установки</string>
     <string name="home_tab_programtable">Програма</string>
@@ -66,19 +67,12 @@
     <string name="outTrays">Таймер повороту лотків</string>
 
     <string name="programm">Програма</string>
-    <string name="incubation">Всього год.</string>
+    <string name="incubation">Інкубація</string>
     <string name="energyMeter">Витрата Ел.</string>
 
     <string name="load">Завантажений</string>
     <string name="datetime">05.12.21</string>
     <string name="time">05год.12хв.</string>
-    <!--    <string name="fraction">**.*</string>-->
-    <!--    <string name="fractionU">[**.*]</string>-->
-    <!--    <string name="integer">***</string>-->
-    <!--    <string name="integerU">[***]</string>-->
-    <!--    <string name="percent">***%</string>-->
-    <!--    <string name="percentU">[**%]</string>-->
-    <!--    <string name="cotwoVal">****</string>-->
     <string name="enter">Введіть команду</string>
     <string name="myText">просто текст</string>
 
@@ -104,7 +98,7 @@
     <string name="bluetooth_was_not_enabled">Bluetooth was not enabled.</string>
 
     <string name="txtChip1">Моніторинг тихохід. вентилятора</string>
-    <string name="txtChip2">Моніторинг повороту лотків</string>
+    <string name="txtChip2">Моніторинг поворота лотків</string>
     <string name="txtChip3">Горизонтальне положення лотків</string>
     <string name="txtChip4">Режим підготовки до ОХОЛОДЖЕННЯ</string>
     <string name="radioButOFF">ВІДКЛЮЧИТИ камеру</string>
@@ -146,13 +140,13 @@
     <string name="prop_program_lb">Виконувана програма</string>
     <string name="prop_program_reset">Скидання всіх програм</string>
     <string name="prop_minImpulse_lb">Мінімальний імпульс</string>
-    <string name="prop_maxImpulse_lb">Максимальний імпульс</string>
+    <string name="prop_maxImpulse_lb">Максимальний импульс</string>
     <string name="prop_repeatTime_lb">Період повторення імпульсів</string>
     <string name="prop_turnOff_lb">Поворот пауза</string>
     <string name="prop_turnOn_lb">Поворот робота</string>
     <string name="txt_limit_switch">Кінцевий вимикач</string>
-    <string name="prop_alarm0_lb">Тривога (Сухий датчик)</string>
-    <string name="prop_alarm1_lb">Тривога (Вологий датчик)</string>
+    <string name="prop_alarm0_lb">Тривога (температура)</string>
+    <string name="prop_alarm1_lb">Тривога (вологість)</string>
     <string name="prop_extOn0_lb">Заслінка відкрити</string>
     <string name="prop_extOn1_lb">Додатковий увімкнути</string>
     <string name="prop_extOff0_lb">Заслінка закрити</string>
@@ -160,11 +154,12 @@
     <string name="prop_air0_lb">Провітрювання пауза</string>
     <string name="prop_air1_lb">Провітрювання робота</string>
     <string name="prop_CO2_lb">Концентрація СО2</string>
-    <string name="prop_koffCurr_lb">Масштабний коеф. струму</string>
-    <string name="prop_koffGear_lb">Коеф. ремінної передачі вентилятора</string>
+    <string name="prop_koffCurr_lb">Масштабний коєф. вимірювання струму</string>
+    <string name="prop_minFan_lb">Мінімальна швидкість обертання вентилятора</string>
     <string name="prop_Hysteresis_lb">Гістерезис каналу зволоження</string>
     <string name="prop_zonelity_lb">Поріг зональності в камері</string>
     <string name="prop_flapRestr_lb">Максимальне відкриття заслінки</string>
+    <string name="prop_flapProg_lb">Відкриття заслінки в цей день</string>
     <string name="prop_turnTime_lb">Час очікування проходу лотків</string>
     <string name="prop_waitCooling_lb">Час очікування охолодження</string>
     <string name="prop_pkoff0_lb">Пропорційний нагріву</string>
@@ -173,7 +168,7 @@
     <string name="prop_ikoff1_lb">Інтегральний зволоження</string>
     <string name="prop_identif_lb">Номер приладу</string>
 
-    <string name="prop_turnPermission_lb">Поворот лотків</string>
+    <string name="prop_turnPermission_lb">Поворот лотків в цей день</string>
     <string name="prop_turnPermission_on">ДОЗВОЛЕНО</string>
     <string name="prop_turnPermission_off">ЗАБОРОНЕНО</string>
 
@@ -183,9 +178,9 @@
     <string name="program_table_rh">Rh</string>
     <string name="program_table_flp">Засл</string>
     <string name="program_table_tr">Пов</string>
-    <string name="program_table_cl">Охолодж</string>
+    <string name="program_table_cl">CO2</string>
     <string name="program_table_complete">Інкубація завершена</string>
-    <string name="stats_incubation_time_format">Днів: %1$d, Годин:Хвилин: %2$s:%3$s</string>
+    <string name="stats_incubation_time_format">День: %1$d, Годин:Хвилин: %2$s:%3$s</string>
     <string name="program_table_no_data">Немає даних. Натисніть Оновити, щоб отримати таблицю програми.</string>
     <string name="program_table_number">Таблиця %1$d</string>
 
@@ -193,7 +188,7 @@
     <string name="dimen_sec"> сек.</string>
     <string name="prop_dimen_min">%1$s хв.</string>
     <string name="dimen_min"> хв.</string>
-    <string name="prop_dimen_kwt">%1$s кВт/год.</string>
+    <string name="prop_dimen_speed">%1$s об./хв.</string>
     <string name="dimen_speed"> об./хв.</string>
 
     <string name="input_info_limit">Встановлені обмеження</string>
