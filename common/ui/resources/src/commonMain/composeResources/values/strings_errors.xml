@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Device Mode & States -->
     <string name="device_mode_enabled">INCUBATION IN PROGRESS</string>
     <string name="device_mode_disabled">DISABLED</string>
+    <string name="device_mode_turn">Tray rotation only</string>
     <string name="state_2">Preparation for COOLING</string>
     <string name="state_4">Preparation for POWER ON</string>
     <string name="state_8">Transition to HORIZON</string>
     <string name="state_10">HORIZON ESTABLISHED</string>
     <string name="state_20">Tray rotation monitoring ENABLED</string>
     <string name="state_40">Low-speed fan monitoring ENABLED</string>
-    <string name="device_mode_turn">Tray rotation only</string>
 
+    <!-- Fuses & Alarms -->
     <string name="fuses_0">HUMIDIFIER circuit</string>
     <string name="fuses_1">FLAP circuit</string>
     <string name="fuses_2">AUXILIARY circuit</string>
     <string name="fuses_3">TRAY ROTATION circuit</string>
-<!--    <string name="fuses_4">channel III short</string>-->
+    <!-- <string name="fuses_4">channel III short</string> -->
     <string name="fuses_5">Fan STOP</string>
     <string name="fuses_6">NO tray ROTATION</string>
-<!--    <string name="fuses_7">Door status</string>-->
+    <!-- <string name="fuses_7">Door status</string> -->
 
+    <!-- Errors -->
     <string name="error_01">Temperature sensor</string>
     <string name="error_02">Humidity sensor</string>
     <string name="error_04">TRIAC BREAKDOWN!</string>
@@ -28,17 +31,19 @@
     <string name="error_40">HALL or ROTATION module</string>
     <string name="error_80">!!</string>
 
+    <!-- Warnings -->
     <string name="warning_01">Temperature deviation</string>
     <string name="warning_02">Humidity deviation</string>
     <string name="warning_04">Sensor substituted</string>
     <string name="warning_08">Large temperature difference</string>
     <string name="warning_10">Incorrect sensor configuration</string>
-<!--    <string name="warning_20">Fan stop</string>-->
-<!--    <string name="warning_40">No tray rotation</string>-->
-<!--    <string name="warning_80">!!</string>-->
+    <!-- <string name="warning_20">Fan stop</string> -->
+    <!-- <string name="warning_40">No tray rotation</string> -->
+    <!-- <string name="warning_80">!!</string> -->
 
+    <!-- Input Validation -->
     <string name="input_required">Please fill this field</string>
     <string name="input_invalid">Wrong value</string>
-    <string name="input_cant_be_less_than">Can't be less than %1$s</string>
-    <string name="input_cant_be_more_than">Can't be more than %1$s</string>
+    <string name="input_cant_be_less_than">Can\'t be less than %1$s</string>
+    <string name="input_cant_be_more_than">Can\'t be more than %1$s</string>
 </resources>

@@ -86,13 +86,13 @@ private fun DeviceModeDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
-                ) { Text(text = "Cancel") }
+                ) { Text(text = stringResource(Res.string.btn_cancel)) }
                 Button(
                     onClick = { actioner(DeviceModeAction.ApplyMode) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
-                ) { Text(text = "Apply") }
+                ) { Text(text = stringResource(Res.string.btn_apply)) }
             }
         }
     }

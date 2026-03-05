@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.outlined.Summarize
 import androidx.compose.material3.*
@@ -20,26 +19,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import ua.isida.common.ui.compose.theme.AppTheme
-import ua.isida.common.ui.compose.ui.DeviceNotConnectedPlaceholder
-import ua.isida.common.ui.resources.Res
-import ua.isida.common.ui.resources.btn_refresh
-import ua.isida.common.ui.resources.home_tab_programtable
-import ua.isida.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-import ua.isida.common.ui.resources.btn_cancel
-import ua.isida.common.ui.resources.btn_reset
-import ua.isida.common.ui.resources.dialog_reset_message
-import ua.isida.common.ui.resources.dialog_reset_title
-import ua.isida.common.ui.resources.program_table_no_data
-import ua.isida.common.ui.resources.program_table_number
-import ua.isida.data.protocol.packets.TableDay
-import ua.isida.data.protocol.packets.v1.TableDayV1
+import ua.isida.common.ui.compose.theme.AppTheme
+import ua.isida.common.ui.compose.ui.DeviceNotConnectedPlaceholder
 import ua.isida.common.ui.navigation.HomeTabScreen
 import ua.isida.common.ui.navigation.result.ResultEffect
 import ua.isida.common.ui.navigation.result.ResultEventBus
+import ua.isida.common.ui.resources.*
+import ua.isida.data.protocol.packets.TableDay
+import ua.isida.data.protocol.packets.v1.TableDayV1
+import ua.isida.metrox.viewmodel.injectedViewModel
 import ua.isida.ui.setday.SetDayScreenResult
 
 @Serializable
@@ -171,7 +162,7 @@ private fun ControlPanel(
             onClick = onOpenReset,
             enabled = !isLoading,
         ) {
-            Icon(imageVector = Icons.Default.Restore, contentDescription = "Presets")
+            Icon(imageVector = Icons.Default.Restore, contentDescription = stringResource(Res.string.content_desc_presets))
         }
 
         Spacer(Modifier.weight(1f))
@@ -286,13 +277,13 @@ private fun Preview() {
                 deviceConnected = true,
                 table = buildTable {
                     header {
-                        cell(width = 60.dp) { "Day" }
-                        cell(width = 80.dp) { "T0" }
-                        cell(width = 80.dp) { "T1" }
-                        cell(width = 60.dp) { "Rh" }
-                        cell(width = 60.dp) { "Flp" }
-                        cell(width = 60.dp) { "Tr" }
-                        cell(width = 60.dp) { "Cl" }
+                        cell(width = 60.dp) { stringResource(Res.string.program_table_day) }
+                        cell(width = 80.dp) { stringResource(Res.string.program_table_t0) }
+                        cell(width = 80.dp) { stringResource(Res.string.program_table_t1) }
+                        cell(width = 60.dp) { stringResource(Res.string.program_table_rh) }
+                        cell(width = 60.dp) { stringResource(Res.string.program_table_flp) }
+                        cell(width = 60.dp) { stringResource(Res.string.program_table_tr) }
+                        cell(width = 60.dp) { stringResource(Res.string.program_table_cl) }
                     }
                     repeat(30) { index ->
                         val day = TableDayV1(37.5f, 30.0f, 55, 10, 1, 0)

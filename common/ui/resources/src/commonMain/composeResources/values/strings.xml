@@ -1,34 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- General -->
     <string name="app_name">ISIDA-9</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_listener" translatable="false">ListenerActivity</string>
+    <string name="title_activity_auto_connect" translatable="false">AutoConnectActivity</string>
+    <string name="title_activity_device_list" translatable="false">DeviceListActivity</string>
+    <string name="title_activity_terminal" translatable="false">TerminalActivity</string>
+
+    <!-- Navigation & Tabs -->
     <string name="home_tab_stats">Stats</string>
     <string name="home_tab_prop">Properties</string>
     <string name="home_tab_programtable">Program</string>
-
     <string name="butPower">Control</string>
+    <string name="content_desc_back">Back</string>
 
-    <string name="CellNum">CAMERA No %1$d</string>
+    <!-- Buttons -->
     <string name="btnStart">Start</string>
+    <string name="btn_stop">Stop</string>
     <string name="btnProp">Set.</string>
     <string name="btnInfo">Info</string>
     <string name="btnReport">Report</string>
     <string name="btn_start_scan">Start scan</string>
     <string name="btn_stop_scan">Stop scan</string>
     <string name="btn_refresh">Refresh</string>
-    <string name="title_scan_devices">Scan for devices</string>
     <string name="btn_reset">Reset</string>
     <string name="btn_cancel">Cancel</string>
-    <string name="dialog_reset_title">Reset to Default</string>
-    <string name="dialog_reset_message">Are you sure you want to reset
-        the current table to its DEFAULT values?
-        This action will overwrite your current settings.</string>
+    <string name="btn_apply">Apply</string>
+    <string name="save_data">WRITE</string>
+    <string name="label_connect">Connect</string>
+    <string name="label_send">Send</string>
+    <string name="label_scan">SCAN</string>
+    <string name="disconnect">Disconnect</string>
+
+    <!-- Scan & Bluetooth -->
+    <string name="title_scan_devices">Scan for devices</string>
+    <string name="header_paired_devices">Paired Devices</string>
+    <string name="header_new_devices">New Devices</string>
+    <string name="unknown_device">Unknown Device</string>
+    <string name="err_bluetooth_required">Bluetooth is required to scan</string>
+    <string name="err_location_required">Location is required to scan</string>
+    <string name="err_permission_required">BLUETOOTH_SCAN and BLUETOOTH_CONNECT permission is required to start scanning.</string>
+    <string name="bluetooth_is_not_available">Bluetooth is not available</string>
+    <string name="bluetooth_was_not_enabled">Bluetooth was not enabled.</string>
+    <string name="connect_with_android_device">Connect with android device</string>
+    <string name="connect_with_ISIDA">Connect with ISIDA</string>
+    <string name="bluetooth_terminal">Bluetooth Terminal</string>
+    <string name="status_not_connect">Status : Not connect.</string>
+    <string name="status_connection_failed">Status : Connection failed</string>
+    <string name="status_connected_to">Status : Connected to %1$s</string>
+    <string name="connected_to">Connected to</string>
+    <string name="connection_lost">Connection lost</string>
+    <string name="notification_title">ISIDA Connected</string>
+    <string name="notification_connected_to">We successfully connected to: %1$s</string>
+
+    <!-- Monitoring & Status -->
+    <string name="CellNum">CAMERA No %1$d</string>
     <string name="titleSensor">SENSORS</string>
     <string name="titleState">STATUS</string>
     <string name="titleControl">MECHANISMS</string>
     <string name="titleStstus">STATE</string>
     <string name="titleErrors">WARNINGS</string>
     <string name="titleOther">OTHER</string>
-
     <string name="num1">1</string>
     <string name="pv_t0_label">Dry</string>
     <string name="pv_t1_label">Wet</string>
@@ -47,7 +80,17 @@
     <string name="door">Door</string>
     <string name="doorClose">CLOSED</string>
     <string name="doorOpen">OPEN</string>
+    <string name="fanStatus">Low-speed fan</string>
+    <string name="fanRun">running</string>
+    <string name="fanStop">stopped</string>
+    <string name="incubation">Incubation duration</string>
+    <string name="energyMeter">Cons. El.</string>
+    <string name="load">Loaded</string>
+    <string name="datetime">05.12.21</string>
+    <string name="time">05h.12min.</string>
+    <string name="stats_incubation_time_format">Day: %1$d, Hours:Minutes: %2$s:%3$s</string>
 
+    <!-- Mechanisms -->
     <string name="extendMode">Auxiliary channel</string>
     <string name="extendSiren">SIREN</string>
     <string name="extendVentilation">VENTILATION</string>
@@ -63,67 +106,38 @@
     <string name="flapOpen">open</string>
     <string name="flapAngle">Flap opening %</string>
     <string name="outExtend">Auxiliary channel</string>
-    <string name="fanStatus">Low-speed fan</string>
-    <string name="fanRun">running</string>
-    <string name="fanStop">stopped</string>
     <string name="outTrays">Tray rotation timer</string>
 
+    <!-- Program & Presets -->
     <string name="programm">Program</string>
-    <string name="incubation">Incubation duration</string>
-    <string name="energyMeter">Cons. El.</string>
-
-    <string name="load">Loaded</string>
-    <string name="datetime">05.12.21</string>
-    <string name="time">05h.12min.</string>
-    <string name="enter">Enter command</string>
-    <string name="myText">just text</string>
-
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_listener" translatable="false">ListenerActivity</string>
-    <string name="title_activity_auto_connect" translatable="false">AutoConnectActivity</string>
-    <string name="title_activity_device_list" translatable="false">DeviceListActivity</string>
-    <string name="title_activity_terminal" translatable="false">TerminalActivity</string>
-
-    <string name="label_connect">Connect</string>
-    <string name="label_send">Send</string>
-    <string name="label_scan">SCAN</string>
-    <string name="status_not_connect">Status : Not connect.</string>
-    <string name="status_connection_failed">Status : Connection failed</string>
-    <string name="status_connected_to">Status : Connected to %1$s</string>
-    <string name="connect_with_android_device">Connect with android device</string>
-    <string name="bluetooth_terminal">Bluetooth Terminal</string>
-    <string name="connect_with_ISIDA">Connect with ISIDA</string>
-    <string name="disconnect">Disconnect</string>
-    <string name="bluetooth_is_not_available">Bluetooth is not available</string>
-    <string name="connected_to">Connected to</string>
-    <string name="connection_lost">Connection lost</string>
-    <string name="bluetooth_was_not_enabled">Bluetooth was not enabled.</string>
-
-    <string name="txtChip1">Low-speed fan monitoring</string>
-    <string name="txtChip2">Tray rotation monitoring</string>
-    <string name="txtChip3">Horizontal tray position</string>
-    <string name="txtChip4">Preparation for COOLING mode</string>
-    <string name="radioButOFF">DISABLE chamber</string>
-    <string name="radioButON">ENABLE chamber</string>
-    <string name="radioButTURN">ROTATION only</string>
-    <string name="save_data">WRITE</string>
-    <string name="prop_U1">U1</string>
-    <string name="no">NO</string>
-
+    <string name="content_desc_presets">Presets</string>
+    <string name="preset_chicken_name">Chicken</string>
+    <string name="preset_chicken_desc">Optimized settings for chicken eggs incubation.</string>
+    <string name="preset_duck_name">Duck</string>
+    <string name="preset_duck_desc">Optimized settings for duck eggs incubation.</string>
+    <string name="preset_duck1_name">Duck1</string>
+    <string name="preset_duck1_desc">Optimized settings for duck1 eggs incubation.</string>
+    <string name="preset_duck2_name">Duck2</string>
+    <string name="preset_duck2_desc">Optimized settings for duck2 eggs incubation.</string>
     <string name="chickens">Chickens</string>
     <string name="ducklings">Ducklings</string>
     <string name="goose">Goslings</string>
     <string name="quail">Quail</string>
 
+    <!-- Properties -->
+    <string name="prop_state_lb">Chamber state</string>
+    <string name="prop_program_lb">Running program</string>
+    <string name="prop_program_reset">Reset all programs</string>
+    <string name="prop_identif_lb">Device number</string>
+    <string name="prop_U1">U1</string>
+    <string name="no">NO</string>
     <string name="prop_spT0_lb">Dry sensor</string>
     <string name="prop_spT1_lb">Wet sensor</string>
     <string name="prop_Rh_lb">Enable electronic humidity sensor</string>
     <string name="prop_Rh1_lb">HIH-5030</string>
     <string name="prop_Rh2_lb">DHT-21</string>
-
     <string name="prop_spRh1_lb">Humidity sensor (RH)</string>
     <string name="prop_spRh0_lb">Sensor correction (RH)</string>
-    <string name="prop_state_lb">Chamber state</string>
     <string name="prop_extMode_lb">Auxiliary channel mode</string>
     <string name="prop_extMode0">Sound alarm</string>
     <string name="prop_extMode1">Ventilation</string>
@@ -131,21 +145,21 @@
     <string name="prop_extMode3">Forced cooling</string>
     <string name="prop_extMode4">Forced dehumidification</string>
     <string name="prop_extMode5">Humidification duplication</string>
-
     <string name="prop_relMode_lb">Relay mode (ON/OFF)</string>
     <string name="prop_relMode0">NO</string>
     <string name="prop_relMode1">by HEATING channel</string>
     <string name="prop_relMode2">by HUMIDIFICATION channel</string>
     <string name="prop_relMode3">by both channels</string>
     <string name="prop_relMode4">impulse HUMIDIFICATION mode</string>
-
-    <string name="prop_program_lb">Running program</string>
-    <string name="prop_program_reset">Reset all programs</string>
     <string name="prop_minImpulse_lb">Minimum impulse</string>
     <string name="prop_maxImpulse_lb">Maximum impulse</string>
     <string name="prop_repeatTime_lb">Impulse repetition period</string>
     <string name="prop_turnOff_lb">Rotation pause</string>
     <string name="prop_turnOn_lb">Rotation work</string>
+    <string name="prop_turnTime_lb">Tray passage wait time</string>
+    <string name="prop_turnPermission_lb">Tray rotation on this day</string>
+    <string name="prop_turnPermission_on">ALLOWED</string>
+    <string name="prop_turnPermission_off">FORBIDDEN</string>
     <string name="txt_limit_switch">Limit switch</string>
     <string name="prop_alarm0_lb">Alarm (temperature)</string>
     <string name="prop_alarm1_lb">Alarm (humidity)</string>
@@ -162,18 +176,21 @@
     <string name="prop_zonelity_lb">Zonality threshold in chamber</string>
     <string name="prop_flapRestr_lb">Max flap opening</string>
     <string name="prop_flapProg_lb">Flap opening on this day</string>
-    <string name="prop_turnTime_lb">Tray passage wait time</string>
     <string name="prop_waitCooling_lb">Cooling wait time</string>
     <string name="prop_pkoff0_lb">Proportional heating</string>
     <string name="prop_pkoff1_lb">Proportional humidification</string>
     <string name="prop_ikoff0_lb">Integral heating</string>
     <string name="prop_ikoff1_lb">Integral humidification</string>
-    <string name="prop_identif_lb">Device number</string>
+    <string name="txtChip1">Low-speed fan monitoring</string>
+    <string name="txtChip2">Tray rotation monitoring</string>
+    <string name="txtChip3">Horizontal tray position</string>
+    <string name="txtChip4">Preparation for COOLING mode</string>
+    <string name="radioButOFF">DISABLE chamber</string>
+    <string name="radioButON">ENABLE chamber</string>
+    <string name="radioButTURN">ROTATION only</string>
 
-    <string name="prop_turnPermission_lb">Tray rotation on this day</string>
-    <string name="prop_turnPermission_on">ALLOWED</string>
-    <string name="prop_turnPermission_off">FORBIDDEN</string>
-
+    <!-- Program Table -->
+    <string name="title_update_day">Update day</string>
     <string name="program_table_day">Day</string>
     <string name="program_table_t0">T0</string>
     <string name="program_table_t1">T1</string>
@@ -182,10 +199,17 @@
     <string name="program_table_tr">Tr</string>
     <string name="program_table_cl">CO2</string>
     <string name="program_table_complete">Incubation complete</string>
-    <string name="stats_incubation_time_format">Day: %1$d, Hours:Minutes: %2$s:%3$s</string>
     <string name="program_table_no_data">No data. Press Refresh to get program table.</string>
     <string name="program_table_number">Table %1$d</string>
 
+    <!-- Validation & Units -->
+    <string name="label_current_value">Current value: %1$s</string>
+    <string name="error_required">Required</string>
+    <string name="error_invalid">Invalid</string>
+    <string name="input_info_limit">Defined limits</string>
+    <string name="input_info_limit_min_max">Value should be in range from %1$s to %2$s.</string>
+    <string name="input_info_limit_max">Value should be less than %1$s</string>
+    <string name="input_info_limit_min">Value should be greater than %1$s</string>
     <string name="prop_dimen_sec">%1$s sec.</string>
     <string name="dimen_sec"> sec.</string>
     <string name="prop_dimen_min">%1$s min.</string>
@@ -193,11 +217,20 @@
     <string name="prop_dimen_speed">%1$s rpm</string>
     <string name="dimen_speed"> rpm</string>
 
-    <string name="input_info_limit">Defined limits</string>
-    <string name="input_info_limit_min_max">Value should be in range from %1$s to %2$s.</string>
-    <string name="input_info_limit_max">Value should be less than %1$s</string>
-    <string name="input_info_limit_min">Value should be greater than %1$s</string>
-
+    <!-- Dialogs -->
+    <string name="dialog_reset_title">Reset to Default</string>
+    <string name="dialog_reset_message">Are you sure you want to reset\n        the current table to its DEFAULT values?\n        This action will overwrite your current settings.</string>
     <string name="device_not_connected_title">Device Not Connected</string>
     <string name="device_not_connected_message">Please connect to the device to see information and manage settings.</string>
+
+    <!-- Examples / Misc -->
+    <string name="example_item_1">Some item example</string>
+    <string name="example_item_2">item example</string>
+    <string name="example_item_3">Some item</string>
+    <string name="example_value_1">23 C</string>
+    <string name="example_value_2">23.2333</string>
+    <string name="example_value_3">Example</string>
+    <string name="example_title">Some example</string>
+    <string name="enter">Enter command</string>
+    <string name="myText">just text</string>
 </resources>

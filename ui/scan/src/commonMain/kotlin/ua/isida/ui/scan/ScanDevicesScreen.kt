@@ -24,10 +24,7 @@ import ua.isida.common.ui.compose.ui.WhTopAppBar
 import ua.isida.common.ui.permissions.PermissionType
 import ua.isida.common.ui.permissions.isGranted
 import ua.isida.common.ui.permissions.rememberPermissionState
-import ua.isida.common.ui.resources.Res
-import ua.isida.common.ui.resources.btn_start_scan
-import ua.isida.common.ui.resources.btn_stop_scan
-import ua.isida.common.ui.resources.title_scan_devices
+import ua.isida.common.ui.resources.*
 import ua.isida.common.ui.services.ServiceType
 import ua.isida.common.ui.services.rememberServiceEnabler
 import ua.isida.data.bluetooth.DiscoveredDevice
@@ -131,14 +128,14 @@ private fun ScanDevicesScreen(
                 .fillMaxSize()
         ) {
             if (state.paired.isNotEmpty()) {
-                item { Header("Paired Devices") }
+                item { Header(stringResource(Res.string.header_paired_devices)) }
                 items(state.paired) { device ->
                     DeviceItem(device = device, onClicked = { onDeviceClicked(device) })
                 }
             }
 
             if (state.found.isNotEmpty()) {
-                item { Header("New Devices") }
+                item { Header(stringResource(Res.string.header_new_devices)) }
                 items(state.found) { device ->
                     DeviceItem(device = device, onClicked = { onDeviceClicked(device) })
                 }
@@ -168,7 +165,7 @@ private fun DeviceItem(
             .clickable { onClicked() }
             .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
-        Text(text = device.name.ifEmpty { "Unknown Device" }, style = MaterialTheme.typography.bodyLarge)
+        Text(text = device.name.ifEmpty { stringResource(Res.string.unknown_device) }, style = MaterialTheme.typography.bodyLarge)
         Text(text = device.address.value, style = MaterialTheme.typography.bodySmall)
     }
 }

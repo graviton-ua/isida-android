@@ -1,5 +1,10 @@
 package ua.isida.ui.properties.types
 
+import org.jetbrains.compose.resources.stringResource
+import ua.isida.common.ui.resources.Res
+import ua.isida.common.ui.resources.error_invalid
+import ua.isida.common.ui.resources.error_required
+import ua.isida.common.ui.resources.label_current_value
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import androidx.compose.foundation.layout.Arrangement
@@ -59,7 +64,7 @@ abstract class SliderDeviceProperty<T : Number>(
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(text = "Current value: ${inputHelper.value}")
+            Text(text = stringResource(Res.string.label_current_value, inputHelper.value ?: ""))
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
@@ -108,12 +113,12 @@ abstract class SliderDeviceProperty<T : Number>(
     interface Error : InputState.Error {
         object Required : Error {
             @Composable
-            override fun asLabel(): String = "Required"
+            override fun asLabel(): String = stringResource(Res.string.error_required)
         }
 
         object Invalid : Error {
             @Composable
-            override fun asLabel(): String = "Invalid"
+            override fun asLabel(): String = stringResource(Res.string.error_invalid)
         }
 
         data class Custom(private val onMessage: @Composable () -> String) : Error {

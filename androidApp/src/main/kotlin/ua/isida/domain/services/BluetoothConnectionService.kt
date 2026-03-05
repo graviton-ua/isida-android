@@ -7,9 +7,15 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import co.touchlab.kermit.Logger
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import org.jetbrains.compose.resources.getString
 import ua.isida.App
 import ua.isida.BuildConfig
 import ua.isida.R
+import ua.isida.common.ui.resources.Res
+import ua.isida.common.ui.resources.btn_stop
+import ua.isida.common.ui.resources.notification_connected_to
+import ua.isida.common.ui.resources.notification_title
 import ua.isida.intentMain
 import ua.isida.shared.BluetoothStateService
 
@@ -40,17 +46,18 @@ class BluetoothConnectionService : BluetoothStateService() {
 
     @SuppressLint("ForegroundServiceType")
     override fun startForegroundAndShowNotification() {
-        startForeground(NOTIFICATION_ID, notificationCountDown("Device").build())
+        val notification = runBlocking { notificationCountDown("Device").build() }
+        startForeground(NOTIFICATION_ID, notification)
     }
 
 
-    private fun notificationCountDown(name: String?): NotificationCompat.Builder {
+    private suspend fun notificationCountDown(name: String?): NotificationCompat.Builder {
         return NotificationCompat.Builder(this, BuildConfig.NOTIFICATION_CHANNEL_ID_GENERAL)
-            .setContentTitle("ISIDA Connected")
-            .setContentText("We successfully connected to: $name")
+            .setContentTitle(getString(Res.string.notification_title))
+            .setContentText(getString(Res.string.notification_connected_to, name ?: ""))
             .setSmallIcon(R.drawable.ic_notification)
             .setContentIntent(pendingIntentOpenApp)
-            .addAction(R.drawable.ic_stop, "Stop", pendingIntentDisconnect)
+            .addAction(R.drawable.ic_stop, getString(Res.string.btn_stop), pendingIntentDisconnect)
             .setOnlyAlertOnce(true)
             .setOngoing(true)
     }

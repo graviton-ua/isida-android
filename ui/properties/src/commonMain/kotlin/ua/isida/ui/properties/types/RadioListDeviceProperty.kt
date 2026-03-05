@@ -13,6 +13,7 @@ import ua.isida.common.ui.compose.input.InputStateErrorScope
 import ua.isida.common.ui.compose.theme.IsidaTheme
 import ua.isida.common.ui.compose.ui.WhRadioButton
 import ua.isida.common.ui.resources.Res
+import ua.isida.common.ui.resources.error_required
 import ua.isida.common.ui.resources.programm
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -84,7 +85,7 @@ abstract class RadioListDeviceProperty<T>(
     interface Error : InputState.Error {
         object Required : Error {
             @Composable
-            override fun asLabel(): String = "Required"
+            override fun asLabel(): String = stringResource(Res.string.error_required)
         }
 
         data class Custom(private val onMessage: @Composable () -> String) : Error {

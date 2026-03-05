@@ -1,33 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- General -->
+    <string name="app_name">ISIDA-9</string>
+    <string name="action_settings">Настройки</string>
+    <string name="title_activity_listener" translatable="false">ListenerActivity</string>
+    <string name="title_activity_auto_connect" translatable="false">AutoConnectActivity</string>
+    <string name="title_activity_device_list" translatable="false">DeviceListActivity</string>
+    <string name="title_activity_terminal" translatable="false">TerminalActivity</string>
+
+    <!-- Navigation & Tabs -->
     <string name="home_tab_stats">Монитор</string>
     <string name="home_tab_prop">Установки</string>
     <string name="home_tab_programtable">Программа</string>
-
     <string name="butPower">Управление</string>
+    <string name="content_desc_back">Назад</string>
 
-    <string name="CellNum">КАМЕРА № %1$d</string>
+    <!-- Buttons -->
     <string name="btnStart">Старт</string>
+    <string name="btn_stop">Стоп</string>
     <string name="btnProp">Уст.</string>
     <string name="btnInfo">Инфо</string>
     <string name="btnReport">Отчет</string>
     <string name="btn_start_scan">Начать поиск</string>
     <string name="btn_stop_scan">Остановить поиск</string>
     <string name="btn_refresh">Обновить</string>
-    <string name="title_scan_devices">Поиск устройств</string>
     <string name="btn_reset">Сбросить</string>
     <string name="btn_cancel">Отмена</string>
-    <string name="dialog_reset_title">Сброс по умолчанию</string>
-    <string name="dialog_reset_message">Вы уверены, что хотите сбросить
-        текущую таблицу на значения ПО УМОЛЧАНИЮ?
-        Это действие перезапишет ваши текущие настройки.</string>
+    <string name="btn_apply">Применить</string>
+    <string name="save_data">ЗАПИСАТЬ</string>
+    <string name="label_connect">Подключить</string>
+    <string name="label_send">Отправить</string>
+    <string name="label_scan">СКАНИРОВАТЬ</string>
+    <string name="disconnect">Отключить</string>
+
+    <!-- Scan & Bluetooth -->
+    <string name="title_scan_devices">Поиск устройств</string>
+    <string name="header_paired_devices">Сопряженные устройства</string>
+    <string name="header_new_devices">Новые устройства</string>
+    <string name="unknown_device">Неизвестное устройство</string>
+    <string name="err_bluetooth_required">Для поиска необходим Bluetooth</string>
+    <string name="err_location_required">Для поиска необходимо местоположение</string>
+    <string name="err_permission_required">Для сканирования требуются разрешения BLUETOOTH_SCAN и BLUETOOTH_CONNECT.</string>
+    <string name="bluetooth_is_not_available">Bluetooth недоступен</string>
+    <string name="bluetooth_was_not_enabled">Bluetooth не был включен.</string>
+    <string name="connect_with_android_device">Подключиться к Android устройству</string>
+    <string name="connect_with_ISIDA">Подключиться к ISIDA</string>
+    <string name="bluetooth_terminal">Bluetooth Терминал</string>
+    <string name="status_not_connect">Статус: Не подключено</string>
+    <string name="status_connection_failed">Статус: Ошибка подключения</string>
+    <string name="status_connected_to">Статус: Подключено к %1$s</string>
+    <string name="connected_to">Подключено к</string>
+    <string name="connection_lost">Соединение потеряно</string>
+    <string name="notification_title">ISIDA Подключено</string>
+    <string name="notification_connected_to">Успешное подключение к: %1$s</string>
+
+    <!-- Monitoring & Status -->
+    <string name="CellNum">КАМЕРА № %1$d</string>
     <string name="titleSensor">ДАТЧИКИ</string>
     <string name="titleState">СТАТУС</string>
     <string name="titleControl">МЕХАНИЗМЫ</string>
     <string name="titleStstus">СОСТОЯНИЕ</string>
     <string name="titleErrors">ПРЕДУПРЕЖДЕНИЯ</string>
     <string name="titleOther">ПРОЧЕЕ</string>
-
     <string name="num1">1</string>
     <string name="pv_t0_label">Сухой</string>
     <string name="pv_t1_label">Влажный</string>
@@ -46,7 +80,17 @@
     <string name="door">Дверь</string>
     <string name="doorClose">ЗАКРЫТА</string>
     <string name="doorOpen">ОТКРЫТА</string>
+    <string name="fanStatus">Тихоходный вентилятор</string>
+    <string name="fanRun">вращается</string>
+    <string name="fanStop">остановлен</string>
+    <string name="incubation">Длительность инкубации</string>
+    <string name="energyMeter">Расход Эл.</string>
+    <string name="load">Загружен</string>
+    <string name="datetime">05.12.21</string>
+    <string name="time">05ч.12мин.</string>
+    <string name="stats_incubation_time_format">День: %1$d, Часов:Минут: %2$s:%3$s</string>
 
+    <!-- Mechanisms -->
     <string name="extendMode">Вспомогательный канал</string>
     <string name="extendSiren">СИРЕНА</string>
     <string name="extendVentilation">ВЕНТИЛЯЦИЯ</string>
@@ -62,74 +106,38 @@
     <string name="flapOpen">открыта</string>
     <string name="flapAngle">Открытие заслонки %</string>
     <string name="outExtend">Вспомогательный канал</string>
-    <string name="fanStatus">Тихоходный вентилятор</string>
-    <string name="fanRun">вращается</string>
-    <string name="fanStop">остановлен</string>
     <string name="outTrays">Таймер поворота лотков</string>
 
+    <!-- Program & Presets -->
     <string name="programm">Программа</string>
-    <string name="incubation">Длительность инкубации</string>
-    <string name="energyMeter">Расход Эл.</string>
-
-    <string name="load">Загружен</string>
-    <string name="datetime">05.12.21</string>
-    <string name="time">05ч.12мин.</string>
-    <!--    <string name="fraction">**.*</string>-->
-    <!--    <string name="fractionU">[**.*]</string>-->
-    <!--    <string name="integer">***</string>-->
-    <!--    <string name="integerU">[***]</string>-->
-    <!--    <string name="percent">***%</string>-->
-    <!--    <string name="percentU">[**%]</string>-->
-    <!--    <string name="cotwoVal">****</string>-->
-    <string name="enter">Введите команду</string>
-    <string name="myText">просто текст</string>
-
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_listener" translatable="false">ListenerActivity</string>
-    <string name="title_activity_auto_connect" translatable="false">AutoConnectActivity</string>
-    <string name="title_activity_device_list" translatable="false">DeviceListActivity</string>
-    <string name="title_activity_terminal" translatable="false">TerminalActivity</string>
-
-    <string name="label_connect">Подключить</string>
-    <string name="label_send">Send</string>
-    <string name="label_scan">SCAN</string>
-    <string name="status_not_connect">Status : Not connect.</string>
-    <string name="status_connection_failed">Status : Connection failed</string>
-    <string name="status_connected_to">Status : Connected to %1$s</string>
-    <string name="connect_with_android_device">Connect with android device</string>
-    <string name="bluetooth_terminal">Bluetooth Terminal</string>
-    <string name="connect_with_ISIDA">Connect with ISIDA</string>
-    <string name="disconnect">Отключить</string>
-    <string name="bluetooth_is_not_available">Bluetooth is not available</string>
-    <string name="connected_to">Connected to</string>
-    <string name="connection_lost">Connection lost</string>
-    <string name="bluetooth_was_not_enabled">Bluetooth was not enabled.</string>
-
-    <string name="txtChip1">Мониторинг тихоход. вентилятора</string>
-    <string name="txtChip2">Мониторинг поворота лотков</string>
-    <string name="txtChip3">Горизонтальное положение лотков</string>
-    <string name="txtChip4">Режим подгототка к ОХЛАЖДЕНИЮ</string>
-    <string name="radioButOFF">ОТКЛЮЧИТЬ камеру</string>
-    <string name="radioButON">ВКЛЮЧИТЬ камеру</string>
-    <string name="radioButTURN">только ПОВОРОТ</string>
-    <string name="save_data">ЗАПИСАТЬ</string>
-    <string name="prop_U1">U1</string>
-    <string name="no">НЕТ</string>
-
-    <string name="chickens">Цеплята</string>
+    <string name="content_desc_presets">Пресеты</string>
+    <string name="preset_chicken_name">Цыплята</string>
+    <string name="preset_chicken_desc">Оптимальные настройки для инкубации куриных яиц.</string>
+    <string name="preset_duck_name">Утята</string>
+    <string name="preset_duck_desc">Оптимальные настройки для инкубации утиных яиц.</string>
+    <string name="preset_duck1_name">Утята 1</string>
+    <string name="preset_duck1_desc">Дополнительный пресет для инкубации утиных яиц.</string>
+    <string name="preset_duck2_name">Утята 2</string>
+    <string name="preset_duck2_desc">Дополнительный пресет для инкубации утиных яиц.</string>
+    <string name="chickens">Цыплята</string>
     <string name="ducklings">Утята</string>
     <string name="goose">Гусята</string>
     <string name="quail">Перепел</string>
 
+    <!-- Properties -->
+    <string name="prop_state_lb">Состояние камеры</string>
+    <string name="prop_program_lb">Выполняемая программа</string>
+    <string name="prop_program_reset">Сброс всех программ</string>
+    <string name="prop_identif_lb">Номер прибора</string>
+    <string name="prop_U1">U1</string>
+    <string name="no">НЕТ</string>
     <string name="prop_spT0_lb">Сухой датчик</string>
     <string name="prop_spT1_lb">Влажный датчик</string>
-    <string name="prop_Rh_lb">Разрешить элекиронный датчик влажности</string>
+    <string name="prop_Rh_lb">Разрешить электронный датчик влажности</string>
     <string name="prop_Rh1_lb">HIH-5030</string>
     <string name="prop_Rh2_lb">DHT-21</string>
-
     <string name="prop_spRh1_lb">Датчик влажности (RH)</string>
     <string name="prop_spRh0_lb">Коррекция датчика (RH)</string>
-    <string name="prop_state_lb">Состояние камеры</string>
     <string name="prop_extMode_lb">Режим дополнительного канала</string>
     <string name="prop_extMode0">Звуковая сигнализация</string>
     <string name="prop_extMode1">Вентиляция</string>
@@ -137,21 +145,21 @@
     <string name="prop_extMode3">Форсированной охлаждение</string>
     <string name="prop_extMode4">Форсированное осушение</string>
     <string name="prop_extMode5">Дублирование увлажнения</string>
-
     <string name="prop_relMode_lb">Релейный режим (ВКЛ/ОТКЛ)</string>
     <string name="prop_relMode0">НЕТ</string>
     <string name="prop_relMode1">по каналу НАГРЕВ</string>
     <string name="prop_relMode2">по каналу УВЛАЖНЕНИЕ</string>
-    <string name="prop_relMode3">по обоим кананалам</string>
+    <string name="prop_relMode3">по обоим каналам</string>
     <string name="prop_relMode4">импульсный режим УВЛАЖНЕНИЯ</string>
-
-    <string name="prop_program_lb">Выполняемая программа</string>
-    <string name="prop_program_reset">Сброс всех программ</string>
     <string name="prop_minImpulse_lb">Минимальный импульс</string>
     <string name="prop_maxImpulse_lb">Максимальный импульс</string>
     <string name="prop_repeatTime_lb">Период повторения импульсов</string>
     <string name="prop_turnOff_lb">Поворот пауза</string>
     <string name="prop_turnOn_lb">Поворот работа</string>
+    <string name="prop_turnTime_lb">Время ожидания прохода лотков</string>
+    <string name="prop_turnPermission_lb">Поворот лотков в этот день</string>
+    <string name="prop_turnPermission_on">РАЗРЕШЕН</string>
+    <string name="prop_turnPermission_off">ЗАПРЕЩЕН</string>
     <string name="txt_limit_switch">Концевой выключатель</string>
     <string name="prop_alarm0_lb">Тревога (температура)</string>
     <string name="prop_alarm1_lb">Тревога (влажность)</string>
@@ -168,18 +176,21 @@
     <string name="prop_zonelity_lb">Порог зональности в камере</string>
     <string name="prop_flapRestr_lb">Максимальное открытие заслонки</string>
     <string name="prop_flapProg_lb">Открытие заслонки в этот день</string>
-    <string name="prop_turnTime_lb">Время ожидания прохода лотков</string>
     <string name="prop_waitCooling_lb">Время ожидания охлаждения</string>
     <string name="prop_pkoff0_lb">Пропорциональный нагрева</string>
     <string name="prop_pkoff1_lb">Пропорциональный увлажнения</string>
     <string name="prop_ikoff0_lb">Интегральный нагрева</string>
     <string name="prop_ikoff1_lb">Интегральный увлажнения</string>
-    <string name="prop_identif_lb">Номер прибора</string>
+    <string name="txtChip1">Мониторинг тихоход. вентилятора</string>
+    <string name="txtChip2">Мониторинг поворота лотков</string>
+    <string name="txtChip3">Горизонтальное положение лотков</string>
+    <string name="txtChip4">Режим подготовка к ОХЛАЖДЕНИЮ</string>
+    <string name="radioButOFF">ОТКЛЮЧИТЬ камеру</string>
+    <string name="radioButON">ВКЛЮЧИТЬ камеру</string>
+    <string name="radioButTURN">только ПОВОРОТ</string>
 
-    <string name="prop_turnPermission_lb">Поворот лотков в этот день</string>
-    <string name="prop_turnPermission_on">РАЗРЕШЕН</string>
-    <string name="prop_turnPermission_off">ЗАПРЕЩЕН</string>
-
+    <!-- Program Table -->
+    <string name="title_update_day">Обновить день</string>
     <string name="program_table_day">День</string>
     <string name="program_table_t0">T0</string>
     <string name="program_table_t1">T1</string>
@@ -188,10 +199,17 @@
     <string name="program_table_tr">Пов</string>
     <string name="program_table_cl">CO2</string>
     <string name="program_table_complete">Инкубация завершена</string>
-    <string name="stats_incubation_time_format">День: %1$d, Часов:Минут: %2$s:%3$s</string>
     <string name="program_table_no_data">Нет данных. Нажмите Обновить, чтобы получить таблицу программы.</string>
     <string name="program_table_number">Таблица %1$d</string>
 
+    <!-- Validation & Units -->
+    <string name="label_current_value">Текущее значение: %1$s</string>
+    <string name="error_required">Обязательно</string>
+    <string name="error_invalid">Неверно</string>
+    <string name="input_info_limit">Установленные ограничения</string>
+    <string name="input_info_limit_min_max">Значение должно быть от %1$s до %2$s.</string>
+    <string name="input_info_limit_max">Значение должно быть меньше %1$s</string>
+    <string name="input_info_limit_min">Значение должно быть больше %1$s</string>
     <string name="prop_dimen_sec">%1$s сек.</string>
     <string name="dimen_sec"> сек.</string>
     <string name="prop_dimen_min">%1$s мин.</string>
@@ -199,11 +217,20 @@
     <string name="prop_dimen_speed">%1$s об./мин.</string>
     <string name="dimen_speed"> об./мин.</string>
 
-    <string name="input_info_limit">Установленные ограничения</string>
-    <string name="input_info_limit_min_max">Значение должно быть от %1$s до %2$s.</string>
-    <string name="input_info_limit_max">Значение должно быть меньше %1$s</string>
-    <string name="input_info_limit_min">Значение должно быть больше %1$s</string>
-
+    <!-- Dialogs -->
+    <string name="dialog_reset_title">Сброс по умолчанию</string>
+    <string name="dialog_reset_message">Вы уверены, что хотите сбросить\n        текущую таблицу на значения ПО УМОЛЧАНИЮ?\n        Это действие перезапишет ваши текущие настройки.</string>
     <string name="device_not_connected_title">Устройство не подключено</string>
     <string name="device_not_connected_message">Пожалуйста, подключитесь к устройству, чтобы увидеть информацию и управлять настройками.</string>
+
+    <!-- Examples / Misc -->
+    <string name="example_item_1">Пример элемента</string>
+    <string name="example_item_2">Пример</string>
+    <string name="example_item_3">Элемент</string>
+    <string name="example_value_1">23 C</string>
+    <string name="example_value_2">23.2333</string>
+    <string name="example_value_3">Пример</string>
+    <string name="example_title">Заголовок примера</string>
+    <string name="enter">Введите команду</string>
+    <string name="myText">просто текст</string>
 </resources>

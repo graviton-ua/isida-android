@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Device Mode & States -->
     <string name="device_mode_enabled">ИДЕТ ИНКУБАЦИЯ</string>
     <string name="device_mode_disabled">ОТКЛЮЧЕНА</string>
-    <string name="state_2">Подгототка к ОХЛАЖДЕНИЮ</string>
-    <string name="state_4">Подгототка к ВКЛЮЧЕНИЮ</string>
+    <string name="device_mode_turn">Только поворот лотков</string>
+    <string name="state_2">Подготовка к ОХЛАЖДЕНИЮ</string>
+    <string name="state_4">Подготовка к ВКЛЮЧЕНИЮ</string>
     <string name="state_8">Переход в ГОРИЗОНТ</string>
     <string name="state_10">ГОРИЗОНТ УСТАНОВЛЕН</string>
     <string name="state_20">ВКЛЮЧЕН мониторинг поворота лотков</string>
     <string name="state_40">ВКЛЮЧЕН мониторинг тихоходного вентилятора</string>
-    <string name="device_mode_turn">Только поворот лотков</string>
 
+    <!-- Fuses & Alarms -->
     <string name="fuses_0">цепь УВЛАЖНИТЕЛЯ</string>
     <string name="fuses_1">цепь ЗАСЛОНКИ</string>
     <string name="fuses_2">цепь ВСПОМОГАТЕЛЬНого</string>
     <string name="fuses_3">цепь ПОВОРОТА ЛОТКОВ</string>
-<!--    <string name="fuses_4">короткое канал III</string>-->
+    <!-- <string name="fuses_4">короткое канал III</string> -->
     <string name="fuses_5">ОСТАНОВКА вентилятора</string>
     <string name="fuses_6">НЕТ ПОВОРОТА лотков</string>
-<!--    <string name="fuses_7">Состояние дверей</string>-->
+    <!-- <string name="fuses_7">Состояние дверей</string> -->
 
+    <!-- Errors -->
     <string name="error_01">Датчик температуры</string>
     <string name="error_02">Датчик влажности</string>
     <string name="error_04">ПРОБОЙ СИМИСТОРА!</string>
@@ -28,15 +31,17 @@
     <string name="error_40">Модуль ХОЛЛА или модуль ПОВОРОТОВ</string>
     <string name="error_80">!!</string>
 
+    <!-- Warnings -->
     <string name="warning_01">Отклонение по температуре</string>
     <string name="warning_02">Отклонение по влажности</string>
     <string name="warning_04">Произведена подмена датчика</string>
     <string name="warning_08">Большой перепад температуры</string>
     <string name="warning_10">Неправильная конфигурация датчиков</string>
-<!--    <string name="warning_20">ОСТАНОВ вентилятора</string>-->
-<!--    <string name="warning_40">НЕТ поворота лотков</string>-->
-<!--    <string name="warning_80">!!</string>-->
+    <!-- <string name="warning_20">ОСТАНОВ вентилятора</string> -->
+    <!-- <string name="warning_40">НЕТ поворота лотков</string> -->
+    <!-- <string name="warning_80">!!</string> -->
 
+    <!-- Input Validation -->
     <string name="input_required">Заполните это поле</string>
     <string name="input_invalid">Неправильно введено</string>
     <string name="input_cant_be_less_than">Должно быть не меньше %1$s</string>

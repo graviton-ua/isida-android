@@ -1,5 +1,9 @@
 package ua.isida.ui.setprop
 
+import org.jetbrains.compose.resources.stringResource
+import ua.isida.common.ui.resources.Res
+import ua.isida.common.ui.resources.btn_apply
+import ua.isida.common.ui.resources.btn_cancel
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
@@ -134,7 +138,7 @@ private fun DialogButtons(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-        ) { Text(text = "Cancel") }
+        ) { Text(text = stringResource(Res.string.btn_cancel)) }
 
         Button(
             onClick = onSend,
@@ -142,7 +146,7 @@ private fun DialogButtons(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-        ) { Text(text = "Apply") }
+        ) { Text(text = stringResource(Res.string.btn_apply)) }
     }
 }
 

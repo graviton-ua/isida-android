@@ -1,5 +1,7 @@
 package ua.isida.ui.setday
 
+import org.jetbrains.compose.resources.stringResource
+import ua.isida.common.ui.resources.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -67,7 +69,7 @@ internal fun SetDayScreen(
     Scaffold(
         topBar = {
             WhTopAppBar(
-                title = { Text(text = "Update day") },
+                title = { Text(text = stringResource(Res.string.title_update_day)) },
                 navigationIcon = {
                     IconButton(onClick = navigateUp) {
                         Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -146,7 +148,7 @@ private fun DialogButtons(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-        ) { Text(text = "Cancel") }
+        ) { Text(text = stringResource(Res.string.btn_cancel)) }
 
         Button(
             onClick = onSend,
@@ -154,7 +156,7 @@ private fun DialogButtons(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-        ) { Text(text = "Apply") }
+        ) { Text(text = stringResource(Res.string.btn_apply)) }
     }
 }
 
