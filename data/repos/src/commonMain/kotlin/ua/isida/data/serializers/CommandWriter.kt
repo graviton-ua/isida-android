@@ -1,5 +1,7 @@
 package ua.isida.data.serializers
 
+import ua.isida.util.writeS16LE
+import ua.isida.util.writeS8
 import ua.isida.util.writeU16LE
 import ua.isida.util.writeU8
 
@@ -13,8 +15,18 @@ class CommandWriter(val data: ByteArray) {
         offset += 1
     }
 
+    fun s8(value: Int) {
+        data.writeS8(offset, value)
+        offset += 1
+    }
+
     fun u16(value: Int) {
         data.writeU16LE(offset, value)
+        offset += 2
+    }
+
+    fun s16(value: Int) {
+        data.writeS16LE(offset, value)
         offset += 2
     }
 

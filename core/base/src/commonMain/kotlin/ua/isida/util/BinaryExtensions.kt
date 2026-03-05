@@ -6,6 +6,24 @@ fun UByteArray.read2BytesAsInt(index: Int): Int = this[index].toInt() + this[ind
 // --- READ OPERATIONS (ByteArray -> Value) ---
 
 /**
+ * Reads a single signed byte.
+ * Returns Int (-128..127).
+ */
+fun ByteArray.readS8(index: Int): Int {
+    return this[index].toInt()
+}
+
+/**
+ * Reads 2 bytes as a Signed Short (Little Endian).
+ * Returns Int (-32768..32767).
+ */
+fun ByteArray.readS16LE(index: Int): Int {
+    val low = this[index].toInt() and 0xFF
+    val high = this[index + 1].toInt()
+    return low or (high shl 8)
+}
+
+/**
  * Reads a single unsigned byte.
  * Returns Int (0..255).
  */
@@ -48,6 +66,13 @@ fun ByteArray.writeU8(index: Int, value: Int) {
 }
 
 /**
+ * Writes a signed integer (-128..127) into the array at [index].
+ */
+fun ByteArray.writeS8(index: Int, value: Int) {
+    this[index] = value.toByte()
+}
+
+/**
  * Writes an integer (0..65535) as 2 bytes (Little Endian).
  * [value] is Int to allow full 0-65535 range.
  */
@@ -56,6 +81,16 @@ fun ByteArray.writeU16LE(index: Int, value: Int) {
     this[index] = value.toByte()
     // High Byte (shift right 8 bits, then take byte)
     this[index + 1] = (value ushr 8).toByte()
+}
+
+/**
+ * Writes a signed integer (-32768..32767) as 2 bytes (Little Endian).
+ */
+fun ByteArray.writeS16LE(index: Int, value: Int) {
+    // Low Byte
+    this[index] = value.toByte()
+    // High Byte (shift right 8 bits, then take byte)
+    this[index + 1] = (value shr 8).toByte()
 }
 
 /**

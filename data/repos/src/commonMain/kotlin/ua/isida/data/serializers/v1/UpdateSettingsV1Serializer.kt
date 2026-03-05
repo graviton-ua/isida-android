@@ -15,7 +15,7 @@ object UpdateSettingsV1Serializer : CommandSerializerV1<UpdateSettingsCommandV1>
         // Write data to byte array
         writer.u16((command.spT0 * 10).toInt())
         writer.u16((command.spT1 * 10).toInt())
-        writer.u8(command.spRh0)
+        writer.s8(command.spRh0)
         writer.u8(command.spRh1)
         writer.u8(command.state)
         writer.u8(command.extendMode)
