@@ -1,11 +1,17 @@
 plugins {
     id("ua.isida.kotlin.multiplatform")
+    id("ua.isida.android.library")
     id("ua.isida.compose")
     id("ua.isida.metro")
     alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
+
+    android {
+        namespace = "ua.isida.ui.home.stats"
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.base)
