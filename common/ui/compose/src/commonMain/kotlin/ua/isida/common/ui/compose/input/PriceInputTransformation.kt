@@ -39,18 +39,20 @@ class PriceInputTransformation(
     private fun isValidPricePrefix(text: CharSequence): Boolean {
         if (text.isEmpty()) return true
 
+        val contentToCheck = if (text.first() == '-') text.substring(1) else text
+
         if (!allowDecimals) {
-            return text.all { it.isDigit() }
+            return contentToCheck.all { it.isDigit() }
         }
 
         // If decimals are allowed:
         // 1. Count the number of decimal separators. More than one is invalid.
-        val separatorCount = text.count { it in decimalSeparators }
+        val separatorCount = contentToCheck.count { it in decimalSeparators }
         if (separatorCount > 1) {
             return false
         }
 
         // 2. Ensure all other characters are digits.
-        return text.all { it.isDigit() || it in decimalSeparators }
+        return contentToCheck.all { it.isDigit() || it in decimalSeparators }
     }
 }
