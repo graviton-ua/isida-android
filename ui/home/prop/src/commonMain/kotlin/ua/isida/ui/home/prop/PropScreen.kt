@@ -60,7 +60,7 @@ private fun PropScreen(
         val lazyListState = rememberLazyListState()
         LazyColumn(
             state = lazyListState,
-            contentPadding = PaddingValues(vertical = 8.dp),
+            contentPadding = PaddingValues(bottom = 16.dp),
             modifier = Modifier.fillMaxSize()
         ) {
             itemsIndexed(

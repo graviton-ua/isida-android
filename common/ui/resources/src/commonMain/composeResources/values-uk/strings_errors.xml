@@ -36,4 +36,9 @@
 <!--    <string name="warning_20">ОСТАНОВ вентилятора</string>-->
 <!--    <string name="warning_40">НЕТ поворота лотков</string>-->
 <!--    <string name="warning_80">!!</string>-->
+
+    <string name="input_required">Заповніть це поле</string>
+    <string name="input_invalid">Неправильно введено</string>
+    <string name="input_cant_be_less_than">Має бути не менше %1$s</string>
+    <string name="input_cant_be_more_than">Має бути не більше %1$s</string>
 </resources>

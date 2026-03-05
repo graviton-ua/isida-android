@@ -36,4 +36,9 @@
 <!--    <string name="warning_20">Fan stop</string>-->
 <!--    <string name="warning_40">No tray rotation</string>-->
 <!--    <string name="warning_80">!!</string>-->
+
+    <string name="input_required">Please fill this field</string>
+    <string name="input_invalid">Wrong value</string>
+    <string name="input_cant_be_less_than">Can't be less than %1$s</string>
+    <string name="input_cant_be_more_than">Can't be more than %1$s</string>
 </resources>

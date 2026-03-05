@@ -2,6 +2,7 @@ package ua.isida.ui.home
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PowerSettingsNew
@@ -17,27 +18,23 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
-import ua.isida.common.ui.compose.theme.AppTheme
-import ua.isida.common.ui.compose.ui.WhTopAppBar
-import ua.isida.common.ui.resources.*
-import ua.isida.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import org.jetbrains.compose.resources.stringResource
+import ua.isida.common.ui.compose.theme.AppTheme
+import ua.isida.common.ui.compose.ui.WhTopAppBar
+import ua.isida.common.ui.navigation.*
+import ua.isida.common.ui.navigation.result.ResultEventBus
+import ua.isida.common.ui.resources.*
 import ua.isida.data.protocol.packets.TableDay
+import ua.isida.metrox.viewmodel.injectedViewModel
 import ua.isida.ui.home.program.ProgramScreen
 import ua.isida.ui.home.program.addProgramScreen
 import ua.isida.ui.home.prop.PropScreen
 import ua.isida.ui.home.prop.addPropScreen
 import ua.isida.ui.home.stats.StatsScreen
 import ua.isida.ui.home.stats.addStatsScreen
-import ua.isida.common.ui.navigation.HomeTabScreen
-import ua.isida.common.ui.navigation.NavigationState
-import ua.isida.common.ui.navigation.Navigator
-import ua.isida.common.ui.navigation.rememberNavigationState
-import ua.isida.common.ui.navigation.result.ResultEventBus
-import ua.isida.common.ui.navigation.toEntries
 
 @Serializable
 data object HomeScreen : NavKey
@@ -96,15 +93,15 @@ private fun HomeScreen(
         topBar = {
             HomeTopBar(
                 deviceConnected = state.deviceConnected,
-                modifier = Modifier.fillMaxWidth(),
                 connectDevice = connectDevice,
                 disconnectDevice = disconnectDevice,
                 openPowerDialog = openPowerDialog,
+                modifier = Modifier.fillMaxWidth(),
             )
         },
         bottomBar = {
             MainBottomBar(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().navigationBarsPadding(),
             ) {
                 TOP_LEVEL_ROUTES.forEach {
                     TabItem(
@@ -154,7 +151,7 @@ private fun HomeTopBar(
                 }
             }
         },
-        modifier = modifier
+        modifier = modifier,
     )
 }
 

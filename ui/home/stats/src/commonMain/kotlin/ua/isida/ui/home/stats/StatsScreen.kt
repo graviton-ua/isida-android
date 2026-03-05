@@ -16,15 +16,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.StringResource
 import ua.isida.common.ui.compose.backgroundNotNull
 import ua.isida.common.ui.compose.theme.AppTheme
 import ua.isida.common.ui.compose.ui.DeviceNotConnectedPlaceholder
+import ua.isida.common.ui.navigation.HomeTabScreen
 import ua.isida.common.ui.resources.Res
 import ua.isida.common.ui.resources.home_tab_stats
 import ua.isida.metrox.viewmodel.injectedViewModel
-import kotlinx.serialization.Serializable
-import org.jetbrains.compose.resources.StringResource
-import ua.isida.common.ui.navigation.HomeTabScreen
 
 /**
  * Определяет маршрут экрана статистики и метаданные для навигации.
@@ -68,7 +68,7 @@ private fun StatsScreen(
         val lazyListState = rememberLazyListState()
         LazyColumn(
             state = lazyListState,
-            contentPadding = WindowInsets.statusBars.add(WindowInsets(left = 12.dp, right = 12.dp)).asPaddingValues(),
+            contentPadding = PaddingValues(bottom = 16.dp, start = 8.dp, end = 8.dp),
             modifier = Modifier.fillMaxSize()
         ) {
             state.items.forEach { item ->

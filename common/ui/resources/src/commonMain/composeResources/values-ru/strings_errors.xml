@@ -33,13 +33,12 @@
     <string name="warning_04">Произведена подмена датчика</string>
     <string name="warning_08">Большой перепад температуры</string>
     <string name="warning_10">Неправильная конфигурация датчиков</string>
-    <string name="common_error_price_invalid">common_error_price_invalid</string>
-    <string name="common_error_price_less_than">common_error_price_less_than</string>
-    <string name="common_error_price_more_than">common_error_price_more_than</string>
-    <string name="common_error_price_required">common_error_price_required</string>
-
-
 <!--    <string name="warning_20">ОСТАНОВ вентилятора</string>-->
 <!--    <string name="warning_40">НЕТ поворота лотков</string>-->
 <!--    <string name="warning_80">!!</string>-->
+
+    <string name="input_required">Заполните это поле</string>
+    <string name="input_invalid">Неправильно введено</string>
+    <string name="input_cant_be_less_than">Должно быть не меньше %1$s</string>
+    <string name="input_cant_be_more_than">Должно быть не больше %1$s</string>
 </resources>

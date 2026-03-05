@@ -32,6 +32,7 @@ import ua.isida.common.ui.compose.theme.IsidaTheme
 fun WhTopAppBar(
     title: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
+    windowInsets: WindowInsets = WindowInsets.statusBars,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     navigationIcon: @Composable (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
@@ -44,26 +45,18 @@ fun WhTopAppBar(
         contentColor = contentColor,
         drawDivider = drawDivider,
         dividerColor = IsidaPalette.Grey300,
+        windowInsets = windowInsets,
         contentPadding = contentPadding,
         modifier = modifier,
     ) {
-        if (navigationIcon != null) {
-            Row(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .align(Alignment.CenterStart),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                navigationIcon()
-            }
-        }
-
         Row(
             modifier = Modifier
                 .fillMaxHeight()
-                .align(Alignment.Center),
-            verticalAlignment = Alignment.CenterVertically
+                .align(Alignment.CenterStart),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
+            navigationIcon?.invoke()
+            Spacer(modifier = Modifier.width(8.dp))
             ProvideTextStyle(
                 value = IsidaTheme.typography.h5,
             ) { title() }
@@ -81,57 +74,10 @@ fun WhTopAppBar(
 }
 
 @Composable
-fun WhCustomTopAppBar(
-    modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
-    navigationIcon: @Composable (RowScope.() -> Unit)? = null,
-    actions: @Composable RowScope.() -> Unit = {},
-    backgroundColor: Color = IsidaTheme.colors.background,
-    contentColor: Color = contentColorFor(backgroundColor = IsidaTheme.colors.background),
-    drawDivider: Boolean = true,
-    content: @Composable BoxScope.() -> Unit
-) {
-    AppBar(
-        backgroundColor = backgroundColor,
-        contentColor = contentColor,
-        drawDivider = drawDivider,
-        dividerColor = IsidaPalette.Grey300,
-        contentPadding = contentPadding,
-        modifier = modifier,
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.matchParentSize(),
-        ) {
-            if (navigationIcon != null) {
-                Row(
-                    modifier = Modifier.fillMaxHeight(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    content = navigationIcon,
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f),
-                content = content,
-            )
-
-            Row(
-                modifier = Modifier.fillMaxHeight(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically,
-                content = actions,
-            )
-        }
-    }
-}
-
-@Composable
 private fun AppBar(
     backgroundColor: Color,
     contentColor: Color,
+    windowInsets: WindowInsets,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     drawDivider: Boolean = true,
@@ -147,6 +93,7 @@ private fun AppBar(
             modifier = modifier
                 .fillMaxWidth()
                 .background(color = backgroundColor)
+                .windowInsetsPadding(windowInsets)
                 // Draw divider
                 .bottomDivider(enabled = drawDivider, strokeWidth = dividerThickness, color = dividerColor)
                 //.padding(TopAppBarDefaults.ContentPadding)

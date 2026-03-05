@@ -17,17 +17,13 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
+import kotlinx.serialization.Serializable
 import ua.isida.common.ui.compose.theme.AppTheme
 import ua.isida.common.ui.compose.theme.IsidaTheme
-import kotlinx.serialization.Serializable
+import ua.isida.common.ui.compose.ui.WhTopAppBar
 import ua.isida.data.protocol.packets.TableDay
 import ua.isida.ui.properties.DeviceProperty
-import ua.isida.ui.setday.models.FlapProgramDay
-import ua.isida.ui.setday.models.PropertySpCO2
-import ua.isida.ui.setday.models.SpRh1
-import ua.isida.ui.setday.models.SpT0
-import ua.isida.ui.setday.models.SpT1
-import ua.isida.ui.setday.models.TurnPermission
+import ua.isida.ui.setday.models.*
 
 @Serializable
 data class SetDayScreen(
@@ -70,15 +66,14 @@ internal fun SetDayScreen(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
+            WhTopAppBar(
                 title = { Text(text = "Update day") },
                 navigationIcon = {
                     IconButton(onClick = navigateUp) {
                         Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
-                contentPadding = WindowInsets.statusBars.asPaddingValues(),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         },
         bottomBar = {
@@ -88,7 +83,8 @@ internal fun SetDayScreen(
                 validState = state.dataIsValid,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp),
+                    .padding(8.dp)
+                    .navigationBarsPadding(),
             )
         },
     ) { paddings ->

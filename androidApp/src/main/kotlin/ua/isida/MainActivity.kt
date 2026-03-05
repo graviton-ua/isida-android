@@ -24,10 +24,9 @@ fun Context.intentMain() = Intent(this, MainActivity::class.java)
 
 class MainActivity : ComponentActivity() {
     private val logger by lazy { Logger.withTag("MainActivity") }
-    private val splashScreenKeep = MutableStateFlow(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
+        installSplashScreen()
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
@@ -55,8 +54,6 @@ class MainActivity : ComponentActivity() {
             }
         }
         // --------------------------------------------
-
-        splashScreen.setKeepOnScreenCondition { splashScreenKeep.value }
 
         setContent {
             CompositionLocalProvider(

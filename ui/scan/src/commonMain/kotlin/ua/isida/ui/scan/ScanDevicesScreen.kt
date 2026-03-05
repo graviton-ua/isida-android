@@ -16,21 +16,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
+import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.compose.theme.AppTheme
 import ua.isida.common.ui.compose.toaster.AppToaster
+import ua.isida.common.ui.compose.ui.WhTopAppBar
 import ua.isida.common.ui.permissions.PermissionType
 import ua.isida.common.ui.permissions.isGranted
 import ua.isida.common.ui.permissions.rememberPermissionState
-import ua.isida.common.ui.services.ServiceType
-import ua.isida.common.ui.services.rememberServiceEnabler
-import ua.isida.metrox.viewmodel.injectedViewModel
-import kotlinx.serialization.Serializable
-import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.resources.Res
 import ua.isida.common.ui.resources.btn_start_scan
 import ua.isida.common.ui.resources.btn_stop_scan
 import ua.isida.common.ui.resources.title_scan_devices
+import ua.isida.common.ui.services.ServiceType
+import ua.isida.common.ui.services.rememberServiceEnabler
 import ua.isida.data.bluetooth.DiscoveredDevice
+import ua.isida.metrox.viewmodel.injectedViewModel
 
 @Serializable
 data object ScanDevicesScreen : NavKey
@@ -100,7 +101,7 @@ private fun ScanDevicesScreen(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
+            WhTopAppBar(
                 title = { Text(text = stringResource(Res.string.title_scan_devices)) },
                 navigationIcon = {
                     IconButton(onClick = navigateUp) {
@@ -108,7 +109,6 @@ private fun ScanDevicesScreen(
                     }
                 },
                 actions = { if (state.isScanning) CircularProgressIndicator() },
-                contentPadding = WindowInsets.statusBars.asPaddingValues(),
                 modifier = Modifier.fillMaxWidth()
             )
         },

@@ -5,8 +5,8 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
 import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.compose.input.TextInputTextFieldState.Error
-import ua.isida.common.ui.resources.common_error_price_invalid
-import ua.isida.common.ui.resources.common_error_price_required
+import ua.isida.common.ui.resources.input_invalid
+import ua.isida.common.ui.resources.input_required
 import ua.isida.common.ui.resources.Res as R
 
 @Stable
@@ -15,12 +15,12 @@ interface TextInputTextFieldState : InputTextFieldState<Error> {
     interface Error : InputTextFieldState.Error {
         data object Required : Error {
             @Composable
-            override fun asLabel(): String = stringResource(R.string.common_error_price_required)
+            override fun asLabel(): String = stringResource(R.string.input_required)
         }
 
         data object Invalid : Error {
             @Composable
-            override fun asLabel(): String = stringResource(R.string.common_error_price_invalid)
+            override fun asLabel(): String = stringResource(R.string.input_invalid)
         }
 
         data class Custom(private val onMessage: @Composable () -> String) : Error {

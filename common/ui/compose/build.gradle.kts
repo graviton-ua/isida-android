@@ -1,9 +1,15 @@
 plugins {
     id("ua.isida.kotlin.multiplatform")
+    id("ua.isida.android.library")
     id("ua.isida.compose")
 }
 
 kotlin {
+
+    android {
+        namespace = "ua.isida.common.ui.compose"
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.base)

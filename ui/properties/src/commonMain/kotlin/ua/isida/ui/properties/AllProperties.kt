@@ -23,7 +23,7 @@ class DevicePropertySpT0(value: Float? = null) : NumberInputTextFieldDevicePrope
         val floatValue = value.toFloatOrNull()
         when {
             floatValue == null -> NumberInputTextFieldState.Error.Invalid
-            floatValue < 28f -> NumberInputTextFieldState.Error.CantBeLessThen("30.0")
+            floatValue < 28f -> NumberInputTextFieldState.Error.CantBeLessThen("28.0")
             floatValue > 45f -> NumberInputTextFieldState.Error.CantBeMoreThen("45.0")
             else -> null
         }

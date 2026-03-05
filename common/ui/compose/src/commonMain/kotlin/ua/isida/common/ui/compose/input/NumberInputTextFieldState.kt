@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.compose.input.NumberInputTextFieldState.Error
-import ua.isida.common.ui.resources.common_error_price_invalid
-import ua.isida.common.ui.resources.common_error_price_less_than
-import ua.isida.common.ui.resources.common_error_price_more_than
-import ua.isida.common.ui.resources.common_error_price_required
+import ua.isida.common.ui.resources.input_cant_be_less_than
+import ua.isida.common.ui.resources.input_cant_be_more_than
+import ua.isida.common.ui.resources.input_invalid
+import ua.isida.common.ui.resources.input_required
 import ua.isida.common.ui.resources.Res as R
 
 @Stable
@@ -26,22 +26,22 @@ interface NumberInputTextFieldState : InputTextFieldState<Error> {
     sealed interface Error : InputTextFieldState.Error {
         data object Required : Error {
             @Composable
-            override fun asLabel(): String = stringResource(R.string.common_error_price_required)
+            override fun asLabel(): String = stringResource(R.string.input_required)
         }
 
         data object Invalid : Error {
             @Composable
-            override fun asLabel(): String = stringResource(R.string.common_error_price_invalid)
+            override fun asLabel(): String = stringResource(R.string.input_invalid)
         }
 
         data class CantBeLessThen(val value: String) : Error {
             @Composable
-            override fun asLabel(): String = stringResource(R.string.common_error_price_less_than, value)
+            override fun asLabel(): String = stringResource(R.string.input_cant_be_less_than, value)
         }
 
         data class CantBeMoreThen(val value: String) : Error {
             @Composable
-            override fun asLabel(): String = stringResource(R.string.common_error_price_more_than, value)
+            override fun asLabel(): String = stringResource(R.string.input_cant_be_more_than, value)
         }
 
         data class Custom(private val onMessage: @Composable () -> String) : Error {
