@@ -8,8 +8,8 @@
     <string name="state_4">Preparation for POWER ON</string>
     <string name="state_8">Transition to HORIZON</string>
     <string name="state_10">HORIZON ESTABLISHED</string>
-    <string name="state_20">Tray rotation monitoring ENABLED</string>
-    <string name="state_40">Low-speed fan monitoring ENABLED</string>
+    <string name="state_20">Rotation monitoring ENABLED</string>
+    <string name="state_40">Fan monitoring ENABLED</string>
 
     <!-- Fuses & Alarms -->
     <string name="fuses_0">HUMIDIFIER circuit</string>

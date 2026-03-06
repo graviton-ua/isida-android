@@ -80,10 +80,10 @@
     <string name="door">Дверь</string>
     <string name="doorClose">ЗАКРЫТА</string>
     <string name="doorOpen">ОТКРЫТА</string>
-    <string name="fanStatus">Тихоходный вентилятор</string>
+    <string name="fanStatus">Вентилятор</string>
     <string name="fanRun">вращается</string>
     <string name="fanStop">остановлен</string>
-    <string name="incubation">Длительность инкубации</string>
+    <string name="incubation">Инкубация</string>
     <string name="energyMeter">Расход Эл.</string>
     <string name="load">Загружен</string>
     <string name="datetime">05.12.21</string>
@@ -106,7 +106,7 @@
     <string name="flapOpen">открыта</string>
     <string name="flapAngle">Открытие заслонки %</string>
     <string name="outExtend">Вспомогательный канал</string>
-    <string name="outTrays">Таймер поворота лотков</string>
+    <string name="outTrays">Таймер поворота</string>
 
     <!-- Program & Presets -->
     <string name="programm">Программа</string>
@@ -141,16 +141,16 @@
     <string name="prop_extMode_lb">Режим дополнительного канала</string>
     <string name="prop_extMode0">Звуковая сигнализация</string>
     <string name="prop_extMode1">Вентиляция</string>
-    <string name="prop_extMode2">Форсированный нагрев</string>
-    <string name="prop_extMode3">Форсированной охлаждение</string>
-    <string name="prop_extMode4">Форсированное осушение</string>
-    <string name="prop_extMode5">Дублирование увлажнения</string>
-    <string name="prop_relMode_lb">Релейный режим (ВКЛ/ОТКЛ)</string>
+    <string name="prop_extMode2">Форс. нагрев</string>
+    <string name="prop_extMode3">Форс. охлаждение</string>
+    <string name="prop_extMode4">Форс. осушение</string>
+    <string name="prop_extMode5">Дублирование увлажн.</string>
+    <string name="prop_relMode_lb">Режим (ВКЛ/ОТКЛ)</string>
     <string name="prop_relMode0">НЕТ</string>
-    <string name="prop_relMode1">по каналу НАГРЕВ</string>
-    <string name="prop_relMode2">по каналу УВЛАЖНЕНИЕ</string>
-    <string name="prop_relMode3">по обоим каналам</string>
-    <string name="prop_relMode4">импульсный режим УВЛАЖНЕНИЯ</string>
+    <string name="prop_relMode1">НАГРЕВ</string>
+    <string name="prop_relMode2">УВЛАЖН.</string>
+    <string name="prop_relMode3">ОБА канала</string>
+    <string name="prop_relMode4">ШИ режим</string>
     <string name="prop_minImpulse_lb">Минимальный импульс</string>
     <string name="prop_maxImpulse_lb">Максимальный импульс</string>
     <string name="prop_repeatTime_lb">Период повторения импульсов</string>
@@ -160,7 +160,7 @@
     <string name="prop_turnPermission_lb">Поворот лотков в этот день</string>
     <string name="prop_turnPermission_on">РАЗРЕШЕН</string>
     <string name="prop_turnPermission_off">ЗАПРЕЩЕН</string>
-    <string name="txt_limit_switch">Концевой выключатель</string>
+    <string name="txt_limit_switch">Концевой выключ.</string>
     <string name="prop_alarm0_lb">Тревога (температура)</string>
     <string name="prop_alarm1_lb">Тревога (влажность)</string>
     <string name="prop_extOn0_lb">Заслонка открыть</string>

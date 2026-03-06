@@ -80,10 +80,10 @@
     <string name="door">Door</string>
     <string name="doorClose">CLOSED</string>
     <string name="doorOpen">OPEN</string>
-    <string name="fanStatus">Low-speed fan</string>
+    <string name="fanStatus">Fan</string>
     <string name="fanRun">running</string>
     <string name="fanStop">stopped</string>
-    <string name="incubation">Incubation duration</string>
+    <string name="incubation">Incubation</string>
     <string name="energyMeter">Cons. El.</string>
     <string name="load">Loaded</string>
     <string name="datetime">05.12.21</string>
@@ -106,7 +106,7 @@
     <string name="flapOpen">open</string>
     <string name="flapAngle">Flap opening %</string>
     <string name="outExtend">Auxiliary channel</string>
-    <string name="outTrays">Tray rotation timer</string>
+    <string name="outTrays">Rotation timer</string>
 
     <!-- Program & Presets -->
     <string name="programm">Program</string>
@@ -143,14 +143,14 @@
     <string name="prop_extMode1">Ventilation</string>
     <string name="prop_extMode2">Forced heating</string>
     <string name="prop_extMode3">Forced cooling</string>
-    <string name="prop_extMode4">Forced dehumidification</string>
-    <string name="prop_extMode5">Humidification duplication</string>
-    <string name="prop_relMode_lb">Relay mode (ON/OFF)</string>
+    <string name="prop_extMode4">Forced dehumid.</string>
+    <string name="prop_extMode5">Humid. duplication</string>
+    <string name="prop_relMode_lb">Mode (ON/OFF)</string>
     <string name="prop_relMode0">NO</string>
-    <string name="prop_relMode1">by HEATING channel</string>
-    <string name="prop_relMode2">by HUMIDIFICATION channel</string>
-    <string name="prop_relMode3">by both channels</string>
-    <string name="prop_relMode4">impulse HUMIDIFICATION mode</string>
+    <string name="prop_relMode1">HEATING</string>
+    <string name="prop_relMode2">HUMIDIFICATION</string>
+    <string name="prop_relMode3">BOTH channels</string>
+    <string name="prop_relMode4">PWM mode</string>
     <string name="prop_minImpulse_lb">Minimum impulse</string>
     <string name="prop_maxImpulse_lb">Maximum impulse</string>
     <string name="prop_repeatTime_lb">Impulse repetition period</string>
@@ -160,7 +160,7 @@
     <string name="prop_turnPermission_lb">Tray rotation on this day</string>
     <string name="prop_turnPermission_on">ALLOWED</string>
     <string name="prop_turnPermission_off">FORBIDDEN</string>
-    <string name="txt_limit_switch">Limit switch</string>
+    <string name="txt_limit_switch">Limit switch.</string>
     <string name="prop_alarm0_lb">Alarm (temperature)</string>
     <string name="prop_alarm1_lb">Alarm (humidity)</string>
     <string name="prop_extOn0_lb">Flap open</string>

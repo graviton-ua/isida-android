@@ -8,8 +8,8 @@
     <string name="state_4">Подготовка к ВКЛЮЧЕНИЮ</string>
     <string name="state_8">Переход в ГОРИЗОНТ</string>
     <string name="state_10">ГОРИЗОНТ УСТАНОВЛЕН</string>
-    <string name="state_20">ВКЛЮЧЕН мониторинг поворота лотков</string>
-    <string name="state_40">ВКЛЮЧЕН мониторинг тихоходного вентилятора</string>
+    <string name="state_20">ВКЛЮЧЕН мониторинг поворота</string>
+    <string name="state_40">ВКЛЮЧЕН мониторинг вентилятора</string>
 
     <!-- Fuses & Alarms -->
     <string name="fuses_0">цепь УВЛАЖНИТЕЛЯ</string>
