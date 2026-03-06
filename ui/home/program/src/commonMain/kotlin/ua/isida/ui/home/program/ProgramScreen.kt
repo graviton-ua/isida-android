@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.outlined.Summarize
 import androidx.compose.material3.*
@@ -151,11 +152,11 @@ private fun ControlPanel(
             }
         }
 
-        TextButton(
+        IconButton(
             onClick = onFetch,
             enabled = !isLoading,
         ) {
-            Text(text = stringResource(Res.string.btn_refresh))
+            Icon(imageVector = Icons.Default.Download, contentDescription = stringResource(Res.string.label_scan))
         }
 
         IconButton(

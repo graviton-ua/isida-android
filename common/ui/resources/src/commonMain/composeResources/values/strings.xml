@@ -23,7 +23,6 @@
     <string name="btnReport">Report</string>
     <string name="btn_start_scan">Start scan</string>
     <string name="btn_stop_scan">Stop scan</string>
-    <string name="btn_refresh">Refresh</string>
     <string name="btn_reset">Reset</string>
     <string name="btn_cancel">Cancel</string>
     <string name="btn_apply">Apply</string>
@@ -199,7 +198,7 @@
     <string name="program_table_tr">Tr</string>
     <string name="program_table_cl">CO2</string>
     <string name="program_table_complete">Incubation complete</string>
-    <string name="program_table_no_data">No data. Press Refresh to get program table.</string>
+    <string name="program_table_no_data">No data. Press Download to get program table.</string>
     <string name="program_table_number">Table %1$d</string>
 
     <!-- Validation & Units -->

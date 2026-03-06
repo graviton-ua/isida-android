@@ -23,15 +23,14 @@
     <string name="btnReport">Отчет</string>
     <string name="btn_start_scan">Начать поиск</string>
     <string name="btn_stop_scan">Остановить поиск</string>
-    <string name="btn_refresh">Обновить</string>
     <string name="btn_reset">Сбросить</string>
     <string name="btn_cancel">Отмена</string>
     <string name="btn_apply">Применить</string>
     <string name="save_data">ЗАПИСАТЬ</string>
-    <string name="label_connect">Подключить</string>
+    <string name="label_connect">Соединить</string>
     <string name="label_send">Отправить</string>
     <string name="label_scan">СКАНИРОВАТЬ</string>
-    <string name="disconnect">Отключить</string>
+    <string name="disconnect">Разорвать</string>
 
     <!-- Scan & Bluetooth -->
     <string name="title_scan_devices">Поиск устройств</string>

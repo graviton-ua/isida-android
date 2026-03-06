@@ -23,7 +23,6 @@
     <string name="btnReport">Звіт</string>
     <string name="btn_start_scan">Почати пошук</string>
     <string name="btn_stop_scan">Зупинити пошук</string>
-    <string name="btn_refresh">Оновити</string>
     <string name="btn_reset">Скинути</string>
     <string name="btn_cancel">Скасувати</string>
     <string name="btn_apply">Застосувати</string>

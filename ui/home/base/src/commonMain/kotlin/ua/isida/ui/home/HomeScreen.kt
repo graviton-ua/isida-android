@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bluetooth
+import androidx.compose.material.icons.filled.BluetoothDisabled
 import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -142,12 +144,12 @@ private fun HomeTopBar(
                 IconButton(onClick = openPowerDialog) {
                     Icon(imageVector = Icons.Default.PowerSettingsNew, contentDescription = stringResource(Res.string.butPower))
                 }
-                TextButton(onClick = disconnectDevice) {
-                    Text(text = stringResource(Res.string.disconnect))
+                IconButton(onClick = disconnectDevice) {
+                    Icon(imageVector = Icons.Default.BluetoothDisabled, contentDescription = stringResource(Res.string.disconnect))
                 }
             } else {
-                TextButton(onClick = connectDevice) {
-                    Text(text = stringResource(Res.string.label_connect))
+                IconButton(onClick = connectDevice) {
+                    Icon(imageVector = Icons.Default.Bluetooth, contentDescription = stringResource(Res.string.label_connect))
                 }
             }
         },
