@@ -217,6 +217,10 @@
     <string name="dimen_speed"> об./мин.</string>
 
     <!-- Dialogs -->
+    <string name="dialog_clock_title">Настройка часов</string>
+    <string name="dialog_clock_incubation">Старт инкубации</string>
+    <string name="dialog_clock_current_time">Текущее время</string>
+    <string name="error_command_failed">Ошибка: устройство не ответило на команду</string>
     <string name="dialog_reset_title">Сброс по умолчанию</string>
     <string name="dialog_reset_message">Вы уверены, что хотите сбросить\n        текущую таблицу на значения ПО УМОЛЧАНИЮ?\n        Это действие перезапишет ваши текущие настройки.</string>
     <string name="device_not_connected_title">Устройство не подключено</string>

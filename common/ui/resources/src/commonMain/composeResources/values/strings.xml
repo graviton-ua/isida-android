@@ -217,6 +217,10 @@
     <string name="dimen_speed"> rpm</string>
 
     <!-- Dialogs -->
+    <string name="dialog_clock_title">Set Device Clock</string>
+    <string name="dialog_clock_incubation">Start Incubation</string>
+    <string name="dialog_clock_current_time">Set Current Time</string>
+    <string name="error_command_failed">Command failed: no response from device</string>
     <string name="dialog_reset_title">Reset to Default</string>
     <string name="dialog_reset_message">Are you sure you want to reset\n        the current table to its DEFAULT values?\n        This action will overwrite your current settings.</string>
     <string name="device_not_connected_title">Device Not Connected</string>

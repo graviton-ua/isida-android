@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.outlined.Summarize
 import androidx.compose.material3.*
@@ -55,6 +56,9 @@ internal fun ProgramScreen(
         onTableSelected = viewModel::selectTableHeader,
         onOpenReset = viewModel::openResetDialog,
         onCloseReset = viewModel::closeResetDialog,
+        onOpenClock = viewModel::openClockDialog,
+        onCloseClock = viewModel::closeClockDialog,
+        onSetClock = viewModel::setClock,
         onApplyPreset = viewModel::applyPreset,
         onEditDay = navigateSetDay,
     )
@@ -67,6 +71,9 @@ private fun ProgramScreen(
     onTableSelected: (Int) -> Unit,
     onOpenReset: () -> Unit,
     onCloseReset: () -> Unit,
+    onOpenClock: () -> Unit,
+    onCloseClock: () -> Unit,
+    onSetClock: (Boolean) -> Unit,
     onApplyPreset: () -> Unit,
     onEditDay: (Int, TableDay) -> Unit,
 ) {
@@ -81,6 +88,7 @@ private fun ProgramScreen(
                 onFetch = onFetch,
                 onTableSelected = onTableSelected,
                 onOpenReset = onOpenReset,
+                onOpenClock = onOpenClock,
                 modifier = Modifier.fillMaxWidth().padding(8.dp)
             )
 
@@ -108,6 +116,13 @@ private fun ProgramScreen(
             onConfirm = onApplyPreset
         )
     }
+
+    if (state.showClockDialog) {
+        ClockDialog(
+            onDismiss = onCloseClock,
+            onConfirm = onSetClock
+        )
+    }
 }
 
 @Composable
@@ -118,6 +133,7 @@ private fun ControlPanel(
     onFetch: () -> Unit,
     onTableSelected: (Int) -> Unit,
     onOpenReset: () -> Unit,
+    onOpenClock: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -166,12 +182,52 @@ private fun ControlPanel(
             Icon(imageVector = Icons.Default.Restore, contentDescription = stringResource(Res.string.content_desc_presets))
         }
 
+        IconButton(
+            onClick = onOpenClock,
+            enabled = !isLoading,
+        ) {
+            Icon(imageVector = Icons.Default.Flag, contentDescription = stringResource(Res.string.dialog_clock_title))
+        }
+
         Spacer(Modifier.weight(1f))
 
         if (isLoading) {
             CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
         }
     }
+}
+
+@Composable
+private fun ClockDialog(
+    onDismiss: () -> Unit,
+    onConfirm: (Boolean) -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(text = stringResource(Res.string.dialog_clock_title)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Button(
+                    onClick = { onConfirm(true) },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(stringResource(Res.string.dialog_clock_incubation))
+                }
+                OutlinedButton(
+                    onClick = { onConfirm(false) },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(stringResource(Res.string.dialog_clock_current_time))
+                }
+            }
+        },
+        confirmButton = {},
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(Res.string.btn_cancel))
+            }
+        }
+    )
 }
 
 @Composable
@@ -304,6 +360,9 @@ private fun Preview() {
             onTableSelected = {},
             onOpenReset = {},
             onCloseReset = {},
+            onOpenClock = {},
+            onCloseClock = {},
+            onSetClock = {},
             onApplyPreset = {},
             onEditDay = { _, _ -> },
         )

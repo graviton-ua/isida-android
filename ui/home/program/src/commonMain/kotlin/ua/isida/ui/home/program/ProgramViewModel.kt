@@ -4,17 +4,18 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import ua.isida.common.ui.resources.*
-import ua.isida.metrox.viewmodel.ViewModelKey
-import ua.isida.metrox.viewmodel.ViewModelScope
-import ua.isida.util.AppCoroutineDispatchers
-import ua.isida.util.ObservableLoadingCounter
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.number
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
+import ua.isida.common.ui.compose.toaster.AppToaster
+import ua.isida.common.ui.resources.*
 import ua.isida.data.bluetooth.ConnectionState
 import ua.isida.data.protocol.packets.TableDay
 import ua.isida.data.protocol.packets.TablePacket
@@ -22,7 +23,14 @@ import ua.isida.data.protocol.packets.v1.TableDayV1
 import ua.isida.data.protocol.packets.v1.TablePacketV1
 import ua.isida.domain.bluetooth.DeviceConnectionManager
 import ua.isida.domain.interactors.GetProgramTable
+import ua.isida.domain.interactors.SetRealTimeClock
 import ua.isida.domain.interactors.UpdateProgramTable
+import ua.isida.extensions.combine
+import ua.isida.metrox.viewmodel.ViewModelKey
+import ua.isida.metrox.viewmodel.ViewModelScope
+import ua.isida.util.AppCoroutineDispatchers
+import ua.isida.util.ObservableLoadingCounter
+import kotlin.time.Clock
 
 @Inject
 @ViewModelKey(ProgramViewModel::class)
@@ -32,6 +40,7 @@ class ProgramViewModel(
     manager: DeviceConnectionManager,
     private val getProgramTable: GetProgramTable,
     private val updateProgramTable: UpdateProgramTable,
+    private val setRealTimeClock: SetRealTimeClock,
 ) : ViewModel() {
     private val logger by lazy { Logger.withTag("ProgramViewModel") }
 
@@ -40,16 +49,20 @@ class ProgramViewModel(
     private val table = MutableStateFlow<TablePacket?>(null)
     private val loadingState = ObservableLoadingCounter()
     private val showResetDialog = MutableStateFlow(false)
+    private val showClockDialog = MutableStateFlow(false)
 
-    private val tableState = table.map { packet -> packet?.toState() }.flowOn(dispatchers.computation)
+    private val tableState = table.map { packet ->
+        packet?.let { it.toState() }
+    }.flowOn(dispatchers.computation)
 
     val state: StateFlow<ProgramViewState> = combine(
         connectionState,
         selectedTable,
         tableState,
         loadingState.observable,
-        showResetDialog
-    ) { state, selected, table, loading, resetDialog ->
+        showResetDialog,
+        showClockDialog
+    ) { state, selected, table, loading, resetDialog, clockDialog ->
         val connected = state == ConnectionState.CONNECTED
         ProgramViewState(
             deviceConnected = connected,
@@ -57,6 +70,7 @@ class ProgramViewModel(
             isLoading = loading,
             table = if (connected) table else null,
             showResetDialog = resetDialog,
+            showClockDialog = clockDialog,
         )
     }.stateIn(
         scope = viewModelScope,
@@ -101,6 +115,40 @@ class ProgramViewModel(
 
     fun closeResetDialog() {
         showResetDialog.value = false
+    }
+
+    fun openClockDialog() {
+        showClockDialog.value = true
+    }
+
+    fun closeClockDialog() {
+        showClockDialog.value = false
+    }
+
+    fun setClock(startIncubation: Boolean) {
+        val params = if (startIncubation) {
+            SetRealTimeClock.Params(second = 0, minute = 0, hour = 0, day = 1, month = 1, year = 1)
+        } else {
+            val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+            SetRealTimeClock.Params(
+                second = now.second,
+                minute = now.minute,
+                hour = now.hour,
+                day = now.day,
+                month = now.month.number,
+                year = now.year % 100
+            )
+        }
+        viewModelScope.launch {
+            loadingState.addLoader()
+            setRealTimeClock.executeSync(params).onSuccess {
+                closeClockDialog()
+            }.onFailure {
+                logger.w(it) { "Failed to set clock" }
+                // In a real app we would use getString() but it's async in KMP compose resources
+                AppToaster.showError("Command failed: no response from device")
+            }
+        }.also { it.invokeOnCompletion { loadingState.removeLoader() } }
     }
 
     fun applyPreset() {

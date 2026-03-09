@@ -9,5 +9,5 @@ import ua.isida.data.protocol.packets.IsidaPacket
  * @property commandId The ID of the command that was successfully received and confirmed.
  */
 data class ConfirmPacketV1(
-    val commandId: Int, // 1 байт ind=0  CommandID that was received and confirmed by device
+    override val commandId: Int, // 1 байт ind=0  CommandID that was received and confirmed by device
 ) : IsidaPacket.V1, ConfirmPacket

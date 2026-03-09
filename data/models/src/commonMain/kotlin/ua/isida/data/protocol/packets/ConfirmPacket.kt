@@ -1,3 +1,5 @@
 package ua.isida.data.protocol.packets
 
-interface ConfirmPacket : IsidaPacket
+interface ConfirmPacket : IsidaPacket {
+    val commandId: Int
+}
