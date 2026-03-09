@@ -82,12 +82,12 @@
     <string name="fanStatus">Вентилятор</string>
     <string name="fanRun">вращается</string>
     <string name="fanStop">остановлен</string>
-    <string name="incubation">Инкубация</string>
+    <string name="incubation">Время инкубации</string>
     <string name="energyMeter">Расход Эл.</string>
     <string name="load">Загружен</string>
     <string name="datetime">05.12.21</string>
     <string name="time">05ч.12мин.</string>
-    <string name="stats_incubation_time_format">День: %1$d, Часов:Минут: %2$s:%3$s</string>
+    <string name="stats_incubation_time_format">День: %1$d, Часов: Минут: %2$s:%3$s</string>
 
     <!-- Mechanisms -->
     <string name="extendMode">Вспомогательный канал</string>
@@ -114,10 +114,10 @@
     <string name="preset_chicken_desc">Оптимальные настройки для инкубации куриных яиц.</string>
     <string name="preset_duck_name">Утята</string>
     <string name="preset_duck_desc">Оптимальные настройки для инкубации утиных яиц.</string>
-    <string name="preset_duck1_name">Утята 1</string>
-    <string name="preset_duck1_desc">Дополнительный пресет для инкубации утиных яиц.</string>
-    <string name="preset_duck2_name">Утята 2</string>
-    <string name="preset_duck2_desc">Дополнительный пресет для инкубации утиных яиц.</string>
+    <string name="preset_duck1_name">Гусята</string>
+    <string name="preset_duck1_desc">Дополнительный пресет для инкубации гусиных яиц.</string>
+    <string name="preset_duck2_name">Перепел</string>
+    <string name="preset_duck2_desc">Дополнительный пресет для инкубации перепелиных яиц.</string>
     <string name="chickens">Цыплята</string>
     <string name="ducklings">Утята</string>
     <string name="goose">Гусята</string>

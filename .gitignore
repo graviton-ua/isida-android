@@ -14,3 +14,4 @@ captures
 # General
 .DS_Store
 .externalNativeBuild
+.txt

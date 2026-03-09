@@ -292,7 +292,7 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
         },
         style = {
             backgroundColor =
-                if (state == DeviceMode.DISABLE.code) IsidaColor.BlueGrey100
+                if ((state and DeviceMode.ENABLE.code) == 0) IsidaColor.BlueGrey50
                 else if ((state and DeviceMode.ONLY_ROTATION.code) == DeviceMode.ONLY_ROTATION.code) IsidaColor.Yellow500
                 else if ((state and DeviceMode.HORIZON_SET.code) == DeviceMode.HORIZON_SET.code) IsidaColor.Yellow100
                 else if ((state and DeviceMode.HORIZON_ON.code) == DeviceMode.HORIZON_ON.code) IsidaColor.Red100
@@ -342,14 +342,14 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             val day = (currentTime shr 11) and 0x1F
             val hour = (currentTime shr 6) and 0x1F
             val minute = currentTime and 0x3F
-            if (programm != 0)
+            // if (programm != 0)
                 stringResource(
                     Res.string.stats_incubation_time_format,
                     day,
                     hour.toString().padStart(2, '0'),
                     minute.toString().padStart(2, '0')
                 )
-            else ""
+            // else ""
         },
     )
 
