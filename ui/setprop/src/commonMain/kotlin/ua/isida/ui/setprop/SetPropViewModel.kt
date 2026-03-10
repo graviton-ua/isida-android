@@ -78,7 +78,11 @@ class SetPropViewModel(
     }
 
 
-    fun send() = viewModelScope.launch(Dispatchers.Default) {
+    fun send(
+        screenName: String? = null,
+        actionName: String? = null,
+        valueLabel: String? = null
+    ) = viewModelScope.launch(Dispatchers.Default) {
         // validate prop before we send anything
         val isValid = property.validate()
 
@@ -96,9 +100,9 @@ class SetPropViewModel(
         sendCommand(cmd)
             .onSuccess {
                 audit.logAction(
-                    screen = "Properties",
-                    action = "Apply $id",
-                    details = "New value: ${property.getInputValue()}"
+                    screen = screenName ?: "Properties",
+                    action = actionName ?: "Apply $id",
+                    details = "${valueLabel ?: "New value"}: ${property.getInputValue()}"
                 )
                 _events.send(SetPropViewEvent.Sent)
                 logger.d { "Command sent" }

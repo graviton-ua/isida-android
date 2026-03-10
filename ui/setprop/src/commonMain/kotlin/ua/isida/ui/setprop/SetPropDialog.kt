@@ -60,6 +60,9 @@ import ua.isida.ui.setprop.models.TurnTime
 import ua.isida.ui.setprop.models.WaitCooling
 import ua.isida.ui.setprop.models.Zonality
 
+import ua.isida.common.ui.resources.audit_set_value
+import ua.isida.common.ui.resources.home_tab_prop
+
 @Serializable
 data class SetPropDialog(val id: String) : NavKey
 
@@ -88,8 +91,11 @@ internal fun SetPropDialog(
 internal fun SetPropDialog(
     state: SetPropViewState,
     navigateUp: () -> Unit,
-    send: () -> Unit,
+    send: (String?, String?, String?) -> Unit,
 ) {
+    val screenName = stringResource(Res.string.home_tab_prop)
+    val valueLabel = stringResource(Res.string.audit_set_value)
+
     WhDialog {
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -97,8 +103,9 @@ internal fun SetPropDialog(
                 .defaultMinSize(minHeight = 72.dp)
                 .padding(8.dp)
         ) {
+            val title = state.property.title()
             Text(
-                text = state.property.title(),
+                text = title,
                 style = IsidaTheme.typography.h4,
             )
 
@@ -111,7 +118,13 @@ internal fun SetPropDialog(
 
             val valid = state.property.isValid.collectAsStateWithLifecycle(initialValue = true)
             DialogButtons(
-                onSend = send,
+                onSend = { 
+                    send(
+                        screenName,
+                        title,
+                        valueLabel
+                    ) 
+                },
                 onCancel = navigateUp,
                 validState = valid,
                 modifier = Modifier.fillMaxWidth(),
@@ -175,7 +188,7 @@ private fun Preview(
         SetPropDialog(
             state = SetPropViewState(property = property),
             navigateUp = {},
-            send = {},
+            send = { _, _, _ -> },
         )
     }
 }
