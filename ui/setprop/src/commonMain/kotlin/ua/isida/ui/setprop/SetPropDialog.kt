@@ -63,6 +63,8 @@ import ua.isida.ui.setprop.models.Zonality
 import ua.isida.common.ui.resources.audit_set_value
 import ua.isida.common.ui.resources.home_tab_prop
 
+import ua.isida.common.ui.resources.CellNum
+
 @Serializable
 data class SetPropDialog(val id: String) : NavKey
 
@@ -91,10 +93,11 @@ internal fun SetPropDialog(
 internal fun SetPropDialog(
     state: SetPropViewState,
     navigateUp: () -> Unit,
-    send: (String?, String?, String?) -> Unit,
+    send: (String?, String?, String?, String?) -> Unit,
 ) {
     val screenName = stringResource(Res.string.home_tab_prop)
     val valueLabel = stringResource(Res.string.audit_set_value)
+    val devicePrefix = state.node?.let { "[${stringResource(Res.string.CellNum, it)}]" }
 
     WhDialog {
         Column(
@@ -122,7 +125,8 @@ internal fun SetPropDialog(
                     send(
                         screenName,
                         title,
-                        valueLabel
+                        valueLabel,
+                        devicePrefix
                     ) 
                 },
                 onCancel = navigateUp,
@@ -188,7 +192,7 @@ private fun Preview(
         SetPropDialog(
             state = SetPropViewState(property = property),
             navigateUp = {},
-            send = { _, _, _ -> },
+            send = { _, _, _, _ -> },
         )
     }
 }

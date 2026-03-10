@@ -10,9 +10,16 @@ interface AuditLogger {
      * @param screen The name of the screen where the action occurred.
      * @param action The name of the action (e.g., "Apply Settings").
      * @param details Additional details about the change.
+     * @param devicePrefix Optional prefix like "[Camera 1]".
      * @param consoleLog Optional English/Technical string for terminal output.
      */
-    fun logAction(screen: String, action: String, details: String, consoleLog: String? = null)
+    fun logAction(
+        screen: String, 
+        action: String, 
+        details: String, 
+        devicePrefix: String? = null,
+        consoleLog: String? = null
+    )
 
     /**
      * Export or share the audit log file.

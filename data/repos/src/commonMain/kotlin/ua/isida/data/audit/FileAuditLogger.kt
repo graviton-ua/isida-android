@@ -82,7 +82,13 @@ class FileAuditLogger(
         }
     }
 
-    override fun logAction(screen: String, action: String, details: String, consoleLog: String?) {
+    override fun logAction(
+        screen: String, 
+        action: String, 
+        details: String, 
+        devicePrefix: String?,
+        consoleLog: String?
+    ) {
         try {
             // Ensure directory exists before writing
             val parentDir = logPath.parent ?: Path(pathProvider.filesPath)
@@ -94,10 +100,14 @@ class FileAuditLogger(
             val localNow = now.toLocalDateTime(TimeZone.currentSystemDefault())
             val timestamp = "${localNow.date} ${localNow.time.toString().substringBefore('.')}"
             
-            val logEntry = "[$timestamp] [$screen] $action: $details"
+            val logEntry = if (devicePrefix != null) {
+                "[$timestamp] $devicePrefix [$screen] $action: $details"
+            } else {
+                "[$timestamp] [$screen] $action: $details"
+            }
             
             // Output technical/english version to terminal (Kermit/Logcat)
-            // If consoleLog is not provided, fallback to the localized logEntry
+            // We use consoleLog as a full replacement if provided to avoid encoding issues
             logger.i { consoleLog ?: logEntry }
             
             // Write localized logEntry to the audit.log file

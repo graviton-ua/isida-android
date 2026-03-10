@@ -47,14 +47,16 @@ class SetPropViewModel(
 
     private val property = propertyFromId(id)
     private val waitingForData = MutableStateFlow<Boolean>(true)
+    private val node = MutableStateFlow<Int?>(null)
 
     private val packets = observeStatus.flow.stateIn(
         scope = viewModelScope, started = SharingStarted.WhileSubscribed(0), initialValue = null,
     )
 
-    val state: StateFlow<SetPropViewState> = waitingForData.map { waiting ->
+    val state: StateFlow<SetPropViewState> = combine(waitingForData, node) { waiting, nodeValue ->
         SetPropViewState(
             property = property,
+            node = nodeValue,
             waitingForData = waiting,
         )
     }.stateIn(
@@ -69,6 +71,9 @@ class SetPropViewModel(
             packets.filterNotNull().take(1)
                 .collect { packet ->
                     property.readValue(packet)
+                    if (packet is StatusPacketV1) {
+                        node.value = packet.node
+                    }
                     waitingForData.value = false
                 }
         }
@@ -77,38 +82,43 @@ class SetPropViewModel(
         viewModelScope.launch(dispatchers.computation) { property.clearErrorOnInputUpdate() }
     }
 
+fun send(
+    screenName: String? = null,
+    actionName: String? = null,
+    valueLabel: String? = null,
+    devicePrefix: String? = null
+) = viewModelScope.launch(Dispatchers.Default) {
+    // validate prop before we send anything
+    val isValid = property.validate()
 
-    fun send(
-        screenName: String? = null,
-        actionName: String? = null,
-        valueLabel: String? = null
-    ) = viewModelScope.launch(Dispatchers.Default) {
-        // validate prop before we send anything
-        val isValid = property.validate()
+    // If it's not valid error already been shown on the UI, we can silently return
+    if (!isValid) return@launch
 
-        // If it's not valid error already been shown on the UI, we can silently return
-        if (!isValid) return@launch
+    //Here we should build and send command to device
+    val snapshot = packets.value ?: return@launch
+    val modifiedSnapshot = property.copyAndUpdate(snapshot)
 
-        //Here we should build and send command to device
-        val snapshot = packets.value ?: return@launch
-        val modifiedSnapshot = property.copyAndUpdate(snapshot)
+    val cmd = prepareCommand(modifiedSnapshot)
+        .onFailure { logger.w(it) { "Command preparation failed" } }
+        .getOrNull() ?: return@launch
 
-        val cmd = prepareCommand(modifiedSnapshot)
-            .onFailure { logger.w(it) { "Command preparation failed" } }
-            .getOrNull() ?: return@launch
+    sendCommand(cmd)
+        .onSuccess {
+            val value = property.getInputValue()
+            val nodeVal = (snapshot as? StatusPacketV1)?.node ?: node.value
+            val nodePrefix = nodeVal?.let { "[Node $it] " } ?: ""
 
-        sendCommand(cmd)
-            .onSuccess {
-                val value = property.getInputValue()
-                audit.logAction(
-                    screen = screenName ?: "Properties",
-                    action = actionName ?: "Apply $id",
-                    details = "${valueLabel ?: "New value"}: $value",
-                    consoleLog = "[Properties] Apply $id: New value: $value"
-                )
-                _events.send(SetPropViewEvent.Sent)
-                logger.d { "Command sent" }
-            }
+            audit.logAction(
+                screen = screenName ?: "Properties",
+                action = actionName ?: "Apply $id",
+                details = "${valueLabel ?: "New value"}: $value",
+                devicePrefix = devicePrefix,
+                consoleLog = "${nodePrefix}[Properties] Apply $id: New value: $value"
+            )
+            _events.send(SetPropViewEvent.Sent)
+            logger.d { "Command sent" }
+        }    // ... rest of onSuccess logic ...
+
             .onFailure { logger.e(it) { "Command failed" } }
     }
 

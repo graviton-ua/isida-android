@@ -19,7 +19,10 @@ abstract class PacketDecoder<T : IsidaPacket> {
             ?: return Result.failure(IllegalStateException("Parser not found for commandId: $commandId | data: $data"))
 
         val validPacket = parser.canParse(data)
-        if (!validPacket) return Result.failure(IllegalStateException("Invalid packet for commandId: $commandId | data: $data"))
+        if (!validPacket) {
+            val hexData = data.joinToString(" ") { it.toUByte().toString(16).uppercase().padStart(2, '0') }
+            return Result.failure(IllegalStateException("Invalid packet for commandId: $commandId | data: [$hexData]"))
+        }
 
         return parser.parsePayload(data.copyOfRange(fromIndex = 6, toIndex = data.size - 4))
     }

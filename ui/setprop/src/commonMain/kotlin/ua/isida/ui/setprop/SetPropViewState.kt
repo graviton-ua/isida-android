@@ -6,6 +6,7 @@ import ua.isida.ui.properties.DeviceProperty
 @Stable
 data class SetPropViewState(
     val property: DeviceProperty,
+    val node: Int? = null,
     val waitingForData: Boolean = true,
 )
 
