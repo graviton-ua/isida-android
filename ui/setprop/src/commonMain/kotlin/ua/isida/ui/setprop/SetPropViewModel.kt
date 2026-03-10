@@ -99,10 +99,12 @@ class SetPropViewModel(
 
         sendCommand(cmd)
             .onSuccess {
+                val value = property.getInputValue()
                 audit.logAction(
                     screen = screenName ?: "Properties",
                     action = actionName ?: "Apply $id",
-                    details = "${valueLabel ?: "New value"}: ${property.getInputValue()}"
+                    details = "${valueLabel ?: "New value"}: $value",
+                    consoleLog = "[Properties] Apply $id: New value: $value"
                 )
                 _events.send(SetPropViewEvent.Sent)
                 logger.d { "Command sent" }

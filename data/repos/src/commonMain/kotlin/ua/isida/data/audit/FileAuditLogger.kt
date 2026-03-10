@@ -82,7 +82,7 @@ class FileAuditLogger(
         }
     }
 
-    override fun logAction(screen: String, action: String, details: String) {
+    override fun logAction(screen: String, action: String, details: String, consoleLog: String?) {
         try {
             // Ensure directory exists before writing
             val parentDir = logPath.parent ?: Path(pathProvider.filesPath)
@@ -96,8 +96,11 @@ class FileAuditLogger(
             
             val logEntry = "[$timestamp] [$screen] $action: $details"
             
-            logger.i { logEntry }
+            // Output technical/english version to terminal (Kermit/Logcat)
+            // If consoleLog is not provided, fallback to the localized logEntry
+            logger.i { consoleLog ?: logEntry }
             
+            // Write localized logEntry to the audit.log file
             SystemFileSystem.sink(logPath, append = true).buffered().use { sink ->
                 sink.writeString(logEntry)
                 sink.writeString("\n")
