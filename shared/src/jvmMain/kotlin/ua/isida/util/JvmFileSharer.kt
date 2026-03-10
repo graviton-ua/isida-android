@@ -9,8 +9,8 @@ import java.io.File
  */
 @Inject
 class JvmFileSharer : FileSharer {
-    override fun shareFile(fileName: String, title: String) {
-        val file = File(".", fileName)
+    override fun shareFile(fileName: String, subFolder: String?, title: String) {
+        val file = if (subFolder != null) File(subFolder, fileName) else File(".", fileName)
         if (!file.exists() || !Desktop.isDesktopSupported()) return
 
         val desktop = Desktop.getDesktop()

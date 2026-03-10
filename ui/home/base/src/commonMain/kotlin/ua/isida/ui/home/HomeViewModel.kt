@@ -17,6 +17,7 @@ import ua.isida.domain.bluetooth.DeviceConnectionManager
 @ContributesIntoMap(ViewModelScope::class)
 class HomeViewModel(
     private val deviceConnectionManager: DeviceConnectionManager,
+    private val audit: ua.isida.util.AuditLogger,
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()
 
@@ -35,5 +36,9 @@ class HomeViewModel(
 
     fun disconnect() {
         viewModelScope.launch { deviceConnectionManager.disconnect() }
+    }
+
+    fun exportLogs() {
+        audit.exportLogs()
     }
 }

@@ -11,10 +11,11 @@ import java.io.File
  */
 @Inject
 class AndroidFileSharer(
-    private val context: Context
+    private val context: android.content.Context
 ) : FileSharer {
-    override fun shareFile(fileName: String, title: String) {
-        val file = File(context.filesDir, fileName)
+    override fun shareFile(fileName: String, subFolder: String?, title: String) {
+        val baseDir = if (subFolder != null) File(context.filesDir, subFolder) else context.filesDir
+        val file = File(baseDir, fileName)
         if (!file.exists()) return
 
         val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)

@@ -26,14 +26,16 @@ class FileAuditLogger(
     private val sharer: ua.isida.util.FileSharer
 ) : AuditLogger {
     private val logger = Logger.withTag("BlackBox")
-    private val logPath = Path(pathProvider.filesPath, "audit.log")
+    private val logsDir = "logs"
+    private val logFileName = "audit.log"
+    private val logPath = Path(pathProvider.filesPath, logsDir, logFileName)
 
     init {
         cleanupOldLogs()
     }
 
     override fun exportLogs() {
-        sharer.shareFile("audit.log", "Audit Log Export")
+        sharer.shareFile(logFileName, logsDir, "Audit Log Export")
     }
 
     private fun cleanupOldLogs() {
@@ -82,6 +84,12 @@ class FileAuditLogger(
 
     override fun logAction(screen: String, action: String, details: String) {
         try {
+            // Ensure directory exists before writing
+            val parentDir = logPath.parent ?: Path(pathProvider.filesPath)
+            if (SystemFileSystem.metadataOrNull(parentDir) == null) {
+                SystemFileSystem.createDirectories(parentDir)
+            }
+
             val now = Clock.System.now()
             val localNow = now.toLocalDateTime(TimeZone.currentSystemDefault())
             val timestamp = "${localNow.date} ${localNow.time.toString().substringBefore('.')}"

@@ -30,6 +30,8 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.navigation.HomeTabScreen
 
+import ua.isida.common.ui.resources.btn_share_logs
+
 @Serializable
 data object PropScreen : HomeTabScreen {
     override val icon: ImageVector = Icons.Outlined.SettingsApplications
@@ -65,18 +67,6 @@ private fun PropScreen(
             contentPadding = PaddingValues(bottom = 16.dp),
             modifier = Modifier.fillMaxSize()
         ) {
-            item {
-                TextButton(
-                    onClick = onExportLogs,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                ) {
-                    Icon(imageVector = Icons.Default.Share, contentDescription = null)
-                    Spacer(Modifier.width(8.dp))
-                    Text(text = "Export Logs")
-                }
-            }
             itemsIndexed(
                 items = state.items,
                 key = { _, it -> it.id },

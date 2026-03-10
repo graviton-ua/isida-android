@@ -8,7 +8,8 @@ interface FileSharer {
      * Share a file from the internal storage.
      * 
      * @param fileName Name of the file in the app's internal storage.
+     * @param subFolder Optional subfolder inside the app's internal storage.
      * @param title Title for the share dialog.
      */
-    fun shareFile(fileName: String, title: String = "Share Log File")
+    fun shareFile(fileName: String, subFolder: String? = null, title: String = "Share Log File")
 }

@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.PowerSettingsNew
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -64,6 +65,7 @@ internal fun HomeScreen(
         resultBus = resultBus,
         connectDevice = connectDevice,
         disconnectDevice = viewModel::disconnect,
+        onShareLogs = viewModel::exportLogs,
         openPowerDialog = openPowerDialog,
         openSetPropDialog = openSetPropDialog,
         navigateSetDay = navigateSetDay,
@@ -76,6 +78,7 @@ private fun HomeScreen(
     resultBus: ResultEventBus,
     connectDevice: () -> Unit,
     disconnectDevice: () -> Unit,
+    onShareLogs: () -> Unit,
     openPowerDialog: () -> Unit,
     openSetPropDialog: (String) -> Unit,
     navigateSetDay: (Int, TableDay) -> Unit,
@@ -100,6 +103,7 @@ private fun HomeScreen(
                 deviceConnected = state.deviceConnected,
                 connectDevice = connectDevice,
                 disconnectDevice = disconnectDevice,
+                onShareLogs = onShareLogs,
                 openPowerDialog = openPowerDialog,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -138,11 +142,16 @@ private fun HomeTopBar(
     modifier: Modifier = Modifier,
     connectDevice: () -> Unit,
     disconnectDevice: () -> Unit,
+    onShareLogs: () -> Unit,
     openPowerDialog: () -> Unit,
 ) {
     WhTopAppBar(
         title = { Text(text = stringResource(Res.string.app_name)) },
         actions = {
+            IconButton(onClick = onShareLogs) {
+                Icon(imageVector = Icons.Default.Share, contentDescription = stringResource(Res.string.btn_share_logs))
+            }
+
             if (deviceConnected) {
                 IconButton(onClick = openPowerDialog) {
                     Icon(imageVector = Icons.Default.PowerSettingsNew, contentDescription = stringResource(Res.string.butPower))
@@ -225,6 +234,7 @@ private fun Preview() {
             resultBus = ResultEventBus(),
             connectDevice = {},
             disconnectDevice = {},
+            onShareLogs = {},
             openPowerDialog = {},
             openSetPropDialog = {},
             navigateSetDay = { _, _ -> },
