@@ -26,6 +26,7 @@
     <string name="btn_reset">Reset</string>
     <string name="btn_cancel">Cancel</string>
     <string name="btn_apply">Apply</string>
+    <string name="btn_share_logs">Export Logs</string>
     <string name="save_data">WRITE</string>
     <string name="label_connect">Connect</string>
     <string name="label_send">Send</string>

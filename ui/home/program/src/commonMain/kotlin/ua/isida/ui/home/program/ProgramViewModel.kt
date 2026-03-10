@@ -29,6 +29,7 @@ import ua.isida.extensions.combine
 import ua.isida.metrox.viewmodel.ViewModelKey
 import ua.isida.metrox.viewmodel.ViewModelScope
 import ua.isida.util.AppCoroutineDispatchers
+import ua.isida.util.AuditLogger
 import ua.isida.util.ObservableLoadingCounter
 import kotlin.time.Clock
 
@@ -41,6 +42,7 @@ class ProgramViewModel(
     private val getProgramTable: GetProgramTable,
     private val updateProgramTable: UpdateProgramTable,
     private val setRealTimeClock: SetRealTimeClock,
+    private val audit: AuditLogger,
 ) : ViewModel() {
     private val logger by lazy { Logger.withTag("ProgramViewModel") }
 
@@ -104,7 +106,14 @@ class ProgramViewModel(
         sendTableJob = viewModelScope.launch {
             loadingState.addLoader()
             updateProgramTable.executeSync(UpdateProgramTable.Params(tableNumber, currentTable))
-                .onSuccess { logger.d { "Table updated successfully" } }
+                .onSuccess {
+                    audit.logAction(
+                        screen = "Program",
+                        action = "Update Table #$tableNumber",
+                        details = "Table data synchronized with device"
+                    )
+                    logger.d { "Table updated successfully" }
+                }
                 .onFailure { logger.w(it) { "Failed to update table" } }
         }.also { it.invokeOnCompletion { loadingState.removeLoader() } }
     }
@@ -142,6 +151,11 @@ class ProgramViewModel(
         viewModelScope.launch {
             loadingState.addLoader()
             setRealTimeClock.executeSync(params).onSuccess {
+                audit.logAction(
+                    screen = "Program",
+                    action = if (startIncubation) "Start Incubation" else "Set Clock",
+                    details = "Params: $params"
+                )
                 closeClockDialog()
             }.onFailure {
                 logger.w(it) { "Failed to set clock" }
@@ -155,7 +169,13 @@ class ProgramViewModel(
         val index = selectedTable.value - 1
         val presets = ProgramPreset.ALL
         if (index in presets.indices) {
-            table.value = presets[index].table
+            val preset = presets[index]
+            audit.logAction(
+                screen = "Program",
+                action = "Apply Preset",
+                details = "Table #$index, Preset: ${preset.id}"
+            )
+            table.value = preset.table
             sendTable()
         }
         closeResetDialog()
@@ -163,6 +183,11 @@ class ProgramViewModel(
 
     fun onDayUpdated(index: Int, day: TableDay) {
         logger.d { "onDayUpdated: $index, $day" }
+        audit.logAction(
+            screen = "Program",
+            action = "Edit Day ${index + 1}",
+            details = "New values: $day"
+        )
         table.update { currentTable ->
             val result: TablePacket? = when (currentTable) {
                 is TablePacketV1 -> {

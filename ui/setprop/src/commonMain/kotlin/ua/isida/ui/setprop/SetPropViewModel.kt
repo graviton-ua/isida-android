@@ -22,6 +22,7 @@ import ua.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.isida.domain.interactors.SendCommand
 import ua.isida.domain.observers.ObserveStatus
 import ua.isida.ui.setprop.models.propertyFromId
+import ua.isida.util.AuditLogger
 
 @AssistedInject
 class SetPropViewModel(
@@ -29,6 +30,7 @@ class SetPropViewModel(
     dispatchers: AppCoroutineDispatchers,
     observeStatus: ObserveStatus,
     private val sendCommand: SendCommand,
+    private val audit: AuditLogger,
 ) : ViewModel() {
 
     @AssistedFactory
@@ -92,7 +94,15 @@ class SetPropViewModel(
             .getOrNull() ?: return@launch
 
         sendCommand(cmd)
-            .onSuccess { _events.send(SetPropViewEvent.Sent); logger.d { "Command sent" } }
+            .onSuccess {
+                audit.logAction(
+                    screen = "Properties",
+                    action = "Apply $id",
+                    details = "New value: ${property.getInputValue()}"
+                )
+                _events.send(SetPropViewEvent.Sent)
+                logger.d { "Command sent" }
+            }
             .onFailure { logger.e(it) { "Command failed" } }
     }
 
