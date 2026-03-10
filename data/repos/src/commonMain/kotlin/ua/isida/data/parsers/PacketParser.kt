@@ -22,6 +22,8 @@ interface PacketParser<T : IsidaPacket> {
 
         if (data.size < expectedSize) {
             logger.d { "Wrong size | expected: $expectedSize | actual size: ${data.size}" }
+            // logger.d { "Data (dec): ${data.joinToString(", ")}" }
+            // logger.d { "Data (hex): ${data.joinToString(", ") { "0x" + it.toUByte().toString(16).uppercase().padStart(2, '0') }}" }
             return false
         }
 

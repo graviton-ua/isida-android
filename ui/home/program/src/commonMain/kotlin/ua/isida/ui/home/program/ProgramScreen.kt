@@ -4,9 +4,10 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.outlined.Summarize
 import androidx.compose.material3.*
@@ -179,14 +180,14 @@ private fun ControlPanel(
             onClick = onOpenReset,
             enabled = !isLoading,
         ) {
-            Icon(imageVector = Icons.Default.Restore, contentDescription = stringResource(Res.string.content_desc_presets))
+            Icon(imageVector = Icons.Default.Description, contentDescription = stringResource(Res.string.content_desc_presets))
         }
 
         IconButton(
             onClick = onOpenClock,
             enabled = !isLoading,
         ) {
-            Icon(imageVector = Icons.Default.Flag, contentDescription = stringResource(Res.string.dialog_clock_title))
+            Icon(imageVector = Icons.Default.AccessTime, contentDescription = stringResource(Res.string.dialog_clock_title))
         }
 
         Spacer(Modifier.weight(1f))

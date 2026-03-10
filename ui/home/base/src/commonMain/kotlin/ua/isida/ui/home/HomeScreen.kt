@@ -1,12 +1,14 @@
 package ua.isida.ui.home
 
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bluetooth
-import androidx.compose.material.icons.filled.BluetoothDisabled
+import androidx.compose.material.icons.filled.Link
+import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -14,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -144,12 +147,16 @@ private fun HomeTopBar(
                 IconButton(onClick = openPowerDialog) {
                     Icon(imageVector = Icons.Default.PowerSettingsNew, contentDescription = stringResource(Res.string.butPower))
                 }
-                IconButton(onClick = disconnectDevice) {
-                    Icon(imageVector = Icons.Default.BluetoothDisabled, contentDescription = stringResource(Res.string.disconnect))
+                TextButton(onClick = disconnectDevice) {
+                    Icon(imageVector = Icons.Default.LinkOff, contentDescription = null)
+                    Spacer(Modifier.width(4.dp))
+                    Text(text = stringResource(Res.string.disconnect))
                 }
             } else {
-                IconButton(onClick = connectDevice) {
-                    Icon(imageVector = Icons.Default.Bluetooth, contentDescription = stringResource(Res.string.label_connect))
+                TextButton(onClick = connectDevice) {
+                    Icon(imageVector = Icons.Default.Link, contentDescription = null)
+                    Spacer(Modifier.width(4.dp))
+                    Text(text = stringResource(Res.string.label_connect))
                 }
             }
         },
