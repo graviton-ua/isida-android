@@ -89,7 +89,7 @@
     <string name="load">Загружен</string>
     <string name="datetime">05.12.21</string>
     <string name="time">05ч.12мин.</string>
-    <string name="stats_incubation_time_format">День: %1$d, Часов: Минут: %2$s:%3$s</string>
+    <string name="stats_incubation_time_format">День: %1$d;   %2$s:%3$s</string>
 
     <!-- Mechanisms -->
     <string name="extendMode">Вспомогательный канал</string>
