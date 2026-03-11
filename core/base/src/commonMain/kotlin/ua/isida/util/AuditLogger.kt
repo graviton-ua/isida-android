@@ -25,4 +25,9 @@ interface AuditLogger {
      * Export or share the audit log file.
      */
     fun exportLogs()
+
+    /**
+     * Read the log file content as a list of lines.
+     */
+    fun readLogs(): List<String>
 }

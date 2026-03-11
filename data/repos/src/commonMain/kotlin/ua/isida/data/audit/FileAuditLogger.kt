@@ -38,6 +38,25 @@ class FileAuditLogger(
         sharer.shareFile(logFileName, logsDir, "Audit Log Export")
     }
 
+    override fun readLogs(): List<String> {
+        val lines = mutableListOf<String>()
+        try {
+            if (SystemFileSystem.metadataOrNull(logPath) != null) {
+                SystemFileSystem.source(logPath).buffered().use { source ->
+                    while (!source.exhausted()) {
+                        val line = source.readLine() ?: break
+                        if (line.isNotEmpty()) {
+                            lines.add(line)
+                        }
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            logger.e(e) { "Failed to read logs: $logPath" }
+        }
+        return lines.asReversed() // Show newest logs first
+    }
+
     private fun cleanupOldLogs() {
         try {
             if (SystemFileSystem.metadataOrNull(logPath) == null) {

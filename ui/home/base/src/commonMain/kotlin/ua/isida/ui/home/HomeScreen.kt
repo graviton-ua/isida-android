@@ -30,7 +30,11 @@ import kotlinx.serialization.modules.polymorphic
 import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.compose.theme.AppTheme
 import ua.isida.common.ui.compose.ui.WhTopAppBar
-import ua.isida.common.ui.navigation.*
+import ua.isida.common.ui.navigation.HomeTabScreen
+import ua.isida.common.ui.navigation.Navigator
+import ua.isida.common.ui.navigation.NavigationState
+import ua.isida.common.ui.navigation.rememberNavigationState
+import ua.isida.common.ui.navigation.toEntries
 import ua.isida.common.ui.navigation.result.ResultEventBus
 import ua.isida.common.ui.resources.*
 import ua.isida.data.protocol.packets.TableDay
@@ -41,6 +45,7 @@ import ua.isida.ui.home.prop.PropScreen
 import ua.isida.ui.home.prop.addPropScreen
 import ua.isida.ui.home.stats.StatsScreen
 import ua.isida.ui.home.stats.addStatsScreen
+import ua.isida.ui.home.audit.AuditLogScreen
 
 @Serializable
 data object HomeScreen : NavKey
@@ -65,7 +70,7 @@ internal fun HomeScreen(
         resultBus = resultBus,
         connectDevice = connectDevice,
         disconnectDevice = viewModel::disconnect,
-        onShareLogs = viewModel::exportLogs,
+        onShowLogs = { /* Handled in the internal HomeScreen */ },
         openPowerDialog = openPowerDialog,
         openSetPropDialog = openSetPropDialog,
         navigateSetDay = navigateSetDay,
@@ -78,7 +83,7 @@ private fun HomeScreen(
     resultBus: ResultEventBus,
     connectDevice: () -> Unit,
     disconnectDevice: () -> Unit,
-    onShareLogs: () -> Unit,
+    onShowLogs: () -> Unit, // Placeholder
     openPowerDialog: () -> Unit,
     openSetPropDialog: (String) -> Unit,
     navigateSetDay: (Int, TableDay) -> Unit,
@@ -94,6 +99,9 @@ private fun HomeScreen(
             addStatsScreen(navigator = navigator)
             addPropScreen(navigator = navigator, openSetPropDialog = openSetPropDialog)
             addProgramScreen(navigator = navigator, resultBus = resultBus, navigateSetDay = navigateSetDay)
+            entry<AuditLogScreen> {
+                ua.isida.ui.home.audit.AuditLogScreen(onBack = navigator::navigateUp)
+            }
         }
     }
 
@@ -103,7 +111,7 @@ private fun HomeScreen(
                 deviceConnected = state.deviceConnected,
                 connectDevice = connectDevice,
                 disconnectDevice = disconnectDevice,
-                onShareLogs = onShareLogs,
+                onShowLogs = { navigator.navigateTo(AuditLogScreen) },
                 openPowerDialog = openPowerDialog,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -142,13 +150,13 @@ private fun HomeTopBar(
     modifier: Modifier = Modifier,
     connectDevice: () -> Unit,
     disconnectDevice: () -> Unit,
-    onShareLogs: () -> Unit,
+    onShowLogs: () -> Unit,
     openPowerDialog: () -> Unit,
 ) {
     WhTopAppBar(
         title = { Text(text = stringResource(Res.string.app_name)) },
         actions = {
-            IconButton(onClick = onShareLogs) {
+            IconButton(onClick = onShowLogs) {
                 Icon(imageVector = Icons.Default.Share, contentDescription = stringResource(Res.string.btn_share_logs))
             }
 
@@ -220,6 +228,7 @@ private val config = SavedStateConfiguration {
             subclass(PropScreen::class, PropScreen.serializer())
             subclass(ProgramScreen::class, ProgramScreen.serializer())
             subclass(StatsScreen::class, StatsScreen.serializer())
+            subclass(AuditLogScreen::class, AuditLogScreen.serializer())
         }
     }
 }
@@ -234,7 +243,7 @@ private fun Preview() {
             resultBus = ResultEventBus(),
             connectDevice = {},
             disconnectDevice = {},
-            onShareLogs = {},
+            onShowLogs = {},
             openPowerDialog = {},
             openSetPropDialog = {},
             navigateSetDay = { _, _ -> },
