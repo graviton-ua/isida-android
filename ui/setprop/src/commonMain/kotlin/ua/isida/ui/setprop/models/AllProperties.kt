@@ -4,40 +4,7 @@ import androidx.compose.runtime.Stable
 import co.touchlab.kermit.Logger
 import ua.isida.data.protocol.packets.StatusPacket
 import ua.isida.data.protocol.packets.v1.StatusPacketV1
-import ua.isida.ui.properties.DevicePropertyAir0
-import ua.isida.ui.properties.DevicePropertyAir1
-import ua.isida.ui.properties.DevicePropertyAlarm0
-import ua.isida.ui.properties.DevicePropertyAlarm1
-import ua.isida.ui.properties.DevicePropertyExtOff0
-import ua.isida.ui.properties.DevicePropertyExtOff1
-import ua.isida.ui.properties.DevicePropertyExtOn0
-import ua.isida.ui.properties.DevicePropertyExtOn1
-import ua.isida.ui.properties.DevicePropertyExtendMode
-import ua.isida.ui.properties.DevicePropertyFlapRestrictions
-import ua.isida.ui.properties.DevicePropertyHysteresis
-import ua.isida.ui.properties.DevicePropertyIdentif
-import ua.isida.ui.properties.DevicePropertyIkoff0
-import ua.isida.ui.properties.DevicePropertyIkoff1
-import ua.isida.ui.properties.DevicePropertyKoffCurr
-import ua.isida.ui.properties.DevicePropertyMaxRun
-import ua.isida.ui.properties.DevicePropertyMinFan
-import ua.isida.ui.properties.DevicePropertyMinRun
-import ua.isida.ui.properties.DevicePropertyPeriod
-import ua.isida.ui.properties.DevicePropertyPermission
-import ua.isida.ui.properties.DevicePropertyPkoff0
-import ua.isida.ui.properties.DevicePropertyPkoff1
-import ua.isida.ui.properties.DevicePropertyProgram
-import ua.isida.ui.properties.DevicePropertyRelayMode
-import ua.isida.ui.properties.DevicePropertySpCO2
-import ua.isida.ui.properties.DevicePropertySpRh0
-import ua.isida.ui.properties.DevicePropertySpRh1
-import ua.isida.ui.properties.DevicePropertySpT0
-import ua.isida.ui.properties.DevicePropertySpT1
-import ua.isida.ui.properties.DevicePropertyTurnOff
-import ua.isida.ui.properties.DevicePropertyTurnOn
-import ua.isida.ui.properties.DevicePropertyTurnTime
-import ua.isida.ui.properties.DevicePropertyWaitCooling
-import ua.isida.ui.properties.DevicePropertyZonality
+import ua.isida.ui.properties.*
 
 fun propertyFromId(id: String): StatusPacketProperty<*> = when (id) {
     "spT0" -> SpT0()
@@ -80,9 +47,7 @@ fun propertyFromId(id: String): StatusPacketProperty<*> = when (id) {
 
 //-------------------------- spT0 ------------------------------
 @Stable
-internal class SpT0(
-    value: Float? = null,
-) : StatusPacketProperty<DevicePropertySpT0>(property = DevicePropertySpT0(value = value)) {
+internal class SpT0(value: Float? = null) : StatusPacketProperty<DevicePropertySpT0>(property = DevicePropertySpT0(value = value)) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
             is StatusPacketV1 -> packet.spT0
@@ -90,18 +55,16 @@ internal class SpT0(
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsFloat?.let { packet.copy(spT0 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsFloat.toString()
 }
 
 //-------------------------- spT1 ------------------------------
 @Stable
-internal class SpT1(
-    value: Float? = null,
-) : StatusPacketProperty<DevicePropertySpT1>(property = DevicePropertySpT1(value = value)) {
+internal class SpT1(value: Float? = null) : StatusPacketProperty<DevicePropertySpT1>(property = DevicePropertySpT1(value = value)) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
             is StatusPacketV1 -> packet.spT1
@@ -109,18 +72,16 @@ internal class SpT1(
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsFloat?.let { packet.copy(spT1 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsFloat.toString()
 }
 
-//-------------------------- Permission (маска 0xC0) ------------------------------
+//-------------------------- Permission ------------------------------
 @Stable
-internal class Permission(
-    value: Int? = null,
-) : StatusPacketProperty<DevicePropertyPermission>(property = DevicePropertyPermission(value = value)) {
+internal class Permission(value: Int? = null) : StatusPacketProperty<DevicePropertyPermission>(property = DevicePropertyPermission(value = value)) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
             is StatusPacketV1 -> packet.permission
@@ -128,14 +89,11 @@ internal class Permission(
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> property.inputHelper.value?.let {
-            packet.copy(permission = it)
-        } ?: packet
-
+        is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(permission = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.value.toString()
 }
 
 //-------------------------- spRh0 ------------------------------
@@ -148,11 +106,11 @@ internal class SpRh0(value: Int? = null) : StatusPacketProperty<DevicePropertySp
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(spRh0 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsInt.toString()
 }
 
 //-------------------------- spRh1 ------------------------------
@@ -165,11 +123,11 @@ internal class SpRh1(value: Int? = null) : StatusPacketProperty<DevicePropertySp
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(spRh1 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsInt.toString()
 }
 
 //-------------------------- ExtendMode ------------------------------
@@ -182,11 +140,11 @@ internal class ExtendMode(value: Int? = null) : StatusPacketProperty<DevicePrope
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(extendMode = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.value.toString()
 }
 
 //-------------------------- RelayMode ------------------------------
@@ -199,11 +157,11 @@ internal class RelayMode(value: Int? = null) : StatusPacketProperty<DeviceProper
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(relayMode = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.value.toString()
 }
 
 //-------------------------- Program ------------------------------
@@ -216,13 +174,12 @@ internal class Program(value: Int? = null) : StatusPacketProperty<DeviceProperty
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(programm = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.value.toString()
 }
-
 
 //-------------------------- MinRun ------------------------------
 @Stable
@@ -234,11 +191,11 @@ internal class MinRun(value: Float? = null) : StatusPacketProperty<DevicePropert
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsFloat?.let { packet.copy(minRun = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsFloat.toString()
 }
 
 //-------------------------- MaxRun ------------------------------
@@ -251,11 +208,11 @@ internal class MaxRun(value: Int? = null) : StatusPacketProperty<DevicePropertyM
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(maxRun = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsInt.toString()
 }
 
 //-------------------------- Period ------------------------------
@@ -268,11 +225,11 @@ internal class Period(value: Int? = null) : StatusPacketProperty<DevicePropertyP
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(period = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsInt.toString()
 }
 
 //-------------------------- TurnOff ------------------------------
@@ -285,11 +242,11 @@ internal class TurnOff(value: Int? = null) : StatusPacketProperty<DeviceProperty
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(timer0 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsInt.toString()
 }
 
 //-------------------------- TurnOn ------------------------------
@@ -302,11 +259,11 @@ internal class TurnOn(value: Int? = null) : StatusPacketProperty<DevicePropertyT
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(timer1 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsInt.toString()
 }
 
 //-------------------------- Alarm0 ------------------------------
@@ -319,11 +276,11 @@ internal class Alarm0(value: Float? = null) : StatusPacketProperty<DevicePropert
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsFloat?.let { packet.copy(alarm0 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsFloat.toString()
 }
 
 //-------------------------- Alarm1 ------------------------------
@@ -336,11 +293,11 @@ internal class Alarm1(value: Float? = null) : StatusPacketProperty<DevicePropert
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsFloat?.let { packet.copy(alarm1 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsFloat.toString()
 }
 
 //-------------------------- ExtOn0 ------------------------------
@@ -353,11 +310,11 @@ internal class ExtOn0(value: Float? = null) : StatusPacketProperty<DevicePropert
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsFloat?.let { packet.copy(extOn0 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsFloat.toString()
 }
 
 //-------------------------- ExtOn1 ------------------------------
@@ -370,11 +327,11 @@ internal class ExtOn1(value: Float? = null) : StatusPacketProperty<DevicePropert
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsFloat?.let { packet.copy(extOn1 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsFloat.toString()
 }
 
 //-------------------------- ExtOff0 ------------------------------
@@ -387,11 +344,11 @@ internal class ExtOff0(value: Float? = null) : StatusPacketProperty<DeviceProper
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsFloat?.let { packet.copy(extOff0 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsFloat.toString()
 }
 
 //-------------------------- ExtOff1 ------------------------------
@@ -404,11 +361,11 @@ internal class ExtOff1(value: Float? = null) : StatusPacketProperty<DeviceProper
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsFloat?.let { packet.copy(extOff1 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsFloat.toString()
 }
 
 //-------------------------- Air0 ------------------------------
@@ -421,11 +378,11 @@ internal class Air0(value: Int? = null) : StatusPacketProperty<DevicePropertyAir
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(air0 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsInt.toString()
 }
 
 //-------------------------- Air1 ------------------------------
@@ -438,11 +395,11 @@ internal class Air1(value: Int? = null) : StatusPacketProperty<DevicePropertyAir
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(air1 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsInt.toString()
 }
 
 //-------------------------- SpCO2 ------------------------------
@@ -455,28 +412,28 @@ internal class SpCO2(value: Int? = null) : StatusPacketProperty<DevicePropertySp
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(spCO2 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.value.toString()
 }
 
-//-------------------------- Hysteresis (маска 0x3F) ------------------------------
+//-------------------------- Hysteresis ------------------------------
 @Stable
 internal class Hysteresis(value: Float? = null) : StatusPacketProperty<DevicePropertyHysteresis>(property = DevicePropertyHysteresis(value = value)) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
-            is StatusPacketV1 -> (packet.hysteresis)
+            is StatusPacketV1 -> packet.hysteresis
             else -> null
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(hysteresis = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.value.toString()
 }
 
 //-------------------------- TurnTime ------------------------------
@@ -489,17 +446,16 @@ internal class TurnTime(value: Int? = null) : StatusPacketProperty<DevicePropert
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(turnTime = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.value.toString()
 }
 
 //-------------------------- Zonality ----------------------------
 @Stable
 internal class Zonality(value: Int? = null) : StatusPacketProperty<DevicePropertyZonality>(property = DevicePropertyZonality(value = value)) {
-    private val logger by lazy { Logger.withTag("Zonality") }
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
             is StatusPacketV1 -> packet.zonality
@@ -507,20 +463,16 @@ internal class Zonality(value: Int? = null) : StatusPacketProperty<DevicePropert
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
-        is StatusPacketV1 -> {
-            logger.d { "Packet.zonality: ${packet.zonality::class} | property.inputHelper.value: ${property.inputHelper.value!!::class}" }
-            property.inputHelper.value?.let { packet.copy(zonality = it) } ?: packet
-        }
+        is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(zonality = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.value.toString()
 }
 
 //-------------------------- Flap restrictions ----------------------------
 @Stable
-internal class FlapRestrictions(value: Int? = null) :
-    StatusPacketProperty<DevicePropertyFlapRestrictions>(property = DevicePropertyFlapRestrictions(value = value)) {
+internal class FlapRestrictions(value: Int? = null) : StatusPacketProperty<DevicePropertyFlapRestrictions>(property = DevicePropertyFlapRestrictions(value = value)) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
             is StatusPacketV1 -> packet.flapRestrictions
@@ -528,17 +480,16 @@ internal class FlapRestrictions(value: Int? = null) :
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(flapRestrictions = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.value.toString()
 }
 
 //-------------------------- WaitCooling -------------------------
 @Stable
-internal class WaitCooling(value: Int? = null) :
-    StatusPacketProperty<DevicePropertyWaitCooling>(property = DevicePropertyWaitCooling(value = value)) {
+internal class WaitCooling(value: Int? = null) : StatusPacketProperty<DevicePropertyWaitCooling>(property = DevicePropertyWaitCooling(value = value)) {
     override fun readValue(packet: StatusPacket) {
         val value = when (packet) {
             is StatusPacketV1 -> packet.waitCooling
@@ -546,11 +497,11 @@ internal class WaitCooling(value: Int? = null) :
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(waitCooling = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.value.toString()
 }
 
 //-------------------------- Pkoff0 ------------------------------
@@ -563,11 +514,11 @@ internal class Pkoff0(value: Int? = null) : StatusPacketProperty<DevicePropertyP
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(pkoff0 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsInt.toString()
 }
 
 //-------------------------- Pkoff1 ------------------------------
@@ -580,11 +531,11 @@ internal class Pkoff1(value: Int? = null) : StatusPacketProperty<DevicePropertyP
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(pkoff1 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsInt.toString()
 }
 
 //-------------------------- Ikoff0 ------------------------------
@@ -597,11 +548,11 @@ internal class Ikoff0(value: Int? = null) : StatusPacketProperty<DevicePropertyI
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(ikoff0 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsInt.toString()
 }
 
 //-------------------------- Ikoff1 ------------------------------
@@ -614,11 +565,11 @@ internal class Ikoff1(value: Int? = null) : StatusPacketProperty<DevicePropertyI
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(ikoff1 = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsInt.toString()
 }
 
 //-------------------------- Identif ------------------------------
@@ -631,11 +582,11 @@ internal class Identif(value: Int? = null) : StatusPacketProperty<DeviceProperty
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(identif = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsInt.toString()
 }
 
 //-------------------------- KoffCurr ------------------------------
@@ -648,11 +599,11 @@ internal class KoffCurr(value: Int? = null) : StatusPacketProperty<DevicePropert
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.state.valueAsInt?.let { packet.copy(koffCurr = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.state.valueAsInt.toString()
 }
 
 //-------------------------- MinFan ------------------------------
@@ -665,9 +616,9 @@ internal class MinFan(value: Int? = null) : StatusPacketProperty<DevicePropertyM
         }
         property.inputHelper.setValue(value)
     }
-
     override fun copyAndUpdate(packet: StatusPacket): StatusPacket = when (packet) {
         is StatusPacketV1 -> property.inputHelper.value?.let { packet.copy(minFan = it) } ?: packet
         else -> packet
     }
+    override fun getInputValue(): String = property.inputHelper.value.toString()
 }

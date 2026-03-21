@@ -23,7 +23,6 @@
     <string name="btnReport">Звіт</string>
     <string name="btn_start_scan">Почати пошук</string>
     <string name="btn_stop_scan">Зупинити пошук</string>
-    <string name="btn_refresh">Оновити</string>
     <string name="btn_reset">Скинути</string>
     <string name="btn_cancel">Скасувати</string>
     <string name="btn_apply">Застосувати</string>
@@ -80,15 +79,15 @@
     <string name="door">Двері</string>
     <string name="doorClose">ЗАЧИНЕНІ</string>
     <string name="doorOpen">ВІДЧИНЕНІ</string>
-    <string name="fanStatus">Тихохідний вентилятор</string>
+    <string name="fanStatus">Вентилятор</string>
     <string name="fanRun">обертається</string>
     <string name="fanStop">зупинений</string>
-    <string name="incubation">Тривалість інкубації</string>
+    <string name="incubation">Інкубація</string>
     <string name="energyMeter">Витрата Ел.</string>
     <string name="load">Завантажений</string>
     <string name="datetime">05.12.21</string>
     <string name="time">05год.12хв.</string>
-    <string name="stats_incubation_time_format">День: %1$d, Годин:Хвилин: %2$s:%3$s</string>
+    <string name="stats_incubation_time_format">День: %1$d;   %2$s:%3$s</string>
 
     <!-- Mechanisms -->
     <string name="extendMode">Допоміжний канал</string>
@@ -106,7 +105,7 @@
     <string name="flapOpen">відкрита</string>
     <string name="flapAngle">Відкриття заслінки %</string>
     <string name="outExtend">Допоміжний канал</string>
-    <string name="outTrays">Таймер повороту лотків</string>
+    <string name="outTrays">Таймер повороту</string>
 
     <!-- Program & Presets -->
     <string name="programm">Програма</string>
@@ -141,16 +140,16 @@
     <string name="prop_extMode_lb">Режим додаткового каналу</string>
     <string name="prop_extMode0">Звукова сигналізація</string>
     <string name="prop_extMode1">Вентиляція</string>
-    <string name="prop_extMode2">Форсований нагрів</string>
-    <string name="prop_extMode3">Форсоване охолодження</string>
-    <string name="prop_extMode4">Форсоване осушення</string>
-    <string name="prop_extMode5">Дублювання зволоження</string>
-    <string name="prop_relMode_lb">Релейний режим (УВІМК/ВИМК)</string>
+    <string name="prop_extMode2">Форс. нагрів</string>
+    <string name="prop_extMode3">Форс. охолодження</string>
+    <string name="prop_extMode4">Форс. осушення</string>
+    <string name="prop_extMode5">Дублювання зволож.</string>
+    <string name="prop_relMode_lb">Режим (УВІМК/ВИМК)</string>
     <string name="prop_relMode0">НІ</string>
-    <string name="prop_relMode1">по каналу НАГРІВ</string>
-    <string name="prop_relMode2">по каналу ЗВОЛОЖЕННЯ</string>
-    <string name="prop_relMode3">по обох каналах</string>
-    <string name="prop_relMode4">імпульсний режим ЗВОЛОЖЕННЯ</string>
+    <string name="prop_relMode1">НАГРІВ</string>
+    <string name="prop_relMode2">ЗВОЛОЖЕННЯ</string>
+    <string name="prop_relMode3">ОБИДВА канали</string>
+    <string name="prop_relMode4">ШИ режим</string>
     <string name="prop_minImpulse_lb">Мінімальний імпульс</string>
     <string name="prop_maxImpulse_lb">Максимальний импульс</string>
     <string name="prop_repeatTime_lb">Період повторення імпульсів</string>
@@ -160,7 +159,7 @@
     <string name="prop_turnPermission_lb">Поворот лотків в цей день</string>
     <string name="prop_turnPermission_on">ДОЗВОЛЕНО</string>
     <string name="prop_turnPermission_off">ЗАБОРОНЕНО</string>
-    <string name="txt_limit_switch">Кінцевий вимикач</string>
+    <string name="txt_limit_switch">Кінцевий вимикач.</string>
     <string name="prop_alarm0_lb">Тривога (температура)</string>
     <string name="prop_alarm1_lb">Тривога (вологість)</string>
     <string name="prop_extOn0_lb">Заслінка відкрити</string>

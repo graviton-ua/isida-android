@@ -21,27 +21,27 @@ interface PacketParser<T : IsidaPacket> {
         val expectedSize = dataOffset + length + crcSize + endSize
 
         if (data.size < expectedSize) {
-            logger.d { "Wrong size | expected: $expectedSize | actual size: ${data.size}" }
+            logger.w { "Wrong size for cmd $commandId | expected: $expectedSize | actual size: ${data.size}" }
             return false
         }
 
         // Check length of data (2 bytes)
         val packetLength = data.readU16LE(2)
         if (packetLength != length) {
-            logger.d { "Packet length | expected: $length | received: ${packetLength}" }
+            logger.w { "Packet length mismatch for cmd $commandId | expected: $length | received: ${packetLength}" }
             return false
         }
 
         // Check command ID (1 byte)
         val packetCmdId = data.readU8(4)
         if (packetCmdId != commandId) {
-            logger.d { "Command ID | expected: $commandId | received: ${packetCmdId}" }
+            logger.w { "Command ID mismatch | expected: $commandId | received: ${packetCmdId}" }
             return false
         }
 
         // Check version of the packet (1 byte)
         if (data.readU8(5) != version) {
-            logger.d { "Version | expected: $version | received: ${data.readU8(5)}" }
+            logger.w { "Version mismatch for cmd $commandId | expected: $version | received: ${data.readU8(5)}" }
             return false
         }
 

@@ -114,27 +114,6 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
         title = composableString { stringResource(Res.string.titleSensor) }
     )
 
-    // *****--------------------------- Status -------------------------------*****
-    // item(
-    //     title = composableString { stringResource(Res.string.titleState) },
-    //     content = composableString(state) {
-    //         val value = state and 0x7E
-    //         val result = mutableListOf<StringResource>()
-    //         // Проверяем каждый предохранитель по его битовой маске
-    //         if (value and 0x02 != 0) result.add(Res.string.state_2)
-    //         if (value and 0x04 != 0) result.add(Res.string.state_4)
-    //         if (value and 0x08 != 0) result.add(Res.string.state_8)
-    //         if (value and 0x10 != 0) result.add(Res.string.state_10)
-    //         if (value and 0x20 != 0) result.add(Res.string.state_20)
-    //         if (value and 0x40 != 0) result.add(Res.string.state_40)
-    //         // Если ни один бит не поднят, возвращаем список с ресурсом "нет/норма"
-    //         // if (result.isEmpty()) {
-    //         //     result.add(Res.string.no)
-    //         // }
-    //         result.map { stringResource(it) }.joinToString(separator = "\n")
-    //     },
-    // )
-
     // *****--------------------------- T0 -------------------------------*****
     item(
         title = composableString { stringResource(Res.string.pv_t0_label) },
@@ -313,7 +292,7 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
         },
         style = {
             backgroundColor =
-                if (state == DeviceMode.DISABLE.code) IsidaColor.BlueGrey100
+                if ((state and DeviceMode.ENABLE.code) == 0) IsidaColor.BlueGrey50
                 else if ((state and DeviceMode.ONLY_ROTATION.code) == DeviceMode.ONLY_ROTATION.code) IsidaColor.Yellow500
                 else if ((state and DeviceMode.HORIZON_SET.code) == DeviceMode.HORIZON_SET.code) IsidaColor.Yellow100
                 else if ((state and DeviceMode.HORIZON_ON.code) == DeviceMode.HORIZON_ON.code) IsidaColor.Red100
@@ -363,14 +342,14 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             val day = (currentTime shr 11) and 0x1F
             val hour = (currentTime shr 6) and 0x1F
             val minute = currentTime and 0x3F
-            if (programm != 0)
+            // if (programm != 0)
                 stringResource(
                     Res.string.stats_incubation_time_format,
                     day,
                     hour.toString().padStart(2, '0'),
                     minute.toString().padStart(2, '0')
                 )
-            else ""
+            // else ""
         },
     )
 
@@ -433,15 +412,16 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
 
             if (modeOn) {
                 if (pvFan >= minFan) {
-                    val label = stringResource(Res.string.fanRun)
                     val dimen = stringResource(Res.string.dimen_speed)
-                    "$label  $pvFan $dimen"
+                    "$pvFan $dimen"
                 } else if (isError40) {
                     stringResource(Res.string.device_not_connected_title)
+                } else if(pvFan > 1){
+                    val label = stringResource(Res.string.fanRun)
+                    label
                 } else {
                     val label = stringResource(Res.string.fanStop)
-                    val dimen = stringResource(Res.string.dimen_speed)
-                    "$label  $pvFan $dimen"
+                    label
                 }
             } else { "" }
         },

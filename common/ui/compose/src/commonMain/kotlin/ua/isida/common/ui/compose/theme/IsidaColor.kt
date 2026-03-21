@@ -4,7 +4,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
 
 object IsidaColor {
-    @Stable val BlueGrey100 = Color(0xFFCFD8DC)
+    @Stable val BlueGrey50 = Color(0xFFE8EEEF)
     @Stable val Blue500 = Color(0xFF5085FC)
     @Stable val Blue100 = Color(0xFFB4CCFF)
 

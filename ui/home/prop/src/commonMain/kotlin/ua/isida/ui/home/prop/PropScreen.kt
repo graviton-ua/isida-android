@@ -7,10 +7,9 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.SettingsApplications
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -28,7 +27,10 @@ import ua.isida.common.ui.resources.home_tab_prop
 import ua.isida.metrox.viewmodel.injectedViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.navigation.HomeTabScreen
+
+import ua.isida.common.ui.resources.btn_share_logs
 
 @Serializable
 data object PropScreen : HomeTabScreen {
@@ -45,6 +47,7 @@ internal fun PropScreen(
 
     PropScreen(
         state = state,
+        onExportLogs = viewModel::exportLogs,
         navigateSetPropDialog = openSetPropDialog,
     )
 }
@@ -52,6 +55,7 @@ internal fun PropScreen(
 @Composable
 private fun PropScreen(
     state: PropViewState,
+    onExportLogs: () -> Unit,
     navigateSetPropDialog: (String) -> Unit,
 ) {
     if (!state.deviceConnected) {
@@ -124,6 +128,7 @@ private fun Preview() {
     AppTheme {
         PropScreen(
             state = PropViewState.Preview,
+            onExportLogs = {},
             navigateSetPropDialog = {}
         )
     }

@@ -23,10 +23,11 @@
     <string name="btnReport">Report</string>
     <string name="btn_start_scan">Start scan</string>
     <string name="btn_stop_scan">Stop scan</string>
-    <string name="btn_refresh">Refresh</string>
     <string name="btn_reset">Reset</string>
     <string name="btn_cancel">Cancel</string>
     <string name="btn_apply">Apply</string>
+    <string name="btn_share_logs">Share Logs</string>
+    <string name="audit_set_value">Set</string>
     <string name="save_data">WRITE</string>
     <string name="label_connect">Connect</string>
     <string name="label_send">Send</string>
@@ -80,15 +81,15 @@
     <string name="door">Door</string>
     <string name="doorClose">CLOSED</string>
     <string name="doorOpen">OPEN</string>
-    <string name="fanStatus">Low-speed fan</string>
+    <string name="fanStatus">Fan</string>
     <string name="fanRun">running</string>
     <string name="fanStop">stopped</string>
-    <string name="incubation">Incubation duration</string>
+    <string name="incubation">Incubation</string>
     <string name="energyMeter">Cons. El.</string>
     <string name="load">Loaded</string>
     <string name="datetime">05.12.21</string>
     <string name="time">05h.12min.</string>
-    <string name="stats_incubation_time_format">Day: %1$d, Hours:Minutes: %2$s:%3$s</string>
+    <string name="stats_incubation_time_format">Day: %1$d;   %2$s:%3$s</string>
 
     <!-- Mechanisms -->
     <string name="extendMode">Auxiliary channel</string>
@@ -106,7 +107,7 @@
     <string name="flapOpen">open</string>
     <string name="flapAngle">Flap opening %</string>
     <string name="outExtend">Auxiliary channel</string>
-    <string name="outTrays">Tray rotation timer</string>
+    <string name="outTrays">Rotation timer</string>
 
     <!-- Program & Presets -->
     <string name="programm">Program</string>
@@ -143,14 +144,14 @@
     <string name="prop_extMode1">Ventilation</string>
     <string name="prop_extMode2">Forced heating</string>
     <string name="prop_extMode3">Forced cooling</string>
-    <string name="prop_extMode4">Forced dehumidification</string>
-    <string name="prop_extMode5">Humidification duplication</string>
-    <string name="prop_relMode_lb">Relay mode (ON/OFF)</string>
+    <string name="prop_extMode4">Forced dehumid.</string>
+    <string name="prop_extMode5">Humid. duplication</string>
+    <string name="prop_relMode_lb">Mode (ON/OFF)</string>
     <string name="prop_relMode0">NO</string>
-    <string name="prop_relMode1">by HEATING channel</string>
-    <string name="prop_relMode2">by HUMIDIFICATION channel</string>
-    <string name="prop_relMode3">by both channels</string>
-    <string name="prop_relMode4">impulse HUMIDIFICATION mode</string>
+    <string name="prop_relMode1">HEATING</string>
+    <string name="prop_relMode2">HUMIDIFICATION</string>
+    <string name="prop_relMode3">BOTH channels</string>
+    <string name="prop_relMode4">PWM mode</string>
     <string name="prop_minImpulse_lb">Minimum impulse</string>
     <string name="prop_maxImpulse_lb">Maximum impulse</string>
     <string name="prop_repeatTime_lb">Impulse repetition period</string>
@@ -160,7 +161,7 @@
     <string name="prop_turnPermission_lb">Tray rotation on this day</string>
     <string name="prop_turnPermission_on">ALLOWED</string>
     <string name="prop_turnPermission_off">FORBIDDEN</string>
-    <string name="txt_limit_switch">Limit switch</string>
+    <string name="txt_limit_switch">Limit switch.</string>
     <string name="prop_alarm0_lb">Alarm (temperature)</string>
     <string name="prop_alarm1_lb">Alarm (humidity)</string>
     <string name="prop_extOn0_lb">Flap open</string>
@@ -199,7 +200,7 @@
     <string name="program_table_tr">Tr</string>
     <string name="program_table_cl">CO2</string>
     <string name="program_table_complete">Incubation complete</string>
-    <string name="program_table_no_data">No data. Press Refresh to get program table.</string>
+    <string name="program_table_no_data">No data. Press Download to get program table.</string>
     <string name="program_table_number">Table %1$d</string>
 
     <!-- Validation & Units -->
@@ -218,6 +219,10 @@
     <string name="dimen_speed"> rpm</string>
 
     <!-- Dialogs -->
+    <string name="dialog_clock_title">Set Device Clock</string>
+    <string name="dialog_clock_incubation">Start Incubation</string>
+    <string name="dialog_clock_current_time">Set Current Time</string>
+    <string name="error_command_failed">Command failed: no response from device</string>
     <string name="dialog_reset_title">Reset to Default</string>
     <string name="dialog_reset_message">Are you sure you want to reset\n        the current table to its DEFAULT values?\n        This action will overwrite your current settings.</string>
     <string name="device_not_connected_title">Device Not Connected</string>
