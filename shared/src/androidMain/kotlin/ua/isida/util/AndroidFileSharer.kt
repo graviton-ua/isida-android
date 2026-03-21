@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.content.FileProvider
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Named
 import java.io.File
 
 /**
@@ -11,7 +12,7 @@ import java.io.File
  */
 @Inject
 class AndroidFileSharer(
-    private val context: android.content.Context
+    @param:Named("APPLICATION_CONTEXT") private val context: Context,
 ) : FileSharer {
     override fun shareFile(fileName: String, subFolder: String?, title: String) {
         val baseDir = if (subFolder != null) File(context.filesDir, subFolder) else context.filesDir
