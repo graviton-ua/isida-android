@@ -52,7 +52,7 @@ class RollingFileLogWriter(
     private val dispatcher = dispatchers.io
 
     /** The directory where all log files are stored. */
-    private val logsDir = Path(pathProvider.filesPath, "logs")
+    private val logsDir = pathProvider.logsPath
 
     /**
      * Internal data container for raw log events. 

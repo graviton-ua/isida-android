@@ -1,6 +1,7 @@
 package ua.isida.util
 
 import dev.zacsweers.metro.Inject
+import kotlinx.io.files.Path
 import java.awt.Desktop
 import java.io.File
 
@@ -9,8 +10,8 @@ import java.io.File
  */
 @Inject
 class JvmFileSharer : FileSharer {
-    override fun shareFile(fileName: String, subFolder: String?, title: String) {
-        val file = if (subFolder != null) File(subFolder, fileName) else File(".", fileName)
+    override fun shareFile(filePath: Path, title: String) {
+        val file = File(filePath.toString())
         if (!file.exists() || !Desktop.isDesktopSupported()) return
 
         val desktop = Desktop.getDesktop()

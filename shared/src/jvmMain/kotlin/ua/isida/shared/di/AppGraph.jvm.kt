@@ -1,6 +1,5 @@
 package ua.isida.shared.di
 
-import ua.isida.util.AppCoroutineDispatchers
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
@@ -8,8 +7,9 @@ import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.io.files.Path
 import ua.isida.base.PlatformConfig
-import ua.isida.shared.di.AppGraph
+import ua.isida.util.AppCoroutineDispatchers
 import ua.isida.util.FileSharer
 import ua.isida.util.PathProvider
 
@@ -38,7 +38,7 @@ interface JvmAppGraph : AppGraph {
 
     @Provides @SingleIn(AppScope::class)
     fun providePathProvider(): PathProvider = object : PathProvider {
-        override val filesPath: String = "."
+        override val logsPath: Path = Path(System.getProperty("user.home"), "Isida", "logs")
     }
 
     @Provides @SingleIn(AppScope::class)

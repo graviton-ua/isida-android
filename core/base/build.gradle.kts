@@ -7,6 +7,7 @@ kotlin {
         commonMain.dependencies {
             api(libs.kotlinx.atomicfu)
             api(libs.kotlinx.coroutines.core)
+            api(libs.kotlinx.io.core)
         }
     }
 }

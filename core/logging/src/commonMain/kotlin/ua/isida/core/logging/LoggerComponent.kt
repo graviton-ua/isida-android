@@ -16,4 +16,7 @@ interface LoggerComponent : LoggerPlatformComponent {
 
     @Provides @IntoSet
     fun provideKermitInitializer(impl: KermitInitializer): AppInitializer = impl
+
+    @Provides
+    fun provideFileLogManager(impl: FileLogManager): FileLogManager = impl
 }

@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.core.content.FileProvider
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.Named
+import kotlinx.io.files.Path
 import java.io.File
 
 /**
@@ -14,9 +15,8 @@ import java.io.File
 class AndroidFileSharer(
     @param:Named("APPLICATION_CONTEXT") private val context: Context,
 ) : FileSharer {
-    override fun shareFile(fileName: String, subFolder: String?, title: String) {
-        val baseDir = if (subFolder != null) File(context.filesDir, subFolder) else context.filesDir
-        val file = File(baseDir, fileName)
+    override fun shareFile(filePath: Path, title: String) {
+        val file = File(filePath.toString())
         if (!file.exists()) return
 
         val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)

@@ -8,15 +8,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ua.isida.core.logging.FileLogManager
 import ua.isida.metrox.viewmodel.ViewModelKey
 import ua.isida.metrox.viewmodel.ViewModelScope
-import ua.isida.util.AuditLogger
 
 @Inject
 @ViewModelKey(AuditLogViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 class AuditLogViewModel(
-    private val audit: AuditLogger,
+    private val logManager: FileLogManager,
 ) : ViewModel() {
     private val _logs = MutableStateFlow<List<String>>(emptyList())
     val logs: StateFlow<List<String>> = _logs.asStateFlow()
@@ -27,11 +27,11 @@ class AuditLogViewModel(
 
     private fun loadLogs() {
         viewModelScope.launch {
-            _logs.value = audit.readLogs()
+            _logs.value = logManager.readRecentLogs()
         }
     }
 
     fun exportLogs() {
-        audit.exportLogs()
+        logManager.shareLatestLog()
     }
 }

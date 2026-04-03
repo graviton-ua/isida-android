@@ -9,9 +9,10 @@ import dev.zacsweers.metro.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import ua.isida.shared.BluetoothStateService
+import kotlinx.io.files.Path
 import ua.isida.base.PlatformConfig
 import ua.isida.domain.bluetooth.DeviceConnectionManager
+import ua.isida.shared.BluetoothStateService
 import ua.isida.util.AppCoroutineDispatchers
 import ua.isida.util.FileSharer
 import ua.isida.util.PathProvider
@@ -56,7 +57,7 @@ interface AndroidAppGraph : AppGraph {
 
     @Provides @SingleIn(AppScope::class)
     fun providePathProvider(application: Application): PathProvider = object : PathProvider {
-        override val filesPath: String = application.filesDir.absolutePath
+        override val logsPath: Path = Path(application.filesDir.absolutePath, "logs")
     }
 
     @Provides @SingleIn(AppScope::class)
