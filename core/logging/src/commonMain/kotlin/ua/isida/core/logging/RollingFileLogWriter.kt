@@ -2,6 +2,10 @@ package ua.isida.core.logging
 
 import co.touchlab.kermit.LogWriter
 import co.touchlab.kermit.Severity
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
@@ -36,6 +40,7 @@ import kotlin.time.Instant
  * @param minSeverity The minimum [Severity] level required for a log to be written to disk. Defaults to [Severity.Info].
  * @param maxHistoryDays The number of days to retain log files before they are automatically deleted. Defaults to 30 days.
  */
+@Inject @ContributesBinding(scope = AppScope::class, binding = binding<LogWriter>())
 class RollingFileLogWriter(
     dispatchers: AppCoroutineDispatchers,
     pathProvider: PathProvider,
@@ -43,7 +48,7 @@ class RollingFileLogWriter(
     private val minSeverity: Severity = Severity.Info,
     private val maxHistoryDays: Int = 30,
 ) : LogWriter() {
-    
+
     private val dispatcher = dispatchers.io
 
     /** The directory where all log files are stored. */
@@ -66,7 +71,7 @@ class RollingFileLogWriter(
      * Uses a buffer to handle bursts and drops the oldest logs if the buffer reaches capacity.
      */
     private val logChannel = Channel<LogEntry>(
-        capacity = 2000, 
+        capacity = 2000,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
 
@@ -129,7 +134,7 @@ class RollingFileLogWriter(
 
                 // Process the first entry.
                 writeToSink(activeSink, firstEntry)
-                
+
                 // Batch processing: Drain additional logs from the channel up to MAX_BATCH_SIZE.
                 var processedInBatch = 1
                 while (processedInBatch < MAX_BATCH_SIZE) {
