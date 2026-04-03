@@ -35,4 +35,20 @@ class JvmFileSharer : FileSharer {
             }
         }
     }
+
+    override fun shareFiles(filePaths: List<Path>, title: String) {
+        if (filePaths.isEmpty()) return
+        // On JVM we just open the directory containing the files
+        val firstFile = File(filePaths[0].toString())
+        val parentDir = firstFile.parentFile ?: File(".")
+        
+        if (!Desktop.isDesktopSupported()) return
+        val desktop = Desktop.getDesktop()
+        try {
+            if (desktop.isSupported(Desktop.Action.OPEN)) {
+                desktop.open(parentDir)
+            }
+        } catch (ignore: Exception) {
+        }
+    }
 }

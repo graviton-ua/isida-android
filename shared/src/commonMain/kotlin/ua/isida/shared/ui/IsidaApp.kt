@@ -1,6 +1,7 @@
 package ua.isida.shared.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -8,6 +9,7 @@ import androidx.navigation3.runtime.*
 import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
+import co.touchlab.kermit.Logger
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import ua.isida.common.ui.compose.theme.AppTheme
@@ -31,6 +33,9 @@ fun IsidaApp(
     modifier: Modifier = Modifier,
 ) {
     AppTheme {
+        LaunchedEffect(Unit) {
+            Logger.i { "IsidaApp initialized. Starting log test sequence..." }
+        }
         val backStack = rememberNavBackStack(configuration = config, HomeScreen)
         val navigator = remember(backStack) { NavigatorImpl(backStack) }
         val dialogStrategy = remember { DialogSceneStrategy<NavKey>() }

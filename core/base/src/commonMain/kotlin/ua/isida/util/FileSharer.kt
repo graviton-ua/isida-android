@@ -13,4 +13,12 @@ interface FileSharer {
      * @param title Title for the share dialog.
      */
     fun shareFile(filePath: Path, title: String = "Share Log File")
+
+    /**
+     * Share multiple files from the internal storage.
+     *
+     * @param filePaths List of full paths to the files.
+     * @param title Title for the share dialog.
+     */
+    fun shareFiles(filePaths: List<Path>, title: String = "Share Log Files")
 }

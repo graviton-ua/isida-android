@@ -2,36 +2,86 @@ package ua.isida.ui.logreport
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import ua.isida.core.logging.FileLogManager
+import kotlinx.io.files.Path
+import kotlinx.io.files.SystemFileSystem
 import ua.isida.metrox.viewmodel.ViewModelKey
 import ua.isida.metrox.viewmodel.ViewModelScope
+import ua.isida.util.FileSharer
+import ua.isida.util.PathProvider
+
+data class LogFileInfo(
+    val path: Path,
+    val name: String,
+    val sizeBytes: Long,
+    val isSelected: Boolean = false
+) {
+    val sizeFormatted: String
+        get() {
+            val kb = sizeBytes / 1024.0
+            return if (kb < 1024) {
+                "${kb.toLong()} KB"
+            } else {
+                "${(kb / 1024.0).toLong()} MB"
+            }
+        }
+}
 
 @Inject
 @ViewModelKey(LogReportViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 class LogReportViewModel(
-    private val logManager: FileLogManager,
+    private val pathProvider: PathProvider,
+    private val fileSharer: FileSharer
 ) : ViewModel() {
-    private val _logs = MutableStateFlow<List<String>>(emptyList())
-    val logs: StateFlow<List<String>> = _logs.asStateFlow()
+    private val _files = MutableStateFlow<List<LogFileInfo>>(emptyList())
+    val files: StateFlow<List<LogFileInfo>> = _files.asStateFlow()
 
     init {
-        loadLogs()
+        Logger.i { "User opened Log Report screen. Refreshing file list..." }
+        loadFiles()
     }
 
-    private fun loadLogs() {
+    private fun loadFiles() {
         viewModelScope.launch {
-            _logs.value = logManager.readRecentLogs()
+            val logsDir = pathProvider.logsPath
+            try {
+                if (SystemFileSystem.exists(logsDir)) {
+                    val fileList = SystemFileSystem.list(logsDir)
+                        .filter { it.name.startsWith("logs_") && it.name.endsWith(".log") }
+                        .map { path ->
+                            val metadata = SystemFileSystem.metadataOrNull(path)
+                            LogFileInfo(
+                                path = path,
+                                name = path.name,
+                                sizeBytes = metadata?.size ?: 0L
+                            )
+                        }
+                        .sortedByDescending { it.name }
+                    _files.value = fileList
+                }
+            } catch (e: Exception) {
+                println("Failed to load log files: ${e.message}")
+            }
         }
     }
 
-    fun exportLogs() {
-        logManager.shareLatestLog()
+    fun toggleSelection(info: LogFileInfo) {
+        _files.value = _files.value.map {
+            if (it.path == info.path) it.copy(isSelected = !it.isSelected) else it
+        }
+    }
+
+    fun shareSelectedFiles() {
+        val selected = _files.value.filter { it.isSelected }.map { it.path }
+        if (selected.isNotEmpty()) {
+            fileSharer.shareFiles(selected, "App Log Export")
+        }
     }
 }
