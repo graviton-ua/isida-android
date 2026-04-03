@@ -29,10 +29,10 @@ import kotlin.time.Instant
  *
  * Key features:
  * - **Daily Rotation:** Automatically creates a new log file for each calendar day (UTC).
- * - **Asynchronous Writing:** Log entries are queued and processed on a background IO dispatcher to avoid blocking the caller.
- * - **Automatic Cleanup:** Periodically removes log files older than a specified retention period.
- * - **Batch Processing:** Writes logs in batches to optimize disk I/O performance and reduce overhead.
- * - **Error Resilience:** Gracefully handles I/O failures (e.g., full disk or locked files) with retry logic.
+ * - **Asynchronous Writing:** Log entries are queued and processed on a background IO dispatcher.
+ * - **Open-Write-Close Batching:** Files are only kept open for the duration of a write batch.
+ *   This ensures Windows/Desktop environments do not lock the file, allowing real-time log reading/sharing.
+ * - **Error Resilience:** Gracefully handles I/O failures with retry logic.
  *
  * @param dispatchers Provides the execution context (IO dispatcher) for background operations.
  * @param pathProvider Supplies the base directory path where the "logs" folder will be created.
@@ -50,8 +50,6 @@ class RollingFileLogWriter(
 ) : LogWriter() {
 
     private val dispatcher = dispatchers.io
-
-    /** The directory where all log files are stored. */
     private val logsDir = pathProvider.logsPath
 
     /**
@@ -76,7 +74,6 @@ class RollingFileLogWriter(
     )
 
     init {
-        // Start the background log processing loop immediately upon initialization.
         scope.launch(dispatcher) { processLogs() }
     }
 
@@ -93,14 +90,10 @@ class RollingFileLogWriter(
         logChannel.trySend(entry)
     }
 
-    /**
-     * The main background loop that handles log file rotation, batching, and I/O operations.
-     */
     private suspend fun CoroutineScope.processLogs() {
         var activeDate: LocalDate? = null
-        var activeSink: Sink? = null
 
-        // Initial setup: Ensure the logs directory exists and run an initial cleanup.
+        // Initial setup
         try {
             if (!SystemFileSystem.exists(logsDir)) {
                 SystemFileSystem.createDirectories(logsDir)
@@ -112,64 +105,47 @@ class RollingFileLogWriter(
 
         while (isActive) {
             try {
-                // Wait until at least one log entry is available in the channel.
+                // 1. Suspend until at least one log entry is available.
                 val firstEntry = logChannel.receive()
                 val logDate = firstEntry.instant.toLocalDateTime(TimeZone.UTC).date
 
-                // Check if we need to rotate the file (e.g., date has changed).
+                // 2. Handle Daily Rotation Cleanup
                 if (logDate != activeDate) {
-                    activeSink?.flush()
-                    activeSink?.close()
-
                     activeDate = logDate
-                    val fileName = "logs_$logDate.log"
-                    val filePath = Path(logsDir, fileName)
-
-                    // Re-verify directory existence in case it was deleted by the OS or user.
                     if (!SystemFileSystem.exists(logsDir)) SystemFileSystem.createDirectories(logsDir)
-
-                    activeSink = SystemFileSystem.sink(filePath, append = true).buffered()
                     cleanupOldLogs(logDate)
                 }
 
-                // Process the first entry.
-                writeToSink(activeSink, firstEntry)
+                // 3. Resolve file path
+                val fileName = "logs_$logDate.log"
+                val filePath = Path(logsDir, fileName)
 
-                // Batch processing: Drain additional logs from the channel up to MAX_BATCH_SIZE.
-                var processedInBatch = 1
-                while (processedInBatch < MAX_BATCH_SIZE) {
-                    val nextEntry = logChannel.tryReceive().getOrNull() ?: break
-                    writeToSink(activeSink, nextEntry)
-                    processedInBatch++
-                }
+                // 4. OPEN-WRITE-CLOSE per batch using .use {}
+                // The file is opened here, and guaranteed to be closed and flushed at the end of the block.
+                SystemFileSystem.sink(filePath, append = true).buffered().use { sink ->
 
-                // Ensure data is committed to the file system after each batch.
-                activeSink?.flush()
+                    // Write the initial entry that woke up the coroutine
+                    writeToSink(sink, firstEntry)
+
+                    // Drain additional logs from the channel up to MAX_BATCH_SIZE
+                    var processedInBatch = 1
+                    while (processedInBatch < MAX_BATCH_SIZE) {
+                        val nextEntry = logChannel.tryReceive().getOrNull() ?: break
+                        writeToSink(sink, nextEntry)
+                        processedInBatch++
+                    }
+                } // <--- Sink is automatically flushed and closed here, releasing the Windows file lock.
 
             } catch (e: Exception) {
-                // Error Resilience: Handle cases like disk full, file locked, or permission issues.
+                // Error Resilience: Handle cases like disk full, file locked by an external strict reader, etc.
                 println("Logger: IO Exception during batch write: ${e.message}")
 
-                // Reset state to force a fresh file handle on the next attempt.
-                try {
-                    activeSink?.close()
-                } catch (_: Exception) {
-                    // Ignore errors during emergency close.
-                }
-                activeSink = null
+                // Reset date state to ensure file paths and directories are re-checked on the next run
                 activeDate = null
 
-                // Throttle retries to avoid CPU spin-locking during persistent I/O failures.
+                // Throttle retries to avoid CPU spin-locking
                 delay(5.seconds)
             }
-        }
-
-        // Finalize: Ensure all buffered logs are written before the coroutine scope is cancelled.
-        try {
-            activeSink?.flush()
-            activeSink?.close()
-        } catch (_: Exception) {
-            // Ignore errors during shutdown.
         }
     }
 
@@ -178,14 +154,13 @@ class RollingFileLogWriter(
      * 
      * Output format: [Timestamp] [Severity] [Tag] Message
      */
-    private fun writeToSink(sink: Sink?, entry: LogEntry) {
-        if (sink == null) return
+    private fun writeToSink(sink: Sink, entry: LogEntry) {
         try {
             val logString = buildString {
                 append("[")
                 append(entry.instant.toString())
                 append("] [")
-                append(entry.severity.name[0]) // Use single letter for severity (I, W, E, etc.)
+                append(entry.severity.name[0])
                 append("] [")
                 append(entry.tag)
                 append("] ")
@@ -198,7 +173,6 @@ class RollingFileLogWriter(
             }
             sink.writeString(logString)
         } catch (e: Exception) {
-            // Propagate exception to the main loop for recovery handling.
             throw e
         }
     }
@@ -224,7 +198,7 @@ class RollingFileLogWriter(
                             SystemFileSystem.delete(path)
                         }
                     } catch (e: Exception) {
-                        // Skip files with unrecognized date formats.
+                        // Skip
                     }
                 }
             }
