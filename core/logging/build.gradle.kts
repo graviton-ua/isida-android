@@ -14,6 +14,9 @@ kotlin {
             dependencies {
                 implementation(projects.core.base)
                 api(libs.kermit.kermit)
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.kotlinx.datetime)
+                implementation(libs.kotlinx.io.core)
             }
         }
 
