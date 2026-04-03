@@ -114,4 +114,6 @@ data class StatusPacketV2(
     val nothing1: Int = 0,      // 1 байт ind=59;       не используется ! DDHH = 2209
     val ip0: Int = 0, val ip1: Int = 0, val ip2: Int = 0, val ip3: Int = 0, // 4 байт ind=54;ind=55;ind=56;ind=57;
     // ------------------ ИТОГО 40 bytes -------------------------------
-) : IsidaPacket.V2, StatusPacket
+) : IsidaPacket.V2, StatusPacket {
+    override val logPrefix: String by lazy { "[DeviceModel: $model] [DeviceNumber: $node]" }
+}

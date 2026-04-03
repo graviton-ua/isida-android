@@ -19,4 +19,6 @@ interface DeviceProperty {
     suspend fun validateOnInputUpdate()
 
     suspend fun clearErrorOnInputUpdate()
+
+    fun log(): String
 }

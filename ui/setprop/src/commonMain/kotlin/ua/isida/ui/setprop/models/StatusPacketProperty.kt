@@ -10,5 +10,4 @@ abstract class StatusPacketProperty<T : DeviceProperty>(
 ) : DeviceProperty by property {
     abstract fun readValue(packet: StatusPacket)
     abstract fun copyAndUpdate(packet: StatusPacket): StatusPacket
-    abstract fun getInputValue(): String
 }

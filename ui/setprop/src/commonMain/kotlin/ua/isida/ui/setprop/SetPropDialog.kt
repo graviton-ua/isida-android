@@ -1,9 +1,5 @@
 package ua.isida.ui.setprop
 
-import org.jetbrains.compose.resources.stringResource
-import ua.isida.common.ui.resources.Res
-import ua.isida.common.ui.resources.btn_apply
-import ua.isida.common.ui.resources.btn_cancel
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
@@ -20,50 +16,16 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
+import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.compose.theme.AppTheme
 import ua.isida.common.ui.compose.theme.IsidaTheme
 import ua.isida.common.ui.compose.ui.WhDialog
-import kotlinx.serialization.Serializable
+import ua.isida.common.ui.resources.Res
+import ua.isida.common.ui.resources.btn_apply
+import ua.isida.common.ui.resources.btn_cancel
 import ua.isida.ui.properties.DeviceProperty
-import ua.isida.ui.setprop.models.Air0
-import ua.isida.ui.setprop.models.Air1
-import ua.isida.ui.setprop.models.Alarm0
-import ua.isida.ui.setprop.models.Alarm1
-import ua.isida.ui.setprop.models.ExtOff0
-import ua.isida.ui.setprop.models.ExtOff1
-import ua.isida.ui.setprop.models.ExtOn0
-import ua.isida.ui.setprop.models.ExtOn1
-import ua.isida.ui.setprop.models.ExtendMode
-import ua.isida.ui.setprop.models.FlapRestrictions
-import ua.isida.ui.setprop.models.Hysteresis
-import ua.isida.ui.setprop.models.Identif
-import ua.isida.ui.setprop.models.Ikoff0
-import ua.isida.ui.setprop.models.Ikoff1
-import ua.isida.ui.setprop.models.KoffCurr
-import ua.isida.ui.setprop.models.MaxRun
-import ua.isida.ui.setprop.models.MinFan
-import ua.isida.ui.setprop.models.MinRun
-import ua.isida.ui.setprop.models.Period
-import ua.isida.ui.setprop.models.Permission
-import ua.isida.ui.setprop.models.Pkoff0
-import ua.isida.ui.setprop.models.Pkoff1
-import ua.isida.ui.setprop.models.Program
-import ua.isida.ui.setprop.models.RelayMode
-import ua.isida.ui.setprop.models.SpCO2
-import ua.isida.ui.setprop.models.SpRh0
-import ua.isida.ui.setprop.models.SpRh1
-import ua.isida.ui.setprop.models.SpT0
-import ua.isida.ui.setprop.models.SpT1
-import ua.isida.ui.setprop.models.TurnOff
-import ua.isida.ui.setprop.models.TurnOn
-import ua.isida.ui.setprop.models.TurnTime
-import ua.isida.ui.setprop.models.WaitCooling
-import ua.isida.ui.setprop.models.Zonality
-
-import ua.isida.common.ui.resources.audit_set_value
-import ua.isida.common.ui.resources.home_tab_prop
-
-import ua.isida.common.ui.resources.CellNum
+import ua.isida.ui.setprop.models.*
 
 @Serializable
 data class SetPropDialog(val id: String) : NavKey
@@ -93,12 +55,8 @@ internal fun SetPropDialog(
 internal fun SetPropDialog(
     state: SetPropViewState,
     navigateUp: () -> Unit,
-    send: (String?, String?, String?, String?) -> Unit,
+    send: () -> Unit,
 ) {
-    val screenName = stringResource(Res.string.home_tab_prop)
-    val valueLabel = stringResource(Res.string.audit_set_value)
-    val devicePrefix = state.node?.let { "[${stringResource(Res.string.CellNum, it)}]" }
-
     WhDialog {
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -121,14 +79,7 @@ internal fun SetPropDialog(
 
             val valid = state.property.isValid.collectAsStateWithLifecycle(initialValue = true)
             DialogButtons(
-                onSend = { 
-                    send(
-                        screenName,
-                        title,
-                        valueLabel,
-                        devicePrefix
-                    ) 
-                },
+                onSend = send,
                 onCancel = navigateUp,
                 validState = valid,
                 modifier = Modifier.fillMaxWidth(),
@@ -192,7 +143,7 @@ private fun Preview(
         SetPropDialog(
             state = SetPropViewState(property = property),
             navigateUp = {},
-            send = { _, _, _, _ -> },
+            send = {},
         )
     }
 }

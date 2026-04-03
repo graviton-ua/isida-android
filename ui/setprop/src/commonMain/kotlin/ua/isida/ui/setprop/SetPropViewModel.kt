@@ -3,15 +3,10 @@ package ua.isida.ui.setprop
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import ua.isida.metrox.viewmodel.ViewModelAssistedFactory
-import ua.isida.metrox.viewmodel.ViewModelKey
-import ua.isida.metrox.viewmodel.ViewModelScope
-import ua.isida.util.AppCoroutineDispatchers
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
 import dev.zacsweers.metro.ContributesIntoMap
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -21,16 +16,18 @@ import ua.isida.data.protocol.packets.StatusPacket
 import ua.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.isida.domain.interactors.SendCommand
 import ua.isida.domain.observers.ObserveStatus
+import ua.isida.metrox.viewmodel.ViewModelAssistedFactory
+import ua.isida.metrox.viewmodel.ViewModelKey
+import ua.isida.metrox.viewmodel.ViewModelScope
 import ua.isida.ui.setprop.models.propertyFromId
-import ua.isida.util.AuditLogger
+import ua.isida.util.AppCoroutineDispatchers
 
 @AssistedInject
 class SetPropViewModel(
     @Assisted private val id: String,
-    dispatchers: AppCoroutineDispatchers,
+    private val dispatchers: AppCoroutineDispatchers,
     observeStatus: ObserveStatus,
     private val sendCommand: SendCommand,
-    private val audit: AuditLogger,
 ) : ViewModel() {
 
     @AssistedFactory
@@ -82,43 +79,26 @@ class SetPropViewModel(
         viewModelScope.launch(dispatchers.computation) { property.clearErrorOnInputUpdate() }
     }
 
-fun send(
-    screenName: String? = null,
-    actionName: String? = null,
-    valueLabel: String? = null,
-    devicePrefix: String? = null
-) = viewModelScope.launch(Dispatchers.Default) {
-    // validate prop before we send anything
-    val isValid = property.validate()
+    fun send() = viewModelScope.launch(dispatchers.computation) {
+        // validate prop before we send anything
+        val isValid = property.validate()
 
-    // If it's not valid error already been shown on the UI, we can silently return
-    if (!isValid) return@launch
+        // If it's not valid error already been shown on the UI, we can silently return
+        if (!isValid) return@launch
 
-    //Here we should build and send command to device
-    val snapshot = packets.value ?: return@launch
-    val modifiedSnapshot = property.copyAndUpdate(snapshot)
+        //Here we should build and send command to device
+        val snapshot = packets.value ?: return@launch
+        val modifiedSnapshot = property.copyAndUpdate(snapshot)
 
-    val cmd = prepareCommand(modifiedSnapshot)
-        .onFailure { logger.w(it) { "Command preparation failed" } }
-        .getOrNull() ?: return@launch
+        val cmd = prepareCommand(modifiedSnapshot)
+            .onFailure { logger.w(it) { "Command preparation failed" } }
+            .getOrNull() ?: return@launch
 
-    sendCommand(cmd)
-        .onSuccess {
-            val value = property.getInputValue()
-            val nodeVal = (snapshot as? StatusPacketV1)?.node ?: node.value
-            val nodePrefix = nodeVal?.let { "[Node $it] " } ?: ""
-
-            audit.logAction(
-                screen = screenName ?: "Properties",
-                action = actionName ?: "Apply $id",
-                details = "${valueLabel ?: "New value"}: $value",
-                devicePrefix = devicePrefix,
-                consoleLog = "${nodePrefix}[Properties] Apply $id: New value: $value"
-            )
-            _events.send(SetPropViewEvent.Sent)
-            logger.d { "Command sent" }
-        }    // ... rest of onSuccess logic ...
-
+        sendCommand(cmd)
+            .onSuccess {
+                logger.i { "${snapshot.logPrefix} | ${property.log()}" }
+                _events.send(SetPropViewEvent.Sent)
+            }
             .onFailure { logger.e(it) { "Command failed" } }
     }
 

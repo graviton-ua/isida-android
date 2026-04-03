@@ -1,9 +1,9 @@
 package ua.isida.ui.properties
 
 import androidx.compose.runtime.Stable
+import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.compose.input.NumberInputTextFieldState
 import ua.isida.common.ui.resources.*
-import org.jetbrains.compose.resources.stringResource
 import ua.isida.ui.properties.types.NumberInputTextFieldDeviceProperty
 import ua.isida.ui.properties.types.RadioListDeviceProperty
 import ua.isida.ui.properties.types.SliderDeviceProperty
@@ -28,7 +28,9 @@ class DevicePropertySpT0(value: Float? = null) : NumberInputTextFieldDevicePrope
             else -> null
         }
     },
-)
+) {
+    override fun log(): String = "SpT0 -> `${inputHelper.state.valueAsFloat}`"
+}
 
 //-------------------------- spT1 ------------------------------
 @Stable
@@ -50,7 +52,9 @@ class DevicePropertySpT1(value: Float? = null) : NumberInputTextFieldDevicePrope
             else -> null
         }
     },
-)
+) {
+    override fun log(): String = "SpT1 -> `${inputHelper.state.valueAsFloat}`"
+}
 
 //-------------------------- Permission (маска 0xC0) ------------------------------
 @Stable
@@ -67,7 +71,9 @@ class DevicePropertyPermission(value: Int? = null) : RadioListDeviceProperty<Int
         }
         if (id != null) stringResource(id) else "Unknown"
     },
-)
+) {
+    override fun log(): String = "Permission -> `${inputHelper.value}`"
+}
 
 //-------------------------- spRh0 ------------------------------
 @Stable
@@ -89,7 +95,9 @@ class DevicePropertySpRh0(value: Int? = null) : NumberInputTextFieldDeviceProper
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "SpRh0 -> `${inputHelper.state.valueAsInt}`"
+}
 
 //-------------------------- spRh1 ------------------------------
 @Stable
@@ -111,7 +119,9 @@ class DevicePropertySpRh1(value: Int? = null) : NumberInputTextFieldDeviceProper
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "SpRh1 -> `${inputHelper.state.valueAsInt}`"
+}
 
 //-------------------------- ExtendMode ------------------------------
 @Stable
@@ -131,7 +141,9 @@ class DevicePropertyExtendMode(value: Int? = null) : RadioListDeviceProperty<Int
         }
         if (id != null) stringResource(id) else "Unknown"
     },
-)
+) {
+    override fun log(): String = "ExtendMode -> `${inputHelper.value}`"
+}
 
 //-------------------------- RelayMode ------------------------------
 @Stable
@@ -150,7 +162,9 @@ class DevicePropertyRelayMode(value: Int? = null) : RadioListDeviceProperty<Int>
         }
         if (id != null) stringResource(id) else "Unknown"
     },
-)
+) {
+    override fun log(): String = "RelayMode -> `${inputHelper.value}`"
+}
 
 //-------------------------- Program ------------------------------
 @Stable
@@ -167,7 +181,9 @@ class DevicePropertyProgram(value: Int? = null) : RadioListDeviceProperty<Int>(
             }
         }
     },
-)
+) {
+    override fun log(): String = "Program -> `${inputHelper.value}`"
+}
 
 
 //-------------------------- MinRun ------------------------------
@@ -190,7 +206,9 @@ class DevicePropertyMinRun(value: Float? = null) : NumberInputTextFieldDevicePro
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "MinRun -> `${inputHelper.state.valueAsFloat}`"
+}
 
 //-------------------------- MaxRun ------------------------------
 @Stable
@@ -212,7 +230,9 @@ class DevicePropertyMaxRun(value: Int? = null) : NumberInputTextFieldDevicePrope
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "MaxRun -> `${inputHelper.state.valueAsInt}`"
+}
 
 //-------------------------- Period ------------------------------
 @Stable
@@ -234,7 +254,9 @@ class DevicePropertyPeriod(value: Int? = null) : NumberInputTextFieldDevicePrope
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "Period -> `${inputHelper.state.valueAsInt}`"
+}
 
 //-------------------------- TurnOff ------------------------------
 @Stable
@@ -256,7 +278,9 @@ class DevicePropertyTurnOff(value: Int? = null) : NumberInputTextFieldDeviceProp
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "TurnOff -> `${inputHelper.state.valueAsInt}`"
+}
 
 //-------------------------- TurnOn ------------------------------
 @Stable
@@ -278,7 +302,9 @@ class DevicePropertyTurnOn(value: Int? = null) : NumberInputTextFieldDevicePrope
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "TurnOn -> `${inputHelper.state.valueAsInt}`"
+}
 
 //-------------------------- Alarm0 ------------------------------
 @Stable
@@ -300,7 +326,9 @@ class DevicePropertyAlarm0(value: Float? = null) : NumberInputTextFieldDevicePro
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "Alarm0 -> `${inputHelper.state.valueAsFloat}`"
+}
 
 //-------------------------- Alarm1 ------------------------------
 @Stable
@@ -322,7 +350,9 @@ class DevicePropertyAlarm1(value: Float? = null) : NumberInputTextFieldDevicePro
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "Alarm1 -> `${inputHelper.state.valueAsFloat}`"
+}
 
 //-------------------------- ExtOn0 ------------------------------
 @Stable
@@ -344,7 +374,9 @@ class DevicePropertyExtOn0(value: Float? = null) : NumberInputTextFieldDevicePro
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "ExtOn0 -> `${inputHelper.state.valueAsFloat}`"
+}
 
 //-------------------------- ExtOn1 ------------------------------
 @Stable
@@ -366,7 +398,9 @@ class DevicePropertyExtOn1(value: Float? = null) : NumberInputTextFieldDevicePro
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "ExtOn1 -> `${inputHelper.state.valueAsFloat}`"
+}
 
 //-------------------------- ExtOff0 ------------------------------
 @Stable
@@ -388,7 +422,9 @@ class DevicePropertyExtOff0(value: Float? = null) : NumberInputTextFieldDevicePr
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "ExtOff0 -> `${inputHelper.state.valueAsFloat}`"
+}
 
 //-------------------------- ExtOff1 ------------------------------
 @Stable
@@ -410,19 +446,16 @@ class DevicePropertyExtOff1(value: Float? = null) : NumberInputTextFieldDevicePr
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "ExtOff1 -> `${inputHelper.state.valueAsFloat}`"
+}
 
 //-------------------------- Air0 ------------------------------
 @Stable
 class DevicePropertyAir0(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
     title = { stringResource(Res.string.prop_air0_lb) + stringResource(Res.string.dimen_min) },
-    description = {
-        stringResource(
-            Res.string.input_info_limit_min_max,
-            "1", "255"
-        )
-    },
+    description = { stringResource(Res.string.input_info_limit_min_max, "1", "255") },
     onValidate = { text -> // Переименовал в text для ясности
         val numericValue = text.toIntOrNull()
         when {
@@ -432,19 +465,16 @@ class DevicePropertyAir0(value: Int? = null) : NumberInputTextFieldDevicePropert
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "Air0 -> `${inputHelper.state.valueAsInt}`"
+}
 
 //-------------------------- Air1 ------------------------------
 @Stable
 class DevicePropertyAir1(value: Int? = null) : NumberInputTextFieldDeviceProperty<Int>(
     initValue = value,
     title = { stringResource(Res.string.prop_air1_lb) + stringResource(Res.string.dimen_sec) },
-    description = {
-        stringResource(
-            Res.string.input_info_limit_min_max,
-            "0", "255"
-        )
-    },
+    description = { stringResource(Res.string.input_info_limit_min_max, "0", "255") },
     onValidate = { text -> // Переименовал в text для ясности
         val numericValue = text.toIntOrNull()
         when {
@@ -454,7 +484,9 @@ class DevicePropertyAir1(value: Int? = null) : NumberInputTextFieldDevicePropert
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "Air1 -> `${inputHelper.state.valueAsInt}`"
+}
 
 //-------------------------- SpCO2 ------------------------------
 @Stable
@@ -462,7 +494,9 @@ class DevicePropertySpCO2(value: Int? = null) : SliderDeviceProperty<Int>(
     initValue = (value ?: 20),
     min = 1000, max = 5000, increment = 500f,
     title = { stringResource(Res.string.prop_CO2_lb) + " ppm." },
-)
+) {
+    override fun log(): String = "SpCO2 -> `${inputHelper.value}`"
+}
 
 //-------------------------- KoffCurr ------------------------------
 @Stable
@@ -484,7 +518,9 @@ class DevicePropertyKoffCurr(value: Int? = null) : NumberInputTextFieldDevicePro
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "KoffCurr -> `${inputHelper.state.valueAsInt}`"
+}
 
 //-------------------------- Hysteresis (маска 0x3F) ------------------------------
 @Stable
@@ -492,7 +528,9 @@ class DevicePropertyHysteresis(value: Float? = null) : SliderDeviceProperty<Floa
     initValue = (value ?: 0.2f),
     min = 0.2f, max = 3.0f, increment = 0.1f,
     title = { stringResource(Res.string.prop_Hysteresis_lb) + " °C" },
-)
+) {
+    override fun log(): String = "Hysteresis -> `${inputHelper.value}`"
+}
 
 //-------------------------- TurnTime ------------------------------
 @Stable
@@ -500,7 +538,9 @@ class DevicePropertyTurnTime(value: Int? = null) : SliderDeviceProperty<Int>(
     initValue = value,
     min = 1, max = 4, increment = 1.0f,
     title = { stringResource(Res.string.prop_turnTime_lb) + stringResource(Res.string.dimen_min) },
-)
+) {
+    override fun log(): String = "TurnTime -> `${inputHelper.value}`"
+}
 
 //------------------------ TurnPermission ----------------------------
 @Stable
@@ -515,7 +555,9 @@ class DevicePropertyTurnPermission(value: Int? = null) : RadioListDeviceProperty
             else -> ""
         }
     },
-)
+) {
+    override fun log(): String = "TurnPermission -> `${inputHelper.value}`"
+}
 
 //-------------------------- Zonality ----------------------------
 @Stable
@@ -523,7 +565,9 @@ class DevicePropertyZonality(value: Int? = null) : SliderDeviceProperty<Int>(
     initValue = value,
     min = 1, max = 3, increment = 1.0f,
     title = { stringResource(Res.string.prop_zonelity_lb) + " °C" },
-)
+) {
+    override fun log(): String = "Zonality -> `${inputHelper.value}`"
+}
 
 //-------------------------- Flap restrictions ----------------------------
 @Stable
@@ -531,7 +575,9 @@ class DevicePropertyFlapRestrictions(value: Int? = null) : SliderDeviceProperty<
     initValue = value,
     min = 40, max = 100, increment = 10.0f,
     title = { stringResource(Res.string.prop_flapRestr_lb) + " %" },
-)
+) {
+    override fun log(): String = "FlapRestrictions -> `${inputHelper.value}`"
+}
 
 //----------------- Opening the Flap for the current day ------------------
 @Stable
@@ -539,7 +585,9 @@ class DevicePropertyFlapProgramDay(value: Int? = null) : SliderDeviceProperty<In
     initValue = value,
     min = 0, max = 40, increment = 10.0f,
     title = { stringResource(Res.string.prop_flapProg_lb) + " %" },
-)
+) {
+    override fun log(): String = "FlapProgramDay -> `${inputHelper.value}`"
+}
 
 //-------------------------- WaitCooling -------------------------
 @Stable
@@ -547,7 +595,9 @@ class DevicePropertyWaitCooling(value: Int? = null) : SliderDeviceProperty<Int>(
     initValue = value,
     min = 4, max = 17, increment = 1.0f,
     title = { stringResource(Res.string.prop_waitCooling_lb) + stringResource(Res.string.dimen_min) },
-)
+) {
+    override fun log(): String = "WaitCooling -> `${inputHelper.value}`"
+}
 
 //-------------------------- Pkoff0 ------------------------------
 @Stable
@@ -569,7 +619,9 @@ class DevicePropertyPkoff0(value: Int? = null) : NumberInputTextFieldDevicePrope
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "Pkoff0 -> `${inputHelper.state.valueAsInt}`"
+}
 
 //-------------------------- Pkoff1 ------------------------------
 @Stable
@@ -591,7 +643,9 @@ class DevicePropertyPkoff1(value: Int? = null) : NumberInputTextFieldDevicePrope
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "Pkoff1 -> `${inputHelper.state.valueAsInt}`"
+}
 
 //-------------------------- Ikoff0 ------------------------------
 @Stable
@@ -613,7 +667,9 @@ class DevicePropertyIkoff0(value: Int? = null) : NumberInputTextFieldDevicePrope
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "Ikoff0 -> `${inputHelper.state.valueAsInt}`"
+}
 
 //-------------------------- Ikoff1 ------------------------------
 @Stable
@@ -635,7 +691,9 @@ class DevicePropertyIkoff1(value: Int? = null) : NumberInputTextFieldDevicePrope
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "Ikoff1 -> `${inputHelper.state.valueAsInt}`"
+}
 
 //-------------------------- Identif ------------------------------
 @Stable
@@ -657,7 +715,9 @@ class DevicePropertyIdentif(value: Int? = null) : NumberInputTextFieldDeviceProp
             else -> null // Если всё в порядке — возвращаем null (ошибки нет)
         }
     },
-)
+) {
+    override fun log(): String = "Identif -> `${inputHelper.state.valueAsInt}`"
+}
 
 //-------------------------- MinFan ------------------------------
 @Stable
@@ -665,4 +725,6 @@ class DevicePropertyMinFan(value: Int? = null) : SliderDeviceProperty<Int>(
     initValue = value,
     min = 60, max = 900, increment = 60.0f,
     title = { stringResource(Res.string.prop_minFan_lb) + stringResource(Res.string.dimen_speed) },
-)
+) {
+    override fun log(): String = "MinFan -> `${inputHelper.value}`"
+}

@@ -3,20 +3,19 @@ package ua.isida.ui.home.prop
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ua.isida.common.ui.compose.theme.IsidaColor
-import ua.isida.common.ui.resources.*
-import ua.isida.common.ui.resources.ComposableString.Companion.composableString
-import ua.isida.metrox.viewmodel.ViewModelKey
-import ua.isida.metrox.viewmodel.ViewModelScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.*
 import org.jetbrains.compose.resources.stringResource
+import ua.isida.common.ui.compose.theme.IsidaColor
+import ua.isida.common.ui.resources.*
+import ua.isida.common.ui.resources.ComposableString.Companion.composableString
 import ua.isida.data.bluetooth.ConnectionState
 import ua.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.isida.domain.bluetooth.DeviceConnectionManager
 import ua.isida.domain.observers.ObserveStatus
-import ua.isida.util.AuditLogger
+import ua.isida.metrox.viewmodel.ViewModelKey
+import ua.isida.metrox.viewmodel.ViewModelScope
 import java.util.Locale
 
 @Inject
@@ -25,7 +24,6 @@ import java.util.Locale
 class PropViewModel(
     manager: DeviceConnectionManager,
     observeStatus: ObserveStatus,
-    private val audit: AuditLogger,
 ) : ViewModel() {
     private val connectionState = manager.connectionState
     private val packets = observeStatus.flow.stateIn(
@@ -50,10 +48,6 @@ class PropViewModel(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = PropViewState.Init,
     )
-
-    fun exportLogs() {
-        audit.exportLogs()
-    }
 }
 
 private fun Float.format(): String = String.format(Locale.getDefault(), "%.1f", this)

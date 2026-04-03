@@ -9,7 +9,6 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
@@ -29,7 +28,6 @@ import ua.isida.extensions.combine
 import ua.isida.metrox.viewmodel.ViewModelKey
 import ua.isida.metrox.viewmodel.ViewModelScope
 import ua.isida.util.AppCoroutineDispatchers
-import ua.isida.util.AuditLogger
 import ua.isida.util.ObservableLoadingCounter
 import kotlin.time.Clock
 
@@ -42,7 +40,6 @@ class ProgramViewModel(
     private val getProgramTable: GetProgramTable,
     private val updateProgramTable: UpdateProgramTable,
     private val setRealTimeClock: SetRealTimeClock,
-    private val audit: AuditLogger,
 ) : ViewModel() {
     private val logger by lazy { Logger.withTag("ProgramViewModel") }
 
@@ -53,9 +50,7 @@ class ProgramViewModel(
     private val showResetDialog = MutableStateFlow(false)
     private val showClockDialog = MutableStateFlow(false)
 
-    private val tableState = table.map { packet ->
-        packet?.let { it.toState() }
-    }.flowOn(dispatchers.computation)
+    private val tableState = table.map { packet -> packet?.toState() }.flowOn(dispatchers.computation)
 
     val state: StateFlow<ProgramViewState> = combine(
         connectionState,
@@ -106,14 +101,7 @@ class ProgramViewModel(
         sendTableJob = viewModelScope.launch {
             loadingState.addLoader()
             updateProgramTable.executeSync(UpdateProgramTable.Params(tableNumber, currentTable))
-                .onSuccess {
-                    audit.logAction(
-                        screen = "Program",
-                        action = "Update Table #$tableNumber",
-                        details = "Table data synchronized with device"
-                    )
-                    logger.d { "Table updated successfully" }
-                }
+                .onSuccess { logger.i { "[Program] Update Table #$tableNumber | Table data synchronized with device" } }
                 .onFailure { logger.w(it) { "Failed to update table" } }
         }.also { it.invokeOnCompletion { loadingState.removeLoader() } }
     }
@@ -151,11 +139,10 @@ class ProgramViewModel(
         viewModelScope.launch {
             loadingState.addLoader()
             setRealTimeClock.executeSync(params).onSuccess {
-                audit.logAction(
-                    screen = "Program",
-                    action = if (startIncubation) "Start Incubation" else "Set Clock",
-                    details = "Params: $params"
-                )
+                logger.i {
+                    val action = if (startIncubation) "Start Incubation" else "Set Clock"
+                    "[Program] $action: Params: $params"
+                }
                 closeClockDialog()
             }.onFailure {
                 logger.w(it) { "Failed to set clock" }
@@ -170,11 +157,7 @@ class ProgramViewModel(
         val presets = ProgramPreset.ALL
         if (index in presets.indices) {
             val preset = presets[index]
-            audit.logAction(
-                screen = "Program",
-                action = "Apply Preset",
-                details = "Table #$index, Preset: ${preset.id}"
-            )
+            logger.i { "[Program] Apply Preset | Table #$index, Preset: ${preset.id}" }
             table.value = preset.table
             sendTable()
         }
@@ -183,11 +166,7 @@ class ProgramViewModel(
 
     fun onDayUpdated(index: Int, day: TableDay) {
         logger.d { "onDayUpdated: $index, $day" }
-        audit.logAction(
-            screen = "Program",
-            action = "Edit Day ${index + 1}",
-            details = "New values: $day"
-        )
+        logger.i { "[Program] Edit Day ${index + 1} | New values: $day" }
         table.update { currentTable ->
             val result: TablePacket? = when (currentTable) {
                 is TablePacketV1 -> {
