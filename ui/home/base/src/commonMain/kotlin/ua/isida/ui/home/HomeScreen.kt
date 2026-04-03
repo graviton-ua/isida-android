@@ -1,11 +1,6 @@
 package ua.isida.ui.home
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
@@ -30,11 +25,7 @@ import kotlinx.serialization.modules.polymorphic
 import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.compose.theme.AppTheme
 import ua.isida.common.ui.compose.ui.WhTopAppBar
-import ua.isida.common.ui.navigation.HomeTabScreen
-import ua.isida.common.ui.navigation.Navigator
-import ua.isida.common.ui.navigation.NavigationState
-import ua.isida.common.ui.navigation.rememberNavigationState
-import ua.isida.common.ui.navigation.toEntries
+import ua.isida.common.ui.navigation.*
 import ua.isida.common.ui.navigation.result.ResultEventBus
 import ua.isida.common.ui.resources.*
 import ua.isida.data.protocol.packets.TableDay
@@ -45,7 +36,6 @@ import ua.isida.ui.home.prop.PropScreen
 import ua.isida.ui.home.prop.addPropScreen
 import ua.isida.ui.home.stats.StatsScreen
 import ua.isida.ui.home.stats.addStatsScreen
-import ua.isida.ui.home.audit.AuditLogScreen
 
 @Serializable
 data object HomeScreen : NavKey
@@ -59,6 +49,7 @@ internal fun HomeScreen(
     viewModel: HomeViewModel = injectedViewModel(),
     resultBus: ResultEventBus,
     connectDevice: () -> Unit,
+    onShowLogs: () -> Unit,
     openPowerDialog: () -> Unit,
     openSetPropDialog: (String) -> Unit,
     navigateSetDay: (Int, TableDay) -> Unit,
@@ -70,7 +61,7 @@ internal fun HomeScreen(
         resultBus = resultBus,
         connectDevice = connectDevice,
         disconnectDevice = viewModel::disconnect,
-        onShowLogs = { /* Handled in the internal HomeScreen */ },
+        onShowLogs = onShowLogs,
         openPowerDialog = openPowerDialog,
         openSetPropDialog = openSetPropDialog,
         navigateSetDay = navigateSetDay,
@@ -83,7 +74,7 @@ private fun HomeScreen(
     resultBus: ResultEventBus,
     connectDevice: () -> Unit,
     disconnectDevice: () -> Unit,
-    onShowLogs: () -> Unit, // Placeholder
+    onShowLogs: () -> Unit,
     openPowerDialog: () -> Unit,
     openSetPropDialog: (String) -> Unit,
     navigateSetDay: (Int, TableDay) -> Unit,
@@ -99,9 +90,6 @@ private fun HomeScreen(
             addStatsScreen(navigator = navigator)
             addPropScreen(navigator = navigator, openSetPropDialog = openSetPropDialog)
             addProgramScreen(navigator = navigator, resultBus = resultBus, navigateSetDay = navigateSetDay)
-            entry<AuditLogScreen> {
-                ua.isida.ui.home.audit.AuditLogScreen(onBack = navigator::navigateUp)
-            }
         }
     }
 
@@ -111,7 +99,7 @@ private fun HomeScreen(
                 deviceConnected = state.deviceConnected,
                 connectDevice = connectDevice,
                 disconnectDevice = disconnectDevice,
-                onShowLogs = { navigator.navigateTo(AuditLogScreen) },
+                onShowLogs = onShowLogs,
                 openPowerDialog = openPowerDialog,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -228,7 +216,6 @@ private val config = SavedStateConfiguration {
             subclass(PropScreen::class, PropScreen.serializer())
             subclass(ProgramScreen::class, ProgramScreen.serializer())
             subclass(StatsScreen::class, StatsScreen.serializer())
-            subclass(AuditLogScreen::class, AuditLogScreen.serializer())
         }
     }
 }

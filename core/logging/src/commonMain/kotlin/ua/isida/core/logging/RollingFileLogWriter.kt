@@ -3,7 +3,7 @@ package ua.isida.core.logging
 import co.touchlab.kermit.LogWriter
 import co.touchlab.kermit.Severity
 import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.ContributesIntoSet
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
 import kotlinx.coroutines.CoroutineScope
@@ -40,7 +40,7 @@ import kotlin.time.Instant
  * @param minSeverity The minimum [Severity] level required for a log to be written to disk. Defaults to [Severity.Info].
  * @param maxHistoryDays The number of days to retain log files before they are automatically deleted. Defaults to 30 days.
  */
-@Inject @ContributesBinding(scope = AppScope::class, binding = binding<LogWriter>())
+@Inject @ContributesIntoSet(scope = AppScope::class, binding = binding<LogWriter>())
 class RollingFileLogWriter(
     dispatchers: AppCoroutineDispatchers,
     pathProvider: PathProvider,

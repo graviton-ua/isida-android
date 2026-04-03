@@ -75,6 +75,7 @@ include(
     ":ui:home:program",
     ":ui:home:stats",
     ":ui:scan",
+    ":ui:logreport",
     ":ui:properties",
     ":ui:setprop",
     ":ui:setday",

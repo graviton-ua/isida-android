@@ -20,5 +20,5 @@ interface DeviceProperty {
 
     suspend fun clearErrorOnInputUpdate()
 
-    fun log(): String
+    fun log(): String = ""
 }

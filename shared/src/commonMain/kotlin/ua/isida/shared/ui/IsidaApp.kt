@@ -8,15 +8,17 @@ import androidx.navigation3.runtime.*
 import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
-import ua.isida.common.ui.compose.theme.AppTheme
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
+import ua.isida.common.ui.compose.theme.AppTheme
+import ua.isida.common.ui.navigation.NavigatorWithResultBus
+import ua.isida.common.ui.navigation.result.ResultEventBus
 import ua.isida.ui.devicemode.DeviceModeDialog
 import ua.isida.ui.devicemode.addDeviceModeDialog
 import ua.isida.ui.home.HomeScreen
 import ua.isida.ui.home.addHomeScreen
-import ua.isida.common.ui.navigation.NavigatorWithResultBus
-import ua.isida.common.ui.navigation.result.ResultEventBus
+import ua.isida.ui.logreport.LogReportScreen
+import ua.isida.ui.logreport.addLogReportScreen
 import ua.isida.ui.scan.ScanDevicesScreen
 import ua.isida.ui.scan.addScanDevicesScreen
 import ua.isida.ui.setday.SetDayScreen
@@ -40,12 +42,14 @@ fun IsidaApp(
                 addHomeScreen(
                     navigator = navigator,
                     navigateScanDevices = { navigator.navigateTo(ScanDevicesScreen) },
+                    onShowLogs = { navigator.navigateTo(LogReportScreen) },
                     openPowerDialog = { navigator.navigateTo(DeviceModeDialog) },
                     openSetPropDialog = { navigator.navigateTo(SetPropDialog(it)) },
                     navigateSetDay = { index, day -> navigator.navigateTo(SetDayScreen(index, day)) },
                 )
                 addDeviceModeDialog(navigator = navigator)
                 addScanDevicesScreen(navigator = navigator)
+                addLogReportScreen(navigator = navigator)
                 addSetPropDialog(navigator = navigator)
                 addSetDayScreen(navigator = navigator)
             },
@@ -84,6 +88,7 @@ private val config = SavedStateConfiguration {
             subclass(DeviceModeDialog::class, DeviceModeDialog.serializer())
             subclass(ScanDevicesScreen::class, ScanDevicesScreen.serializer())
             subclass(SetPropDialog::class, SetPropDialog.serializer())
+            subclass(LogReportScreen::class, LogReportScreen.serializer())
         }
     }
 }

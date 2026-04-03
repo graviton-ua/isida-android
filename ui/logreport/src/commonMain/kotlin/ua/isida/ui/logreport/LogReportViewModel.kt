@@ -1,4 +1,4 @@
-package ua.isida.ui.home.audit
+package ua.isida.ui.logreport
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,9 +13,9 @@ import ua.isida.metrox.viewmodel.ViewModelKey
 import ua.isida.metrox.viewmodel.ViewModelScope
 
 @Inject
-@ViewModelKey(AuditLogViewModel::class)
+@ViewModelKey(LogReportViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
-class AuditLogViewModel(
+class LogReportViewModel(
     private val logManager: FileLogManager,
 ) : ViewModel() {
     private val _logs = MutableStateFlow<List<String>>(emptyList())

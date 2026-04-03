@@ -27,7 +27,7 @@
     <string name="btn_cancel">Отмена</string>
     <string name="btn_apply">Применить</string>
     <string name="btn_share_logs">Поделиться</string>
-    <string name="audit_set_value">Задано</string>
+    <string name="log_set_value">Задано</string>
     <string name="save_data">ЗАПИСЬ</string>
     <string name="label_connect">Соединить</string>
     <string name="label_send">Отправить</string>
