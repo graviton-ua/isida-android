@@ -4,15 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.webkit.MimeTypeMap
 import androidx.core.content.FileProvider
-import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.Named
+import dev.zacsweers.metro.*
 import kotlinx.io.files.Path
 import java.io.File
 
 /**
  * Android implementation of FileSharer using FileProvider.
  */
-@Inject
+@Inject @ContributesBinding(scope = AppScope::class, binding = binding<FileSharer>())
 class AndroidFileSharer(
     @param:Named("APPLICATION_CONTEXT") private val context: Context,
 ) : FileSharer {
@@ -59,7 +58,7 @@ class AndroidFileSharer(
 
         // For multiple files, if they are all logs, "text/plain" is the safest common type
         val intent = Intent(Intent.ACTION_SEND_MULTIPLE).apply {
-            type = "text/plain" 
+            type = "text/plain"
             putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris)
             addCategory(Intent.CATEGORY_DEFAULT)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)

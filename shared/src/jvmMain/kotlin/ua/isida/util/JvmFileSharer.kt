@@ -1,6 +1,9 @@
 package ua.isida.util
 
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 import kotlinx.io.files.Path
 import java.awt.Desktop
 import java.io.File
@@ -8,7 +11,7 @@ import java.io.File
 /**
  * JVM implementation of FileSharer that opens the file directory or the file itself.
  */
-@Inject
+@Inject @ContributesBinding(scope = AppScope::class, binding = binding<FileSharer>())
 class JvmFileSharer : FileSharer {
     override fun shareFile(filePath: Path, title: String) {
         val file = File(filePath.toString())
@@ -41,7 +44,7 @@ class JvmFileSharer : FileSharer {
         // On JVM we just open the directory containing the files
         val firstFile = File(filePaths[0].toString())
         val parentDir = firstFile.parentFile ?: File(".")
-        
+
         if (!Desktop.isDesktopSupported()) return
         val desktop = Desktop.getDesktop()
         try {

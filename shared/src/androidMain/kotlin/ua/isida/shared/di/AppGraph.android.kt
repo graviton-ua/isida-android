@@ -14,7 +14,6 @@ import ua.isida.base.PlatformConfig
 import ua.isida.domain.bluetooth.DeviceConnectionManager
 import ua.isida.shared.BluetoothStateService
 import ua.isida.util.AppCoroutineDispatchers
-import ua.isida.util.FileSharer
 import ua.isida.util.PathProvider
 
 @DependencyGraph(AppScope::class)
@@ -59,7 +58,4 @@ interface AndroidAppGraph : AppGraph {
     fun providePathProvider(application: Application): PathProvider = object : PathProvider {
         override val logsPath: Path = Path(application.filesDir.absolutePath, "logs")
     }
-
-    @Provides @SingleIn(AppScope::class)
-    fun provideFileSharer(impl: ua.isida.util.AndroidFileSharer): FileSharer = impl
 }
