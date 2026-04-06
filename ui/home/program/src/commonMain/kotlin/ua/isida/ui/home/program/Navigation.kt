@@ -2,12 +2,10 @@ package ua.isida.ui.home.program
 
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
-import ua.isida.data.protocol.packets.TableDay
-import ua.isida.common.ui.navigation.Navigator
 import ua.isida.common.ui.navigation.result.ResultEventBus
+import ua.isida.data.protocol.packets.TableDay
 
 fun EntryProviderScope<NavKey>.addProgramScreen(
-    navigator: Navigator,
     resultBus: ResultEventBus,
     navigateSetDay: (Int, TableDay) -> Unit,
 ) {

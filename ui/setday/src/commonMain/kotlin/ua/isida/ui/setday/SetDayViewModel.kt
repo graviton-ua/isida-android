@@ -16,7 +16,7 @@ import ua.isida.ui.setday.models.*
 import ua.isida.util.AppCoroutineDispatchers
 
 @AssistedInject
-class SetDayViewModel(
+internal class SetDayViewModel(
     @Assisted private val index: Int,
     @Assisted private val day: TableDay,
     dispatchers: AppCoroutineDispatchers,

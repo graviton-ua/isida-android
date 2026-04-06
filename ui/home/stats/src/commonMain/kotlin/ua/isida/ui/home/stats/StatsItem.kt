@@ -12,7 +12,7 @@ import ua.isida.common.ui.resources.ComposableString
  * @property title Заголовок элемента, который может быть ресурсом или обычной строкой.
  */
 @Immutable
-sealed interface StatsItem {
+internal sealed interface StatsItem {
     val id: Int
     val title: ComposableString
     val style: Style

@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 import ua.isida.common.ui.resources.ComposableString
 
 @Immutable
-sealed interface PropItem {
+internal sealed interface PropItem {
     val id: String
     val title: ComposableString
     val value: ComposableString

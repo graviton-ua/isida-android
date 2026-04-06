@@ -5,11 +5,11 @@ import ua.isida.data.protocol.packets.TableDay
 import ua.isida.ui.properties.DeviceProperty
 
 @Stable
-data class SetDayViewState(
+internal data class SetDayViewState(
     val properties: List<DeviceProperty>,
     val dataIsValid: Boolean = true,
 )
 
-sealed interface SetDayViewEvent {
+internal sealed interface SetDayViewEvent {
     data class OnSubmit(val index: Int, val day: TableDay) : SetDayViewEvent
 }

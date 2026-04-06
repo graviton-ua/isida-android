@@ -19,7 +19,7 @@ import ua.isida.ui.setprop.models.propertyFromId
 import ua.isida.util.AppCoroutineDispatchers
 
 @AssistedInject
-class SetPropViewModel(
+internal class SetPropViewModel(
     @Assisted private val id: String,
     private val dispatchers: AppCoroutineDispatchers,
     observeStatus: ObserveStatus,

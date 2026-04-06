@@ -34,7 +34,7 @@ import kotlin.time.Clock
 @Inject
 @ViewModelKey(ProgramViewModel::class)
 @ContributesIntoMap(AppScope::class)
-class ProgramViewModel(
+internal class ProgramViewModel(
     dispatchers: AppCoroutineDispatchers,
     manager: DeviceConnectionManager,
     private val getProgramTable: GetProgramTable,

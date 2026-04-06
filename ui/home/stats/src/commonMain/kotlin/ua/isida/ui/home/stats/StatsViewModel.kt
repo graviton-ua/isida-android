@@ -29,7 +29,7 @@ import ua.isida.util.ObservableLoadingCounter
  * Отвечает за наблюдение за данными устройства и преобразование их в список [StatsItem]
  * с использованием DSL [buildStats].
  */
-class StatsViewModel(
+internal class StatsViewModel(
     manager: DeviceConnectionManager,
     observeStatus: ObserveStatus,
 ) : ViewModel() {
@@ -102,8 +102,8 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
         style = {
             backgroundColor =
                 if (fuses != 0) IsidaColor.Red500
-                else if(errors !=0) IsidaColor.Red100
-                else if(warning !=0) IsidaColor.Yellow100
+                else if (errors != 0) IsidaColor.Red100
+                else if (warning != 0) IsidaColor.Yellow100
                 else if ((state and 0x80) > 0) IsidaColor.Yellow500
                 else if (state and 0x01 > 0) IsidaColor.Green100
                 else null
@@ -196,7 +196,7 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             }
         },
         style = {
-            val isWarning = (warning and DeviceWarning.WARNING_08.code) !=0
+            val isWarning = (warning and DeviceWarning.WARNING_08.code) != 0
             backgroundColor = if (isWarning) IsidaColor.Red100
             else null
         },
@@ -343,12 +343,12 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
             val hour = (currentTime shr 6) and 0x1F
             val minute = currentTime and 0x3F
             // if (programm != 0)
-                stringResource(
-                    Res.string.stats_incubation_time_format,
-                    day,
-                    hour.toString().padStart(2, '0'),
-                    minute.toString().padStart(2, '0')
-                )
+            stringResource(
+                Res.string.stats_incubation_time_format,
+                day,
+                hour.toString().padStart(2, '0'),
+                minute.toString().padStart(2, '0')
+            )
             // else ""
         },
     )
@@ -416,14 +416,16 @@ private fun StatusPacketV1.toItems(): List<StatsItem> = buildStats {
                     "$pvFan $dimen"
                 } else if (isError40) {
                     stringResource(Res.string.device_not_connected_title)
-                } else if(pvFan > 1){
+                } else if (pvFan > 1) {
                     val label = stringResource(Res.string.fanRun)
                     label
                 } else {
                     val label = stringResource(Res.string.fanStop)
                     label
                 }
-            } else { "" }
+            } else {
+                ""
+            }
         },
         style = {
             val isEnabled = (state and DeviceMode.ENABLE.code) != 0

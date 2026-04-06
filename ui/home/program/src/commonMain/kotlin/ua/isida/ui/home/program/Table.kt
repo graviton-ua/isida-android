@@ -8,7 +8,7 @@ import ua.isida.data.protocol.packets.TableDay
 import ua.isida.ui.home.program.Table.Cell
 
 @Immutable
-data class Table(
+internal data class Table(
     val rows: List<Row>,
 ) {
     @Immutable

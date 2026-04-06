@@ -11,31 +11,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
 import ua.isida.util.FileSharer
 import ua.isida.util.PathProvider
 
-data class LogFileInfo(
-    val path: Path,
-    val name: String,
-    val sizeBytes: Long,
-    val isSelected: Boolean = false
-) {
-    val sizeFormatted: String
-        get() {
-            val kb = sizeBytes / 1024.0
-            return if (kb < 1024) {
-                "${kb.toLong()} KB"
-            } else {
-                "${(kb / 1024.0).toLong()} MB"
-            }
-        }
-}
-
-@Inject @ViewModelKey
+@Inject
+@ViewModelKey(LogReportViewModel::class)
 @ContributesIntoMap(AppScope::class)
-class LogReportViewModel(
+internal class LogReportViewModel(
     private val pathProvider: PathProvider,
     private val fileSharer: FileSharer
 ) : ViewModel() {

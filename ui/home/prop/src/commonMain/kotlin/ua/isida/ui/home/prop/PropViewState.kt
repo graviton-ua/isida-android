@@ -1,13 +1,13 @@
 package ua.isida.ui.home.prop
 
 import androidx.compose.runtime.Immutable
+import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.resources.ComposableString.Companion.composableString
 import ua.isida.common.ui.resources.Res
 import ua.isida.common.ui.resources.timer
-import org.jetbrains.compose.resources.stringResource
 
 @Immutable
-data class PropViewState(
+internal data class PropViewState(
     val deviceConnected: Boolean,
     val items: List<PropItem>
 ) {

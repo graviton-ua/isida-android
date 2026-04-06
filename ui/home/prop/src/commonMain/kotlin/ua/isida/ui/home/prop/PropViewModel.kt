@@ -21,7 +21,7 @@ import java.util.Locale
 @Inject
 @ViewModelKey(PropViewModel::class)
 @ContributesIntoMap(AppScope::class)
-class PropViewModel(
+internal class PropViewModel(
     manager: DeviceConnectionManager,
     observeStatus: ObserveStatus,
 ) : ViewModel() {

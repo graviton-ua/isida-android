@@ -25,7 +25,7 @@ import ua.isida.common.ui.resources.btn_share_logs
 data object LogReportScreen : NavKey
 
 @Composable
-fun LogReportScreen(
+internal fun LogReportScreen(
     onBack: () -> Unit,
     viewModel: LogReportViewModel = metroViewModel(),
 ) {

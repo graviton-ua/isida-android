@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
  * @property titleDeviceBackgroundColor Фоновый цвет для заголовка с названием устройства, обычно используемый для индикации статуса подключения или работы устройства (например, зеленый для OK, красный для ошибки).
  * @property items Список строк [StatsItem] (заголовки и информационные элементы) для отображения в списке.
  */
-data class StatsViewState(
+internal data class StatsViewState(
     val deviceConnected: Boolean,
     val titleDeviceId: Int?,
     val titleDeviceBackgroundColor: Color?,

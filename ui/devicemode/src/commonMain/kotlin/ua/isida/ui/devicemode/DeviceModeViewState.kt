@@ -5,7 +5,7 @@ import ua.isida.data.protocol.DeviceMode
 import ua.isida.data.protocol.DeviceModeExtra
 
 @Immutable
-data class DeviceModeViewState(
+internal data class DeviceModeViewState(
     val deviceId: Int? = null,
     val mode: DeviceMode? = null,
     val extras: List<DeviceModeExtra> = emptyList(),
@@ -18,11 +18,11 @@ data class DeviceModeViewState(
     }
 }
 
-sealed interface DeviceModeViewEvent {
+internal sealed interface DeviceModeViewEvent {
     data object OnApplied : DeviceModeViewEvent
 }
 
-sealed class DeviceModeAction {
+internal sealed class DeviceModeAction {
     data class SelectMode(val mode: DeviceMode) : DeviceModeAction()
     data class ToggleExtra(val extra: DeviceModeExtra) : DeviceModeAction()
 

@@ -18,7 +18,7 @@ import ua.isida.domain.bluetooth.DeviceConnectionManager
 @Inject
 @ViewModelKey(ScanDevicesViewModel::class)
 @ContributesIntoMap(AppScope::class)
-class ScanDevicesViewModel(
+internal class ScanDevicesViewModel(
     private val scanner: DeviceScanner,
     private val connectionManager: DeviceConnectionManager,
 ) : ViewModel() {

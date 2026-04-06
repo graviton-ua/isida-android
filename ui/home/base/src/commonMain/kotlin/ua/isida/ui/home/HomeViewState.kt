@@ -3,7 +3,7 @@ package ua.isida.ui.home
 import androidx.compose.runtime.Immutable
 
 @Immutable
-data class HomeViewState(
+internal data class HomeViewState(
     val deviceConnected: Boolean = false,
     val isLoading: Boolean = false
 ) {

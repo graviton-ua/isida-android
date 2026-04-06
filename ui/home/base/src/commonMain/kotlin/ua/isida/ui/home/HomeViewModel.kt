@@ -15,7 +15,7 @@ import ua.isida.util.ObservableLoadingCounter
 @Inject
 @ViewModelKey(HomeViewModel::class)
 @ContributesIntoMap(AppScope::class)
-class HomeViewModel(
+internal class HomeViewModel(
     private val deviceConnectionManager: DeviceConnectionManager,
 ) : ViewModel() {
     private val loadingState = ObservableLoadingCounter()

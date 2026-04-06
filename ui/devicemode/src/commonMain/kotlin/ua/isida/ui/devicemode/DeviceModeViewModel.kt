@@ -21,7 +21,7 @@ import ua.isida.domain.observers.ObserveStatus
 @Inject
 @ViewModelKey(DeviceModeViewModel::class)
 @ContributesIntoMap(AppScope::class)
-class DeviceModeViewModel(
+internal class DeviceModeViewModel(
     observeStatus: ObserveStatus,
     private val sendCommand: SendCommand,
 ) : ViewModel() {

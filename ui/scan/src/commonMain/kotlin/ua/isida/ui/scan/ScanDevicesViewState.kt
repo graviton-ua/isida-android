@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import ua.isida.data.bluetooth.DiscoveredDevice
 
 @Immutable
-data class ScanDevicesViewState(
+internal data class ScanDevicesViewState(
     val isBluetoothEnabled: Boolean = false,
     val paired: List<DiscoveredDevice> = emptyList(),
     val found: List<DiscoveredDevice> = emptyList(),

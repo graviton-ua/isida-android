@@ -88,9 +88,9 @@ private fun HomeScreen(
     val navigator = remember(navigationState) { NavigatorImpl(navigationState) }
     val entryProvider = remember(navigator, resultBus) {
         entryProvider {
-            addStatsScreen(navigator = navigator)
-            addPropScreen(navigator = navigator, openSetPropDialog = openSetPropDialog)
-            addProgramScreen(navigator = navigator, resultBus = resultBus, navigateSetDay = navigateSetDay)
+            addStatsScreen()
+            addPropScreen(openSetPropDialog = openSetPropDialog)
+            addProgramScreen(resultBus = resultBus, navigateSetDay = navigateSetDay)
         }
     }
 

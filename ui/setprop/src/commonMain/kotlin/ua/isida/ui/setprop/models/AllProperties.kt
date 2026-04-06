@@ -5,7 +5,7 @@ import ua.isida.data.protocol.packets.StatusPacket
 import ua.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.isida.ui.properties.*
 
-fun propertyFromId(id: String): StatusPacketProperty<*> = when (id) {
+internal fun propertyFromId(id: String): StatusPacketProperty<*> = when (id) {
     "spT0" -> SpT0()
     "spT1" -> SpT1()
     "permission" -> Permission()

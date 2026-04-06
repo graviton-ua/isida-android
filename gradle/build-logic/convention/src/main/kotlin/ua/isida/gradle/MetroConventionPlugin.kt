@@ -23,6 +23,7 @@ class MetroConventionPlugin : Plugin<Project> {
 private fun Project.configureMetro() {
     metro {
         generateContributionHintsInFir.set(true)
+        generateContributionProviders.set(true)
     }
 }
 

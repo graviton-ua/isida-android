@@ -4,13 +4,13 @@ import androidx.compose.runtime.Stable
 import ua.isida.ui.properties.DeviceProperty
 
 @Stable
-data class SetPropViewState(
+internal data class SetPropViewState(
     val property: DeviceProperty,
     val node: Int? = null,
     val waitingForData: Boolean = true,
 )
 
-sealed interface SetPropViewEvent {
+internal sealed interface SetPropViewEvent {
     // Means our command already been successfully sent to device
     object Sent : SetPropViewEvent
 }
