@@ -3,16 +3,16 @@ package ua.isida.ui.logreport
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
-import ua.isida.metrox.viewmodel.ViewModelKey
-import ua.isida.metrox.viewmodel.ViewModelScope
 import ua.isida.util.FileSharer
 import ua.isida.util.PathProvider
 
@@ -33,9 +33,8 @@ data class LogFileInfo(
         }
 }
 
-@Inject
-@ViewModelKey(LogReportViewModel::class)
-@ContributesIntoMap(ViewModelScope::class)
+@Inject @ViewModelKey
+@ContributesIntoMap(AppScope::class)
 class LogReportViewModel(
     private val pathProvider: PathProvider,
     private val fileSharer: FileSharer

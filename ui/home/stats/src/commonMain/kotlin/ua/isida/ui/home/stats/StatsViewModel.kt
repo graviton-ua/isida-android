@@ -4,26 +4,26 @@ package ua.isida.ui.home.stats
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ua.isida.common.ui.compose.theme.IsidaColor
-import ua.isida.common.ui.resources.*
-import ua.isida.common.ui.resources.ComposableString.Companion.composableString
-import ua.isida.metrox.viewmodel.ViewModelKey
-import ua.isida.metrox.viewmodel.ViewModelScope
-import ua.isida.util.ObservableLoadingCounter
+import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.*
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import ua.isida.common.ui.compose.theme.IsidaColor
+import ua.isida.common.ui.resources.*
+import ua.isida.common.ui.resources.ComposableString.Companion.composableString
 import ua.isida.data.bluetooth.ConnectionState
 import ua.isida.data.protocol.*
 import ua.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.isida.domain.bluetooth.DeviceConnectionManager
 import ua.isida.domain.observers.ObserveStatus
+import ua.isida.util.ObservableLoadingCounter
 
 @Inject
 @ViewModelKey(StatsViewModel::class)
-@ContributesIntoMap(ViewModelScope::class)
+@ContributesIntoMap(AppScope::class)
 /**
  * ViewModel для экрана статистики.
  * Отвечает за наблюдение за данными устройства и преобразование их в список [StatsItem]

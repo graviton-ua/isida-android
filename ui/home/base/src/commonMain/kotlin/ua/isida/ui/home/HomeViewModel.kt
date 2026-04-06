@@ -2,19 +2,19 @@ package ua.isida.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.isida.data.bluetooth.ConnectionState
 import ua.isida.domain.bluetooth.DeviceConnectionManager
-import ua.isida.metrox.viewmodel.ViewModelKey
-import ua.isida.metrox.viewmodel.ViewModelScope
 import ua.isida.util.ObservableLoadingCounter
 
 @Inject
 @ViewModelKey(HomeViewModel::class)
-@ContributesIntoMap(ViewModelScope::class)
+@ContributesIntoMap(AppScope::class)
 class HomeViewModel(
     private val deviceConnectionManager: DeviceConnectionManager,
 ) : ViewModel() {

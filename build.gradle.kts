@@ -10,16 +10,6 @@ plugins {
     alias(libs.plugins.metro) apply false
 }
 
-subprojects {
-    // This can be removed as soon as we migrate all modules to KMP, as our KotlinMultiplatformConvention plugin contains this opt-in
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-        compilerOptions {
-            optIn.add("kotlin.time.ExperimentalTime")
-            freeCompilerArgs.add("-Xskip-prerelease-check")
-        }
-    }
-}
-
 // Remove also build folder in root folder
 tasks.register<Delete>("clean") {
     delete.add(rootProject.layout.buildDirectory)

@@ -3,10 +3,9 @@ package ua.isida.ui.setprop
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import dev.zacsweers.metro.Assisted
-import dev.zacsweers.metro.AssistedFactory
-import dev.zacsweers.metro.AssistedInject
-import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.*
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -16,9 +15,6 @@ import ua.isida.data.protocol.packets.StatusPacket
 import ua.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.isida.domain.interactors.SendCommand
 import ua.isida.domain.observers.ObserveStatus
-import ua.isida.metrox.viewmodel.ViewModelAssistedFactory
-import ua.isida.metrox.viewmodel.ViewModelKey
-import ua.isida.metrox.viewmodel.ViewModelScope
 import ua.isida.ui.setprop.models.propertyFromId
 import ua.isida.util.AppCoroutineDispatchers
 
@@ -31,9 +27,9 @@ class SetPropViewModel(
 ) : ViewModel() {
 
     @AssistedFactory
-    @ViewModelKey(SetPropViewModel::class)
-    @ContributesIntoMap(ViewModelScope::class)
-    interface Factory : ViewModelAssistedFactory {
+    @ManualViewModelAssistedFactoryKey
+    @ContributesIntoMap(AppScope::class)
+    interface Factory : ManualViewModelAssistedFactory {
         fun create(id: String): SetPropViewModel
     }
 

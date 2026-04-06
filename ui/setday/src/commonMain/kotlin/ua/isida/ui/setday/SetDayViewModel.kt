@@ -2,14 +2,9 @@ package ua.isida.ui.setday
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ua.isida.metrox.viewmodel.ViewModelAssistedFactory
-import ua.isida.metrox.viewmodel.ViewModelKey
-import ua.isida.metrox.viewmodel.ViewModelScope
-import ua.isida.util.AppCoroutineDispatchers
-import dev.zacsweers.metro.Assisted
-import dev.zacsweers.metro.AssistedFactory
-import dev.zacsweers.metro.AssistedInject
-import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.*
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactory
+import dev.zacsweers.metrox.viewmodel.ManualViewModelAssistedFactoryKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
@@ -17,13 +12,8 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ua.isida.data.protocol.packets.TableDay
 import ua.isida.data.protocol.packets.v1.TableDayV1
-import ua.isida.ui.setday.models.FlapProgramDay
-import ua.isida.ui.setday.models.PropertySpCO2
-import ua.isida.ui.setday.models.SpRh1
-import ua.isida.ui.setday.models.SpT0
-import ua.isida.ui.setday.models.SpT1
-import ua.isida.ui.setday.models.TableDayProperty
-import ua.isida.ui.setday.models.TurnPermission
+import ua.isida.ui.setday.models.*
+import ua.isida.util.AppCoroutineDispatchers
 
 @AssistedInject
 class SetDayViewModel(
@@ -33,9 +23,9 @@ class SetDayViewModel(
 ) : ViewModel() {
 
     @AssistedFactory
-    @ViewModelKey(SetDayViewModel::class)
-    @ContributesIntoMap(ViewModelScope::class)
-    interface Factory : ViewModelAssistedFactory {
+    @ManualViewModelAssistedFactoryKey
+    @ContributesIntoMap(AppScope::class)
+    interface Factory : ManualViewModelAssistedFactory {
         fun create(index: Int, day: TableDay): SetDayViewModel
     }
 

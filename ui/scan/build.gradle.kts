@@ -23,7 +23,7 @@ kotlin {
 
             implementation(projects.common.ui.compose)
             implementation(projects.common.ui.resources)
-            implementation(projects.common.ui.metrox.viewmodel)
+            implementation(libs.bundles.metrox.viewmodel)
             implementation(projects.common.ui.navigation)
             implementation(projects.common.ui.permissions)
             implementation(projects.common.ui.services)

@@ -2,7 +2,7 @@ package ua.isida.ui.setday
 
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
-import ua.isida.metrox.viewmodel.injectedViewModel
+import dev.zacsweers.metrox.viewmodel.assistedMetroViewModel
 import ua.isida.common.ui.navigation.NavigatorWithResultBus
 
 fun EntryProviderScope<NavKey>.addSetDayScreen(
@@ -10,7 +10,7 @@ fun EntryProviderScope<NavKey>.addSetDayScreen(
 ) {
     entry<SetDayScreen> { key ->
         SetDayScreen(
-            viewModel = injectedViewModel<SetDayViewModel, SetDayViewModel.Factory> { it.create(index = key.index, day = key.day) },
+            viewModel = assistedMetroViewModel<SetDayViewModel, SetDayViewModel.Factory> { create(index = key.index, day = key.day) },
             navigateUp = navigator::navigateUp,
             onSubmit = { result ->
                 navigator.resultBus.sendResult(result = result)

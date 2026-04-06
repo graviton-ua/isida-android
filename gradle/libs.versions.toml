@@ -80,6 +80,9 @@ firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 multiplatformsettings-core = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformsettings" }
 multiplatformsettings-coroutines = { module = "com.russhwolf:multiplatform-settings-coroutines", version.ref = "multiplatformsettings" }
 
+metrox-viewmodel = { module = "dev.zacsweers.metro:metrox-viewmodel", version.ref = "metro" }
+metrox-viewmodel-compose = { module = "dev.zacsweers.metro:metrox-viewmodel-compose", version.ref = "metro" }
+
 # Kermit (KMP Logs + Crashlytics reporting)
 kermit-kermit = { module = "co.touchlab:kermit", version = "2.1.0" }
 crashkios-crashlytics = { module = "co.touchlab.crashkios:crashlytics", version = "0.9.0" }
@@ -101,3 +104,4 @@ metro-gradlePlugin = { module = "dev.zacsweers.metro:gradle-plugin", version.ref
 
 [bundles]
 firebase = ["firebase-crashlytics", "firebase-analytics", "firebase-config", "firebase-messaging"]
+metrox-viewmodel = ["metrox-viewmodel", "metrox-viewmodel-compose"]

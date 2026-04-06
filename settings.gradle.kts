@@ -57,7 +57,6 @@ include(
     ":core:preferences",
 
     ":common:ui:compose",
-    ":common:ui:metrox:viewmodel",
     ":common:ui:resources",
     ":common:ui:permissions",
     ":common:ui:navigation",

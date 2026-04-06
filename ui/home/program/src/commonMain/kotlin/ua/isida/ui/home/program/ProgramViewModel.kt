@@ -4,8 +4,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -25,15 +27,13 @@ import ua.isida.domain.interactors.GetProgramTable
 import ua.isida.domain.interactors.SetRealTimeClock
 import ua.isida.domain.interactors.UpdateProgramTable
 import ua.isida.extensions.combine
-import ua.isida.metrox.viewmodel.ViewModelKey
-import ua.isida.metrox.viewmodel.ViewModelScope
 import ua.isida.util.AppCoroutineDispatchers
 import ua.isida.util.ObservableLoadingCounter
 import kotlin.time.Clock
 
 @Inject
 @ViewModelKey(ProgramViewModel::class)
-@ContributesIntoMap(ViewModelScope::class)
+@ContributesIntoMap(AppScope::class)
 class ProgramViewModel(
     dispatchers: AppCoroutineDispatchers,
     manager: DeviceConnectionManager,

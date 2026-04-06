@@ -8,7 +8,6 @@ import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.outlined.Summarize
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -22,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
@@ -33,7 +33,6 @@ import ua.isida.common.ui.navigation.result.ResultEventBus
 import ua.isida.common.ui.resources.*
 import ua.isida.data.protocol.packets.TableDay
 import ua.isida.data.protocol.packets.v1.TableDayV1
-import ua.isida.metrox.viewmodel.injectedViewModel
 import ua.isida.ui.setday.SetDayScreenResult
 
 @Serializable
@@ -44,7 +43,7 @@ data object ProgramScreen : HomeTabScreen {
 
 @Composable
 internal fun ProgramScreen(
-    viewModel: ProgramViewModel = injectedViewModel(),
+    viewModel: ProgramViewModel = metroViewModel(),
     resultBus: ResultEventBus,
     navigateSetDay: (Int, TableDay) -> Unit,
 ) {

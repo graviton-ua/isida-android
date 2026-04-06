@@ -75,6 +75,13 @@ android {
     }
 }
 
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+        freeCompilerArgs.add("-Xexplicit-backing-fields")
+    }
+}
+
 dependencies {
     implementation(projects.shared)
 
@@ -89,7 +96,6 @@ dependencies {
 
     debugImplementation(libs.leakcanary.android)
 }
-
 
 
 fun versionSuffix(providers: ProviderFactory): Provider<String> {

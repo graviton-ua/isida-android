@@ -13,8 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import co.touchlab.kermit.Logger
-import ua.isida.metrox.viewmodel.LocalMetroViewModelFactory
-import kotlinx.coroutines.flow.MutableStateFlow
+import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
 import kotlinx.coroutines.launch
 import ua.isida.data.bluetooth.ConnectionState
 import ua.isida.domain.services.intentBLConnectionService
@@ -57,8 +56,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             CompositionLocalProvider(
-                // Provide a way to access the ViewModel factory to injectedViewModel calls down the composable tree
-                LocalMetroViewModelFactory provides appGraph.viewModelFactory,
+                LocalMetroViewModelFactory provides appGraph.metroViewModelFactory,
             ) {
                 IsidaApp()
             }

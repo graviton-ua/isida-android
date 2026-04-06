@@ -3,13 +3,11 @@ package ua.isida
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.window.application
 import dev.zacsweers.metro.createGraphFactory
+import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
 import kotlinx.coroutines.cancel
-import ua.isida.App
-import ua.isida.shared.di.JvmAppGraph
 import ua.isida.base.PlatformConfig
 import ua.isida.base.PlatformInfo
-import ua.isida.metrox.viewmodel.LocalMetroViewModelFactory
-import ua.isida.rememberAppState
+import ua.isida.shared.di.JvmAppGraph
 
 fun main() {
     //System.setProperty("skiko.renderApi", "OPENGL") //TODO: Fixes issue with G-Sync stuttering
@@ -31,8 +29,7 @@ fun main() {
 
     application {
         CompositionLocalProvider(
-            // Provide a way to access the ViewModel factory to injectedViewModel calls down the composable tree
-            LocalMetroViewModelFactory provides appGraph.viewModelFactory,
+            LocalMetroViewModelFactory provides appGraph.metroViewModelFactory,
         ) {
             App(
                 state = rememberAppState(exitApp = { appGraph.appScope.cancel(); exitApplication() })

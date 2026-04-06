@@ -14,16 +14,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
+import dev.zacsweers.metrox.viewmodel.metroViewModel
+import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.stringResource
+import ua.isida.common.ui.compose.theme.AppTheme
 import ua.isida.common.ui.compose.theme.ContentAlpha
 import ua.isida.common.ui.compose.theme.IsidaColor
-import ua.isida.common.ui.compose.theme.AppTheme
 import ua.isida.common.ui.compose.theme.IsidaTheme
 import ua.isida.common.ui.compose.ui.WhDialog
 import ua.isida.common.ui.compose.ui.WhRadioButton
 import ua.isida.common.ui.resources.*
-import ua.isida.metrox.viewmodel.injectedViewModel
-import kotlinx.serialization.Serializable
-import org.jetbrains.compose.resources.stringResource
 import ua.isida.data.protocol.DeviceMode
 import ua.isida.data.protocol.DeviceModeExtra
 
@@ -32,7 +32,7 @@ data object DeviceModeDialog : NavKey
 
 @Composable
 internal fun DeviceModeDialog(
-    viewModel: DeviceModeViewModel = injectedViewModel(),
+    viewModel: DeviceModeViewModel = metroViewModel(),
     navigateUp: () -> Unit,
 ) {
     LaunchedEffect(viewModel.events) {

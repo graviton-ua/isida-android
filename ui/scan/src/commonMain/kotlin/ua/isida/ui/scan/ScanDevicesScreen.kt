@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.compose.theme.AppTheme
@@ -28,14 +29,13 @@ import ua.isida.common.ui.resources.*
 import ua.isida.common.ui.services.ServiceType
 import ua.isida.common.ui.services.rememberServiceEnabler
 import ua.isida.data.bluetooth.DiscoveredDevice
-import ua.isida.metrox.viewmodel.injectedViewModel
 
 @Serializable
 data object ScanDevicesScreen : NavKey
 
 @Composable
 internal fun ScanDevicesScreen(
-    viewModel: ScanDevicesViewModel = injectedViewModel(),
+    viewModel: ScanDevicesViewModel = metroViewModel(),
     navigateUp: () -> Unit,
     onDeviceSelected: (String) -> Unit,
 ) {

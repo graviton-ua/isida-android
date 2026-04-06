@@ -3,8 +3,10 @@ package ua.isida.ui.home.prop
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.*
 import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.compose.theme.IsidaColor
@@ -14,13 +16,11 @@ import ua.isida.data.bluetooth.ConnectionState
 import ua.isida.data.protocol.packets.v1.StatusPacketV1
 import ua.isida.domain.bluetooth.DeviceConnectionManager
 import ua.isida.domain.observers.ObserveStatus
-import ua.isida.metrox.viewmodel.ViewModelKey
-import ua.isida.metrox.viewmodel.ViewModelScope
 import java.util.Locale
 
 @Inject
 @ViewModelKey(PropViewModel::class)
-@ContributesIntoMap(ViewModelScope::class)
+@ContributesIntoMap(AppScope::class)
 class PropViewModel(
     manager: DeviceConnectionManager,
     observeStatus: ObserveStatus,

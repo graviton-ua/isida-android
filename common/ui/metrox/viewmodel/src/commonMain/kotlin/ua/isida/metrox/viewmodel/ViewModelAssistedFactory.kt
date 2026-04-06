@@ -1,3 +1,0 @@
-package ua.isida.metrox.viewmodel
-
-interface ViewModelAssistedFactory

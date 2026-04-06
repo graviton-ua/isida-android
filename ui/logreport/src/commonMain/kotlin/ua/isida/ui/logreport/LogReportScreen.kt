@@ -13,13 +13,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.compose.ui.WhDialog
 import ua.isida.common.ui.resources.Res
 import ua.isida.common.ui.resources.btn_cancel
 import ua.isida.common.ui.resources.btn_share_logs
-import ua.isida.metrox.viewmodel.injectedViewModel
 
 @Serializable
 data object LogReportScreen : NavKey
@@ -27,7 +27,7 @@ data object LogReportScreen : NavKey
 @Composable
 fun LogReportScreen(
     onBack: () -> Unit,
-    viewModel: LogReportViewModel = injectedViewModel(),
+    viewModel: LogReportViewModel = metroViewModel(),
 ) {
     val files by viewModel.files.collectAsStateWithLifecycle()
 

@@ -20,6 +20,7 @@ import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.scene.SinglePaneSceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
@@ -30,7 +31,6 @@ import ua.isida.common.ui.navigation.*
 import ua.isida.common.ui.navigation.result.ResultEventBus
 import ua.isida.common.ui.resources.*
 import ua.isida.data.protocol.packets.TableDay
-import ua.isida.metrox.viewmodel.injectedViewModel
 import ua.isida.ui.home.program.ProgramScreen
 import ua.isida.ui.home.program.addProgramScreen
 import ua.isida.ui.home.prop.PropScreen
@@ -47,7 +47,7 @@ private val TOP_LEVEL_ROUTES: List<HomeTabScreen> = listOf(
 
 @Composable
 internal fun HomeScreen(
-    viewModel: HomeViewModel = injectedViewModel(),
+    viewModel: HomeViewModel = metroViewModel(),
     resultBus: ResultEventBus,
     connectDevice: () -> Unit,
     onShowLogs: () -> Unit,

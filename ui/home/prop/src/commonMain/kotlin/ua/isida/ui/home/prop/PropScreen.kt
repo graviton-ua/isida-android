@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
 import ua.isida.common.ui.compose.backgroundNotNull
@@ -28,7 +29,6 @@ import ua.isida.common.ui.compose.ui.DeviceNotConnectedPlaceholder
 import ua.isida.common.ui.navigation.HomeTabScreen
 import ua.isida.common.ui.resources.Res
 import ua.isida.common.ui.resources.home_tab_prop
-import ua.isida.metrox.viewmodel.injectedViewModel
 
 @Serializable
 data object PropScreen : HomeTabScreen {
@@ -38,7 +38,7 @@ data object PropScreen : HomeTabScreen {
 
 @Composable
 internal fun PropScreen(
-    viewModel: PropViewModel = injectedViewModel(),
+    viewModel: PropViewModel = metroViewModel(),
     openSetPropDialog: (String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()

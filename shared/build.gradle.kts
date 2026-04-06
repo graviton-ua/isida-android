@@ -19,7 +19,6 @@ kotlin {
             api(projects.core.preferences)
 
             api(projects.common.ui.compose)
-            api(projects.common.ui.metrox.viewmodel)
             api(projects.common.ui.permissions)
             api(projects.common.ui.resources)
             api(projects.common.ui.navigation)
@@ -39,6 +38,7 @@ kotlin {
 
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.jetbrains.lifecycle.viewmodel.navigation3)
+            api(libs.bundles.metrox.viewmodel)
         }
     }
 }

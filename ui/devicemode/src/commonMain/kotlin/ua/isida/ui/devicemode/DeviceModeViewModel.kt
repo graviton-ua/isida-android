@@ -2,10 +2,10 @@ package ua.isida.ui.devicemode
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ua.isida.metrox.viewmodel.ViewModelKey
-import ua.isida.metrox.viewmodel.ViewModelScope
+import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
@@ -20,7 +20,7 @@ import ua.isida.domain.observers.ObserveStatus
 
 @Inject
 @ViewModelKey(DeviceModeViewModel::class)
-@ContributesIntoMap(ViewModelScope::class)
+@ContributesIntoMap(AppScope::class)
 class DeviceModeViewModel(
     observeStatus: ObserveStatus,
     private val sendCommand: SendCommand,
