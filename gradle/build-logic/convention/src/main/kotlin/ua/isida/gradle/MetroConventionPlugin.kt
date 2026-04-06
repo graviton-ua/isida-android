@@ -1,6 +1,7 @@
 package ua.isida.gradle
 
 import dev.zacsweers.metro.gradle.DelicateMetroGradleApi
+import dev.zacsweers.metro.gradle.ExperimentalMetroGradleApi
 import dev.zacsweers.metro.gradle.MetroPluginExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -18,11 +19,10 @@ class MetroConventionPlugin : Plugin<Project> {
     }
 }
 
-@OptIn(DelicateMetroGradleApi::class)
+@OptIn(DelicateMetroGradleApi::class, ExperimentalMetroGradleApi::class)
 private fun Project.configureMetro() {
     metro {
         generateContributionHintsInFir.set(true)
-        enableKotlinVersionCompatibilityChecks.set(false)
     }
 }
 

@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.*
 import androidx.navigation3.scene.DialogSceneStrategy
+import androidx.navigation3.scene.SinglePaneSceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import co.touchlab.kermit.Logger
@@ -42,7 +43,7 @@ fun IsidaApp(
 
         NavDisplay(
             backStack = backStack,
-            sceneStrategy = dialogStrategy,
+            sceneStrategies = listOf(dialogStrategy, SinglePaneSceneStrategy()),
             entryProvider = entryProvider {
                 addHomeScreen(
                     navigator = navigator,

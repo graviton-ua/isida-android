@@ -17,6 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.scene.DialogSceneStrategy
+import androidx.navigation3.scene.SinglePaneSceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import kotlinx.serialization.Serializable
@@ -125,7 +126,7 @@ private fun HomeScreen(
         NavDisplay(
             entries = navigationState.toEntries(entryProvider),
             onBack = navigator::navigateUp,
-            sceneStrategy = dialogStrategy,
+            sceneStrategies = listOf(dialogStrategy, SinglePaneSceneStrategy()),
             modifier = Modifier.padding(paddings),
         )
     }
