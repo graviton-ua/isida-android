@@ -1,10 +1,12 @@
 package ua.isida.domain.services
 
-import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
+import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.app.ServiceCompat
 import co.touchlab.kermit.Logger
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -44,10 +46,18 @@ class BluetoothConnectionService : BluetoothStateService() {
         return START_STICKY
     }
 
-    @SuppressLint("ForegroundServiceType")
     override fun startForegroundAndShowNotification() {
         val notification = runBlocking { notificationCountDown("Device").build() }
-        startForeground(NOTIFICATION_ID, notification)
+        ServiceCompat.startForeground(
+            this,
+            NOTIFICATION_ID,
+            notification,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE
+            } else {
+                0
+            },
+        )
     }
 
 
