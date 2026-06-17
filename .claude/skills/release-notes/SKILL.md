@@ -59,19 +59,20 @@ Classify each change by file path:
 
 ## STEP 4 — Conventional-commit categorization
 
-ISIDA uses lowercase **Conventional Commits**, sometimes scoped: `type:` or `type(scope): summary`. Map the `type` to a category, but **let the diff override** (a `refactor:` with visible UI impact is an enhancement).
+ISIDA uses lowercase **Conventional Commits 1.0.0** (standard type set), sometimes scoped: `type(scope)?: description`. Map the `type` to a category, but **let the diff override** (a `refactor:` with visible UI impact is an enhancement).
 
 | Prefix | Default category | In Google Play? |
 |---|---|---|
-| `feat:` | ✨ New Features | ✅ |
+| `feat:` / `feat(scope):` | ✨ New Features | ✅ |
 | `fix:` | 🐛 Bug Fixes | ✅ |
-| `ui:` / `feat(ui):` | 🚀 Enhancements | ✅ |
 | `perf:` | 🚀 Enhancements | ✅ |
+| `style:` / `feat(ui):` | 🚀 Enhancements (user-visible UI) | ✅ |
 | `refactor:` | 🛠️ Technical (→ 🚀 if diff shows user-visible change) | only if user-visible |
-| `build:` / `chore:` / `docs:` / `test:` / `debug:` | 🛠️ Technical | ❌ |
-| `BREAKING CHANGE:` in body | ⚠️ Breaking Changes | ✅ if user-visible |
+| `build:` / `chore:` / `ci:` / `docs:` / `test:` | 🛠️ Technical | ❌ |
+| `type!:` or `BREAKING CHANGE:` footer | ⚠️ Breaking Changes | ✅ if user-visible |
+| `revert:` | categorize by what's being reverted | per the reverted change |
 
-When rendering a bullet, **strip the `type:`/`type(scope):` prefix** from the text and use it only for categorization.
+When rendering a bullet, **strip the `type(scope)?:` prefix** (and any `!`) from the text and use it only for categorization.
 
 ## STEP 5 — GitHub Release Notes (always)
 

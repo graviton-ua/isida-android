@@ -74,6 +74,11 @@ No detekt/ktlint/spotless — only Android Lint + the compiler. `.editorconfig` 
 ## Conventions & gotchas
 - **No hardcoded user-facing strings** — UI text goes in Compose Resources (`common/ui/resources`), with `ru`/`uk` translations.
 - **Logging** — Kermit, lambda form: `logger.d { "…" }` (`Logger.withTag("Tag")`); the `add-logs` skill has the full conventions. Never log sensitive data.
-- **Commit messages** — lowercase **Conventional Commits**: `type:` or `type(scope): summary`, where `type` ∈ `feat`, `fix`, `ui`, `perf`, `refactor`, `build`, `chore`, `docs`, `test`. Put `BREAKING CHANGE:` in the body for breaking changes. These prefixes drive the `release-notes` skill's categorization, so keep them accurate. No Linear/ticket prefixes.
+- **Commit messages** — lowercase **[Conventional Commits 1.0.0](https://www.conventionalcommits.org/)**: `type(scope)?: description`, optional body one blank line after, optional footers (git trailers) last.
+  - **Allowed `type`s (standard set only):** `feat`, `fix`, `build`, `chore`, `ci`, `docs`, `style`, `refactor`, `perf`, `test`, `revert`. Scope is an optional noun in parens (`feat(scan): …`). UI-only tweaks use `style:` or `feat(ui):` — **not** a bare `ui:`; don't invent ad-hoc types like `debug:`.
+  - **Breaking changes:** append `!` before the colon (`feat!:`, `feat(api)!:`) and/or add a `BREAKING CHANGE: <description>` footer.
+  - **Footers:** git-trailer format (`Refs: #123`, `Reviewed-by: …`); commits authored by Claude also carry the `Co-Authored-By:` trailer.
+  - **Reverts:** `revert:` with a `Refs: <sha>` footer.
+  - Keep `type` accurate — it drives the `release-notes` skill's categorization and SemVer intent (`fix`→patch, `feat`→minor, breaking→major). No Linear/ticket prefixes.
 - **Versioning** — `versionName` derives from `git describe --tags` and `versionCode` from `GITHUB_RUN_NUMBER` (`androidApp/build.gradle.kts`). Don't delete tags. A `vX.Y.Z` tag triggers the release workflows (Android → Google Play `internal` track + Firebase App Distribution; Desktop → GitHub Release installer).
 - **Secrets** — `release.keystore`/`debug.keystore`, `local.properties`, and service-account JSONs are local/CI-only; never read or commit them (enforced in `.claude/settings.json` deny rules).
