@@ -29,14 +29,14 @@ import androidx.compose.ui.unit.sp
 import ua.isida.common.ui.compose.theme.IsidaTheme
 
 @Composable
-fun WhButton(
+fun AppButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     elevation: Dp? = null,
     shape: Shape = IsidaTheme.shapes.small,
     border: BorderStroke? = null,
-    colors: ButtonColors = WhButtonDefaults.buttonColors(),
+    colors: ButtonColors = AppButtonDefaults.buttonColors(),
     size: ButtonSize = ButtonSize.Medium,
     textStyle: TextStyle = IsidaTheme.typography.button,
     contentPadding: PaddingValues? = null,
@@ -56,14 +56,14 @@ fun WhButton(
 )
 
 @Composable
-fun WhButton(
+fun AppButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     elevation: Dp? = null,
     shape: Shape = IsidaTheme.shapes.small,
     border: BorderStroke? = null,
-    colors: WhBrushButtonColors,
+    colors: AppBrushButtonColors,
     size: ButtonSize = ButtonSize.Medium,
     textStyle: TextStyle = IsidaTheme.typography.button,
     contentPadding: PaddingValues? = null,
@@ -83,12 +83,12 @@ fun WhButton(
 )
 
 @Composable
-fun WhOutlinedButton(
+fun AppOutlinedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     shape: Shape = IsidaTheme.shapes.small,
-    colors: ButtonColors = WhButtonDefaults.outlinedButtonColors(),
+    colors: ButtonColors = AppButtonDefaults.outlinedButtonColors(),
     elevation: Dp? = null,
     border: BorderStroke? = BorderStroke(1.dp, colors.contentColor(enabled = enabled)),
     size: ButtonSize = ButtonSize.Medium,
@@ -110,7 +110,7 @@ fun WhOutlinedButton(
 )
 
 @Composable
-fun WhTextButton(
+fun AppTextButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -216,7 +216,7 @@ private fun Button(
     border: BorderStroke? = null,
     size: ButtonSize? = null,
     textStyle: TextStyle = IsidaTheme.typography.button,
-    colors: WhBrushButtonColors,
+    colors: AppBrushButtonColors,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     content: @Composable RowScope.() -> Unit
 ) {
@@ -263,7 +263,7 @@ private fun Button(
 
 
 @Immutable
-class WhBrushButtonColors(
+class AppBrushButtonColors(
     private val containerBrush: Brush,
     private val contentColor: Color,
     private val disabledContainerBrush: Brush,
@@ -285,7 +285,7 @@ class WhBrushButtonColors(
         disabledContainerBrush: Brush? = this.disabledContainerBrush,
         disabledContentColor: Color = this.disabledContentColor,
     ) =
-        WhBrushButtonColors(
+        AppBrushButtonColors(
             containerBrush ?: this.containerBrush,
             contentColor.takeOrElse { this.contentColor },
             disabledContainerBrush ?: this.disabledContainerBrush,
@@ -296,7 +296,7 @@ class WhBrushButtonColors(
         if (this === other) return true
         if (other == null || this::class != other::class) return false
 
-        other as WhBrushButtonColors
+        other as AppBrushButtonColors
 
         if (containerBrush != other.containerBrush) return false
         if (contentColor != other.contentColor) return false

@@ -177,7 +177,7 @@ private class SliderPreviewParameterProvider : PreviewParameterProvider<DevicePr
 // private fun Preview(
 //     @PreviewParameter(SliderPreviewParameterProvider::class) property: DeviceProperty,
 // ) {
-//     WhoppahTheme {
+//     AppTheme {
 //         LaunchedEffect(Unit) { property.validate() }
 //         SetPropDialog(
 //             state = SetPropViewState(property = property),

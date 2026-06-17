@@ -26,7 +26,7 @@ import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.compose.theme.AppTheme
-import ua.isida.common.ui.compose.ui.WhTopAppBar
+import ua.isida.common.ui.compose.ui.AppTopAppBar
 import ua.isida.common.ui.navigation.*
 import ua.isida.common.ui.navigation.result.ResultEventBus
 import ua.isida.common.ui.resources.*
@@ -142,7 +142,7 @@ private fun HomeTopBar(
     onShowLogs: () -> Unit,
     openPowerDialog: () -> Unit,
 ) {
-    WhTopAppBar(
+    AppTopAppBar(
         title = { Text(text = stringResource(Res.string.app_name)) },
         actions = {
             IconButton(onClick = onShowLogs) {

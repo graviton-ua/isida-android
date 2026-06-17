@@ -16,14 +16,14 @@ import ua.isida.common.ui.compose.LocalWhUriHandler
 import ua.isida.common.ui.compose.theme.IsidaTheme
 
 @Composable
-fun WhColumnDialog(
+fun AppColumnDialog(
     title: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier,
     onClose: (() -> Unit)? = null,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     contentPadding: PaddingValues = PaddingValues(),
     content: @Composable ColumnScope.() -> Unit,
-) = WhColumnDialog(
+) = AppColumnDialog(
     onClose = onClose,
     modifier = modifier,
     contentPadding = contentPadding,
@@ -36,7 +36,7 @@ fun WhColumnDialog(
 }
 
 @Composable
-fun WhColumnDialog(
+fun AppColumnDialog(
     modifier: Modifier = Modifier,
     onClose: (() -> Unit)? = null,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
@@ -44,7 +44,7 @@ fun WhColumnDialog(
     contentPadding: PaddingValues = PaddingValues(),
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    WhDialog(
+    AppDialog(
         onClose = onClose,
         modifier = modifier,
     ) {
@@ -59,7 +59,7 @@ fun WhColumnDialog(
 }
 
 @Composable
-fun WhDialog(
+fun AppDialog(
     modifier: Modifier = Modifier,
     onClose: (() -> Unit)? = null,
     content: @Composable BoxScope.() -> Unit,

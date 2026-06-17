@@ -20,7 +20,7 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.compose.theme.AppTheme
 import ua.isida.common.ui.compose.theme.IsidaTheme
-import ua.isida.common.ui.compose.ui.WhDialog
+import ua.isida.common.ui.compose.ui.AppDialog
 import ua.isida.common.ui.resources.Res
 import ua.isida.common.ui.resources.btn_apply
 import ua.isida.common.ui.resources.btn_cancel
@@ -57,7 +57,7 @@ internal fun SetPropDialog(
     navigateUp: () -> Unit,
     send: () -> Unit,
 ) {
-    WhDialog {
+    AppDialog {
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier

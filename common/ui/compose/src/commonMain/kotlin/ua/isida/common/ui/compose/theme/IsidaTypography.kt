@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 //}
 
 @Composable
-fun rememberWhoppahTypography(): IsidaTypography {
+fun rememberIsidaTypography(): IsidaTypography {
     // val filsonProRegular = Font(Res.font.filson_pro_regular, weight = FontWeight.Normal)
     // val filsonProBold = Font(Res.font.filson_pro_bold, weight = FontWeight.Bold)
     // val notoSansRegular = Font(Res.font.noto_sans_regular, weight = FontWeight.Normal)

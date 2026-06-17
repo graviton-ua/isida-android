@@ -1,6 +1,6 @@
 # Module: common:ui:compose
 
-Reusable Jetpack Compose UI components and theming for the Whoppah application.
+Reusable Jetpack Compose UI components and theming for the Isida application.
 
 This module provides the design system foundation, including the custom theme, typography, colors, and a comprehensive set of "Wh"-prefixed components (buttons, text fields, dialogs, etc.). It ensures visual consistency across the entire app and works on both Android and iOS via Compose Multiplatform.
 
@@ -21,8 +21,8 @@ This module provides the design system foundation, including the custom theme, t
 
 | Feature / Public API | Migration Status | Supported Targets | Notes / Blockers |
 | :--- | :--- | :--- | :--- |
-| Design System | Migrated | Android, iOS | `WhTheme`, `WhTypography`, `WhColors`. |
-| Core Components | Migrated | Android, iOS | `WhButton`, `WhTextField`, `WhScaffold`. |
+| Design System | Migrated | Android, iOS | `AppTheme`, `AppTypography`, `AppColors`. |
+| Core Components | Migrated | Android, iOS | `AppButton`, `AppTextField`, `AppScaffold`. |
 | Navigation | Migrated | Android, iOS | `jetbrains-navigation` integration. |
 | Image Loading | Migrated | Android, iOS | `coil-compose` integration. |
 
@@ -30,16 +30,16 @@ This module provides the design system foundation, including the custom theme, t
 
 ## 📦 Core Functionality and Public API
 
-This module exposes the Whoppah Design System:
+This module exposes the Isida Design System:
 
--   **Theming**: `WhTheme` wrapper providing the app's visual identity.
+-   **Theming**: `AppTheme` wrapper providing the app's visual identity.
 -   **Components**:
-    -   `WhButton`, `WhIconButton`, `WhFab`
-    -   `WhTextField`, `WhSearchField`
-    -   `WhTopAppBar`, `WhScaffold`, `WhBottomSheet`
-    -   `WhCheckbox`, `WhRadioButton`, `WhSwitch`
-    -   `WhTag`, `WhBadge`, `WhChip`
-    -   `WhDialog`, `WhModal`
+    -   `AppButton`, `AppIconButton`, `AppFab`
+    -   `AppTextField`, `AppSearchField`
+    -   `AppTopAppBar`, `AppScaffold`, `AppBottomSheet`
+    -   `AppCheckbox`, `AppRadioButton`, `AppSwitch`
+    -   `AppTag`, `AppBadge`, `AppChip`
+    -   `AppDialog`, `AppModal`
 -   **Utilities**: HTML conversion helpers, keyboard handling, and modifier extensions.
 
 ---
@@ -81,13 +81,13 @@ sourceSets {
 ### Example Usage
 
 ```kotlin
-import ua.isida.common.ui.compose.theme.WhTheme
-import ua.isida.common.ui.compose.ui.WhButton
+import ua.isida.common.ui.compose.theme.AppTheme
+import ua.isida.common.ui.compose.ui.AppButton
 
 @Composable
 fun MyScreen() {
-    WhTheme {
-        WhButton(onClick = { /* ... */ }) {
+    AppTheme {
+        AppButton(onClick = { /* ... */ }) {
             Text("Click Me")
         }
     }

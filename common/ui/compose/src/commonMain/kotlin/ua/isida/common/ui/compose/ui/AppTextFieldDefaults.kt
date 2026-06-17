@@ -12,7 +12,7 @@ import ua.isida.common.ui.compose.theme.IsidaPalette
 import ua.isida.common.ui.compose.theme.IsidaTheme
 
 @Immutable
-object WhTextFieldDefaults {
+object AppTextFieldDefaults {
     @Composable
     fun outlinedTextFieldColors(
         textColor: Color = LocalContentColor.current,

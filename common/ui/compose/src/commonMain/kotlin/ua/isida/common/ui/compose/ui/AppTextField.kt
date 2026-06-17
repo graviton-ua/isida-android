@@ -53,7 +53,7 @@ import kotlinx.coroutines.flow.filter
  * hoisted `TextFieldState` is the recommended approach.
  */
 @Composable
-fun WhTextFieldLegacy(
+fun AppTextFieldLegacy(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -76,10 +76,10 @@ fun WhTextFieldLegacy(
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = IsidaTheme.shapes.small,
-    colors: TextFieldColors = WhTextFieldDefaults.outlinedTextFieldColors(),
-    contentPadding: PaddingValues = WhTextFieldDefaults.outlinedTextFieldPadding(),
+    colors: TextFieldColors = AppTextFieldDefaults.outlinedTextFieldColors(),
+    contentPadding: PaddingValues = AppTextFieldDefaults.outlinedTextFieldPadding(),
     defaultMinWidth: Dp = TextFieldDefaults.MinWidth,
-    defaultMinHeight: Dp = WhTextFieldDefaults.MinHeight,
+    defaultMinHeight: Dp = AppTextFieldDefaults.MinHeight,
 ) {
     // Internal state for the new TextField component.
     val state = rememberTextFieldState(initialText = value)
@@ -131,7 +131,7 @@ fun WhTextFieldLegacy(
         )
     }
 
-    WhTextField(
+    AppTextField(
         state = state,
         modifier = modifier,
         enabled = enabled,
@@ -160,7 +160,7 @@ fun WhTextFieldLegacy(
 }
 
 @Composable
-fun WhTextField(
+fun AppTextField(
     state: InputTextFieldState<*>,
     modifier: Modifier = Modifier,
     enabled: Boolean? = null,
@@ -183,12 +183,12 @@ fun WhTextField(
     onTextLayout: (Density.(getResult: () -> TextLayoutResult?) -> Unit)? = null,
     scrollState: ScrollState = rememberScrollState(),
     shape: Shape = IsidaTheme.shapes.small,
-    colors: TextFieldColors = WhTextFieldDefaults.outlinedTextFieldColors(),
-    contentPadding: PaddingValues = WhTextFieldDefaults.outlinedTextFieldPadding(),
+    colors: TextFieldColors = AppTextFieldDefaults.outlinedTextFieldColors(),
+    contentPadding: PaddingValues = AppTextFieldDefaults.outlinedTextFieldPadding(),
     interactionSource: MutableInteractionSource? = null,
     defaultMinWidth: Dp = TextFieldDefaults.MinWidth,
-    defaultMinHeight: Dp = WhTextFieldDefaults.MinHeight,
-) = WhTextField(
+    defaultMinHeight: Dp = AppTextFieldDefaults.MinHeight,
+) = AppTextField(
     state = state.fieldState,
     modifier = modifier,
     enabled = enabled ?: state.enabledState.value,
@@ -219,7 +219,7 @@ fun WhTextField(
 )
 
 @Composable
-fun WhTextField(
+fun AppTextField(
     state: TextFieldState,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -242,11 +242,11 @@ fun WhTextField(
     onTextLayout: (Density.(getResult: () -> TextLayoutResult?) -> Unit)? = null,
     scrollState: ScrollState = rememberScrollState(),
     shape: Shape = IsidaTheme.shapes.small,
-    colors: TextFieldColors = WhTextFieldDefaults.outlinedTextFieldColors(),
-    contentPadding: PaddingValues = WhTextFieldDefaults.outlinedTextFieldPadding(),
+    colors: TextFieldColors = AppTextFieldDefaults.outlinedTextFieldColors(),
+    contentPadding: PaddingValues = AppTextFieldDefaults.outlinedTextFieldPadding(),
     interactionSource: MutableInteractionSource? = null,
     defaultMinWidth: Dp = TextFieldDefaults.MinWidth,
-    defaultMinHeight: Dp = WhTextFieldDefaults.MinHeight,
+    defaultMinHeight: Dp = AppTextFieldDefaults.MinHeight,
 ) {
     @Suppress("NAME_SHADOWING")
     val interactionSource = interactionSource ?: remember { MutableInteractionSource() }
@@ -292,7 +292,7 @@ fun WhTextField(
             outputTransformation = outputTransformation,
             scrollState = scrollState,
             decorator =
-                WhOutlinedTextFieldDefaults.decorator(
+                AppOutlinedTextFieldDefaults.decorator(
                     state = state,
                     enabled = enabled,
                     lineLimits = lineLimits,
@@ -324,7 +324,7 @@ fun WhTextField(
 }
 
 @Composable
-fun WhSecureTextField(
+fun AppSecureTextField(
     state: TextFieldState,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -346,11 +346,11 @@ fun WhSecureTextField(
     onKeyboardAction: KeyboardActionHandler? = null,
     onTextLayout: (Density.(getResult: () -> TextLayoutResult?) -> Unit)? = null,
     shape: Shape = IsidaTheme.shapes.small,
-    colors: TextFieldColors = WhTextFieldDefaults.outlinedTextFieldColors(),
-    contentPadding: PaddingValues = WhTextFieldDefaults.outlinedTextFieldPadding(),
+    colors: TextFieldColors = AppTextFieldDefaults.outlinedTextFieldColors(),
+    contentPadding: PaddingValues = AppTextFieldDefaults.outlinedTextFieldPadding(),
     interactionSource: MutableInteractionSource? = null,
     defaultMinWidth: Dp = TextFieldDefaults.MinWidth,
-    defaultMinHeight: Dp = WhTextFieldDefaults.MinHeight,
+    defaultMinHeight: Dp = AppTextFieldDefaults.MinHeight,
 ) {
     @Suppress("NAME_SHADOWING")
     val interactionSource = interactionSource ?: remember { MutableInteractionSource() }
@@ -395,7 +395,7 @@ fun WhSecureTextField(
             textObfuscationMode = textObfuscationMode,
             textObfuscationCharacter = textObfuscationCharacter,
             decorator =
-                WhOutlinedTextFieldDefaults.decorator(
+                AppOutlinedTextFieldDefaults.decorator(
                     state = state,
                     enabled = enabled,
                     lineLimits = SingleLine,
@@ -427,7 +427,7 @@ fun WhSecureTextField(
 }
 
 @Composable
-fun WhTextFieldFake(
+fun AppTextFieldFake(
     value: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -443,11 +443,11 @@ fun WhTextFieldFake(
     isError: Boolean = false,
     lineLimits: TextFieldLineLimits = SingleLine,
     shape: Shape = IsidaTheme.shapes.small,
-    colors: TextFieldColors = WhTextFieldDefaults.outlinedTextFieldColors(),
-    contentPadding: PaddingValues = WhTextFieldDefaults.outlinedTextFieldPadding(),
+    colors: TextFieldColors = AppTextFieldDefaults.outlinedTextFieldColors(),
+    contentPadding: PaddingValues = AppTextFieldDefaults.outlinedTextFieldPadding(),
     interactionSource: MutableInteractionSource? = null,
     defaultMinWidth: Dp = TextFieldDefaults.MinWidth,
-    defaultMinHeight: Dp = WhTextFieldDefaults.MinHeight,
+    defaultMinHeight: Dp = AppTextFieldDefaults.MinHeight,
 ) {
     @Suppress("NAME_SHADOWING")
     val interactionSource = interactionSource ?: remember { MutableInteractionSource() }
@@ -512,7 +512,7 @@ fun WhTextFieldFake(
 }
 
 @Immutable
-object WhOutlinedTextFieldDefaults {
+object AppOutlinedTextFieldDefaults {
     @Composable
     fun decorator(
         state: TextFieldState,
@@ -654,8 +654,8 @@ private const val DefaultObfuscationCharacter: Char = '\u2022'
 //private fun PreviewSingleLine(
 //    @PreviewParameter(SingleLinePreviewParameterProvider::class) state: PreviewTextFieldState
 //) {
-//    WhoppahTheme {
-//        WhTextField(
+//    AppTheme {
+//        AppTextField(
 //            state = state.state,
 //            label = state.label,
 //            supportingText = state.helper,
@@ -679,8 +679,8 @@ private const val DefaultObfuscationCharacter: Char = '\u2022'
 //private fun PreviewMultiLine(
 //    @PreviewParameter(MultiLinePreviewParameterProvider::class) state: PreviewTextFieldState
 //) {
-//    WhoppahTheme {
-//        WhTextField(
+//    AppTheme {
+//        AppTextField(
 //            state = state.state,
 //            label = state.label,
 //            supportingText = state.helper,

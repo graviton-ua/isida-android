@@ -9,7 +9,7 @@ import ua.isida.common.ui.compose.input.DefaultNumberInputTextFieldStateHelper
 import ua.isida.common.ui.compose.input.InputTextFieldStateErrorScope
 import ua.isida.common.ui.compose.input.NumberInputTextFieldState.Error
 import ua.isida.common.ui.compose.input.PriceInputTransformation
-import ua.isida.common.ui.compose.ui.WhTextField
+import ua.isida.common.ui.compose.ui.AppTextField
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ua.isida.ui.properties.DeviceProperty
@@ -26,7 +26,7 @@ abstract class NumberInputTextFieldDeviceProperty<T : Number>(
 
     @Composable
     override fun Content(modifier: Modifier) {
-        WhTextField(
+        AppTextField(
             state = inputHelper.state,
             inputTransformation = PriceInputTransformation(allowDecimals = allowDecimals),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),

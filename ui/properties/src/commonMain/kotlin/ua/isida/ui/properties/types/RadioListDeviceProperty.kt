@@ -11,7 +11,7 @@ import ua.isida.common.ui.compose.input.DefaultInputStateHelper
 import ua.isida.common.ui.compose.input.InputState
 import ua.isida.common.ui.compose.input.InputStateErrorScope
 import ua.isida.common.ui.compose.theme.IsidaTheme
-import ua.isida.common.ui.compose.ui.WhRadioButton
+import ua.isida.common.ui.compose.ui.AppRadioButton
 import ua.isida.common.ui.resources.Res
 import ua.isida.common.ui.resources.error_required
 import ua.isida.common.ui.resources.programm
@@ -68,7 +68,7 @@ abstract class RadioListDeviceProperty<T>(
         onClick: () -> Unit,
         modifier: Modifier = Modifier,
     ) {
-        WhRadioButton(
+        AppRadioButton(
             selected = isSelected,
             onClick = onClick,
             horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -140,7 +140,7 @@ private class RadioListPreviewParameterProvider : PreviewParameterProvider<Devic
 // private fun Preview(
 //     @PreviewParameter(RadioListPreviewParameterProvider::class) property: DeviceProperty,
 // ) {
-//     WhoppahTheme {
+//     AppTheme {
 //         LaunchedEffect(Unit) { property.validate() }
 //         SetPropDialog(
 //             state = SetPropViewState(property = property),

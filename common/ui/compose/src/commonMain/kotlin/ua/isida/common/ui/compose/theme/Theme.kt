@@ -11,12 +11,12 @@ import androidx.compose.runtime.remember
 @Composable
 fun AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     // For now we not gonna support dark theme
-    val localWhoppahColors: IsidaColorsScheme = if (darkTheme) IsidaDarkColorsScheme else IsidaLightColorsScheme
+    val localIsidaColors: IsidaColorsScheme = if (darkTheme) IsidaDarkColorsScheme else IsidaLightColorsScheme
 
-    val typography = rememberWhoppahTypography()
+    val typography = rememberIsidaTypography()
 
     CompositionLocalProvider(
-        LocalIsidaColor provides localWhoppahColors,
+        LocalIsidaColor provides localIsidaColors,
         LocalIsidaTypography provides typography,
         LocalIsidaShapes provides IsidaShapes,
     ) {
@@ -27,7 +27,7 @@ fun AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable ()
         ) {
             val selectionColors = LocalTextSelectionColors.current
             val newSelectionColors = remember(selectionColors) {
-                TextSelectionColors(handleColor = localWhoppahColors.tertiary, backgroundColor = selectionColors.backgroundColor)
+                TextSelectionColors(handleColor = localIsidaColors.tertiary, backgroundColor = selectionColors.backgroundColor)
             }
             CompositionLocalProvider(
                 LocalTextSelectionColors provides newSelectionColors,

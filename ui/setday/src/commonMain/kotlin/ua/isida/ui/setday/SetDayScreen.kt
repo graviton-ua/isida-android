@@ -22,7 +22,7 @@ import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 import ua.isida.common.ui.compose.theme.AppTheme
 import ua.isida.common.ui.compose.theme.IsidaTheme
-import ua.isida.common.ui.compose.ui.WhTopAppBar
+import ua.isida.common.ui.compose.ui.AppTopAppBar
 import ua.isida.data.protocol.packets.TableDay
 import ua.isida.ui.properties.DeviceProperty
 import ua.isida.ui.setday.models.*
@@ -68,7 +68,7 @@ internal fun SetDayScreen(
 ) {
     Scaffold(
         topBar = {
-            WhTopAppBar(
+            AppTopAppBar(
                 title = { Text(text = stringResource(Res.string.title_update_day)) },
                 navigationIcon = {
                     IconButton(onClick = navigateUp) {

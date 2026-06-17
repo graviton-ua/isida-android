@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import ua.isida.common.ui.compose.theme.IsidaTheme
 
 @Composable
-fun WhRadioButton(
+fun AppRadioButton(
     selected: Boolean,
     onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
@@ -27,7 +27,7 @@ fun WhRadioButton(
 ) = RadioButton(selected, onClick, modifier, enabled, colors, interactionSource)
 
 @Composable
-fun WhRadioButton(
+fun AppRadioButton(
     selected: Boolean,
     onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
@@ -46,7 +46,7 @@ fun WhRadioButton(
             .let { m -> onClick?.let { m.clickable(enabled = enabled, onClick = it) } ?: m }
             .padding(contentPadding),
     ) {
-        WhRadioButton(
+        AppRadioButton(
             selected = selected,
             onClick = null,
             enabled = enabled,

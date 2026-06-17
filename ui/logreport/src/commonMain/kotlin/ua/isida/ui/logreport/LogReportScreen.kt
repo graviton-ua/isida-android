@@ -16,7 +16,7 @@ import androidx.navigation3.runtime.NavKey
 import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.stringResource
-import ua.isida.common.ui.compose.ui.WhDialog
+import ua.isida.common.ui.compose.ui.AppDialog
 import ua.isida.common.ui.resources.Res
 import ua.isida.common.ui.resources.btn_cancel
 import ua.isida.common.ui.resources.btn_share_logs
@@ -31,7 +31,7 @@ internal fun LogReportScreen(
 ) {
     val files by viewModel.files.collectAsStateWithLifecycle()
 
-    WhDialog {
+    AppDialog {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

@@ -1,6 +1,6 @@
 # Module: core:base
 
-Fundamental utilities and shared base classes for the Whoppah application.
+Fundamental utilities and shared base classes for the Isida application.
 
 This module provides the foundational building blocks used across all other modules in the project. It centralizes platform-agnostic logic, common extensions, and application-wide contracts to ensure consistency and reduce code duplication in a Kotlin Multiplatform environment.
 

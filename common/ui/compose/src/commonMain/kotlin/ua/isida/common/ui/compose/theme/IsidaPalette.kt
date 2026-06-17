@@ -22,8 +22,8 @@ object IsidaPalette {
     val Grey800 = Color(0xFF464646)
     val Grey900 = Color(0xFF2F2F2F)
 
-    // Brand - Whoppah Green
-    // The Whoppah Green colour, it’s leading in all our visual communication. We use it for our main buttons.
+    // Brand - Isida Green
+    // The Isida Green colour, it’s leading in all our visual communication. We use it for our main buttons.
     val Brand50 = Color(0xFFE6EFEB)
     val Brand100 = Color(0xFFCCDFD6)
     val Brand200 = Color(0xFF99BEAD)

@@ -22,14 +22,14 @@ import ua.isida.common.ui.compose.theme.IsidaPalette
 import ua.isida.common.ui.compose.theme.IsidaTheme
 
 /**
- * A wrapper around [WhTopAppBar] which supports the setting of [contentPadding] to add
+ * A wrapper around [AppTopAppBar] which supports the setting of [contentPadding] to add
  * internal padding. This is especially useful in conjunction with insets.
  *
  * For an edge-to-edge layout, typically you would use the
  * [com.google.accompanist.insets.WindowInsets.systemBars] insets like so below:
  */
 @Composable
-fun WhTopAppBar(
+fun AppTopAppBar(
     title: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = WindowInsets.statusBars,

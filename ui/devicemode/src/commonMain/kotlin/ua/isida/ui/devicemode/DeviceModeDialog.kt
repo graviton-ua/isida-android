@@ -21,8 +21,8 @@ import ua.isida.common.ui.compose.theme.AppTheme
 import ua.isida.common.ui.compose.theme.ContentAlpha
 import ua.isida.common.ui.compose.theme.IsidaColor
 import ua.isida.common.ui.compose.theme.IsidaTheme
-import ua.isida.common.ui.compose.ui.WhDialog
-import ua.isida.common.ui.compose.ui.WhRadioButton
+import ua.isida.common.ui.compose.ui.AppDialog
+import ua.isida.common.ui.compose.ui.AppRadioButton
 import ua.isida.common.ui.resources.*
 import ua.isida.data.protocol.DeviceMode
 import ua.isida.data.protocol.DeviceModeExtra
@@ -57,7 +57,7 @@ private fun DeviceModeDialog(
     navigateUp: () -> Unit,
     actioner: (DeviceModeAction) -> Unit,
 ) {
-    WhDialog {
+    AppDialog {
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier
@@ -143,7 +143,7 @@ private fun RadioItem(
             .clickable { onClicked() }
             .padding(horizontal = 16.dp, vertical = 12.dp),
     ) {
-        WhRadioButton(
+        AppRadioButton(
             selected = selected,
             onClick = null,
             modifier = Modifier

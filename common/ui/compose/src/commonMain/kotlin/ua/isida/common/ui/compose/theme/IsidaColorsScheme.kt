@@ -5,7 +5,7 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
-import ua.isida.common.ui.compose.ui.WhBrushButtonColors
+import ua.isida.common.ui.compose.ui.AppBrushButtonColors
 
 interface IsidaColorsScheme {
     val primary: Color
@@ -59,7 +59,7 @@ interface IsidaColorsScheme {
     var defaultButtonColorsSecondaryCached: ButtonColors?
     var defaultButtonColorsTertiaryCached: ButtonColors?
     var defaultButtonColorsTertiaryInvertCached: ButtonColors?
-    var defaultButtonColorsAiCached: WhBrushButtonColors?
+    var defaultButtonColorsAiCached: AppBrushButtonColors?
     var defaultOutlinedButtonColorsCached: ButtonColors?
     var defaultOutlinedButtonColorsSecondaryCached: ButtonColors?
     var defaultOutlinedButtonColorsTertiaryCached: ButtonColors?
@@ -196,7 +196,7 @@ object IsidaLightColorsScheme : IsidaColorsScheme {
     override var defaultButtonColorsSecondaryCached: ButtonColors? = null
     override var defaultButtonColorsTertiaryCached: ButtonColors? = null
     override var defaultButtonColorsTertiaryInvertCached: ButtonColors? = null
-    override var defaultButtonColorsAiCached: WhBrushButtonColors? = null
+    override var defaultButtonColorsAiCached: AppBrushButtonColors? = null
     override var defaultOutlinedButtonColorsCached: ButtonColors? = null
     override var defaultOutlinedButtonColorsSecondaryCached: ButtonColors? = null
     override var defaultOutlinedButtonColorsTertiaryCached: ButtonColors? = null
@@ -255,7 +255,7 @@ object IsidaDarkColorsScheme : IsidaColorsScheme {
     override var defaultButtonColorsSecondaryCached: ButtonColors? = null
     override var defaultButtonColorsTertiaryCached: ButtonColors? = null
     override var defaultButtonColorsTertiaryInvertCached: ButtonColors? = null
-    override var defaultButtonColorsAiCached: WhBrushButtonColors? = null
+    override var defaultButtonColorsAiCached: AppBrushButtonColors? = null
     override var defaultOutlinedButtonColorsCached: ButtonColors? = null
     override var defaultOutlinedButtonColorsSecondaryCached: ButtonColors? = null
     override var defaultOutlinedButtonColorsTertiaryCached: ButtonColors? = null

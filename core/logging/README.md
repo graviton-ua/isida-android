@@ -1,6 +1,6 @@
 # Module: core:logging
 
-Standardized logging and crash reporting for the Whoppah application.
+Standardized logging and crash reporting for the Isida application.
 
 This module provides a unified logging interface built on Kermit, with integrated crash reporting via Firebase Crashlytics for Android and iOS. It ensures consistent log levels and crash capture across both platforms in a Kotlin Multiplatform environment.
 

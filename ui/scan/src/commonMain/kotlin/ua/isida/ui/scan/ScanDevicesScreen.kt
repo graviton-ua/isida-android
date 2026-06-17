@@ -21,7 +21,7 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.stringResource
 import ua.isida.common.ui.compose.theme.AppTheme
 import ua.isida.common.ui.compose.toaster.AppToaster
-import ua.isida.common.ui.compose.ui.WhTopAppBar
+import ua.isida.common.ui.compose.ui.AppTopAppBar
 import ua.isida.common.ui.permissions.PermissionType
 import ua.isida.common.ui.permissions.isGranted
 import ua.isida.common.ui.permissions.rememberPermissionState
@@ -98,7 +98,7 @@ private fun ScanDevicesScreen(
 ) {
     Scaffold(
         topBar = {
-            WhTopAppBar(
+            AppTopAppBar(
                 title = { Text(text = stringResource(Res.string.title_scan_devices)) },
                 navigationIcon = {
                     IconButton(onClick = navigateUp) {

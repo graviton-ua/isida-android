@@ -9,14 +9,14 @@ import ua.isida.common.ui.compose.theme.IsidaColorsScheme
 import ua.isida.common.ui.compose.theme.IsidaPalette
 import ua.isida.common.ui.compose.theme.IsidaTheme
 
-object WhButtonDefaults {
+object AppButtonDefaults {
     //region Filled
     /**
      * Creates a [ButtonColors] that represents the default colors used in
      * a [Button] in different states.
      *
-     * @see WhButtonDefaults.buttonColorsSecondary for secondary colors
-     * @see WhButtonDefaults.buttonColorsTertiary for tertiary colors
+     * @see AppButtonDefaults.buttonColorsSecondary for secondary colors
+     * @see AppButtonDefaults.buttonColorsTertiary for tertiary colors
      */
     @Composable fun buttonColors() = IsidaTheme.colors.defaultButtonColors
 
@@ -57,8 +57,8 @@ object WhButtonDefaults {
      * Creates a [ButtonColors] that represents the default colors used in a  [Button]
      * in different states.
      *
-     * @see WhButtonDefaults.buttonColors for primary colors
-     * @see WhButtonDefaults.buttonColorsSecondary for secondary colors
+     * @see AppButtonDefaults.buttonColors for primary colors
+     * @see AppButtonDefaults.buttonColorsSecondary for secondary colors
      */
     @Composable fun buttonColorsInvert() = IsidaTheme.colors.defaultButtonColorsInvert
 
@@ -98,8 +98,8 @@ object WhButtonDefaults {
      * Creates a [ButtonColors] that represents the default colors used in
      * a secondary [Button] in different states.
      *
-     * @see WhButtonDefaults.buttonColors for primary colors
-     * @see WhButtonDefaults.buttonColorsTertiary for tertiary colors
+     * @see AppButtonDefaults.buttonColors for primary colors
+     * @see AppButtonDefaults.buttonColorsTertiary for tertiary colors
      */
     @Composable fun buttonColorsSecondary() = IsidaTheme.colors.defaultButtonColorsSecondary
 
@@ -140,8 +140,8 @@ object WhButtonDefaults {
      * Creates a [ButtonColors] that represents the default colors used in a tertiary [Button]
      * in different states.
      *
-     * @see WhButtonDefaults.buttonColors for primary colors
-     * @see WhButtonDefaults.buttonColorsSecondary for secondary colors
+     * @see AppButtonDefaults.buttonColors for primary colors
+     * @see AppButtonDefaults.buttonColorsSecondary for secondary colors
      */
     @Composable fun buttonColorsTertiary() = IsidaTheme.colors.defaultButtonColorsTertiary
 
@@ -182,8 +182,8 @@ object WhButtonDefaults {
      * Creates a [ButtonColors] that represents the default colors used in a tertiary [Button]
      * in different states.
      *
-     * @see WhButtonDefaults.buttonColors for primary colors
-     * @see WhButtonDefaults.buttonColorsSecondary for secondary colors
+     * @see AppButtonDefaults.buttonColors for primary colors
+     * @see AppButtonDefaults.buttonColorsSecondary for secondary colors
      */
     @Composable fun buttonColorsTertiaryInvert() = IsidaTheme.colors.defaultButtonColorsTertiaryInvert
 
@@ -228,16 +228,16 @@ object WhButtonDefaults {
         contentColor: Color = Color.Unspecified,
         disabledContainerBrush: Brush? = null,
         disabledContentColor: Color = Color.Unspecified,
-    ): WhBrushButtonColors = IsidaTheme.colors.defaultButtonColorsAi.copy(
+    ): AppBrushButtonColors = IsidaTheme.colors.defaultButtonColorsAi.copy(
         containerBrush = containerBrush,
         contentColor = contentColor,
         disabledContainerBrush = disabledContainerBrush,
         disabledContentColor = disabledContentColor,
     )
 
-    private val IsidaColorsScheme.defaultButtonColorsAi: WhBrushButtonColors
+    private val IsidaColorsScheme.defaultButtonColorsAi: AppBrushButtonColors
         get() {
-            return defaultButtonColorsAiCached ?: WhBrushButtonColors(
+            return defaultButtonColorsAiCached ?: AppBrushButtonColors(
                 containerBrush = IsidaPalette.AIGradient,
                 contentColor = onPrimary,
                 disabledContainerBrush = SolidColor(IsidaPalette.Grey100),
