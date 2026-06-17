@@ -92,7 +92,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
 
     implementation(platform(libs.firebase.bom))
-    implementation(libs.bundles.firebase)
+    implementation(libs.firebase.crashlytics)
 
     debugImplementation(libs.leakcanary.android)
 }

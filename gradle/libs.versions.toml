@@ -73,9 +73,6 @@ moko-permissions-compose = { module = "dev.icerock.moko:permissions-compose", ve
 
 firebase-bom = { module = "com.google.firebase:firebase-bom", version = "34.11.0" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
-firebase-config = { module = "com.google.firebase:firebase-config" }
-firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 
 multiplatformsettings-core = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformsettings" }
 multiplatformsettings-coroutines = { module = "com.russhwolf:multiplatform-settings-coroutines", version.ref = "multiplatformsettings" }
@@ -103,5 +100,4 @@ metro-gradlePlugin = { module = "dev.zacsweers.metro:gradle-plugin", version.ref
 
 
 [bundles]
-firebase = ["firebase-crashlytics", "firebase-analytics", "firebase-config", "firebase-messaging"]
 metrox-viewmodel = ["metrox-viewmodel", "metrox-viewmodel-compose"]
