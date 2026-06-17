@@ -61,6 +61,8 @@ android {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = if (project.file("release.keystore").exists()) signingConfigs.getByName("release") else signingConfigs.getByName("debug")
+
+            buildConfigField("Boolean", "CRASH_REPORTING", "true")
         }
     }
 
