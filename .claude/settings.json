@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "attribution": {
+    "commit": ""
+  },
+  "permissions": {
+    "allow": [
+      "Bash(./gradlew:*)",
+      "PowerShell(./gradlew:*)",
+      "PowerShell(.\\gradlew.bat:*)",
+
+      "Bash(git status:*)",
+      "Bash(git commit:*)",
+      "Bash(git add:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote:*)",
+      "Bash(git fetch:*)",
+      "Bash(git blame:*)",
+      "Bash(git describe:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(git tag:*)",
+      "Bash(git ls-files:*)",
+      "PowerShell(git status:*)",
+      "PowerShell(git commit:*)",
+      "PowerShell(git add:*)",
+      "PowerShell(git diff:*)",
+      "PowerShell(git log:*)",
+      "PowerShell(git show:*)",
+      "PowerShell(git branch:*)",
+      "PowerShell(git remote:*)",
+      "PowerShell(git fetch:*)",
+      "PowerShell(git blame:*)",
+      "PowerShell(git describe:*)",
+      "PowerShell(git rev-parse:*)",
+      "PowerShell(git tag:*)",
+      "PowerShell(git ls-files:*)",
+
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(find:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "PowerShell(Get-ChildItem:*)",
+      "PowerShell(Get-Content:*)",
+      "PowerShell(Select-String:*)",
+      "PowerShell(Select-Object:*)"
+    ],
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/*.keystore)",
+      "Read(**/*.jks)",
+      "Read(**/*.p12)",
+      "Read(**/*.pem)",
+      "Read(**/local.properties)",
+      "Read(**/secrets/**)",
+      "Read(**/keystore.properties)",
+      "Read(**/signing.properties)",
+      "Read(**/google-services.json)",
+      "Read(**/*-service-account*.json)",
+      "Read(**/play-publisher*.json)"
+    ]
+  }
+}
